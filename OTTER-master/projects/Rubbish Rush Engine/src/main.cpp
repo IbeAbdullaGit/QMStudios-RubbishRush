@@ -120,6 +120,7 @@ void keyboard() {
 		movY -= 0.01f;
 
 }
+//this is a test
 bool collideChecker(glm::vec3 obj1P, glm::vec3 obj2P, glm::vec3 obj1S, glm::vec3 obj2S)
 {
 	//min = left corner
