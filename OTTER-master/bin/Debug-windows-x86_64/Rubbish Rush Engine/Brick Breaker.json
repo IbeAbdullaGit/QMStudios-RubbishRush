@@ -1,0 +1,1419 @@
+{
+	"default_shader": "75567450-7881-4e42-b929-1bcad75711b3",
+	"lights": [
+		{
+			"color": {
+				"x": 0.9999971389770508,
+				"y": 0.9999899864196777,
+				"z": 1.0
+			},
+			"position": {
+				"x": 0.0,
+				"y": 10.8100004196167,
+				"z": 10.130000114440918
+			},
+			"range": 186.39999389648438
+		},
+		{
+			"color": {
+				"x": 0.20000000298023224,
+				"y": 0.800000011920929,
+				"z": 0.10000000149011612
+			},
+			"position": {
+				"x": 1.0,
+				"y": 5.0,
+				"z": 3.0
+			},
+			"range": 4.0
+		},
+		{
+			"color": {
+				"x": 1.0,
+				"y": 0.9999914765357971,
+				"z": 0.9999899864196777
+			},
+			"position": {
+				"x": 0.0,
+				"y": 1.0,
+				"z": 3.0
+			},
+			"range": 4.0
+		},
+		{
+			"color": {
+				"x": 0.9999899864196777,
+				"y": 1.0,
+				"z": 0.9999899864196777
+			},
+			"position": {
+				"x": -1.0,
+				"y": 0.0,
+				"z": 2.0
+			},
+			"range": 5.0
+		},
+		{
+			"color": {
+				"x": 1.0,
+				"y": 0.9999899864196777,
+				"z": 0.9999899864196777
+			},
+			"position": {
+				"x": -1.5,
+				"y": 0.0,
+				"z": 1.0
+			},
+			"range": 5.0
+		}
+	],
+	"main_camera": "b066c3e7-c5c6-7648-84e3-372a73e494d6",
+	"objects": [
+		{
+			"components": {
+				"Gameplay::Camera": {
+					"enabled": true,
+					"far_plane": 1000.0,
+					"fov_radians": 1.5707963705062866,
+					"guid": "b066c3e7-c5c6-7648-84e3-372a73e494d6",
+					"near_plane": 0.10000000149011612,
+					"ortho_enabled": true,
+					"ortho_size": 10.0
+				}
+			},
+			"guid": "9e561f51-fd50-b841-a250-0acfa7b55bf3",
+			"name": "Main Camera",
+			"position": {
+				"x": 0.0,
+				"y": 4.0,
+				"z": 4.0
+			},
+			"rotation": {
+				"w": 0.0,
+				"x": 0.0,
+				"y": 0.3826833963394165,
+				"z": 0.9238795042037964
+			},
+			"scale": {
+				"x": 1.0,
+				"y": 1.0,
+				"z": 1.0
+			}
+		},
+		{
+			"components": {
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 6.699999809265137,
+								"y": 1.1399999856948853,
+								"z": 0.17900000512599945
+							},
+							"guid": "e1af092c-c047-b04b-9ad2-e2600b9d293e",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.20000000298023224,
+								"y": 1.5,
+								"z": 0.20000000298023224
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "8072aad5-9da0-7e4c-bc7b-284dee8fd8d2",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 0.0,
+					"type": "Dynamic"
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "0f8eeb94-ef0e-8945-8a4c-7a9a80916d98",
+					"material": "9e52d874-ca6f-3e4e-96b8-43a770d7f917",
+					"mesh": "1a77e3e5-34a3-fc48-90af-03ed9ac19408"
+				}
+			},
+			"guid": "7faa4783-3b1d-b04b-a597-3f1947150cb2",
+			"name": "Player",
+			"position": {
+				"x": 0.0,
+				"y": 0.0,
+				"z": -5.0
+			},
+			"rotation": {
+				"w": -1.672762373061687e-08,
+				"x": -4.038405521100685e-08,
+				"y": 0.9238795042037964,
+				"z": 0.3826834261417389
+			},
+			"scale": {
+				"x": 0.4000000059604645,
+				"y": 0.4000000059604645,
+				"z": 0.4000000059604645
+			}
+		},
+		{
+			"components": {
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.0,
+					"colliders": [
+						{
+							"guid": "0edceb80-3c49-4645-9263-c37be48c89ed",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"radius": 0.4129999876022339,
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.6000000238418579,
+								"y": 2.0,
+								"z": 0.6000000238418579
+							},
+							"type": "Sphere"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "88046bdc-cecd-2643-89cb-6e4beca0b977",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 1.0,
+					"type": "Dynamic"
+				},
+				"Gameplay::Physics::TriggerVolume": {
+					"colliders": [],
+					"enabled": true,
+					"group": 1,
+					"guid": "c7410eaa-f184-7142-8fa3-5e000f9e23f7",
+					"mask": -1
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "4bcf7beb-9c25-a642-9feb-47cb9910d32f",
+					"material": "32e91cf1-4459-f54d-b8e5-43a399124a7d",
+					"mesh": "78192ff3-eeae-5a42-8b5d-b93f5142c744"
+				},
+				"TriggerVolumeEnterBehaviour": {
+					"enabled": true,
+					"guid": "7f019095-3f00-0c42-bce6-23bbf7050ffd"
+				}
+			},
+			"guid": "21fad405-e304-2444-a2e6-d3fdf37ca736",
+			"name": "Ball",
+			"position": {
+				"x": 0.0,
+				"y": 0.0,
+				"z": -1.7000000476837158
+			},
+			"rotation": {
+				"w": -4.371138828673793e-08,
+				"x": -0.0,
+				"y": 0.0,
+				"z": 1.0
+			},
+			"scale": {
+				"x": 0.6000000238418579,
+				"y": 0.6000000238418579,
+				"z": 0.6000000238418579
+			}
+		},
+		{
+			"components": {
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 189.0,
+								"y": 80.0,
+								"z": 0.16599999368190765
+							},
+							"guid": "a93bc7a4-0ecd-5142-a020-a70c52cbc95b",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": -0.5
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.20999999344348907,
+								"y": 2.640000104904175,
+								"z": 5.0
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "6d9de169-9f49-fb4f-979d-104d9f8e9f03",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 1.0,
+					"type": "Static"
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "010c69b6-6f6d-e043-b273-9c5e1870bb69",
+					"material": "302e15f2-c803-724e-8199-4c9386fb32f6",
+					"mesh": "a7bc9c4a-1166-e048-a7a7-86e88d093efc"
+				}
+			},
+			"guid": "7f3e5d96-9087-dd44-950f-76b7bcecda75",
+			"name": "Wall1",
+			"position": {
+				"x": 5.409999847412109,
+				"y": 0.3700000047683716,
+				"z": 2.0
+			},
+			"rotation": {
+				"w": 0.709490954875946,
+				"x": 0.005680054426193237,
+				"y": -0.7046688795089722,
+				"z": -0.005680054426193237
+			},
+			"scale": {
+				"x": 0.20999999344348907,
+				"y": 2.640000104904175,
+				"z": 5.0
+			}
+		},
+		{
+			"components": {
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 189.0,
+								"y": 80.0,
+								"z": 0.16599999368190765
+							},
+							"guid": "7df9f334-197f-e04f-af0f-fb5b47e614b4",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 1.5
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.20999999344348907,
+								"y": 2.640000104904175,
+								"z": 5.0
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "d2677cb6-51ca-6c45-aef0-3b5b8388c79b",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 1.0,
+					"type": "Static"
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "eccd8bfc-5c6b-4747-96df-9ed59595abf0",
+					"material": "302e15f2-c803-724e-8199-4c9386fb32f6",
+					"mesh": "a7bc9c4a-1166-e048-a7a7-86e88d093efc"
+				}
+			},
+			"guid": "c4e7cb2b-2ce8-504a-b939-705c03ec951b",
+			"name": "Wall2",
+			"position": {
+				"x": -4.409999847412109,
+				"y": 0.3700000047683716,
+				"z": 2.0
+			},
+			"rotation": {
+				"w": 0.709490954875946,
+				"x": 0.005680054426193237,
+				"y": -0.7046688795089722,
+				"z": -0.005680054426193237
+			},
+			"scale": {
+				"x": 0.20999999344348907,
+				"y": 2.640000104904175,
+				"z": 5.0
+			}
+		},
+		{
+			"components": {
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 189.0,
+								"y": 80.0,
+								"z": 0.16599999368190765
+							},
+							"guid": "1a3860ad-c68f-784e-85ce-fdd731d030d6",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 1.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.20999999344348907,
+								"y": 2.640000104904175,
+								"z": 5.0
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "f25f0b32-eaaf-db42-bcd6-129abf7abcd5",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 0.0,
+					"type": "Dynamic"
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "3d52008e-6e0d-c347-8c9a-031691e8538c",
+					"material": "302e15f2-c803-724e-8199-4c9386fb32f6",
+					"mesh": "a7bc9c4a-1166-e048-a7a7-86e88d093efc"
+				}
+			},
+			"guid": "35bc8255-56b0-5e45-8c32-712fdcd2711f",
+			"name": "Cieling",
+			"position": {
+				"x": 5.409999847412109,
+				"y": -4.349999904632568,
+				"z": 2.0
+			},
+			"rotation": {
+				"w": -0.7308536171913147,
+				"x": -0.30153265595436096,
+				"y": -0.23294496536254883,
+				"z": 0.566275417804718
+			},
+			"scale": {
+				"x": 0.20999999344348907,
+				"y": 2.640000104904175,
+				"z": 5.0
+			}
+		},
+		{
+			"components": {
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"guid": "33ccb148-d911-8044-bb7c-19a6583ad62d",
+							"normal": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 1.0
+							},
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 1.0,
+								"y": 1.0,
+								"z": 1.0
+							},
+							"type": "Plane"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "eedf18b5-28ed-4c44-927f-a495d3f309c3",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 1.0,
+					"type": "Static"
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "8b25836d-faf0-8348-b3e7-2bbae8905453",
+					"material": "bf753775-e3c8-7b43-a97f-74a440128650",
+					"mesh": "78ca24a1-44e4-8245-9e2f-f8ee007a7189"
+				}
+			},
+			"guid": "eeef5384-cf15-534b-8eda-b39d28edb995",
+			"name": "Plane",
+			"position": {
+				"x": 0.0,
+				"y": -3.819999933242798,
+				"z": -3.940000057220459
+			},
+			"rotation": {
+				"w": -4.038405521100685e-08,
+				"x": -1.672762550697371e-08,
+				"y": 0.3826834559440613,
+				"z": 0.9238795042037964
+			},
+			"scale": {
+				"x": 10.0,
+				"y": 10.0,
+				"z": 10.0
+			}
+		},
+		{
+			"components": {
+				"DeleteObjectBehaviour": {
+					"enabled": true,
+					"enter_material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"exit_material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"guid": "5c0520a4-fe4b-834e-a8a9-7e339fdd8559"
+				},
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 3.240000009536743,
+								"y": 1.1399999856948853,
+								"z": 1.0
+							},
+							"guid": "9238ea1b-86e9-0942-8aa2-b146fb115e9f",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.15000000596046448,
+								"y": 0.699999988079071,
+								"z": 0.15000000596046448
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "4ce5b80c-c73d-6449-a9f4-092ee14fa49b",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 0.0,
+					"type": "Dynamic"
+				},
+				"Gameplay::Physics::TriggerVolume": {
+					"colliders": [],
+					"enabled": true,
+					"group": 1,
+					"guid": "b69aec69-c812-784f-a014-097d99f01349",
+					"mask": -1
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "0117b654-7d93-9e41-83c9-40aa0b6da7b6",
+					"material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"mesh": "3d0265cf-fcfd-9d4d-a8f4-55f0c9dc1b59"
+				}
+			},
+			"guid": "a2bcb01e-0a3f-3c49-b05a-87485d004eed",
+			"name": "Block1",
+			"position": {
+				"x": -1.5,
+				"y": 0.0,
+				"z": -0.3499999940395355
+			},
+			"rotation": {
+				"w": -4.038405521100685e-08,
+				"x": -1.672762550697371e-08,
+				"y": 0.3826834559440613,
+				"z": 0.9238795042037964
+			},
+			"scale": {
+				"x": 0.30000001192092896,
+				"y": 0.30000001192092896,
+				"z": 0.30000001192092896
+			}
+		},
+		{
+			"components": {
+				"DeleteObjectBehaviour": {
+					"enabled": true,
+					"enter_material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"exit_material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"guid": "7eb8e755-a6d6-3844-b369-6774d873d043"
+				},
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 3.240000009536743,
+								"y": 1.1399999856948853,
+								"z": 1.0
+							},
+							"guid": "f900bc13-879c-7245-82fe-5b5defb065cc",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.15000000596046448,
+								"y": 0.699999988079071,
+								"z": 0.15000000596046448
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "6ecef0d7-357b-3f4c-8290-2b0e8289fac8",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 0.0,
+					"type": "Dynamic"
+				},
+				"Gameplay::Physics::TriggerVolume": {
+					"colliders": [],
+					"enabled": true,
+					"group": 1,
+					"guid": "a6756b13-8356-b24c-bfa7-e0ded2b1b2ca",
+					"mask": -1
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "06740d58-dfd2-df49-8217-6679695b54e6",
+					"material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"mesh": "3d0265cf-fcfd-9d4d-a8f4-55f0c9dc1b59"
+				}
+			},
+			"guid": "db3429f4-568e-b04f-8b54-f85efe32b7fa",
+			"name": "Block2",
+			"position": {
+				"x": 0.9200000166893005,
+				"y": 0.0,
+				"z": -0.3499999940395355
+			},
+			"rotation": {
+				"w": -4.038405521100685e-08,
+				"x": -1.672762550697371e-08,
+				"y": 0.3826834559440613,
+				"z": 0.9238795042037964
+			},
+			"scale": {
+				"x": 0.30000001192092896,
+				"y": 0.30000001192092896,
+				"z": 0.30000001192092896
+			}
+		},
+		{
+			"components": {
+				"DeleteObjectBehaviour": {
+					"enabled": true,
+					"enter_material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"exit_material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"guid": "7b8a8f37-ed41-ee4a-84e4-7c44e7effa70"
+				},
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 3.240000009536743,
+								"y": 1.1399999856948853,
+								"z": 1.0
+							},
+							"guid": "9932284f-d33c-9943-86de-37696a1ac18b",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.15000000596046448,
+								"y": 0.699999988079071,
+								"z": 0.15000000596046448
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "a5d1cddc-e321-804a-9e97-863caf4b400d",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 0.0,
+					"type": "Dynamic"
+				},
+				"Gameplay::Physics::TriggerVolume": {
+					"colliders": [],
+					"enabled": true,
+					"group": 1,
+					"guid": "f6402421-4128-ed46-abb0-bcf772415a6f",
+					"mask": -1
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "c24045ad-c3cb-2f48-a23a-54f9c9cf34a9",
+					"material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"mesh": "3d0265cf-fcfd-9d4d-a8f4-55f0c9dc1b59"
+				}
+			},
+			"guid": "37997a43-f3d2-9e46-a98b-afa527f363bf",
+			"name": "Block3",
+			"position": {
+				"x": 3.3399999141693115,
+				"y": 0.0,
+				"z": -0.3499999940395355
+			},
+			"rotation": {
+				"w": -4.038405521100685e-08,
+				"x": -1.672762550697371e-08,
+				"y": 0.3826834559440613,
+				"z": 0.9238795042037964
+			},
+			"scale": {
+				"x": 0.30000001192092896,
+				"y": 0.30000001192092896,
+				"z": 0.30000001192092896
+			}
+		},
+		{
+			"components": {
+				"DeleteObjectBehaviour": {
+					"enabled": true,
+					"enter_material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"exit_material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"guid": "58fde9db-cd69-0544-ba95-5a07353b60bd"
+				},
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 3.240000009536743,
+								"y": 1.1399999856948853,
+								"z": 1.0
+							},
+							"guid": "aa5c480d-b2f6-bd47-9470-c339e59f2f95",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.15000000596046448,
+								"y": 0.699999988079071,
+								"z": 0.15000000596046448
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "c5fe4473-c821-fa40-a192-cd7c754b498f",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 0.0,
+					"type": "Dynamic"
+				},
+				"Gameplay::Physics::TriggerVolume": {
+					"colliders": [],
+					"enabled": true,
+					"group": 1,
+					"guid": "034e0068-7aad-ae4b-b546-cff2c1c72e29",
+					"mask": -1
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "586529c6-b978-7845-86c2-70aedf1cebe4",
+					"material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"mesh": "3d0265cf-fcfd-9d4d-a8f4-55f0c9dc1b59"
+				}
+			},
+			"guid": "56733bba-5fda-8542-8a88-975bbac290dd",
+			"name": "Block4",
+			"position": {
+				"x": -2.7100000381469727,
+				"y": 0.0,
+				"z": 2.140000104904175
+			},
+			"rotation": {
+				"w": -4.038405521100685e-08,
+				"x": -1.672762550697371e-08,
+				"y": 0.3826834559440613,
+				"z": 0.9238795042037964
+			},
+			"scale": {
+				"x": 0.30000001192092896,
+				"y": 0.30000001192092896,
+				"z": 0.30000001192092896
+			}
+		},
+		{
+			"components": {
+				"DeleteObjectBehaviour": {
+					"enabled": true,
+					"enter_material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"exit_material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"guid": "4ad64144-892c-9c49-890c-9feba12d7d46"
+				},
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 3.240000009536743,
+								"y": 1.1399999856948853,
+								"z": 1.0
+							},
+							"guid": "33b50495-f9fd-2f49-a044-535a6bda3538",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.15000000596046448,
+								"y": 0.699999988079071,
+								"z": 0.15000000596046448
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "c034601b-4d0e-b145-b17b-4a1f9fc0fcc6",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 0.0,
+					"type": "Dynamic"
+				},
+				"Gameplay::Physics::TriggerVolume": {
+					"colliders": [],
+					"enabled": true,
+					"group": 1,
+					"guid": "2f43f546-b101-e24e-9629-a318ac664dd8",
+					"mask": -1
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "70e2e1df-0256-ab4c-aef0-f5c011ba2bda",
+					"material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"mesh": "3d0265cf-fcfd-9d4d-a8f4-55f0c9dc1b59"
+				}
+			},
+			"guid": "c8edc0c1-a5b7-5b49-90cc-08f1881e6351",
+			"name": "Block5",
+			"position": {
+				"x": -3.569999933242798,
+				"y": 0.0,
+				"z": -0.3499999940395355
+			},
+			"rotation": {
+				"w": -4.038405521100685e-08,
+				"x": -1.672762550697371e-08,
+				"y": 0.3826834559440613,
+				"z": 0.9238795042037964
+			},
+			"scale": {
+				"x": 0.30000001192092896,
+				"y": 0.30000001192092896,
+				"z": 0.30000001192092896
+			}
+		},
+		{
+			"components": {
+				"DeleteObjectBehaviour": {
+					"enabled": true,
+					"enter_material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"exit_material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"guid": "046143a4-239d-8b4a-8cb2-b9740e857f06"
+				},
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 3.240000009536743,
+								"y": 1.1399999856948853,
+								"z": 1.0
+							},
+							"guid": "f6bbc705-1da2-bf45-a642-e5df3eb58896",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.15000000596046448,
+								"y": 0.699999988079071,
+								"z": 0.15000000596046448
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "4f9826d8-567a-ae4f-b529-6eed6dd6a72d",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 0.0,
+					"type": "Dynamic"
+				},
+				"Gameplay::Physics::TriggerVolume": {
+					"colliders": [],
+					"enabled": true,
+					"group": 1,
+					"guid": "3fdddbe1-6f39-1947-a66a-cbb66789c75e",
+					"mask": -1
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "08144cef-e925-2249-89c0-1b8c7cc76656",
+					"material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"mesh": "3d0265cf-fcfd-9d4d-a8f4-55f0c9dc1b59"
+				}
+			},
+			"guid": "3dd485f0-6b4f-f54d-9bcd-31d535d5eaca",
+			"name": "Block6",
+			"position": {
+				"x": 3.549999952316284,
+				"y": 0.0,
+				"z": 5.059999942779541
+			},
+			"rotation": {
+				"w": -4.038405521100685e-08,
+				"x": -1.672762550697371e-08,
+				"y": 0.3826834559440613,
+				"z": 0.9238795042037964
+			},
+			"scale": {
+				"x": 0.30000001192092896,
+				"y": 0.30000001192092896,
+				"z": 0.30000001192092896
+			}
+		},
+		{
+			"components": {
+				"DeleteObjectBehaviour": {
+					"enabled": true,
+					"enter_material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"exit_material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"guid": "5b6f1759-80fb-ca46-9167-d91c4b6580d1"
+				},
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 3.240000009536743,
+								"y": 1.1399999856948853,
+								"z": 1.0
+							},
+							"guid": "522a691e-cf98-a349-a204-8dba5d541229",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.15000000596046448,
+								"y": 0.699999988079071,
+								"z": 0.15000000596046448
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "d822368b-1b09-da48-9ad4-50f4c64734db",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 0.0,
+					"type": "Dynamic"
+				},
+				"Gameplay::Physics::TriggerVolume": {
+					"colliders": [],
+					"enabled": true,
+					"group": 1,
+					"guid": "a8d8cdad-5df7-1b4a-a920-6c3c88f52054",
+					"mask": -1
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "f01b3626-2ff6-6d4b-a1bb-ea86664f8781",
+					"material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"mesh": "3d0265cf-fcfd-9d4d-a8f4-55f0c9dc1b59"
+				}
+			},
+			"guid": "7cb4c2b1-2c29-3e40-bec3-e23cca96347c",
+			"name": "Block7",
+			"position": {
+				"x": 0.9200000166893005,
+				"y": 0.0,
+				"z": 5.110000133514404
+			},
+			"rotation": {
+				"w": -4.038405521100685e-08,
+				"x": -1.672762550697371e-08,
+				"y": 0.3826834559440613,
+				"z": 0.9238795042037964
+			},
+			"scale": {
+				"x": 0.30000001192092896,
+				"y": 0.30000001192092896,
+				"z": 0.30000001192092896
+			}
+		},
+		{
+			"components": {
+				"DeleteObjectBehaviour": {
+					"enabled": true,
+					"enter_material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"exit_material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"guid": "4e18cb2c-0232-1e40-ad89-0e42df019cfa"
+				},
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 3.240000009536743,
+								"y": 1.1399999856948853,
+								"z": 1.0
+							},
+							"guid": "0a50e8cd-0db6-d84f-a6cb-5496b7c7525c",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.15000000596046448,
+								"y": 0.699999988079071,
+								"z": 0.15000000596046448
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "17d1c464-4b9a-644d-b130-cd9553b2eb51",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 0.0,
+					"type": "Dynamic"
+				},
+				"Gameplay::Physics::TriggerVolume": {
+					"colliders": [],
+					"enabled": true,
+					"group": 1,
+					"guid": "57e5cce3-6900-344c-888a-ba4980701b12",
+					"mask": -1
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "52598136-7352-494a-9fd3-6ee236ef0a52",
+					"material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"mesh": "3d0265cf-fcfd-9d4d-a8f4-55f0c9dc1b59"
+				}
+			},
+			"guid": "bf09b1c2-40ee-7e4f-9cb9-adc9daae9822",
+			"name": "Block8",
+			"position": {
+				"x": -1.4700000286102295,
+				"y": 0.0,
+				"z": 5.110000133514404
+			},
+			"rotation": {
+				"w": -4.038405521100685e-08,
+				"x": -1.672762550697371e-08,
+				"y": 0.3826834559440613,
+				"z": 0.9238795042037964
+			},
+			"scale": {
+				"x": 0.30000001192092896,
+				"y": 0.30000001192092896,
+				"z": 0.30000001192092896
+			}
+		},
+		{
+			"components": {
+				"DeleteObjectBehaviour": {
+					"enabled": true,
+					"enter_material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"exit_material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"guid": "ea3f0892-4c15-2a4a-8819-71e19b3d73e8"
+				},
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 3.240000009536743,
+								"y": 1.1399999856948853,
+								"z": 1.0
+							},
+							"guid": "36a00673-4ff0-2d46-923b-72550c04666c",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.15000000596046448,
+								"y": 0.699999988079071,
+								"z": 0.15000000596046448
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "dfe54fe1-b227-9a4f-8e1a-58980f9ac52a",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 0.0,
+					"type": "Dynamic"
+				},
+				"Gameplay::Physics::TriggerVolume": {
+					"colliders": [],
+					"enabled": true,
+					"group": 1,
+					"guid": "3e52a7a5-9b1c-3f40-8ef3-e9163cfe5509",
+					"mask": -1
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "a7b87023-83bc-2842-9f04-6c3f1b52a0e0",
+					"material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"mesh": "3d0265cf-fcfd-9d4d-a8f4-55f0c9dc1b59"
+				}
+			},
+			"guid": "4fb0e484-2600-604d-ad18-e65937739727",
+			"name": "Block9",
+			"position": {
+				"x": -3.690000057220459,
+				"y": 0.0,
+				"z": 5.110000133514404
+			},
+			"rotation": {
+				"w": -4.038405521100685e-08,
+				"x": -1.672762550697371e-08,
+				"y": 0.3826834559440613,
+				"z": 0.9238795042037964
+			},
+			"scale": {
+				"x": 0.30000001192092896,
+				"y": 0.30000001192092896,
+				"z": 0.30000001192092896
+			}
+		},
+		{
+			"components": {
+				"DeleteObjectBehaviour": {
+					"enabled": true,
+					"enter_material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"exit_material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"guid": "539a8961-c46d-a34f-9ec6-88f7ad647c8a"
+				},
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 3.240000009536743,
+								"y": 1.1399999856948853,
+								"z": 1.0
+							},
+							"guid": "2de2b429-974d-d343-a0f5-3ab37d676bfe",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.15000000596046448,
+								"y": 0.699999988079071,
+								"z": 0.15000000596046448
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "aa16a5cd-c1a7-7042-a8e8-e9ffcc03adb9",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 0.0,
+					"type": "Dynamic"
+				},
+				"Gameplay::Physics::TriggerVolume": {
+					"colliders": [],
+					"enabled": true,
+					"group": 1,
+					"guid": "26474269-a6d6-cf48-bf3c-2fcd9c2f5022",
+					"mask": -1
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "60007d55-8040-184d-b696-531eeadd0454",
+					"material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"mesh": "3d0265cf-fcfd-9d4d-a8f4-55f0c9dc1b59"
+				}
+			},
+			"guid": "92fb774b-94ae-4b4c-933e-2462d6a722fc",
+			"name": "Block10",
+			"position": {
+				"x": -0.28999999165534973,
+				"y": 0.0,
+				"z": 2.2799999713897705
+			},
+			"rotation": {
+				"w": -4.038405521100685e-08,
+				"x": -1.672762550697371e-08,
+				"y": 0.3826834559440613,
+				"z": 0.9238795042037964
+			},
+			"scale": {
+				"x": 0.30000001192092896,
+				"y": 0.30000001192092896,
+				"z": 0.30000001192092896
+			}
+		},
+		{
+			"components": {
+				"DeleteObjectBehaviour": {
+					"enabled": true,
+					"enter_material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"exit_material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"guid": "a6523c63-7660-e94e-8660-3ce82fc7607d"
+				},
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 3.240000009536743,
+								"y": 1.1399999856948853,
+								"z": 1.0
+							},
+							"guid": "06dcff13-a0dc-ac4f-96b5-0c1e7235f476",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.15000000596046448,
+								"y": 0.699999988079071,
+								"z": 0.15000000596046448
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "1b69074b-108c-7740-b6d7-0c2ef5323a20",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 0.0,
+					"type": "Dynamic"
+				},
+				"Gameplay::Physics::TriggerVolume": {
+					"colliders": [],
+					"enabled": true,
+					"group": 1,
+					"guid": "839c8136-0efa-494d-9717-7455ae57431b",
+					"mask": -1
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "d6d68791-2fd0-a246-929b-62fa26e877c1",
+					"material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"mesh": "3d0265cf-fcfd-9d4d-a8f4-55f0c9dc1b59"
+				}
+			},
+			"guid": "583f5700-06df-b145-8ac6-9f3ae127b4fd",
+			"name": "Block11",
+			"position": {
+				"x": 1.9800000190734863,
+				"y": 0.0,
+				"z": 2.3299999237060547
+			},
+			"rotation": {
+				"w": -4.038405521100685e-08,
+				"x": -1.672762550697371e-08,
+				"y": 0.3826834559440613,
+				"z": 0.9238795042037964
+			},
+			"scale": {
+				"x": 0.30000001192092896,
+				"y": 0.30000001192092896,
+				"z": 0.30000001192092896
+			}
+		},
+		{
+			"components": {
+				"DeleteObjectBehaviour": {
+					"enabled": true,
+					"enter_material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"exit_material": "2d1dfa40-f799-2f44-87b5-9b5adc7ecda4",
+					"guid": "eed3ebe3-5085-554b-b44b-a7e083b1e90d"
+				},
+				"Gameplay::Physics::RigidBody": {
+					"angular_damping": 0.004999999888241291,
+					"colliders": [
+						{
+							"extents": {
+								"x": 3.240000009536743,
+								"y": 1.1399999856948853,
+								"z": 1.0
+							},
+							"guid": "dbf59c2a-a695-df4e-919d-3ef33156d9ba",
+							"position": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"rotation": {
+								"x": 0.0,
+								"y": 0.0,
+								"z": 0.0
+							},
+							"scale": {
+								"x": 0.15000000596046448,
+								"y": 0.699999988079071,
+								"z": 0.15000000596046448
+							},
+							"type": "Box"
+						}
+					],
+					"enabled": true,
+					"group": 1,
+					"guid": "bf83787c-368d-3647-a483-2cbae56488e7",
+					"linear_damping": 0.0,
+					"mask": -1,
+					"mass": 0.0,
+					"type": "Dynamic"
+				},
+				"Gameplay::Physics::TriggerVolume": {
+					"colliders": [],
+					"enabled": true,
+					"group": 1,
+					"guid": "45443868-6f23-b949-be7d-4fb8c1bf9bd6",
+					"mask": -1
+				},
+				"RenderComponent": {
+					"enabled": true,
+					"guid": "d3c8b9d4-e73e-7043-b60b-e2740d550a4e",
+					"material": "72200ace-70a3-2742-8b94-1af64c1e5423",
+					"mesh": "3d0265cf-fcfd-9d4d-a8f4-55f0c9dc1b59"
+				}
+			},
+			"guid": "e8f67e74-1b49-d046-92f5-936db23abff4",
+			"name": "Block12",
+			"position": {
+				"x": 3.9700000286102295,
+				"y": 0.0,
+				"z": 2.2799999713897705
+			},
+			"rotation": {
+				"w": -4.038405521100685e-08,
+				"x": -1.672762550697371e-08,
+				"y": 0.3826834559440613,
+				"z": 0.9238795042037964
+			},
+			"scale": {
+				"x": 0.30000001192092896,
+				"y": 0.30000001192092896,
+				"z": 0.30000001192092896
+			}
+		}
+	]
+}
