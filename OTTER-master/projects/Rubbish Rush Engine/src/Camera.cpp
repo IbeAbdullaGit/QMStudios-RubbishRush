@@ -47,7 +47,7 @@ void Camera::ResizeWindow(int windowWidth, int windowHeight) {
 
 void Camera::SetOrthoEnabled(bool value)
 {
-	_isOrtho = value;
+	_isOrtho = true;
 	__CalculateProjection();
 }
 
@@ -78,7 +78,7 @@ void Camera::__CalculateProjection()
 	if (_isOrtho) {
 		float w = (_orthoVerticalScale * _aspectRatio) / 2.0f;
 		float h = (_orthoVerticalScale / 2.0f);
-		_projection = glm::ortho(w, -w, h, -h, _nearPlane, _farPlane);
+		_projection = glm::ortho(-w, w, -h, h, _nearPlane, _farPlane);
 	} else {
 		_projection = glm::perspective(_fovRadians, _aspectRatio, _nearPlane, _farPlane);
 	}
