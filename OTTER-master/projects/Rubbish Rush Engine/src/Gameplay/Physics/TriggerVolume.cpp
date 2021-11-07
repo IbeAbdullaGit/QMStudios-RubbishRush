@@ -72,47 +72,7 @@ namespace Gameplay::Physics {
 			auto& it = std::find_if(_currentCollisions.begin(), _currentCollisions.end(), [&](const std::weak_ptr<RigidBody>& item) {
 				return item.lock() == physicsPtr;
 				});
-			if (_scene->FindObjectByName("Player")->Get<RigidBody>() == physicsPtr && (GetGameObject()->Get<RigidBody>() == _scene->FindObjectByName("Ball")->Get<RigidBody>()))
-			{
-				// Add the object to the known collisions for this frame
-				thisFrameCollision.push_back(physicsPtr);
-				std::cout << "\nCOLLISION HAS HAPPENED\n";
-				physicsPtr->GetGameObject()->OnEnteredTrigger(std::dynamic_pointer_cast<TriggerVolume>(SelfRef().lock()));
-				GetGameObject()->OnTriggerVolumeEntered(physicsPtr);
-			}
-			if (_scene->FindObjectByName("Wall1")->Get<RigidBody>() == physicsPtr && (GetGameObject()->Get<RigidBody>() == _scene->FindObjectByName("Ball")->Get<RigidBody>()))
-			{
-				// Add the object to the known collisions for this frame
-				thisFrameCollision.push_back(physicsPtr);
-				std::cout << "\nCOLLISION HAS HAPPENED\n";
-				physicsPtr->GetGameObject()->OnEnteredTrigger(std::dynamic_pointer_cast<TriggerVolume>(SelfRef().lock()));
-				GetGameObject()->OnTriggerVolumeEntered(physicsPtr);
-			}
-			if (_scene->FindObjectByName("Wall2")->Get<RigidBody>() == physicsPtr && (GetGameObject()->Get<RigidBody>() == _scene->FindObjectByName("Ball")->Get<RigidBody>()))
-			{
-				// Add the object to the known collisions for this frame
-				thisFrameCollision.push_back(physicsPtr);
-				std::cout << "\nCOLLISION HAS HAPPENED\n";
-				physicsPtr->GetGameObject()->OnEnteredTrigger(std::dynamic_pointer_cast<TriggerVolume>(SelfRef().lock()));
-				GetGameObject()->OnTriggerVolumeEntered(physicsPtr);
-			}
 			
-			//go through the bricks, might need to adjust numbersd
-			for (int i = 0; i < _scene->NumObjects(); i++)
-			{
-				if (_scene->GetObjectByIndex(i)->Name[2] == 'o') //must be block
-				{
-					if (_scene->FindObjectByName("Ball")->Get<RigidBody>() == physicsPtr && (GetGameObject()->Get<RigidBody>() == _scene->GetObjectByIndex(i)->Get<RigidBody>()))
-					{
-						// Add the object to the known collisions for this frame
-						thisFrameCollision.push_back(physicsPtr);
-						std::cout << "\nCOLLISION HAS HAPPENED BRICK\n";
-						physicsPtr->GetGameObject()->OnEnteredTrigger(std::dynamic_pointer_cast<TriggerVolume>(SelfRef().lock()));
-						GetGameObject()->OnTriggerVolumeEntered(physicsPtr);
-					}
-				}
-				
-			}
 			// Get the contact pair and resolve contact manifolds
 			btBroadphasePair* pair = &collisionPairs[i];
 			if (pair != nullptr && pair->m_algorithm != nullptr) {
@@ -133,7 +93,7 @@ namespace Gameplay::Physics {
 			}
 			//std::cout << "Collision state is: " << hasCollision << std::endl;
 			// If we have contacts and the object's group matches our mask (since this isn't filtered for us)
-			if (hasCollision /*&& (obj->getBroadphaseHandle()->m_collisionFilterGroup & _collisionMask)*/) {
+			if (hasCollision && (obj->getBroadphaseHandle()->m_collisionFilterGroup & _collisionMask)) {
 				// Make sure the internal type is a bullet rigid body (no trigger-trigger interactions)
 				if (obj->getInternalType() == btCollisionObject::CO_RIGID_BODY) {
 					// Get the collision object as a btRigidBody
