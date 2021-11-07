@@ -235,9 +235,10 @@ void keyboard(RigidBody::Sptr& body) {
 	}
 	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		movX -= 1.0f;
-		if (movX <= 0) { //ensure speed isnt negative
-			movX = 0;
+		movX += 1.0f;
+		if (movX > 3)
+		{
+			movX = 3;
 		}
 		body->SetLinearVelocity(glm::vec3(-1.0f, 0.0f, 0.0f) * movX);
 	}
@@ -252,9 +253,10 @@ void keyboard(RigidBody::Sptr& body) {
 	}
 	else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		movZ -= 1.0f;
-		if (movZ <= 0) { //ensure speed isnt negative
-			movZ = 0;
+		movZ += 1.0f;
+		if (movZ > 3)
+		{
+			movZ = 3;
 		}
 		body->SetLinearVelocity(glm::vec3(0.0f, -1.0f, 0.0f) * movZ);
 	}
@@ -376,6 +378,7 @@ int main() {
 		GameObject::Sptr camera = scene->CreateGameObject("Main Camera");
 		{
 			camera->SetPostion(glm::vec3(-1.42f, 4.69f, 5.73f));
+			//camera->SetPostion(glm::vec3(-1.42f, 18.67f, 17.420));
 			camera->LookAt(glm::vec3(0.0f));
 			camera->SetRotation(glm::vec3(59.0f, 0.0f, 177.0f));
 			camera->SetScale(glm::vec3(1.0f, 1.0f, 3.1f));
@@ -401,7 +404,7 @@ int main() {
 		}
 		GameObject::Sptr trashyM = scene->CreateGameObject("Trashy");
 		{
-			trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f));
+			trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 2.0f));
 			trashyM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 			trashyM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
@@ -415,10 +418,48 @@ int main() {
 			box->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			physics->AddCollider(box);
 			//physics->AddCollider(BoxCollider::Create());
-			physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);
 			//add trigger for collisions and behaviours
 			TriggerVolume::Sptr volume = trashyM->Add<TriggerVolume>();
 			JumpBehaviour::Sptr behaviour = trashyM->Add<JumpBehaviour>();
+		}
+		
+
+		Texture2D::Sptr planeTex = ResourceManager::CreateAsset<Texture2D>("textures/L3P0.png");
+		// We'll create a mesh that is a simple plane that we can resize later
+		MeshResource::Sptr planeMesh = ResourceManager::CreateAsset<MeshResource>();
+		planeMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(1.0f)));
+		planeMesh->GenerateMesh();
+		Material::Sptr planeMaterial = ResourceManager::CreateAsset<Material>(); {
+			planeMaterial->Name = "Plane";
+			planeMaterial->MatShader = scene->BaseShader;
+			planeMaterial->Texture = planeTex;
+			planeMaterial->Shininess = 1.0f;
+		}
+
+
+		// Set up all our sample objects
+		GameObject::Sptr plane = scene->CreateGameObject("Plane");
+		{
+			// Scale up the plane
+			plane->SetScale(glm::vec3(10.0F, 26.10f, 10.0f));
+			plane->SetRotation(glm::vec3(28.0f, 0.0f, -2.0f));
+			plane->SetPostion(glm::vec3(-1.97f, -2.9f, -1.88f));
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
+			renderer->SetMesh(planeMesh);
+			renderer->SetMaterial(planeMaterial);
+
+			// Attach a plane collider that extends infinitely along the X/Y axis
+			RigidBody::Sptr physics = plane->Add<RigidBody>(/*static by default*/);
+			BoxCollider::Sptr box = BoxCollider::Create(glm::vec3(0.401f, 2.03f, 1.99f));
+			box->SetRotation(glm::vec3(0.0f, 90.0f, 0.0f));
+			box->SetPosition(glm::vec3(0.0f, 1.89f, 0.0f));
+			box->SetScale(glm::vec3(0.31f, 5.27f, 2.65f));
+
+			//box->SetScale(glm::vec3(10.f, 10.0f, 10.f));
+			physics->AddCollider(box);
 		}
 
 
@@ -456,6 +497,11 @@ int main() {
 
 	//fetch resources
 	GameObject::Sptr trashyM = scene->FindObjectByName("Trashy");
+	//limit rotation
+	trashyM->Get<RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
+	trashyM->Get<RigidBody>()->SetLinearDamping(0.9f);
+	//trashyM->Get<RigidBody>()->SetAngularDamping(0.8f);
+	//trashyM->Get<RigidBody>()->damp
 	///// Game loop /////
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
