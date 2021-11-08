@@ -415,7 +415,9 @@ int main() {
 			RigidBody::Sptr physics = trashyM->Add<RigidBody>(RigidBodyType::Dynamic);
 			BoxCollider::Sptr box = BoxCollider::Create(glm::vec3(1.51f, 2.68f, 0.831f));
 			
-			box->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+			box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+			box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
 			//physics->AddCollider(BoxCollider::Create());
 			//physics->SetMass(0.0f);
@@ -443,8 +445,8 @@ int main() {
 		{
 			// Scale up the plane
 			plane->SetScale(glm::vec3(10.0F, 26.10f, 10.0f));
-			plane->SetRotation(glm::vec3(28.0f, 0.0f, -2.0f));
-			plane->SetPostion(glm::vec3(-1.97f, -2.9f, -1.88f));
+			plane->SetRotation(glm::vec3(-1.0f, -1.0f, -1.0f));
+			plane->SetPostion(glm::vec3(-2.25f, 26.f, 10.f));
 
 			// Create and attach a RenderComponent to the object to draw our mesh
 			RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
@@ -453,15 +455,14 @@ int main() {
 
 			// Attach a plane collider that extends infinitely along the X/Y axis
 			RigidBody::Sptr physics = plane->Add<RigidBody>(/*static by default*/);
-			BoxCollider::Sptr box = BoxCollider::Create(glm::vec3(0.401f, 2.03f, 1.99f));
-			box->SetRotation(glm::vec3(0.0f, 90.0f, 0.0f));
+			BoxCollider::Sptr box = BoxCollider::Create(/*glm::vec3(0.401f, 2.03f, 1.99f)*/);
+			box->SetRotation(glm::vec3(-89.750f, 117.0f, 89.0f));
 			box->SetPosition(glm::vec3(0.0f, 1.89f, 0.0f));
-			box->SetScale(glm::vec3(0.31f, 5.27f, 2.65f));
+			box->SetScale(glm::vec3(0.010f, 11.97f, 4.430f));
 
 			//box->SetScale(glm::vec3(10.f, 10.0f, 10.f));
 			physics->AddCollider(box);
 		}
-
 
 		// Save the asset manifest for all the resources we just loaded
 		ResourceManager::SaveManifest("manifest.json");
