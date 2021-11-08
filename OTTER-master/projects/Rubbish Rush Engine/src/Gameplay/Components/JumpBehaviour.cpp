@@ -37,12 +37,15 @@ JumpBehaviour::Sptr JumpBehaviour::FromJson(const nlohmann::json& blob) {
 
 void JumpBehaviour::Update(float deltaTime) {
 	bool pressed = glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_SPACE);
+	timer += deltaTime;
 	if (pressed) {
-		if (_isPressed == false) {
+		if (_isPressed == false && timer >= cooldownTime) {
 			_body->ApplyImpulse(glm::vec3(0.0f, 0.0f, _impulse));
+			timer = 0.0f;
 		}
 		_isPressed = pressed;
-	} else {
+	} 
+	else{
 		_isPressed = false;
 	}
 }

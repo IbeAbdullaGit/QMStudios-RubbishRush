@@ -24,7 +24,8 @@ public:
 
 protected:
 	float _impulse;
-
+	float cooldownTime = 1.f;
+	float timer = cooldownTime;
 	bool _isPressed = false;
 	Gameplay::Physics::RigidBody::Sptr _body;
 };
