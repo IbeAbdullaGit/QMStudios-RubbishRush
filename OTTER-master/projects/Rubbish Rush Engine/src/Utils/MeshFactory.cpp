@@ -38,7 +38,7 @@ MeshBuilderParam MeshBuilderParam::CreateUVSphere(const glm::vec3& center, const
 	return result;
 }
 
-MeshBuilderParam MeshBuilderParam::CreatePlane(const glm::vec3& pos, const glm::vec3& normal, const glm::vec3& tangent, const glm::vec2& scale, const glm::vec4& col /*= glm::vec4(1.0f)*/) {
+MeshBuilderParam MeshBuilderParam::CreatePlane(const glm::vec3& pos, const glm::vec3& normal, const glm::vec3& tangent, const glm::vec2& scale, const glm::vec2& uvScale, const glm::vec4& col /*= glm::vec4(1.0f)*/) {
 	MeshBuilderParam result;
 	result.Type = MeshBuilderType::Plane;
 	result.Color = col;
@@ -46,6 +46,7 @@ MeshBuilderParam MeshBuilderParam::CreatePlane(const glm::vec3& pos, const glm::
 	result.Params["normal"] = normal;
 	result.Params["tangent"] = tangent;
 	result.Params["scale"] = glm::vec3(scale, 0.0f);
+	result.Params["uv_scale"] = glm::vec3(uvScale, 1.0f);
 	return result;
 }
 

@@ -249,7 +249,7 @@ void keyboard(RigidBody::Sptr& body) {
 		{
 			movZ = 3;
 		}
-		body->SetLinearVelocity(glm::vec3(0.0f, 1.0f, 0.0f) * movZ);
+		body->SetLinearVelocity(glm::vec3(0.0f, -1.0f, 0.0f) * movZ);
 	}
 	else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
@@ -258,7 +258,7 @@ void keyboard(RigidBody::Sptr& body) {
 		{
 			movZ = 3;
 		}
-		body->SetLinearVelocity(glm::vec3(0.0f, -1.0f, 0.0f) * movZ);
+		body->SetLinearVelocity(glm::vec3(0.0f, 1.0f, 0.0f) * movZ);
 	}
 	else
 	{
@@ -364,14 +364,14 @@ int main() {
 		// Create some lights for our scene
 		scene->Lights.resize(3);
 		scene->Lights[0].Position = glm::vec3(0.0f, 8.50f, 3.0f);
-		scene->Lights[0].Color = glm::vec3(0.5f, 0.0f, 0.7f);
+		scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
 		scene->Lights[0].Range = 10.0f;
 
 		scene->Lights[1].Position = glm::vec3(1.0f, 5.0f, 3.0f);
-		scene->Lights[1].Color = glm::vec3(0.2f, 0.8f, 0.1f);
+		scene->Lights[1].Color = glm::vec3(1.0f, 1.0f, 1.1f);
 
 		scene->Lights[2].Position = glm::vec3(0.0f, 1.0f, 3.0f);
-		scene->Lights[2].Color = glm::vec3(1.0f, 0.2f, 0.1f);
+		scene->Lights[2].Color = glm::vec3(1.0f, 1.0f, 1.0f);
 
 		
 		// Set up the scene's camera
@@ -439,30 +439,49 @@ int main() {
 			planeMaterial->Shininess = 1.0f;
 		}
 
-
 		// Set up all our sample objects
 		GameObject::Sptr plane = scene->CreateGameObject("Plane");
 		{
-			// Scale up the plane
-			plane->SetScale(glm::vec3(10.0F, 26.10f, 10.0f));
-			plane->SetRotation(glm::vec3(-1.0f, -1.0f, -1.0f));
-			plane->SetPostion(glm::vec3(-2.25f, 26.f, 10.f));
+			plane->SetRotation(glm::vec3(9.0f, 0.0f, 0.0f));
+			// Make a big tiled mesh
+			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
+			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(100.0f), glm::vec2(20.0f)));
+			tiledMesh->GenerateMesh();
+			
 
 			// Create and attach a RenderComponent to the object to draw our mesh
 			RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
-			renderer->SetMesh(planeMesh);
+			renderer->SetMesh(tiledMesh);
 			renderer->SetMaterial(planeMaterial);
 
 			// Attach a plane collider that extends infinitely along the X/Y axis
-			RigidBody::Sptr physics = plane->Add<RigidBody>(/*static by default*/);
-			BoxCollider::Sptr box = BoxCollider::Create(/*glm::vec3(0.401f, 2.03f, 1.99f)*/);
-			box->SetRotation(glm::vec3(-89.750f, 117.0f, 89.0f));
-			box->SetPosition(glm::vec3(0.0f, 1.89f, 0.0f));
-			box->SetScale(glm::vec3(0.010f, 11.97f, 4.430f));
-
-			//box->SetScale(glm::vec3(10.f, 10.0f, 10.f));
-			physics->AddCollider(box);
+			RigidBody::Sptr physics = plane->Add<RigidBody>(RigidBodyType::Kinematic);
+			physics->AddCollider(BoxCollider::Create(glm::vec3(50.0f, 50.0f, 1.0f)))->SetPosition({ 0,0,-1 });
 		}
+
+		//// Set up all our sample objects
+		//GameObject::Sptr plane = scene->CreateGameObject("Plane");
+		//{
+		//	// Scale up the plane
+		//	plane->SetScale(glm::vec3(10.0F, 26.10f, 10.0f));
+		//	plane->SetRotation(glm::vec3(40.0f, -1.0f, -1.0f));
+		//	plane->SetPostion(glm::vec3(-2.25f, -0.82f, -1.880f));
+
+		//	// Create and attach a RenderComponent to the object to draw our mesh
+		//	RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
+		//	renderer->SetMesh(planeMesh);
+		//	renderer->SetMaterial(planeMaterial);
+
+		//	// Attach a plane collider that extends infinitely along the X/Y axis
+		//	RigidBody::Sptr physics = plane->Add<RigidBody>(Kinematic);
+		//	BoxCollider::Sptr box = BoxCollider::Create(/*glm::vec3(0.401f, 2.03f, 1.99f)*/);
+		//	box->SetRotation(glm::vec3(-89.750f, 117.0f, 89.0f));
+		//	box->SetPosition(glm::vec3(0.75f, 1.89f, 0.0f));
+		//	box->SetScale(glm::vec3(0.010f, 11.97f, 4.430f));
+
+		//	//box->SetScale(glm::vec3(10.f, 10.0f, 10.f));
+		//	physics->AddCollider(box);
+		//}
 
 		// Save the asset manifest for all the resources we just loaded
 		ResourceManager::SaveManifest("manifest.json");
@@ -611,11 +630,15 @@ int main() {
 		//movement update
 		keyboard(trashyM->Get<RigidBody>());
 
+
 		// Perform updates for all components
 		scene->Update(dt);
 
 		// Grab shorthands to the camera and shader from the scene
 		Camera::Sptr camera = scene->MainCamera;
+		
+		camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
+		camera->GetGameObject()->SetPostion(trashyM->GetPosition()+ glm::vec3(0.0f, 4.00f, 5.73f));
 
 		// Cache the camera's viewprojection
 		glm::mat4 viewProj = camera->GetViewProjection();

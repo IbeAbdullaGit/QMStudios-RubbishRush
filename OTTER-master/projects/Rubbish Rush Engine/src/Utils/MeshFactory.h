@@ -31,7 +31,7 @@ struct MeshBuilderParam {
 	static MeshBuilderParam CreateIcoSphere(const glm::vec3& center, const glm::vec3& radii, int tessellation = 0, const glm::vec4& col = glm::vec4(1.0f));
 	static MeshBuilderParam CreateUVSphere(const glm::vec3& center, float radius, int tessellation = 0, const glm::vec4& col = glm::vec4(1.0f));
 	static MeshBuilderParam CreateUVSphere(const glm::vec3& center, const glm::vec3& radii, int tessellation = 0, const glm::vec4& col = glm::vec4(1.0f));
-	static MeshBuilderParam CreatePlane(const glm::vec3& pos, const glm::vec3& normal, const glm::vec3& tangent, const glm::vec2& scale, const glm::vec4& col = glm::vec4(1.0f));
+	static MeshBuilderParam CreatePlane(const glm::vec3& pos, const glm::vec3& normal, const glm::vec3& tangent, const glm::vec2& scale, const glm::vec2& uvScale = glm::vec2(1.0f), const glm::vec4& col = glm::vec4(1.0f));
 
 	static MeshBuilderParam FromJson(const nlohmann::json& blob);
 	nlohmann::json   ToJson() const;
