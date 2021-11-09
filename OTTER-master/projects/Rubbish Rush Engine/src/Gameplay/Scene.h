@@ -162,7 +162,7 @@ namespace Gameplay {
 		GameObject::Sptr GetObjectByIndex(int index) const;
 
 		int brick_count;
-		int score;
+		int trash;
 		bool need_update = false;
 		//std::vector<GameObject::Sptr> getBricks();
 		//void addBricks(GameObject::Sptr b);

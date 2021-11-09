@@ -55,6 +55,7 @@
 #include "Gameplay/Components/MaterialSwapBehaviour.h"
 #include "Gameplay/Components/TriggerVolumeEnterBehaviour.h"
 #include "Gameplay/Components/DeleteObjectBehaviour.h"
+#include "Gameplay/Components/CollectTrashBehaviour.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -107,8 +108,6 @@ glm::ivec2 windowSize = glm::ivec2(800, 800);
 std::string windowTitle = "RubbishRush";
 
 
-//PLAYER SCORE
-int score = 0;
 
 // using namespace should generally be avoided, and if used, make sure it's ONLY in cpp files
 using namespace Gameplay;
@@ -222,8 +221,6 @@ GLfloat movZ = 0.0f;
 
 void keyboard(RigidBody::Sptr& body) {
 
-	
-	
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
 		movX += 1.0f;
@@ -331,6 +328,7 @@ int main() {
 	ComponentManager::RegisterType<MaterialSwapBehaviour>();
 	ComponentManager::RegisterType<TriggerVolumeEnterBehaviour>();
 	ComponentManager::RegisterType<DeleteObjectBehaviour>();
+	ComponentManager::RegisterType<CollectTrashBehaviour>();
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
@@ -423,7 +421,14 @@ int main() {
 			//physics->SetMass(0.0f);
 			//add trigger for collisions and behaviours
 			TriggerVolume::Sptr volume = trashyM->Add<TriggerVolume>();
+			BoxCollider::Sptr box2 = BoxCollider::Create(glm::vec3(1.51f, 2.68f, 0.831f));
+
+			box2->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box2->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+			box2->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			volume->AddCollider(box2);
 			JumpBehaviour::Sptr behaviour = trashyM->Add<JumpBehaviour>();
+			//CollectTrashBehaviour::Sptr behaviour2 = trashyM->Add<CollectTrashBehaviour>();
 		}
 		
 
@@ -458,6 +463,45 @@ int main() {
 			RigidBody::Sptr physics = plane->Add<RigidBody>(RigidBodyType::Kinematic);
 			physics->AddCollider(BoxCollider::Create(glm::vec3(50.0f, 50.0f, 1.0f)))->SetPosition({ 0,0,-1 });
 		}
+		//placeholder trash object
+		//setup trash
+		MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<MeshResource>("plant.obj");
+		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/planttex.png");
+		// Create our material
+		Material::Sptr trashMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			trashMaterial->Name = "Trash";
+			trashMaterial->MatShader = scene->BaseShader;
+			trashMaterial->Texture = trashTex;
+			trashMaterial->Shininess = 1.0f;
+
+		}
+		GameObject::Sptr trashM = scene->CreateGameObject("Trash");
+		{
+			trashM->SetPostion(glm::vec3(-1.5f, -2.0f, 2.0f));
+			//trashM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+			// Add a render component
+			RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
+			renderer->SetMesh(trashMesh);
+			renderer->SetMaterial(trashMaterial);
+			// Add a dynamic rigid body to this monkey
+			RigidBody::Sptr physics = trashM->Add<RigidBody>(RigidBodyType::Dynamic);
+			BoxCollider::Sptr box = BoxCollider::Create();
+			box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			TriggerVolume::Sptr volume = trashM->Add<TriggerVolume>();
+			BoxCollider::Sptr box2 = BoxCollider::Create();
+			box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			volume->AddCollider(box2);
+			CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
+		}
 
 		//// Set up all our sample objects
 		//GameObject::Sptr plane = scene->CreateGameObject("Plane");
@@ -490,7 +534,7 @@ int main() {
 		scene->brick_count = 0;
 	}
 	//our score
-	scene->score = 0;
+	scene->trash = 0;
 
 
 	// Call scene awake to start up all of our components
@@ -638,7 +682,8 @@ int main() {
 		Camera::Sptr camera = scene->MainCamera;
 		
 		camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
-		camera->GetGameObject()->SetPostion(trashyM->GetPosition()+ glm::vec3(0.0f, 4.00f, 5.73f));
+		camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.73f));
+		
 
 		// Cache the camera's viewprojection
 		glm::mat4 viewProj = camera->GetViewProjection();
