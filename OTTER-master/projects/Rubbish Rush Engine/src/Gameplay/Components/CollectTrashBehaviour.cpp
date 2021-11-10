@@ -17,6 +17,7 @@ CollectTrashBehaviour::~CollectTrashBehaviour() = default;
 void CollectTrashBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) {
 	//press e to collect, and only collide with trash
 	if (body->GetGameObject()->Name == "Trashy" && glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E)) {
+		
 		//get our scene, delete this line later
 		_scene = GetGameObject()->GetScene();
 		//delete trash from scene

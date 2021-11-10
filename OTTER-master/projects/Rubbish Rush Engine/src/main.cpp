@@ -56,6 +56,7 @@
 #include "Gameplay/Components/TriggerVolumeEnterBehaviour.h"
 #include "Gameplay/Components/DeleteObjectBehaviour.h"
 #include "Gameplay/Components/CollectTrashBehaviour.h"
+#include "Gameplay/Components/SubmittingTrashBehaviour.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -329,6 +330,7 @@ int main() {
 	ComponentManager::RegisterType<TriggerVolumeEnterBehaviour>();
 	ComponentManager::RegisterType<DeleteObjectBehaviour>();
 	ComponentManager::RegisterType<CollectTrashBehaviour>();
+	ComponentManager::RegisterType<SubmittingTrashBehaviour>();
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
@@ -502,6 +504,44 @@ int main() {
 			volume->AddCollider(box2);
 			CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
 		}
+		//bin model
+		MeshResource::Sptr binMesh = ResourceManager::CreateAsset<MeshResource>("Big_Bin2.obj");
+		Texture2D::Sptr binTex = ResourceManager::CreateAsset<Texture2D>("textures/big_bintex2.png");
+		// Create our material
+		Material::Sptr binMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			binMaterial->Name = "Bin";
+			binMaterial->MatShader = scene->BaseShader;
+			binMaterial->Texture = binTex;
+			binMaterial->Shininess = 1.0f;
+
+		}
+		GameObject::Sptr binM = scene->CreateGameObject("Bin");
+		{
+			binM->SetPostion(glm::vec3(-1.5f, 2.0f, 2.0f));
+			binM->SetRotation(glm::vec3(90.0f, -36.0f, 90.0f));
+			binM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+			// Add a render component
+			RenderComponent::Sptr renderer = binM->Add<RenderComponent>();
+			renderer->SetMesh(binMesh);
+			renderer->SetMaterial(binMaterial);
+			// Add a dynamic rigid body to this monkey
+			RigidBody::Sptr physics = binM->Add<RigidBody>(RigidBodyType::Dynamic);
+			BoxCollider::Sptr box = BoxCollider::Create(glm::vec3(2.0f, 2.23f, 4.25f));
+			box->SetPosition(glm::vec3(0.0f, 0.4f, 0.0f));
+			box->SetScale(glm::vec3(0.25f, 0.22f, 0.2f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//heavy
+			//physics->SetMass(10.0f);
+			TriggerVolume::Sptr volume = binM->Add<TriggerVolume>();
+			BoxCollider::Sptr box2 = BoxCollider::Create(glm::vec3(2.0f, 2.23f, 4.25f));
+			box2->SetPosition(glm::vec3(0.0f, 0.4f, 0.0f));
+			box2->SetScale(glm::vec3(0.25f, 0.22f, 0.2f));
+			volume->AddCollider(box2);
+			SubmittingTrashBehaviour::Sptr behaviour2 = binM->Add<SubmittingTrashBehaviour>();
+			
+		}
 
 		//// Set up all our sample objects
 		//GameObject::Sptr plane = scene->CreateGameObject("Plane");
@@ -566,6 +606,9 @@ int main() {
 	trashyM->Get<RigidBody>()->SetLinearDamping(0.9f);
 	//trashyM->Get<RigidBody>()->SetAngularDamping(0.8f);
 	//trashyM->Get<RigidBody>()->damp
+	
+	//limit pos of the bin??
+
 	///// Game loop /////
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
