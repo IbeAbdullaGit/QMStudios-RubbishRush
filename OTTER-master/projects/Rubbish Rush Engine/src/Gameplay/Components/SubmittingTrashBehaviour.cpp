@@ -16,33 +16,54 @@ SubmittingTrashBehaviour::~SubmittingTrashBehaviour() = default;
 
 void SubmittingTrashBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>&body) {
 	//press e to collect, and only collide with trash
-	if (body->GetGameObject()->Name == "Trashy"  && glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_Q)) {
-		//get our scene, delete this line later
-		_scene = GetGameObject()->GetScene();
-		//do we have any trash
-		if (_scene->trash >= 1)
-		{
-			_scene->trash -= 1;
-			//update UI
+	if (body->GetGameObject()->Name == "Trashy"/*glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_Q)*/) {
+		////get our scene, delete this line later
+		//_scene = GetGameObject()->GetScene();
+		////do we have any trash
+		//if (_scene->trash >= 1)
+		//{
+		//	_scene->trash -= 1;
+		//	//update UI
 
-			std::cout << "Submitted trash!\n";
-		}
-		else
-		{
-			std::cout << "No trash to submit!\n";
-		}
+		//	std::cout << "Submitted trash!\n";
+		//}
+		//else
+		//{
+		//	std::cout << "No trash to submit!\n";
+		//}
+		activated = true;
 
 	}
 	LOG_INFO("Entered trigger: {}", body->GetGameObject()->Name);
 }
 
-void SubmittingTrashBehaviour::OnLeavingTrigger(const Gameplay::Physics::TriggerVolume::Sptr & trigger) {
+void SubmittingTrashBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) {
 
-	LOG_INFO("Left trigger: {}", trigger->GetGameObject()->Name);
+	LOG_INFO("Left trigger: {}", body->GetGameObject()->Name);
+	activated = false;
 }
 void SubmittingTrashBehaviour::Update(float deltatime)
 {
-	
+	if (activated)
+	{
+		if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_Q))
+		{
+			//get our scene, delete this line later
+			_scene = GetGameObject()->GetScene();
+			//do we have any trash
+			if (_scene->trash >= 1)
+			{
+				_scene->trash -= 1;
+				//update UI
+
+				std::cout << "Submitted trash!\n";
+			}
+			else
+			{
+				std::cout << "No trash to submit!\n";
+			}
+		}
+	}
 }
 
 void SubmittingTrashBehaviour::Awake() {

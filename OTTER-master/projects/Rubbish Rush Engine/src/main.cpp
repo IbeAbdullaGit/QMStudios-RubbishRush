@@ -480,7 +480,7 @@ int main() {
 		}
 		GameObject::Sptr trashM = scene->CreateGameObject("Trash");
 		{
-			trashM->SetPostion(glm::vec3(-1.5f, -2.0f, 2.0f));
+			trashM->SetPostion(glm::vec3(-1.5f, -2.0f, 0.34f));
 			//trashM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 			trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
@@ -488,7 +488,7 @@ int main() {
 			renderer->SetMesh(trashMesh);
 			renderer->SetMaterial(trashMaterial);
 			// Add a dynamic rigid body to this monkey
-			RigidBody::Sptr physics = trashM->Add<RigidBody>(RigidBodyType::Dynamic);
+			RigidBody::Sptr physics = trashM->Add<RigidBody>(RigidBodyType::Kinematic);
 			BoxCollider::Sptr box = BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
 			box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
@@ -518,7 +518,7 @@ int main() {
 		}
 		GameObject::Sptr binM = scene->CreateGameObject("Bin");
 		{
-			binM->SetPostion(glm::vec3(-1.5f, 2.0f, 2.0f));
+			binM->SetPostion(glm::vec3(-1.5f, 2.0f, 0.76f));
 			binM->SetRotation(glm::vec3(90.0f, -36.0f, 90.0f));
 			binM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
@@ -526,7 +526,7 @@ int main() {
 			renderer->SetMesh(binMesh);
 			renderer->SetMaterial(binMaterial);
 			// Add a dynamic rigid body to this monkey
-			RigidBody::Sptr physics = binM->Add<RigidBody>(RigidBodyType::Dynamic);
+			RigidBody::Sptr physics = binM->Add<RigidBody>(RigidBodyType::Kinematic);
 			BoxCollider::Sptr box = BoxCollider::Create(glm::vec3(2.0f, 2.23f, 4.25f));
 			box->SetPosition(glm::vec3(0.0f, 0.4f, 0.0f));
 			box->SetScale(glm::vec3(0.25f, 0.22f, 0.2f));
@@ -601,11 +601,14 @@ int main() {
 
 	//fetch resources
 	GameObject::Sptr trashyM = scene->FindObjectByName("Trashy");
+	GameObject::Sptr binM = scene->FindObjectByName("Bin");
 	//limit rotation
 	trashyM->Get<RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
 	trashyM->Get<RigidBody>()->SetLinearDamping(0.9f);
 	//trashyM->Get<RigidBody>()->SetAngularDamping(0.8f);
 	//trashyM->Get<RigidBody>()->damp
+	//binM->Get<RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
+	//binM->Get<RigidBody>()->SetLinearDamping(1.0f);
 	
 	//limit pos of the bin??
 
