@@ -57,6 +57,7 @@
 #include "Gameplay/Components/DeleteObjectBehaviour.h"
 #include "Gameplay/Components/CollectTrashBehaviour.h"
 #include "Gameplay/Components/SubmittingTrashBehaviour.h"
+#include "Gameplay/Components/PlayerMovementBehavior.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -220,59 +221,59 @@ bool DrawLightImGui(const Scene::Sptr& scene, const char* title, int ix) {
 GLfloat movX = 0.0f;
 GLfloat movZ = 0.0f;
 
-void keyboard(RigidBody::Sptr& body) {
-
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-	{
-		movX += 1.0f;
-		if (movX > 3)
-		{
-			movX = 3;
-		}
-		body->SetLinearVelocity(glm::vec3(1.0f, 0.0f, 0.0f) * movX);
-	}
-	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-	{
-		movX += 1.0f;
-		if (movX > 3)
-		{
-			movX = 3;
-		}
-		body->SetLinearVelocity(glm::vec3(-1.0f, 0.0f, 0.0f) * movX);
-	}
-	else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-	{
-		movZ += 1.0f;
-		if (movZ > 3)
-		{
-			movZ = 3;
-		}
-		body->SetLinearVelocity(glm::vec3(0.0f, -1.0f, 0.0f) * movZ);
-	}
-	else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-	{
-		movZ += 1.0f;
-		if (movZ > 3)
-		{
-			movZ = 3;
-		}
-		body->SetLinearVelocity(glm::vec3(0.0f, 1.0f, 0.0f) * movZ);
-	}
-	else
-	{
-		if (movX > 0)
-		{
-			movX -= 1; //second slope
-		}
-		if (movZ > 0)
-		{
-			movZ -= 1; //second slope
-		}
-	}
-
-	
-	
-}
+//void keyboard(RigidBody::Sptr& body) {
+//
+//	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+//	{
+//		movX += 1.0f;
+//		if (movX > 3)
+//		{
+//			movX = 3;
+//		}
+//		body->SetLinearVelocity(glm::vec3(1.0f, 0.0f, 0.0f) * movX);
+//	}
+//	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+//	{
+//		movX += 1.0f;
+//		if (movX > 3)
+//		{
+//			movX = 3;
+//		}
+//		body->SetLinearVelocity(glm::vec3(-1.0f, 0.0f, 0.0f) * movX);
+//	}
+//	else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+//	{
+//		movZ += 1.0f;
+//		if (movZ > 3)
+//		{
+//			movZ = 3;
+//		}
+//		body->SetLinearVelocity(glm::vec3(0.0f, -1.0f, 0.0f) * movZ);
+//	}
+//	else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+//	{
+//		movZ += 1.0f;
+//		if (movZ > 3)
+//		{
+//			movZ = 3;
+//		}
+//		body->SetLinearVelocity(glm::vec3(0.0f, 1.0f, 0.0f) * movZ);
+//	}
+//	else
+//	{
+//		if (movX > 0)
+//		{
+//			movX -= 1; //second slope
+//		}
+//		if (movZ > 0)
+//		{
+//			movZ -= 1; //second slope
+//		}
+//	}
+//
+//	
+//	
+//}
 
 
 //RenderObject createBrick(glm::vec3 pos)
@@ -331,6 +332,7 @@ int main() {
 	ComponentManager::RegisterType<DeleteObjectBehaviour>();
 	ComponentManager::RegisterType<CollectTrashBehaviour>();
 	ComponentManager::RegisterType<SubmittingTrashBehaviour>();
+	ComponentManager::RegisterType<PlayerMovementBehavior>();
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
@@ -431,6 +433,8 @@ int main() {
 			volume->AddCollider(box2);
 			JumpBehaviour::Sptr behaviour = trashyM->Add<JumpBehaviour>();
 			//CollectTrashBehaviour::Sptr behaviour2 = trashyM->Add<CollectTrashBehaviour>();
+
+			PlayerMovementBehavior::Sptr movement = trashyM->Add<PlayerMovementBehavior>();
 		}
 		
 
@@ -503,6 +507,7 @@ int main() {
 			box2->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
 			volume->AddCollider(box2);
 			CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
+
 		}
 		//bin model
 		MeshResource::Sptr binMesh = ResourceManager::CreateAsset<MeshResource>("Big_Bin2.obj");
@@ -718,22 +723,22 @@ int main() {
 			ImGui::Separator();
 		}
 		//movement update
-		keyboard(trashyM->Get<RigidBody>());
-
-
-		// Perform updates for all components
-		scene->Update(dt);
+		//keyboard(trashyM->Get<RigidBody>());
 
 		// Grab shorthands to the camera and shader from the scene
 		Camera::Sptr camera = scene->MainCamera;
-		
+
+		camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
 		camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
-		camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.73f));
-		
 
 		// Cache the camera's viewprojection
 		glm::mat4 viewProj = camera->GetViewProjection();
 		DebugDrawer::Get().SetViewProjection(viewProj);
+
+
+		// Perform updates for all components
+		scene->Update(dt);
+		
 
 		// Update our worlds physics!
 		scene->DoPhysics(dt);
