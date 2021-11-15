@@ -480,8 +480,8 @@ int main() {
 		}
 		GameObject::Sptr trashM = scene->CreateGameObject("Trash");
 		{
-			trashM->SetPostion(glm::vec3(-1.5f, -2.0f, 0.34f));
-			//trashM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			trashM->SetPostion(glm::vec3(-1.5f, -2.0f, -0.16f));
+			trashM->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
 			trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
 			RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();

@@ -46,7 +46,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 {
 	if (activated)
 	{
-		if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_Q))
+		if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E))
 		{
 			//get our scene, delete this line later
 			_scene = GetGameObject()->GetScene();
