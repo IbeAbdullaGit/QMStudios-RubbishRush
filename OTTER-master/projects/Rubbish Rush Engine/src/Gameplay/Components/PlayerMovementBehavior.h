@@ -22,8 +22,12 @@ public:
 	virtual nlohmann::json ToJson() const override;
 	static PlayerMovementBehavior::Sptr FromJson(const nlohmann::json& blob);
 
-protected:
-	float _impulse;
+	void SetSpill(bool state);
 
+	
+protected:
+	
+	float _impulse;
+	bool in_spill = false;
 	Gameplay::Physics::RigidBody::Sptr _body;
 };

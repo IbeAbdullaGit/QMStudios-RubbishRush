@@ -134,6 +134,8 @@ namespace Gameplay::Physics {
 
 		void SetLinearVelocity(const glm::vec3 &value);
 
+		//glm::vec3 GetForward();
+
 		void SetAngularFactor(const glm::vec3& value);
 
 		// Inherited from IComponent

@@ -21,7 +21,7 @@ void PlayerMovementBehavior::RenderImGui() {
 
 nlohmann::json PlayerMovementBehavior::ToJson() const {
 	return {
-		{ "impulse", _impulse }
+		{ "impulse", _impulse }, {"spill_state", in_spill}
 	};
 }
 
@@ -35,10 +35,26 @@ PlayerMovementBehavior::~PlayerMovementBehavior() = default;
 PlayerMovementBehavior::Sptr PlayerMovementBehavior::FromJson(const nlohmann::json & blob) {
 	PlayerMovementBehavior::Sptr result = std::make_shared<PlayerMovementBehavior>();
 	result->_impulse = blob["impulse"];
+	result->in_spill = blob["spill_state"];
 	return result;
 }
 
+void PlayerMovementBehavior::SetSpill(bool state)
+{
+	in_spill = state;
+}
+
 void PlayerMovementBehavior::Update(float deltaTime) {
+
+
+	if (in_spill)
+	{
+		_impulse = 0.05f;
+	}
+	else
+	{
+		_impulse = 0.1f;
+	}
 
 	//IF SPACE PRESSED = MOVE
 	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_W)) {

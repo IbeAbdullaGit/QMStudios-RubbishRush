@@ -58,6 +58,8 @@
 #include "Gameplay/Components/CollectTrashBehaviour.h"
 #include "Gameplay/Components/SubmittingTrashBehaviour.h"
 #include "Gameplay/Components/PlayerMovementBehavior.h"
+#include "Gameplay/Components/ConveyorBeltBehaviour.h"
+#include "Gameplay/Components/SpillBehaviour.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -333,6 +335,8 @@ int main() {
 	ComponentManager::RegisterType<CollectTrashBehaviour>();
 	ComponentManager::RegisterType<SubmittingTrashBehaviour>();
 	ComponentManager::RegisterType<PlayerMovementBehavior>();
+	ComponentManager::RegisterType<ConveyorBeltBehaviour>();
+	ComponentManager::RegisterType<SpillBehaviour>();
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
@@ -508,6 +512,45 @@ int main() {
 			volume->AddCollider(box2);
 			CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
 
+		}
+		//spill object
+		MeshResource::Sptr spillMesh = ResourceManager::CreateAsset<MeshResource>("spill.obj");
+		Texture2D::Sptr spillTex = ResourceManager::CreateAsset<Texture2D>("textures/goo.png");
+		// Create our material
+		Material::Sptr spillMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			spillMaterial->Name = "Spill";
+			spillMaterial->MatShader = scene->BaseShader;
+			spillMaterial->Texture = spillTex;
+			spillMaterial->Shininess = 1.0f;
+
+		}
+		GameObject::Sptr spillM = scene->CreateGameObject("Spill");
+		{
+			spillM->SetPostion(glm::vec3(-0.09f, -2.88f, -0.45f));
+			spillM->SetRotation(glm::vec3(100.0f, 0.0f, 0.0f));
+			spillM->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spillM->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			RigidBody::Sptr physics = spillM->Add<RigidBody>(RigidBodyType::Kinematic);
+			BoxCollider::Sptr box = BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			TriggerVolume::Sptr volume = spillM->Add<TriggerVolume>();
+			BoxCollider::Sptr box2 = BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spillM->Add<SpillBehaviour>();
+			
 		}
 		//bin model
 		MeshResource::Sptr binMesh = ResourceManager::CreateAsset<MeshResource>("Big_Bin2.obj");
