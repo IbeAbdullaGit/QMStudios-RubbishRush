@@ -67,6 +67,8 @@ namespace Gameplay {
 		void UpdateScale(std::vector<glm::vec3> points, std::vector<glm::vec3> points2, float deltaTime);
 		void UpdateCAT(std::vector<glm::vec3> points, float deltaTima);
 
+		void SetDirty(bool val);
+
 		/// <summary>
 		/// Invoked when the rigidbody attached to this game object (if any) enters
 		/// a trigger volume for the first time

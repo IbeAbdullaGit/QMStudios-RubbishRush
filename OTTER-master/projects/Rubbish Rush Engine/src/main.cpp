@@ -710,6 +710,7 @@ int main() {
 	pointsR2.push_back(glm::vec3(90.0f, 0.0f, 90.0f));
 	
 	float timeLoop = 7.0f;
+	bool playMenu = true;
 	///// Game loop /////
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -721,7 +722,7 @@ int main() {
 
 
 		//MENU ANIMATED UPDATED
-		if (scene->IsPlaying && !timerDone)
+		if (scene->IsPlaying && !timerDone && playMenu)
 		{
 			if (timeLoop > 0) {
 				timerDone = false;
@@ -746,8 +747,10 @@ int main() {
 					TrashyE->UpdateScale(pointsS, pointsR, dt);
 				}
 			}
+			//FREEZE TRASHY
+			trashyM->Get<RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
 		}
-		else if (scene->IsPlaying && timerDone)
+		else if (scene->IsPlaying && timerDone && playMenu)
 		{
 			if (TrashyE->GetPosition().x < 0.5f)
 			{
@@ -760,6 +763,15 @@ int main() {
 				{
 					RectangleE->UpdateLerp(pointsPos, dt);
 				}
+			}
+			//FREEZE TRASHY
+			//trashyM->Get<RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
+			if (TrashyE->GetPosition().x >= 0.5f && RectangleE->GetPosition().z >= 7.0f)
+			{
+				playMenu = false;
+				scene->DeleteGameObject(TrashyE);
+				scene->DeleteGameObject(RectangleE);
+				//trashyM->SetDirty(true);
 			}
 		}
 		// Showcasing how to use the imGui library!
