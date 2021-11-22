@@ -70,6 +70,7 @@
 #include "Gameplay/Physics/TriggerVolume.h"
 #include "Graphics/DebugDraw.h"
 
+#include "CPathAnimator.h"
 //#define LOG_GL_NOTIFICATIONS
 
 /*
@@ -345,6 +346,8 @@ int main() {
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
 	bool loadScene = false;
+	bool isPressed = false;
+	bool timerDone = false;
 	// For now we can use a toggle to generate our scene vs load from file
 	if (loadScene) {
 		ResourceManager::LoadManifest("Brick Brea-manifest.json");
@@ -590,31 +593,53 @@ int main() {
 			SubmittingTrashBehaviour::Sptr behaviour2 = binM->Add<SubmittingTrashBehaviour>();
 			
 		}
+		//rectangle and trashy images for menu
+		MeshResource::Sptr recMesh = ResourceManager::CreateAsset<MeshResource>("RecOBJ.obj");
+		Texture2D::Sptr recTex = ResourceManager::CreateAsset<Texture2D>("textures/Rec1.png");
+		// Create our material
+		Material::Sptr recMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			recMaterial->Name = "Rec";
+			recMaterial->MatShader = scene->BaseShader;
+			recMaterial->Texture = recTex;
+			recMaterial->Shininess = 1.0f;
 
-		//// Set up all our sample objects
-		//GameObject::Sptr plane = scene->CreateGameObject("Plane");
-		//{
-		//	// Scale up the plane
-		//	plane->SetScale(glm::vec3(10.0F, 26.10f, 10.0f));
-		//	plane->SetRotation(glm::vec3(40.0f, -1.0f, -1.0f));
-		//	plane->SetPostion(glm::vec3(-2.25f, -0.82f, -1.880f));
+		}
+		GameObject::Sptr recE = scene->CreateGameObject("Rec");
+		{
+			recE->SetPostion(glm::vec3(-1.36f, 1.22f, 7.0f));
+			recE->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+			recE->SetScale(glm::vec3(1.0f, 5.64f, 3.46f));
+			// Add a render component
+			RenderComponent::Sptr renderer = recE->Add<RenderComponent>();
+			renderer->SetMesh(recMesh);
+			renderer->SetMaterial(recMaterial);
+			//RigidBody::Sptr physics = recE->Add<RigidBody>(RigidBodyType::Kinematic);
+			
+		}
+		MeshResource::Sptr trashyEMesh = ResourceManager::CreateAsset<MeshResource>("trashy2OBJ.obj");
+		Texture2D::Sptr trashyETex = ResourceManager::CreateAsset<Texture2D>("textures/Trashy2.png");
+		// Create our material
+		Material::Sptr trashyEMaterial = ResourceManager::CreateAsset<Material>();
+		{
+			trashyEMaterial->Name = "trashyE";
+			trashyEMaterial->MatShader = scene->BaseShader;
+			trashyEMaterial->Texture = trashyETex;
+			trashyEMaterial->Shininess = 1.0f;
 
-		//	// Create and attach a RenderComponent to the object to draw our mesh
-		//	RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
-		//	renderer->SetMesh(planeMesh);
-		//	renderer->SetMaterial(planeMaterial);
-
-		//	// Attach a plane collider that extends infinitely along the X/Y axis
-		//	RigidBody::Sptr physics = plane->Add<RigidBody>(Kinematic);
-		//	BoxCollider::Sptr box = BoxCollider::Create(/*glm::vec3(0.401f, 2.03f, 1.99f)*/);
-		//	box->SetRotation(glm::vec3(-89.750f, 117.0f, 89.0f));
-		//	box->SetPosition(glm::vec3(0.75f, 1.89f, 0.0f));
-		//	box->SetScale(glm::vec3(0.010f, 11.97f, 4.430f));
-
-		//	//box->SetScale(glm::vec3(10.f, 10.0f, 10.f));
-		//	physics->AddCollider(box);
-		//}
-
+		}
+		GameObject::Sptr trashyE = scene->CreateGameObject("TrashyE");
+		{
+			trashyE->SetPostion(glm::vec3(0.5f, 1.49f, 3.3f));
+			trashyE->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+			trashyE->SetScale(glm::vec3(1.0f, 1.46f, 1.090f));
+			// Add a render component
+			RenderComponent::Sptr renderer = trashyE->Add<RenderComponent>();
+			renderer->SetMesh(trashyEMesh);
+			renderer->SetMaterial(trashyEMaterial);
+			//RigidBody::Sptr physics = trashyE->Add<RigidBody>(RigidBodyType::Kinematic);
+			
+		}
 		// Save the asset manifest for all the resources we just loaded
 		ResourceManager::SaveManifest("manifest.json");
 		// Save the scene to a JSON file
@@ -650,16 +675,41 @@ int main() {
 	//fetch resources
 	GameObject::Sptr trashyM = scene->FindObjectByName("Trashy");
 	GameObject::Sptr binM = scene->FindObjectByName("Bin");
+	GameObject::Sptr RectangleE = scene->FindObjectByName("Rec");
+	GameObject::Sptr TrashyE = scene->FindObjectByName("TrashyE");
 	//limit rotation
 	trashyM->Get<RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
 	trashyM->Get<RigidBody>()->SetLinearDamping(0.9f);
-	//trashyM->Get<RigidBody>()->SetAngularDamping(0.8f);
-	//trashyM->Get<RigidBody>()->damp
-	//binM->Get<RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
-	//binM->Get<RigidBody>()->SetLinearDamping(1.0f);
 	
 	//limit pos of the bin??
 
+	//create points we need for lerping
+	std::vector<glm::vec3> pointsPos;
+	pointsPos.push_back(glm::vec3(-1.36f, 1.22f, 7.1f));
+	pointsPos.push_back(glm::vec3(-1.36f, 1.22f, 3.27f));
+
+	std::vector<glm::vec3> pointsPos2;
+	pointsPos2.push_back(glm::vec3(0.5f, 1.49f, 3.29f));
+	pointsPos2.push_back(glm::vec3(0.0f, 1.49f, 3.29f));
+	pointsPos2.push_back(glm::vec3(-0.5f, 1.49f, 3.29f));
+	pointsPos2.push_back(glm::vec3(-1.0f, 1.49f, 3.29f));
+	pointsPos2.push_back(glm::vec3(-1.18f, 1.49f, 3.29f));
+
+	std::vector<glm::vec3> pointsS;
+	pointsS.push_back(glm::vec3(1.0f, 0.8f, 0.8f));
+	pointsS.push_back(glm::vec3(1.0f, 1.8f, 1.4f));
+	std::vector<glm::vec3> pointsR;
+	pointsR.push_back(glm::vec3(62.0f, 0.0f, 90.0f));
+	pointsR.push_back(glm::vec3(100.0f, 0.0f, 90.0f));
+
+	std::vector<glm::vec3> pointsS2;
+	pointsS2.push_back(glm::vec3(1.0f, 1.46f, 1.0f));
+	pointsS2.push_back(glm::vec3(1.0f, 1.0f, 0.4f));
+	std::vector<glm::vec3> pointsR2;
+	pointsR2.push_back(glm::vec3(90.0f, 0.0f, 90.0f));
+	pointsR2.push_back(glm::vec3(90.0f, 0.0f, 90.0f));
+	
+	float timeLoop = 7.0f;
 	///// Game loop /////
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -669,6 +719,49 @@ int main() {
 		double thisFrame = glfwGetTime();
 		float dt = static_cast<float>(thisFrame - lastFrame);
 
+
+		//MENU ANIMATED UPDATED
+		if (scene->IsPlaying && !timerDone)
+		{
+			if (timeLoop > 0) {
+				timerDone = false;
+				timeLoop -= dt;
+			}
+			else {
+				timerDone = true;
+			}
+
+			if (RectangleE->GetPosition().z > 3.3f)
+			{
+				RectangleE->UpdateLerp(pointsPos, dt);
+			}
+			else
+			{
+				if (TrashyE->GetPosition().x >= -1.22f)
+				{
+					TrashyE->UpdateCAT(pointsPos2, dt);
+				}
+				else
+				{
+					TrashyE->UpdateScale(pointsS, pointsR, dt);
+				}
+			}
+		}
+		else if (scene->IsPlaying && timerDone)
+		{
+			if (TrashyE->GetPosition().x < 0.5f)
+			{
+				TrashyE->UpdateCAT(pointsPos2, dt);
+				TrashyE->UpdateScale(pointsS2, pointsR2, dt);
+			}
+			else
+			{
+				if (RectangleE->GetPosition().z < 7.0f)
+				{
+					RectangleE->UpdateLerp(pointsPos, dt);
+				}
+			}
+		}
 		// Showcasing how to use the imGui library!
 		bool isDebugWindowOpen = ImGui::Begin("Debugging");
 		if (isDebugWindowOpen)
@@ -777,7 +870,6 @@ int main() {
 		// Cache the camera's viewprojection
 		glm::mat4 viewProj = camera->GetViewProjection();
 		DebugDrawer::Get().SetViewProjection(viewProj);
-
 
 		// Perform updates for all components
 		scene->Update(dt);

@@ -12,6 +12,9 @@
 #include "Gameplay/Components/IComponent.h"
 #include "Gameplay/Components/ComponentManager.h"
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 namespace Gameplay {
 // Predeclaration for Scene
 	class Scene;
@@ -37,6 +40,32 @@ namespace Gameplay {
 		/// Rotates this object to look at the given point in world coordinates
 		/// </summary>
 		void LookAt(const glm::vec3& point);
+
+		// LERP function
+		template<typename T>
+		static T LERP(const T& p0, const T& p1, float t)
+		{
+			//adjust for ease-in and ease-out
+			t = (sin(t - M_PI / 2) + 1) / 2;
+			return (1.0f - t) * p0 + t * p1;
+		}
+		//2nd LERP function
+		template<typename T>
+		static T LERPLINEAR(const T& p0, const T& p1, float t)
+		{
+			return (1.0f - t) * p0 + t * p1;
+		}
+		//catmull rom spline function
+		template<typename T>
+		static T CatmullRomm(const T& p0, const T& p1, const T& p2, const T& p3, float t)
+		{
+			return 0.5f * (2.f * p1 + t * (-p0 + p2)
+				+ t * t * (2.f * p0 - 5.f * p1 + 4.f * p2 - p3)
+				+ t * t * t * (-p0 + 3.f * p1 - 3.f * p2 + p3));
+		}
+		void UpdateLerp(std::vector<glm::vec3> points, float deltaTime);
+		void UpdateScale(std::vector<glm::vec3> points, std::vector<glm::vec3> points2, float deltaTime);
+		void UpdateCAT(std::vector<glm::vec3> points, float deltaTima);
 
 		/// <summary>
 		/// Invoked when the rigidbody attached to this game object (if any) enters
@@ -201,6 +230,15 @@ namespace Gameplay {
 
 	private:
 		friend class Scene;
+
+		//lerp variables
+		float m_segmentIndex = 0;
+		float m_segmentTimer = 0.0f;
+		float m_segmentTravelTime = 1.0f;
+
+		float m_segmentIndex2 = 0;
+		float m_segmentTimer2 = 0.0f;
+
 
 		// Rotation of the object as a quaternion
 		glm::quat _rotation;
