@@ -64,6 +64,16 @@ void ImGuiHelper::Cleanup() {
 	}
 }
 
+bool ImGuiHelper::WarningButton(const char* text, const ImVec2& size) {
+	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.6f, 0.6f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
+
+	bool result = ImGui::Button(text, size);
+	ImGui::PopStyleColor(3);
+	return result;
+}
+
 void ImGuiHelper::StartFrame() {
 	LOG_ASSERT(_window != nullptr, "You must initialize ImGuiHelper before use!");
 

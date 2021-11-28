@@ -5,7 +5,8 @@
 #include "Gameplay/Components/Camera.h"
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Light.h"
-#include "Physics/BulletDebugDraw.h"
+#include "Physics/BulletDebugDraw.h"\
+#include "Graphics/UniformBuffer.h"
 
 struct GLFWwindow;
 
@@ -55,6 +56,12 @@ namespace Gameplay {
 		/// <param name="name">The name of the gameobject to create</param>
 		/// <returns>A new gameobject with the given name</returns>
 		GameObject::Sptr CreateGameObject(const std::string& name);
+
+		/// <summary>
+		/// Queues a game object for deletion at the call of the next Update function
+		/// </summary>
+		/// <param name="object">The gameobject to delete</param>
+		void RemoveGameObject(const GameObject::Sptr& object);
 
 		/// <summary>
 		/// Searches all objects in the scene and returns the first

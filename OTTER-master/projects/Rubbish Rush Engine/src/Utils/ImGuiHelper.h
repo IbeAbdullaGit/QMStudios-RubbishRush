@@ -20,6 +20,14 @@ public:
 	static void Cleanup();
 
 	/// <summary>
+	/// Presents a red button with the given text, and with an optional size
+	/// </summary>
+	/// <param name="text">The text on the button</param>
+	/// <param name="size">The optional size of the button</param>
+	/// <returns>True if the button was pressed, false if otherwise</returns>
+	static bool WarningButton(const char* text, const ImVec2& size = ImVec2(0, 0));
+
+	/// <summary>
 	/// Notifies ImGui that a new frame has begun
 	/// Call at start of render loop
 	/// </summary>

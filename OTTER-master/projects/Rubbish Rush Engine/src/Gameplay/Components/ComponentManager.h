@@ -13,6 +13,7 @@ namespace Gameplay {
 	class ComponentManager {
 	public:
 		typedef std::function<IComponent::Sptr(const nlohmann::json&)> LoadComponentFunc;
+		typedef std::function<IComponent::Sptr()> CreateComponentFunc;
 
 		/// <summary>
 		/// Loads a component with the given type name from a JSON blob
@@ -46,6 +47,75 @@ namespace Gameplay {
 			}
 			return nullptr;
 		}
+
+
+		/// <summary>
+		/// Creates a component with the given type name
+		/// If the type name does not correspond to a registered type, will
+		/// return nullptr
+		/// </summary>
+		/// <param name="typeName">The name of the type to load (taken from GetComponentTypeName of component)</param>
+		/// <returns>A new component of the given type, or nullptr</returns>
+		static inline IComponent::Sptr Create(const std::string& typeName) {
+			// Try and get the type index from the name
+			std::optional<std::type_index> typeIndex = _TypeNameMap[typeName];
+
+			// If we have a value for type index, this component type was registered!
+			if (typeIndex.has_value()) {
+				// Get the load callback and make sure it exists
+				CreateComponentFunc callback = _TypeCreateRegistry[typeIndex.value()];
+				if (callback) {
+					// Invoke the loader, also load additional component data
+					IComponent::Sptr result = callback();
+					// Make sure the component knows it's own type
+					result->_realType = typeIndex.value();
+					result->_weakSelfPtr = result;
+					// Add the component to the global pools
+					_Components[result->_realType].push_back(result);
+					return result;
+				}
+			}
+			return nullptr;
+		}
+
+		/// <summary>
+		/// Creates a component with the given type name
+		/// If the type name does not correspond to a registered type, will
+		/// return nullptr
+		/// </summary>
+		/// <param name="typeName">The name of the type to load (taken from GetComponentTypeName of component)</param>
+		/// <returns>A new component of the given type, or nullptr</returns>
+		static inline IComponent::Sptr Create(const std::type_index& type) {
+			// Try and get the type index from the name
+			LOG_ASSERT(_TypeLoadRegistry[type] != nullptr, "You must register component types before creating them!");
+
+			// Get the load callback and make sure it exists
+			CreateComponentFunc callback = _TypeCreateRegistry[type];
+			if (callback) {
+				// Invoke the loader, also load additional component data
+				IComponent::Sptr result = callback();
+				// Make sure the component knows it's own type
+				result->_realType = type;
+				result->_weakSelfPtr = result;
+				// Add the component to the global pools
+				_Components[result->_realType].push_back(result);
+				return result;
+			}
+			return nullptr;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="callback"></param>
+		static inline void EachType(std::function<void(const std::string& typeName, std::type_index type)> callback) {
+			for (auto& [name, type] : _TypeNameMap) {
+				if (type.has_value()) {
+					callback(name, type.value());
+				}
+			}
+		}
+
 
 		/// <summary>
 		/// Creates a new component and adds it to the global component pools
@@ -156,6 +226,7 @@ namespace Gameplay {
 				// Store the loading function in the registry, as well as the
 				// name to type index mapping
 				_TypeLoadRegistry[type] = &ComponentManager::ParseTypeFromBlob<T>;
+				_TypeCreateRegistry[type] = &ComponentManager::Create<T>;
 				_TypeNameMap[StringTools::SanitizeClassName(typeid(T).name())] = type;
 			}
 		}
@@ -170,6 +241,8 @@ namespace Gameplay {
 		inline static std::unordered_map<std::string, std::optional<std::type_index>> _TypeNameMap;
 		// Stores functions to load components from JSON, indexed on the type that they load
 		inline static std::unordered_map<std::type_index, LoadComponentFunc> _TypeLoadRegistry;
+		// Stores functions to load components from JSON, indexed on the type that they load
+		inline static std::unordered_map<std::type_index, CreateComponentFunc> _TypeCreateRegistry;
 
 		// Weak pointers let us store a reference to an object stored by a shared pointer, without
 		// actually increasing the reference count. Thus components will be destroyed at the correct

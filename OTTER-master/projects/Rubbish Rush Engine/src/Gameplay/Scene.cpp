@@ -7,6 +7,7 @@
 
 #include "Gameplay/Physics/RigidBody.h"
 #include "Gameplay/Physics/TriggerVolume.h"
+#include "Gameplay/MeshResource.h"
 
 #include "Graphics/DebugDraw.h"
 #include <algorithm>
@@ -44,6 +45,10 @@ namespace Gameplay {
 		result->_scene = this;
 		Objects.push_back(result);
 		return result;
+	}
+
+	void Scene::RemoveGameObject(const GameObject::Sptr& object) {
+		_deletionQueue.push_back(object);
 	}
 
 	GameObject::Sptr Scene::FindObjectByName(const std::string name) {
