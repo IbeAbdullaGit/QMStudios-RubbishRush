@@ -585,6 +585,7 @@ int main() {
 			physics->AddCollider(box);
 			//heavy
 			//physics->SetMass(10.0f);
+			
 			TriggerVolume::Sptr volume = binM->Add<TriggerVolume>();
 			BoxCollider::Sptr box2 = BoxCollider::Create(glm::vec3(2.0f, 2.23f, 4.25f));
 			box2->SetPosition(glm::vec3(0.0f, 0.4f, 0.0f));
@@ -612,6 +613,7 @@ int main() {
 			recE->SetScale(glm::vec3(1.0f, 5.64f, 3.46f));
 			// Add a render component
 			RenderComponent::Sptr renderer = recE->Add<RenderComponent>();
+			
 			renderer->SetMesh(recMesh);
 			renderer->SetMaterial(recMaterial);
 			//RigidBody::Sptr physics = recE->Add<RigidBody>(RigidBodyType::Kinematic);
@@ -710,6 +712,7 @@ int main() {
 	pointsR2.push_back(glm::vec3(90.0f, 0.0f, 90.0f));
 	
 	float timeLoop = 7.0f;
+	bool playMenu = true;
 	///// Game loop /////
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
@@ -721,7 +724,7 @@ int main() {
 
 
 		//MENU ANIMATED UPDATED
-		if (scene->IsPlaying && !timerDone)
+		if (scene->IsPlaying && !timerDone && playMenu)
 		{
 			if (timeLoop > 0) {
 				timerDone = false;
@@ -746,8 +749,14 @@ int main() {
 					TrashyE->UpdateScale(pointsS, pointsR, dt);
 				}
 			}
+			//FREEZE TRASHY
+			if (trashyM->GetPosition().z < 1.0f)
+			{
+				trashyM->Get<RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
+			}
+			//trashyM->Get<RigidBody>()->SetMass(0.0f);
 		}
-		else if (scene->IsPlaying && timerDone)
+		else if (scene->IsPlaying && timerDone && playMenu)
 		{
 			if (TrashyE->GetPosition().x < 0.5f)
 			{
@@ -760,6 +769,27 @@ int main() {
 				{
 					RectangleE->UpdateLerp(pointsPos, dt);
 				}
+			}
+			//FREEZE TRASHY
+			if (trashyM->GetPosition().z < 1.0f)
+			{
+				trashyM->Get<RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
+			}
+			//FREEZE TRASHY
+			//trashyM->Get<RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
+			if (TrashyE->GetPosition().x >= 0.4f && RectangleE->GetPosition().z >= 6.9f)
+			{
+				TrashyE->SetPostionZ(-10.0f);
+				RectangleE->SetPostionZ(-10.0f);
+				TrashyE->SetDirty(true);
+				RectangleE->SetDirty(true);
+				//TrashyE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(TrashyE->GUID));
+				//RectangleE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(RectangleE->GUID));
+				scene->DeleteGameObject(TrashyE);
+				scene->DeleteGameObject(RectangleE);
+				std::cout << "should be deleted\n";
+				playMenu = false;
+				//trashyM->SetDirty(true);
 			}
 		}
 		// Showcasing how to use the imGui library!

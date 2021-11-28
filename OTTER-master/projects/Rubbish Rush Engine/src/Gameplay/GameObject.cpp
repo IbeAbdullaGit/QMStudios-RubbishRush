@@ -168,6 +168,11 @@ namespace Gameplay {
 		_isTransformDirty = true;
 	}
 
+	void GameObject::SetDirty(bool val)
+	{
+		_isTransformDirty = val;
+	}
+
 
 	void GameObject::OnEnteredTrigger(const std::shared_ptr<Physics::TriggerVolume>& trigger) {
 		for (auto& component : _components) {
