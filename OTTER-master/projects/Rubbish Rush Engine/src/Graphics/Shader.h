@@ -7,14 +7,17 @@
 #include <GLM/gtc/type_ptr.hpp> // for glm::value_ptr
 #include <Logging.h>            // for the logging functions
 #include <EnumToString.h>
-
 #include "Utils/ResourceManager/IResource.h"
+#include "Graphics/GlEnums.h"
 
 // We can use an enum to make our code more readable and restrict
 // values to only ones we want to accept
 ENUM(ShaderPartType, GLenum,
 	Vertex = GL_VERTEX_SHADER,
 	Fragment = GL_FRAGMENT_SHADER,
+	TessControl = GL_TESS_CONTROL_SHADER,
+	TessEval = GL_TESS_EVALUATION_SHADER,
+	Geometry = GL_GEOMETRY_SHADER,
 	Unknown = GL_NONE // Usually good practice to have an "unknown" or "none" state for enums
 );
 
@@ -37,8 +40,39 @@ public:
 	Shader& operator=(const Shader& other) = delete;
 	Shader& operator=(Shader&& other) = delete;
 
-	virtual nlohmann::json ToJson() const override;
-	static Shader::Sptr FromJson(const nlohmann::json& data);
+	
+
+public:
+	// Stores information about a uniform in the shader
+	struct UniformInfo {
+		ShaderDataType Type;
+		int            ArraySize;
+		int            Location;
+		std::string    Name;
+
+		UniformInfo() :
+			Type(ShaderDataType::None),
+			ArraySize(0),
+			Location(-1),
+			Name("") {}
+	};
+
+	/// <summary>
+	/// Stores information about uniform blocks in the shader
+	/// Uniform blocks are structures of data which we can feed
+	/// directly from our application, as well as letting us share
+	/// buffers of uniforms between shader programs
+	/// </summary>
+	struct UniformBlockInfo {
+		std::string Name;
+		int         DefaultBinding;
+		int         CurrentBinding;
+		int         BlockIndex;
+		int         SizeInBytes;
+		int         NumVariables;
+
+		std::vector<UniformInfo> SubUniforms;
+	};
 
 public:
 	/// <summary>
@@ -85,7 +119,12 @@ public:
 	/// </summary>
 	GLuint GetHandle() const { return _handle; }
 
+	virtual nlohmann::json ToJson() const override;
+	static Shader::Sptr FromJson(const nlohmann::json& data);
+
 public:
+	bool FindUniform(const std::string& name, UniformInfo* out);
+
 	void SetUniformMatrix(int location, const glm::mat3* value, int count = 1, bool transposed = false);
 	void SetUniformMatrix(int location, const glm::mat4* value, int count = 1, bool transposed = false);
 	void SetUniform(int location, const float* value, int count = 1);
@@ -101,12 +140,32 @@ public:
 	void SetUniform(int location, const glm::bvec3* value, int count = 1);
 	void SetUniform(int location, const glm::bvec4* value, int count = 1);
 
+	/// <summary>
+	/// Sets a uniform based on a shader data type, can be used by our materials class
+	/// </summary>
+	/// <param name="location">The uniform location</param>
+	/// <param name="type">The type of the uniform</param>
+	/// <param name="data">A pointer to the data to upload</param>
+	/// <param name="count">The size of the uniform array, in elements</param>
+	/// <param name="transposed"True if matrices should be transposed</param>
+	void SetUniform(int location, ShaderDataType type, void* data, int count = 1, bool transposed = false);
+
 	template <typename T>
 	void SetUniform(const std::string& name, const T& value) {
 		int location = __GetUniformLocation(name);
 		if (location != -1) {
 			SetUniform(location, &value, 1);
 		} else {
+			LOG_WARN("Ignoring uniform \"{}\"", name);
+		}
+	}
+	template <typename T>
+	void SetUniform(const std::string& name, const T* values, int count = 1) {
+		int location = __GetUniformLocation(name);
+		if (location != -1) {
+			SetUniform(location, &values, count);
+		}
+		else {
 			LOG_WARN("Ignoring uniform \"{}\"", name);
 		}
 	}
@@ -120,6 +179,8 @@ public:
 		}
 	}
 
+	void BindUniformBlockToSlot(const std::string& name, int uboSlot);
+
 protected:
 	// Stores the vertex and fragment shader handles
 	GLuint _vs;
@@ -127,6 +188,15 @@ protected:
 
 	// Stores the shader program handle
 	GLuint _handle;
+
+	// Stores all the handles to our shaders until we
+	// are ready to compile them into a program
+	std::unordered_map<ShaderPartType, int> _handles;
+
+	// Map access to look up uniform locations and blocks
+	std::unordered_map<std::string, UniformInfo> _uniforms;
+	std::unordered_map<std::string, UniformBlockInfo> _uniformBlocks;
+
 
 	// Stores information about the source of our shader parts
 	// EX: if a VS shader is loaded from a file, will contain
@@ -136,6 +206,21 @@ protected:
 		bool        IsFilePath;
 	};
 	std::unordered_map<ShaderPartType, ShaderSource> _fileSourceMap;
+
+	/// <summary>
+	/// Performs program introspection, where we examine the uniforms that
+	/// the program contains
+	/// </summary>
+	void _Introspect();
+	/// <summary>
+	/// Introspects uniforms which are not part of uniform blocks
+	/// </summary>
+	void _IntrospectUniforms();
+	/// <summary>
+	/// Introspects uniform blocks, which are structures that can be
+	/// fed data from a uniform buffer
+	/// </summary>
+	void _IntrospectUnifromBlocks();
 
 	// Map and access to look up uniform locations
 	std::unordered_map<std::string, int> _uniformLocs;

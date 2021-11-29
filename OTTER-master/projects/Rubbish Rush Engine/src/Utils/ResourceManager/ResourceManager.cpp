@@ -43,7 +43,7 @@ void ResourceManager::SaveManifest(const std::string& path) {
 			_manifest[StringTools::SanitizeClassName(type.name())][guid.str()]["guid"] = res->GetGUID().str();
 		}
 	}
-	FileHelpers::WriteContentsToFile(path, _manifest.dump(1,'\t'));
+	FileHelpers::WriteContentsToFile(path, _manifest.dump(1, '\t'));
 }
 
 void ResourceManager::Cleanup() {

@@ -87,6 +87,31 @@ public:
 	}
 
 	/// <summary>
+	/// Iterates over all resources of the given type and invokes a method with them
+	/// </summary>
+	/// <typeparam name="ResourceType">The type of resource to iterate on</typeparam>
+	/// <param name="callback">The callback to invoke with the components</param>
+	/// <param name="includeDisabled">True to include disabled components, false if otherwise</param>
+	template <
+		typename ResourceType,
+		typename = typename std::enable_if<std::is_base_of<IResource, ResourceType>::value>::type>
+		static void Each(std::function<void(const std::shared_ptr<ResourceType>&)> callback, bool includeDisabled = false) {
+
+		// We can use typeid and type_index to get a unique ID for our types
+		std::type_index type = std::type_index(typeid(ResourceType));
+
+		// Iterate over all the resources in the store
+		for (auto& [key, value] : _resources[type]) {
+			// If the pointer is alive and matches our enabled criteria, invoke the callback
+			if (value != nullptr) {
+				// Upcast to resource type and invoke the callback
+				callback(std::dynamic_pointer_cast<ResourceType>(value));
+			}
+		}
+	}
+
+	
+	/// <summary>
 	/// Gets the current JSON manifest
 	/// </summary>
 	static const nlohmann::json& GetManifest();

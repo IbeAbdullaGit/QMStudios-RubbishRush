@@ -10,12 +10,13 @@
 /// <summary>
 /// Represent the type of object added by a MeshBuilderParam
 /// </summary>
-ENUM(MeshBuilderType, int, 
-	 Unknown  = 0,
-	 Plane    = 1,
-	 Cube     = 2,
-	 IcoShere = 3,
-	 UvSphere = 4
+ENUM(MeshBuilderType, int,
+	Unknown = 0,
+	Plane = 1,
+	Cube = 2,
+	IcoShere = 3,
+	UvSphere = 4,
+	FaceInvert = 5
 );
 
 /// <summary>
@@ -32,6 +33,7 @@ struct MeshBuilderParam {
 	static MeshBuilderParam CreateUVSphere(const glm::vec3& center, float radius, int tessellation = 0, const glm::vec4& col = glm::vec4(1.0f));
 	static MeshBuilderParam CreateUVSphere(const glm::vec3& center, const glm::vec3& radii, int tessellation = 0, const glm::vec4& col = glm::vec4(1.0f));
 	static MeshBuilderParam CreatePlane(const glm::vec3& pos, const glm::vec3& normal, const glm::vec3& tangent, const glm::vec2& scale, const glm::vec2& uvScale = glm::vec2(1.0f), const glm::vec4& col = glm::vec4(1.0f));
+	static MeshBuilderParam CreateInvert();
 
 	static MeshBuilderParam FromJson(const nlohmann::json& blob);
 	nlohmann::json   ToJson() const;
@@ -127,8 +129,8 @@ public:
 	/// <param name="scale">The size of the plane, with x being along tangent, and y being along normal X tangent</param>
 	/// <param name="col">The color of the plane</param>
 	template <typename Vertex>
-	static void AddPlane(MeshBuilder<Vertex>& mesh, const glm::vec3& pos, const glm::vec3& normal, const glm::vec3& tangent, const glm::vec2& scale, const glm::vec4& col = glm::vec4(1.0f));
-	
+	static void AddPlane(MeshBuilder<Vertex>& mesh, const glm::vec3& pos, const glm::vec3& normal, const glm::vec3& tangent, const glm::vec2& scale, const glm::vec2& uvScale = glm::vec2(1.0f), const glm::vec4& col = glm::vec4(1.0f));
+
 	/// <summary>
 	/// Adds a MeshBuilderParam instance to the given mesh
 	/// </summary>
@@ -138,12 +140,27 @@ public:
 	template <typename Vertex>
 	static void AddParameterized(MeshBuilder<Vertex>& mesh, const MeshBuilderParam& param);
 
-protected:	
+	/// <summary>
+	/// Manipulates a MeshBuilder by inverting all faces in the mesh
+	/// </summary>
+	/// <typeparam name="Vertex">The type of vertex the mesh consists of</typeparam>
+	/// <param name="mesh">The mesh to manipulate</param>
+	template <typename Vertex>
+	static void InvertFaces(MeshBuilder<Vertex>& mesh);
+
+	/// <summary>
+	/// Calculates the tangents and bitangents from the normal and UV coords
+	/// </summary>
+	/// <typeparam name="Vertex">The type of vertex the mesh consists of</typeparam>
+	/// <param name="mesh">The mesh to manipulate</param>
+	template <typename Vertex>
+	static void CalculateTBN(MeshBuilder<Vertex>& mesh);
+
+protected:
 	MeshFactory() = default;
 	~MeshFactory() = default;
 
 	inline static const glm::mat4 MAT4_IDENTITY = glm::mat4(1.0f);
 };
-
 
 #include "MeshFactory.inl"

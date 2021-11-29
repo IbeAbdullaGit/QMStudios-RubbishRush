@@ -32,21 +32,46 @@ inline glm::quat ParseJsonQuat(const nlohmann::json& blob) {
 	result.w = blob["w"].get<float>();
 	return result;
 }
+template <int C, typename T>
+inline glm::vec<C, T> ParseJsonVec(const nlohmann::json& blob) {
+	glm::vec<C, T> result;
+	for (int ix = 0; ix < C; ix++) {
+		result[ix] = blob["" + ('x' + ix)].get<T>();
+	}
+	return result;
+}
 
-inline nlohmann::json GlmToJson(const glm::vec2& value) {
+template <int R, int C, typename T>
+inline glm::mat<R, C, T> ParseJsonMat(const nlohmann::json& blob) {
+	glm::mat<R, C, T> result = glm::mat<R, C, T>(1.0f);
+	if (blob.is_array() && blob.size() == R) {
+		for (int ix = 0; ix < R; ix++) {
+			result[ix] = ParseJsonVec<C, T>(blob[ix]);
+		}
+	}
+	else {
+		LOG_WARN("Failed to parse a matrix from JSON, value was not an array of the correct length");
+	}
+	return result;
+}
+
+template <typename T>
+inline nlohmann::json GlmToJson(const glm::vec<2, T>& value) {
 	return {
 		{"x", value.x},
 		{"y", value.y}
 	};
 }
-inline nlohmann::json GlmToJson(const glm::vec3& value) {
+template <typename T>
+inline nlohmann::json GlmToJson(const glm::vec<3, T>& value) {
 	return {
 		{"x", value.x},
 		{"y", value.y},
 		{"z", value.z}
 	};
 }
-inline nlohmann::json GlmToJson(const glm::vec4& value) {
+template <typename T>
+inline nlohmann::json GlmToJson(const glm::vec<4, T>& value) {
 	return {
 		{"x", value.x},
 		{"y", value.y},
@@ -63,11 +88,21 @@ inline nlohmann::json GlmToJson(const glm::quat& value) {
 	};
 }
 
+template <int R, int C, typename T, enum glm::qualifier Q = glm::qualifier::packed_highp>
+inline nlohmann::json GlmToJsonMat(const glm::mat<R, C, T, Q>& mat) {
+	nlohmann::json result = std::vector<nlohmann::json>();
+	for (int ix = 0; ix < R; ix++) {
+		result[ix] = GlmToJson(mat[ix]);
+	}
+	return result;
+}
+
 template <typename T>
 T JsonGet(const nlohmann::json& blob, const std::string& key, const T& defaultRet = T()) {
 	if (blob.find(key) != blob.end()) {
 		return blob[key].get<T>();
-	} else {
+	}
+	else {
 		return defaultRet;
 	}
 }

@@ -31,7 +31,7 @@ std::string FileHelpers::ReadFile(const std::string& filename) {
 	return result;
 }
 
-std::string FileHelpers::ReadResolveIncludes(const std::string& filename) {
+std::string FileHelpers::ReadResolveIncludes(const std::string& filename, std::vector<std::string> resolvedPaths) {
 	// Read the entire file contents for processing
 	std::string result = ReadFile(filename);
 	// Determine where the file we just read resides on the filesystem
@@ -47,14 +47,18 @@ std::string FileHelpers::ReadResolveIncludes(const std::string& filename) {
 	while (seek != std::string::npos) {
 		// Find the end of the line
 		size_t eol = result.find_first_of("\r\n", seek);
-		LOG_ASSERT(eol != std::string::npos, "Syntax error, no eol found after type token");
+		if (eol == std::string::npos) {
+			eol = result.size();
+		}
 
 		// Calculate the area from end of token to end of line, snip out as the path
 		size_t begin = seek + includeTokenLen + 1;
 		std::string path = result.substr(begin, eol - begin);
+
 		// Trim whitespace and any quotes 
 		StringTools::Trim(path);
 		StringTools::Trim(path, '"');
+
 		// Determine the file path
 		std::filesystem::path target;
 		// If it starts with '/', relative to application directory
@@ -65,15 +69,28 @@ std::string FileHelpers::ReadResolveIncludes(const std::string& filename) {
 		else {
 			target = folder / path;
 		}
+		// Get a lexically normal path (ie with the ../ parts resolved)
+		target = target.lexically_normal();
 
-		// Make sure file exists, then load and resolve it's includes
-		LOG_ASSERT(std::filesystem::exists(target), "File does not exist");
-		std::string replacement = FileHelpers::ReadResolveIncludes(target.string());
+		// If we haven't included the file yet, include it now
+		if (std::find(resolvedPaths.begin(), resolvedPaths.end(), target.string()) == resolvedPaths.end()) {
 
-		// Inject result into our string
-		result.replace(seek, eol - seek, replacement);
-		// Look for more includes!
-		seek = result.find(includeToken, seek + replacement.length());
+			// Make sure file exists, then load and resolve it's includes
+			LOG_ASSERT(std::filesystem::exists(target), "File does not exist");
+			std::string replacement = FileHelpers::ReadResolveIncludes(target.string(), resolvedPaths);
+
+			// Inject result into our string
+			result.replace(seek, eol - seek, replacement);
+			// Look for more includes!
+			seek = result.find(includeToken, seek + replacement.length());
+
+			resolvedPaths.push_back(target.string());
+		}
+		// File already included, remove the line and continue seeking
+		else {
+			result.replace(seek, eol - seek, "");
+			seek = result.find(includeToken, eol);
+		}
 	}
 
 	return result;

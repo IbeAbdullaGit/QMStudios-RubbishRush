@@ -50,14 +50,21 @@ MeshBuilderParam MeshBuilderParam::CreatePlane(const glm::vec3& pos, const glm::
 	return result;
 }
 
+MeshBuilderParam MeshBuilderParam::CreateInvert() {
+	MeshBuilderParam result;
+	result.Type = MeshBuilderType::FaceInvert;
+	return result;
+}
+
 MeshBuilderParam MeshBuilderParam::FromJson(const nlohmann::json& blob) {
 	MeshBuilderParam result;
-	result.Type = ParseMeshBuilderType(blob["type"].get<std::string>(), MeshBuilderType::Unknown);
+	result.Type = JsonParseEnum(MeshBuilderType, blob, "type", MeshBuilderType::Unknown);
 	LOG_ASSERT(result.Type != MeshBuilderType::Unknown, "Failed to get type!");
 	result.Color = ParseJsonVec4(blob["color"]);
-	LOG_ASSERT(blob["params"].is_object(), "Parameters not found!");
-	for (auto& [key, value] : blob["params"].items()) {
-		result.Params[key] = ParseJsonVec3(value);
+	if (blob.contains("params") && blob["params"].is_object()) {
+		for (auto& [key, value] : blob["params"].items()) {
+			result.Params[key] = ParseJsonVec3(value);
+		}
 	}
 	return result;
 }

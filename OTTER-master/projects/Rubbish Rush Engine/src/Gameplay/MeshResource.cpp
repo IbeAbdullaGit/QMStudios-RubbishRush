@@ -66,10 +66,11 @@ namespace Gameplay {
 	}
 
 	void MeshResource::GenerateMesh() {
-		MeshBuilder<VertexPosNormTexCol> mesh;
+		MeshBuilder<VertexPosNormTexColTangents> mesh;
 		for (auto& param : MeshBuilderParams) {
 			MeshFactory::AddParameterized(mesh, param);
 		}
+		MeshFactory::CalculateTBN(mesh);
 		Mesh = mesh.Bake();
 	}
 

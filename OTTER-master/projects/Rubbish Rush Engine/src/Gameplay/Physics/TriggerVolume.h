@@ -2,10 +2,18 @@
 #include "Gameplay/Components/IComponent.h"
 #include "Gameplay/Physics/PhysicsBase.h"
 #include "Gameplay/Physics/RigidBody.h"
+#include "EnumToString.h"
 
 class btPairCachingGhostObject;
 
 namespace Gameplay::Physics {
+
+	ENUM_FLAGS(TriggerTypeFlags, int,
+		Dynamics = 0,
+		Statics = 1,
+		Kinematics = 2
+	);
+
 	/// <summary>
 	/// A trigger volume defines a shape in 3D space that allows us to respond to rigid bodies
 	/// entering a volume in 3D space. Handles invoking Trigger events on gameobjects
@@ -31,6 +39,9 @@ namespace Gameplay::Physics {
 		/// <param name="dt">The time in seconds since the last frame</param>
 		virtual void PhysicsPostStep(float dt) override;
 
+		void SetFlags(TriggerTypeFlags flags);
+		TriggerTypeFlags GetFlags() const;
+
 		// Inherited from IComponent
 
 		virtual void Awake() override;
@@ -42,6 +53,7 @@ namespace Gameplay::Physics {
 
 	protected:
 		btPairCachingGhostObject*   _ghost;
+		TriggerTypeFlags            _typeFlags;
 
 		std::vector<std::weak_ptr<RigidBody>> _currentCollisions;
 

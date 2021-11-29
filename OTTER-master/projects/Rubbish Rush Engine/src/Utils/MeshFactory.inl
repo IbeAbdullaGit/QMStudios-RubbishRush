@@ -9,6 +9,7 @@
 #include "Logging.h"
 #include "MeshFactory.h"
 #include "Utils/JsonGlmHelpers.h"
+#include "Graphics/VertexParamMap.h"
 
 #define M_PI 3.14159265359f
 
@@ -22,122 +23,6 @@ struct RGBA_Helper {
 		};
 		uint32_t HexCode;
 	};
-};
-
-/// <summary>
-/// Structure for mapping and setting a Vertex's attribute based on a vertex declaration
-/// </summary>
-struct VertexParamMap {
-	uint32_t PositionOffset;
-	uint32_t NormalOffset;
-	uint32_t TextureOffset;
-	uint32_t ColorOffset;
-	uint32_t ColorSize;
-
-	VertexParamMap() :
-		PositionOffset(-1),
-		NormalOffset(-1),
-		TextureOffset(-1),
-		ColorOffset(-1),
-		ColorSize(0) {}
-	
-	VertexParamMap(const std::vector<BufferAttribute>& vDecl) : VertexParamMap() {
-		// Loop over all the vertex type's attributes
-		for (int ix = 0; ix < vDecl.size(); ix++) {
-			// If the attribute is a float3 position, store it's byte offset
-			if (vDecl[ix].Usage == AttribUsage::Position && vDecl[ix].Size == 3 && vDecl[ix].Type == AttributeType::Float) {
-				PositionOffset = vDecl[ix].Offset;
-			}
-			// If the attribute is a float3 normal, store it's byte offset
-			else if (vDecl[ix].Usage == AttribUsage::Normal && vDecl[ix].Size == 3 && vDecl[ix].Type == AttributeType::Float) {
-				NormalOffset = vDecl[ix].Offset;
-			}
-			// If the attribute is a float2 texture UV, store it's byte offset
-			else if (vDecl[ix].Usage == AttribUsage::Texture && vDecl[ix].Size == 2 && vDecl[ix].Type == AttributeType::Float) {
-				TextureOffset = vDecl[ix].Offset;
-			}
-			// If the attribute is a float2 texture UV, store it's byte offset
-			else if (vDecl[ix].Usage == AttribUsage::Color && vDecl[ix].Type == AttributeType::Float) {
-				ColorOffset = vDecl[ix].Offset;
-				ColorSize   = vDecl[ix].Size;
-			}
-		}
-	}
-
-	template <typename Vertex>
-	void SetPosition(Vertex& vertex, const glm::vec3& value) const {
-		if (PositionOffset != (uint32_t)-1) {
-			memcpy(GetPtrOffset(vertex, PositionOffset), glm::value_ptr(value), sizeof(glm::vec3));
-		}
-	}
-
-	template <typename Vertex>
-	void SetNormal(Vertex& vertex, const glm::vec3& value) const {
-		if (NormalOffset != (uint32_t)-1) {
-			memcpy(GetPtrOffset(vertex, NormalOffset), glm::value_ptr(value), sizeof(glm::vec3));
-		}
-	}
-
-	template <typename Vertex>
-	void SetTexture(Vertex& vertex, const glm::vec2& value) const {
-		if (TextureOffset != (uint32_t)-1) {
-			memcpy(GetPtrOffset(vertex, TextureOffset), glm::value_ptr(value), sizeof(glm::vec2));
-		}
-	}
-
-	template <typename Vertex>
-	void SetColor(Vertex& vertex, const glm::vec4& value) const {
-		if (ColorOffset != (uint32_t)-1) {
-			memcpy(GetPtrOffset(vertex, ColorOffset), glm::value_ptr(value), sizeof(float) * ColorSize);
-		}
-	}
-
-	template <typename Vertex>
-	glm::vec3 GetPosition(Vertex& vertex) const {
-		if (PositionOffset != (uint32_t)-1) {
-			return *GetPtrOffset<Vertex, glm::vec3>(vertex, PositionOffset); 
-		}
-		return glm::vec3(0.0f);
-	}
-
-	template <typename Vertex>
-	glm::vec3 GetNormal(Vertex& vertex) const {
-		if (NormalOffset != (uint32_t)-1) {
-			return *GetPtrOffset<Vertex, glm::vec3>(vertex, NormalOffset);
-		}
-		return glm::vec3(0.0f);
-	}
-
-	template <typename Vertex>
-	glm::vec2 GetTexture(Vertex& vertex) const {
-		if (TextureOffset != (uint32_t)-1) {
-			return *GetPtrOffset<Vertex, glm::vec2>(vertex, TextureOffset);
-		}
-		return glm::vec2(0.0f);
-	}
-
-	template <typename Vertex>
-	glm::vec4 GetColor(Vertex& vertex) const {
-		if (ColorOffset != (uint32_t)-1) {
-			switch (ColorSize) {
-				case 2:
-					return glm::vec4(*GetPtrOffset<Vertex, glm::vec2>(vertex, ColorOffset), 0, 1);
-				case 3:
-					return glm::vec4(*GetPtrOffset<Vertex, glm::vec3>(vertex, ColorOffset), 1);
-				case 4:
-					return *GetPtrOffset<Vertex, glm::vec4>(vertex, ColorOffset);
-			}
-		}
-		return glm::vec4(1.0f);
-	}
-
-private:
-	glm::vec4 _safetyBuffer; // Used to return references to a safe garbage data store
-
-	template <typename Vertex, typename EndType = void>
-	EndType* GetPtrOffset(Vertex& vert, uint32_t offset) const {
-		return reinterpret_cast<EndType*>(reinterpret_cast<uint8_t*>(&vert) + offset);
-	}
 };
 
 /// <summary>
@@ -179,7 +64,8 @@ uint32_t AddMiddlePoint(glm::vec3 scale, glm::vec3 center, uint32_t a, uint32_t 
 	uint64_t key = 0;
 	if (a < b) {
 		key = (static_cast<uint64_t>(a) << 32ul) | static_cast<uint64_t>(b);
-	} else {
+	}
+	else {
 		key = (static_cast<uint64_t>(b) << 32ul) | static_cast<uint64_t>(a);
 	}
 	// Attempt to find the midpoint between those 2 vertices
@@ -205,7 +91,7 @@ uint32_t AddMiddlePoint(glm::vec3 scale, glm::vec3 center, uint32_t a, uint32_t 
 
 		// The normal is just the position
 		vMap.SetNormal(interpolated, pos);
-		
+
 		// Calculate the UV coordinates for the point and store them
 		float u = atan2f(pos.y, pos.x) / (2.0f * M_PI);
 		float v = (asinf(pos.z) / M_PI) + 0.5f;
@@ -316,20 +202,20 @@ void MeshFactory::AddIcoSphere(MeshBuilder<Vertex>& data, const glm::vec3& cente
 
 	float t = (1.0f + sqrtf(5.0f)) / 2.0f;
 
-	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(-1, t, 0),  radii, center, vMap, col));
-	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(1, t, 0),   radii, center, vMap, col));
+	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(-1, t, 0), radii, center, vMap, col));
+	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(1, t, 0), radii, center, vMap, col));
 	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(-1, -t, 0), radii, center, vMap, col));
-	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(1, -t, 0),  radii, center, vMap, col));
+	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(1, -t, 0), radii, center, vMap, col));
 
-	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(0, -1, t),  radii, center, vMap, col));
-	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(0, 1, t),   radii, center, vMap, col));
+	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(0, -1, t), radii, center, vMap, col));
+	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(0, 1, t), radii, center, vMap, col));
 	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(0, -1, -t), radii, center, vMap, col));
-	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(0, 1, -t),  radii, center, vMap, col));
+	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(0, 1, -t), radii, center, vMap, col));
 
-	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(t, 0, -1),  radii, center, vMap, col));
-	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(t, 0, 1),   radii, center, vMap, col));
+	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(t, 0, -1), radii, center, vMap, col));
+	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(t, 0, 1), radii, center, vMap, col));
 	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(-t, 0, -1), radii, center, vMap, col));
-	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(-t, 0, 1),  radii, center, vMap, col));
+	data._vertices.emplace_back(CalculateSphereVert<Vertex>(glm::vec3(-t, 0, 1), radii, center, vMap, col));
 
 	glm::ivec3 iOff = glm::ivec3(indexOffset);
 
@@ -446,7 +332,7 @@ void MeshFactory::AddUvSphere(MeshBuilder<Vertex>& data, const glm::vec3& center
 	}
 	vMap.SetTexture(verts[offset], { 0.5f, 1.0f });
 	vMap.SetTexture(verts[verts.size() - 1], { 0.5f, 0.0f });
-		
+
 	int numIndices = (slices - 1) * slices * 6;
 	data._indices.reserve(data._indices.size() + numIndices);
 
@@ -477,7 +363,7 @@ void MeshFactory::AddUvSphere(MeshBuilder<Vertex>& data, const glm::vec3& center
 
 template <typename Vertex>
 void MeshFactory::AddPlane(MeshBuilder<Vertex>& mesh, const glm::vec3& pos, const glm::vec3& normal,
-	const glm::vec3& tangent, const glm::vec2& scale, const glm::vec4& col)
+	const glm::vec3& tangent, const glm::vec2& scale, const glm::vec2& uvScale, const glm::vec4& col)
 {
 	VertexParamMap vMap = VertexParamMap(Vertex::V_DECL);
 	if (vMap.PositionOffset == -1) {
@@ -497,14 +383,14 @@ void MeshFactory::AddPlane(MeshBuilder<Vertex>& mesh, const glm::vec3& pos, cons
 	};
 
 	glm::vec2 uvs[] = {
-		glm::vec2(0.0f, 0.0f), // 0
-		glm::vec2(0.0f, 1.0f), // 1
-		glm::vec2(1.0f, 1.0f), // 2
-		glm::vec2(1.0f, 0.0f), // 3
+		glm::vec2(0.0f, 0.0f) * uvScale, // 0
+		glm::vec2(0.0f, 1.0f) * uvScale, // 1
+		glm::vec2(1.0f, 1.0f) * uvScale, // 2
+		glm::vec2(1.0f, 0.0f) * uvScale, // 3
 	};
 
 	Vertex verts[4];
-	for(int ix = 0; ix < 4; ix++) {
+	for (int ix = 0; ix < 4; ix++) {
 		vMap.SetPosition(verts[ix], positions[ix]);
 		vMap.SetNormal(verts[ix], nNorm);
 		vMap.SetTexture(verts[ix], uvs[ix]);
@@ -573,7 +459,7 @@ void MeshFactory::AddCube(MeshBuilder<Vertex>& mesh, const glm::mat4& transform,
 
 	uint32_t indices[36];
 
-	#pragma region AddVerts
+#pragma region AddVerts
 
 	mesh.ReserveVertexSpace(24);
 
@@ -589,8 +475,8 @@ void MeshFactory::AddCube(MeshBuilder<Vertex>& mesh, const glm::mat4& transform,
 	indices[7] = mesh.AddVertex(Create<Vertex>(positions[7], normals[5], uvs[3], col, vMap));
 
 	// Left
-	indices[8]  = mesh.AddVertex(Create<Vertex>(positions[0], normals[0], uvs[0], col, vMap));
-	indices[9]  = mesh.AddVertex(Create<Vertex>(positions[4], normals[0], uvs[1], col, vMap));
+	indices[8] = mesh.AddVertex(Create<Vertex>(positions[0], normals[0], uvs[0], col, vMap));
+	indices[9] = mesh.AddVertex(Create<Vertex>(positions[4], normals[0], uvs[1], col, vMap));
 	indices[10] = mesh.AddVertex(Create<Vertex>(positions[6], normals[0], uvs[2], col, vMap));
 	indices[11] = mesh.AddVertex(Create<Vertex>(positions[2], normals[0], uvs[3], col, vMap));
 	// Right
@@ -610,9 +496,9 @@ void MeshFactory::AddCube(MeshBuilder<Vertex>& mesh, const glm::mat4& transform,
 	indices[22] = mesh.AddVertex(Create<Vertex>(positions[4], normals[2], uvs[2], col, vMap));
 	indices[23] = mesh.AddVertex(Create<Vertex>(positions[0], normals[2], uvs[3], col, vMap));
 
-	#pragma endregion
+#pragma endregion
 
-	#pragma region Make Triangles
+#pragma region Make Triangles
 
 	for (int ix = 0; ix < 6; ix++) {
 		size_t o = ix * 4;
@@ -620,26 +506,116 @@ void MeshFactory::AddCube(MeshBuilder<Vertex>& mesh, const glm::mat4& transform,
 		mesh.AddIndexTri(indices[o + 0], indices[o + 2], indices[o + 3]);
 	}
 
-	#pragma endregion
+#pragma endregion
 }
 
 template <typename Vertex>
 void MeshFactory::AddParameterized(MeshBuilder<Vertex>& mesh, const MeshBuilderParam& param) {
 	const std::unordered_map<std::string, glm::vec3>& Params = param.Params;
 	switch (param.Type) {
-		case MeshBuilderType::Plane:
-			MeshFactory::AddPlane(mesh, Params.at("position"), Params.at("normal"), Params.at("tangent"), Params.at("scale"), param.Color);
-			break;
-		case MeshBuilderType::Cube:
-			MeshFactory::AddCube(mesh, Params.at("position"), Params.at("scale"), Params.at("rotation"), param.Color);
-			break;
-		case MeshBuilderType::IcoShere:
-			MeshFactory::AddIcoSphere(mesh, Params.at("position"), Params.at("scale"), Params.at("tessellation").x, param.Color);
-			break;
-		case MeshBuilderType::UvSphere:
-			MeshFactory::AddUvSphere(mesh, Params.at("position"), Params.at("scale"), Params.at("tessellation").x, param.Color);
-			break;
-		default:
-			break;
+	case MeshBuilderType::Plane:
+		MeshFactory::AddPlane(mesh, Params.at("position"), Params.at("normal"), Params.at("tangent"), Params.at("scale"), Params.at("uv_scale"), param.Color);
+		break;
+	case MeshBuilderType::Cube:
+		MeshFactory::AddCube(mesh, Params.at("position"), Params.at("scale"), Params.at("rotation"), param.Color);
+		break;
+	case MeshBuilderType::IcoShere:
+		MeshFactory::AddIcoSphere(mesh, Params.at("position"), Params.at("radius"), Params.at("tessellation").x, param.Color);
+		break;
+	case MeshBuilderType::UvSphere:
+		MeshFactory::AddUvSphere(mesh, Params.at("position"), Params.at("radius"), Params.at("tessellation").x, param.Color);
+		break;
+	case MeshBuilderType::FaceInvert:
+		MeshFactory::InvertFaces(mesh);
+	default:
+		break;
+	}
+}
+
+template <typename Vertex>
+void MeshFactory::InvertFaces(MeshBuilder<Vertex>& mesh)
+{
+	if (mesh.GetIndexCount() > 0) {
+		uint32_t* data = (uint32_t*)mesh.GetIndexDataPtr();
+		for (size_t ix = 0; ix < mesh.GetIndexCount(); ix += 3) {
+			//https://www.geeksforgeeks.org/swap-two-numbers-without-using-temporary-variable/
+			data[ix] = data[ix] + data[ix + 1];
+			data[ix + 1] = data[ix] - data[ix + 1];
+			data[ix] = data[ix] - data[ix + 1];
+		}
+	}
+	else if (mesh.GetVertexCount() > 0) {
+		Vertex* data = (Vertex*)mesh.GetVertexDataPtr();
+		for (size_t ix = 0; ix < mesh.GetVertexCount(); ix += 3) {
+			Vertex temp = data[ix];
+			data[ix] = data[ix + 1];
+			data[ix + 1] = temp;
+		}
+	}
+}
+
+
+template <typename Vertex>
+void MeshFactory::CalculateTBN(MeshBuilder<Vertex>& mesh)
+{
+	VertexParamMap vMap = VertexParamMap(Vertex::V_DECL);
+	if (vMap.TangentOffset == -1 && vMap.BiTangentOffset == -1) {
+		LOG_WARN("Vertex type does not have tangent or bitangent attribute, aborting CalculateTBN");
+		return;
+	}
+	if (vMap.PositionOffset == -1 || vMap.TextureOffset == -1) {
+		LOG_WARN("Vertex type does not required position and texture attributes, aborting CalculateTBN");
+		return;
+	}
+	if (mesh._indices.size() == 0) {
+		LOG_WARN("Mesh does not have indices, aborting CalculateTBN");
+		return;
+	}
+
+	for (size_t i = 0; i < mesh._vertices.size(); i++) {
+		vMap.SetTangent(mesh._vertices[i], glm::vec3(0.0f));
+		vMap.SetBiTangent(mesh._vertices[i], glm::vec3(0.0f));
+	}
+
+	// Iterate over all indices in the mesh, we'll assume that the mesh is indexed
+	for (size_t i = 0; i < mesh._indices.size(); i += 3) {
+		Vertex& v1 = mesh._vertices[mesh._indices[i + 0u]];
+		Vertex& v2 = mesh._vertices[mesh._indices[i + 1u]];
+		Vertex& v3 = mesh._vertices[mesh._indices[i + 2u]];
+
+		// Extract the positions from the mesh
+		glm::vec3 pos[3];
+		pos[0] = vMap.GetPosition(v1);
+		pos[1] = vMap.GetPosition(v2);
+		pos[2] = vMap.GetPosition(v3);
+
+		// Extract the UVs from the mesh
+		glm::vec2 uvs[3];
+		uvs[0] = vMap.GetTexture(v1);
+		uvs[1] = vMap.GetTexture(v2);
+		uvs[2] = vMap.GetTexture(v3);
+
+		// Calculate 2 corner vectors
+		glm::vec3 deltaP1 = pos[1] - pos[0];
+		glm::vec3 deltaP2 = pos[2] - pos[0];
+
+		// Calculate UV deltas
+		glm::vec2 deltaT1 = uvs[1] - uvs[0];
+		glm::vec2 deltaT2 = uvs[2] - uvs[0];
+
+		// Use the deltas in position and UV to calculate the tangent and bitangent
+		// https://learnopengl.com/Advanced-Lighting/Normal-Mapping
+		float r = 1.0f / (deltaT1.x * deltaT2.y - deltaT1.y * deltaT2.x);
+		glm::vec3 tangent = glm::normalize((deltaP1 * deltaT2.y - deltaP2 * deltaT1.y) * r);
+		glm::vec3 bitangent = glm::normalize((deltaP2 * deltaT1.x - deltaP1 * deltaT2.x) * r);
+
+		// Set attributes in the vertex
+		vMap.SetTangent(v1, glm::normalize((vMap.GetTangent(v1) + tangent) / 2.0f));
+		vMap.SetTangent(v2, glm::normalize((vMap.GetTangent(v2) + tangent) / 2.0f));
+		vMap.SetTangent(v3, glm::normalize((vMap.GetTangent(v3) + tangent) / 2.0f));
+
+		vMap.SetBiTangent(v1, glm::normalize((vMap.GetBiTangent(v1) + bitangent) / 2.0f));
+		vMap.SetBiTangent(v2, glm::normalize((vMap.GetBiTangent(v1) + bitangent) / 2.0f));
+		vMap.SetBiTangent(v3, glm::normalize((vMap.GetBiTangent(v1) + bitangent) / 2.0f));
 	}
 }

@@ -40,6 +40,7 @@ ENUM(InternalFormat, GLint,
 
 // The layout of the input pixel data
 ENUM(PixelFormat, GLint,
+	Unknown      = GL_NONE,
 	Red          = GL_RED,
 	RG           = GL_RG,
 	RGB          = GL_RGB,
@@ -106,6 +107,38 @@ constexpr size_t GetTexelComponentSize(PixelType type) {
 		return 0;
 	}
 }
+
+constexpr InternalFormat GetInternalFormatForChannels8(int numChannels) {
+	switch (numChannels) {
+	case 1:
+		return InternalFormat::R8;
+	case 2:
+		return InternalFormat::RG8;
+	case 3:
+		return InternalFormat::RGB8;
+	case 4:
+		return InternalFormat::RGBA8;
+	default:
+		LOG_WARN(false, "Unsupported texture format with {0} channels", numChannels);
+		return InternalFormat::Unknown;
+	}
+}
+constexpr PixelFormat GetPixelFormatForChannels(int numChannels) {
+	switch (numChannels) {
+	case 1:
+		return PixelFormat::Red;
+	case 2:
+		return PixelFormat::RG;
+	case 3:
+		return PixelFormat::RGB;
+	case 4:
+		return PixelFormat::RGBA;
+	default:
+		LOG_WARN(false, "Unsupported texture format with {0} channels", numChannels);
+		return PixelFormat::Unknown;
+	}
+}
+
 
 /*
  * Gets the number of components in a given pixel format

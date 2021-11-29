@@ -24,7 +24,7 @@ ENUM(AttribUsage, uint8_t,
 	Texture3 = 9, //
 	Normal   = 10,
 	Tangent  = 11,
-	BiNormal = 12,
+	BiTangent = 12,
 	User0    = 13,    //
 	User1    = 14,    //
 	User2    = 15,    // Extras

@@ -21,7 +21,13 @@ namespace Gameplay::Physics {
 		_motionState(nullptr),
 		_linearDamping(0.0f),
 		_angularDamping(0.005f),
-		_inertia(btVector3())
+		_inertia(btVector3()),
+		_linearVelocity(btVector3(0, 0, 0)),
+		_linearVelocityDirty(false),
+		_angularVelocity(btVector3(0, 0, 0)),
+		_angularVelocityDirty(false),
+		_angularFactor(btVector3(1, 1, 1)),
+		_angularFactorDirty(false)
 	{ }
 
 	RigidBody::~RigidBody() {
@@ -63,6 +69,35 @@ namespace Gameplay::Physics {
 
 	float RigidBody::GetAngularDamping() const {
 		return _angularDamping;
+	}
+
+	void RigidBody::SetLinearVelocity(const glm::vec3& value)
+	{
+		_linearVelocity = ToBt(value);
+		_linearVelocityDirty = true;
+	}
+
+	const glm::vec3& RigidBody::GetLinearVelocity() const {
+		return ToGlm(_linearVelocity);
+	}
+
+	void RigidBody::SetAngularVelocity(const glm::vec3& value) {
+		_angularVelocity = ToBt(glm::radians(value));
+		_angularVelocityDirty = true;
+	}
+
+	const glm::vec3& RigidBody::GetAngularVelocity() const
+	{
+		return glm::degrees(ToGlm(_angularVelocity));
+	}
+
+	void RigidBody::SetAngularFactor(const glm::vec3& value) {
+		_angularFactor = ToBt(value);
+		_angularFactorDirty = true;
+	}
+
+	const glm::vec3& RigidBody::GetAngularFactor() const {
+		return ToGlm(_angularFactor);
 	}
 
 	void RigidBody::ApplyForce(const glm::vec3& worldForce) {
@@ -112,20 +147,6 @@ namespace Gameplay::Physics {
 		}
 	}
 
-	void RigidBody::SetLinearVelocity(const glm::vec3 &value) {
-		_body->setLinearVelocity(ToBt(value));
-		
-	}
-	
-	void RigidBody::SetAngularFactor(const glm::vec3& value)
-	{
-		_body->setAngularFactor(ToBt(value));
-	}
-
-	glm::vec3 RigidBody::GetLinearVelocity() const {
-		return ToGlm(_body ->getLinearVelocity());
-	}
-
 	RigidBodyType RigidBody::GetType() const {
 		return _type;
 	}
@@ -153,6 +174,10 @@ namespace Gameplay::Physics {
 		if (_type == RigidBodyType::Dynamic) {
 			btTransform transform = _body->getWorldTransform();
 			_CopyGameobjectTransformFrom(transform);
+
+			// Store a copy of our velocities
+			_linearVelocity = _body->getLinearVelocity();
+			_angularVelocity = _body->getAngularVelocity();
 		}
 	}
 
@@ -244,6 +269,26 @@ namespace Gameplay::Physics {
 	}
 
 	void RigidBody::_HandleStateDirty() {
+		if (_type == RigidBodyType::Dynamic) {
+			// If outside code has changed our velocity, send that to Bullet
+			if (_linearVelocityDirty) {
+				_body->setLinearVelocity(_linearVelocity);
+				_linearVelocityDirty = false;
+			}
+
+			// If outside code has changed our angular velocity, send that to Bullet
+			if (_angularVelocityDirty) {
+				_body->setAngularVelocity(_angularVelocity);
+				_angularVelocityDirty = false;
+			}
+
+			// If outside code has changed the angular factor, send to Bullet
+			if (_angularFactorDirty) {
+				_body->setAngularFactor(_angularFactor);
+				_angularFactorDirty = false;
+			}
+		}
+		
 		// If one of our colliders has changed, replace it's shape with it's
 		_isMassDirty |= _HandleShapeDirty();
 

@@ -30,6 +30,8 @@ public:
 	/// <param name="newValue">The new GUID for the object</param>
 	void OverrideGUID(Guid newValue) { _guid = newValue; }
 
+	virtual void ResolveReferences() {};
+
 	/// <summary>
 	/// Converts this resource into it's JSON manifest format
 	/// Should contain all the data required to reconstruct the

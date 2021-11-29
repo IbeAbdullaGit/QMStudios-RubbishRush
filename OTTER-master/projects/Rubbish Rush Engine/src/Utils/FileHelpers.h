@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 class FileHelpers {
 public:
@@ -17,8 +18,9 @@ public:
 	/// any other files needed as indicated by a #include fileName on a line
 	/// </summary>
 	/// <param name="filename">The path of the file to load</param>
+	/// <param name="resolvedPaths">The list of paths that have already been included</param>
 	/// <returns>The entire contents of the file, with includes resolved, stored in a string</returns>
-	static std::string ReadResolveIncludes(const std::string& filename);
+	static std::string ReadResolveIncludes(const std::string& filename, std::vector<std::string> resolvedPaths = std::vector<std::string>());
 
 	/// <summary>
 	/// Helper for writing the contents of a string into a file

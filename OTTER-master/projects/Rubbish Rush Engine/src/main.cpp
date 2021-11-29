@@ -339,6 +339,22 @@ int main() {
 	ComponentManager::RegisterType<ConveyorBeltBehaviour>();
 	ComponentManager::RegisterType<SpillBehaviour>();
 
+	// Structure for our isntance-level uniforms, matches layout from
+	// fragments/frame_uniforms.glsl
+	// For use with a UBO.
+	struct InstanceLevelUniforms {
+		// Complete MVP
+		glm::mat4 u_ModelViewProjection;
+		// Just the model transform, we'll do worldspace lighting
+		glm::mat4 u_Model;
+		// Normal Matrix for transforming normals
+		glm::mat4 u_NormalMatrix;
+	};
+
+	// This uniform buffer will hold all our instance level uniforms, to be shared between shaders
+	UniformBuffer<InstanceLevelUniforms>::Sptr instanceUniforms = std::make_shared<UniformBuffer<InstanceLevelUniforms>>(BufferUsage::DynamicDraw);
+
+
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -357,8 +373,8 @@ int main() {
 	else {
 		// Create our OpenGL resources
 		Shader::Sptr uboShader = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shader.glsl" }, 
-			{ ShaderPartType::Fragment, "shaders/frag_blinn_phong_textured.glsl" }
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
 		}); 
 
 		
@@ -366,7 +382,7 @@ int main() {
 		scene = std::make_shared<Scene>();
 
 		// I hate this
-		scene->BaseShader = uboShader;
+		/*scene->BaseShader = uboShader;*/
 
 		
 		
@@ -403,12 +419,12 @@ int main() {
 		MeshResource::Sptr trashyMesh = ResourceManager::CreateAsset<MeshResource>("trashy.obj");
 		Texture2D::Sptr trashyTex = ResourceManager::CreateAsset<Texture2D>("textures/trashyTEX.png");
 		// Create our material
-		Material::Sptr trashyMaterial = ResourceManager::CreateAsset<Material>();
+		Material::Sptr trashyMaterial = ResourceManager::CreateAsset<Material>(uboShader);
 		{
 			trashyMaterial->Name = "Trashy";
-			trashyMaterial->MatShader = scene->BaseShader;
-			trashyMaterial->Texture = trashyTex;
-			trashyMaterial->Shininess = 1.0f;
+			trashyMaterial->Set("u_Material.Diffuse", trashyTex);
+			trashyMaterial->Set("u_Material.Shininess", 1.0f);
+			
 
 		}
 		GameObject::Sptr trashyM = scene->CreateGameObject("Trashy");
@@ -450,11 +466,10 @@ int main() {
 		MeshResource::Sptr planeMesh = ResourceManager::CreateAsset<MeshResource>();
 		planeMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(1.0f)));
 		planeMesh->GenerateMesh();
-		Material::Sptr planeMaterial = ResourceManager::CreateAsset<Material>(); {
+		Material::Sptr planeMaterial = ResourceManager::CreateAsset<Material>(uboShader); {
 			planeMaterial->Name = "Plane";
-			planeMaterial->MatShader = scene->BaseShader;
-			planeMaterial->Texture = planeTex;
-			planeMaterial->Shininess = 1.0f;
+			planeMaterial->Set("u_Material.Diffuse", planeTex);
+			planeMaterial->Set("u_Material.Shininess", 1.0f);
 		}
 
 		// Set up all our sample objects
@@ -481,12 +496,11 @@ int main() {
 		MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<MeshResource>("plant.obj");
 		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/planttex.png");
 		// Create our material
-		Material::Sptr trashMaterial = ResourceManager::CreateAsset<Material>();
+		Material::Sptr trashMaterial = ResourceManager::CreateAsset<Material>(uboShader);
 		{
 			trashMaterial->Name = "Trash";
-			trashMaterial->MatShader = scene->BaseShader;
-			trashMaterial->Texture = trashTex;
-			trashMaterial->Shininess = 1.0f;
+			trashMaterial->Set("u_Material.Diffuse", trashTex);
+			trashMaterial->Set("u_Material.Shininess", 1.0f);
 
 		}
 		GameObject::Sptr trashM = scene->CreateGameObject("Trash");
@@ -520,12 +534,11 @@ int main() {
 		MeshResource::Sptr spillMesh = ResourceManager::CreateAsset<MeshResource>("spill.obj");
 		Texture2D::Sptr spillTex = ResourceManager::CreateAsset<Texture2D>("textures/goo.png");
 		// Create our material
-		Material::Sptr spillMaterial = ResourceManager::CreateAsset<Material>();
+		Material::Sptr spillMaterial = ResourceManager::CreateAsset<Material>(uboShader);
 		{
 			spillMaterial->Name = "Spill";
-			spillMaterial->MatShader = scene->BaseShader;
-			spillMaterial->Texture = spillTex;
-			spillMaterial->Shininess = 1.0f;
+			spillMaterial->Set("u_Material.Diffuse", spillTex);
+			spillMaterial->Set("u_Material.Shininess", 1.0f);
 
 		}
 		GameObject::Sptr spillM = scene->CreateGameObject("Spill");
@@ -559,12 +572,11 @@ int main() {
 		MeshResource::Sptr binMesh = ResourceManager::CreateAsset<MeshResource>("Big_Bin2.obj");
 		Texture2D::Sptr binTex = ResourceManager::CreateAsset<Texture2D>("textures/big_bintex2.png");
 		// Create our material
-		Material::Sptr binMaterial = ResourceManager::CreateAsset<Material>();
+		Material::Sptr binMaterial = ResourceManager::CreateAsset<Material>(uboShader);
 		{
 			binMaterial->Name = "Bin";
-			binMaterial->MatShader = scene->BaseShader;
-			binMaterial->Texture = binTex;
-			binMaterial->Shininess = 1.0f;
+			binMaterial->Set("u_Material.Diffuse", binTex);
+			binMaterial->Set("u_Material.Shininess", 1.0f);
 
 		}
 		GameObject::Sptr binM = scene->CreateGameObject("Bin");
@@ -598,12 +610,11 @@ int main() {
 		MeshResource::Sptr recMesh = ResourceManager::CreateAsset<MeshResource>("RecOBJ.obj");
 		Texture2D::Sptr recTex = ResourceManager::CreateAsset<Texture2D>("textures/Rec1.png");
 		// Create our material
-		Material::Sptr recMaterial = ResourceManager::CreateAsset<Material>();
+		Material::Sptr recMaterial = ResourceManager::CreateAsset<Material>(uboShader);
 		{
 			recMaterial->Name = "Rec";
-			recMaterial->MatShader = scene->BaseShader;
-			recMaterial->Texture = recTex;
-			recMaterial->Shininess = 1.0f;
+			recMaterial->Set("u_Material.Diffuse", recTex);
+			recMaterial->Set("u_Material.Shininess", 1.0f);
 
 		}
 		GameObject::Sptr recE = scene->CreateGameObject("Rec");
@@ -622,12 +633,11 @@ int main() {
 		MeshResource::Sptr trashyEMesh = ResourceManager::CreateAsset<MeshResource>("trashy2OBJ.obj");
 		Texture2D::Sptr trashyETex = ResourceManager::CreateAsset<Texture2D>("textures/Trashy2.png");
 		// Create our material
-		Material::Sptr trashyEMaterial = ResourceManager::CreateAsset<Material>();
+		Material::Sptr trashyEMaterial = ResourceManager::CreateAsset<Material>(uboShader);
 		{
 			trashyEMaterial->Name = "trashyE";
-			trashyEMaterial->MatShader = scene->BaseShader;
-			trashyEMaterial->Texture = trashyETex;
-			trashyEMaterial->Shininess = 1.0f;
+			trashyEMaterial->Set("u_Material.Diffuse", trashyETex);
+			trashyEMaterial->Set("u_Material.Shininess", 1.0f);
 
 		}
 		GameObject::Sptr trashyE = scene->CreateGameObject("TrashyE");
@@ -920,29 +930,45 @@ int main() {
 
 		// Render all our objects
 		ComponentManager::Each<RenderComponent>([&](const RenderComponent::Sptr& renderable) {
+			// Early bail if mesh not set
+			if (renderable->GetMesh() == nullptr) {
+				return;
+			}
+
+			// If we don't have a material, try getting the scene's fallback material
+			// If none exists, do not draw anything
+			if (renderable->GetMaterial() == nullptr) {
+				if (scene->DefaultMaterial != nullptr) {
+					renderable->SetMaterial(scene->DefaultMaterial);
+				}
+				else {
+					return;
+				}
+			}
 
 			// If the material has changed, we need to bind the new shader and set up our material and frame data
 			// Note: This is a good reason why we should be sorting the render components in ComponentManager
 			if (renderable->GetMaterial() != currentMat) {
 				currentMat = renderable->GetMaterial();
-				shader = currentMat->MatShader;
+				shader = currentMat->GetShader();
 
 				shader->Bind();
-				shader->SetUniform("u_CamPos", scene->MainCamera->GetGameObject()->GetPosition());
 				currentMat->Apply();
 			}
 
 			// Grab the game object so we can do some stuff with it
 			GameObject* object = renderable->GetGameObject();
 
-			// Set vertex shader parameters
-			shader->SetUniformMatrix("u_ModelViewProjection", viewProj * object->GetTransform());
-			shader->SetUniformMatrix("u_Model", object->GetTransform());
-			shader->SetUniformMatrix("u_NormalMatrix", glm::mat3(glm::transpose(glm::inverse(object->GetTransform()))));
+			// Use our uniform buffer for our instance level uniforms
+			auto& instanceData = instanceUniforms->GetData();
+			instanceData.u_Model = object->GetTransform();
+			instanceData.u_ModelViewProjection = viewProj * object->GetTransform();
+			instanceData.u_NormalMatrix = glm::mat3(glm::transpose(glm::inverse(object->GetTransform())));
+			instanceUniforms->Update();
 
 			// Draw the object
 			renderable->GetMesh()->Draw();
-		});
+			});
 
 
 		// End our ImGui window

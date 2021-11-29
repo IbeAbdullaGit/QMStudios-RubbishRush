@@ -24,7 +24,7 @@ const Gameplay::MeshResource::Sptr& RenderComponent::GetMeshResource() const {
 }
 
 const VertexArrayObject::Sptr& RenderComponent::GetMesh() const {
-	return _mesh->Mesh;
+	return _mesh ? _mesh->Mesh : nullptr;
 }
 
 void RenderComponent::SetMaterial(const Gameplay::Material::Sptr& mat) {
@@ -51,9 +51,9 @@ RenderComponent::Sptr RenderComponent::FromJson(const nlohmann::json& data) {
 }
 
 void RenderComponent::RenderImGui() {
-	ImGui::Text("Indexed:   %s", _mesh->Mesh != nullptr ? (_mesh->Mesh->GetIndexBuffer() != nullptr ? "true" : "false") : "N/A");
-	ImGui::Text("Triangles: %d", _mesh->Mesh != nullptr ? (_mesh->Mesh->GetElementCount() / 3) : 0);
-	ImGui::Text("Source:    %s", _mesh->Filename.empty() ? "Generated" : _mesh->Filename.c_str());
+	ImGui::Text("Indexed:   %s", GetMesh() != nullptr ? (_mesh->Mesh->GetIndexBuffer() != nullptr ? "true" : "false") : "N/A");
+	ImGui::Text("Triangles: %d", GetMesh() != nullptr ? (_mesh->Mesh->GetElementCount() / 3) : 0);
+	ImGui::Text("Source:    %s", (_mesh == nullptr || _mesh->Filename.empty()) ? "Generated" : _mesh->Filename.c_str());
 	ImGui::Separator();
 	ImGui::Text("Material:  %s", _material != nullptr ? _material->Name.c_str() : "NULL");
 }

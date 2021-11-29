@@ -38,6 +38,7 @@ namespace Gameplay {
 
 	void GameObject::LookAt(const glm::vec3& point) {
 		glm::mat3 rot = glm::lookAt(_position, point, glm::vec3(0.0f, 0.0f, 1.0f));
+		// Take the conjugate of the quaternion, as lookAt returns the *inverse* rotation
 		SetRotation(glm::conjugate(glm::quat_cast(rot)));
 	}
 

@@ -59,3 +59,47 @@ struct VertexPosNormTexCol {
 
 	static const std::vector<BufferAttribute> V_DECL;
 };
+
+struct VertexPosNormTexColTangents {
+	glm::vec3 Position;
+	glm::vec3 Normal;
+	glm::vec2 UV;
+	glm::vec4 Color;
+	glm::vec3 Tangent;
+	glm::vec3 BiTangent;
+
+	VertexPosNormTexColTangents() :
+		Position(glm::vec3(0.0f)),
+		Normal(glm::vec3(0.0f)),
+		UV(glm::vec2(0.0f, 0.0f)),
+		Color(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)),
+		Tangent(glm::vec3(0.0f)),
+		BiTangent(glm::vec3(0.0f))
+	{}
+	VertexPosNormTexColTangents(const glm::vec3& pos, const glm::vec3& norm, const glm::vec2& uv, const glm::vec4& col) :
+		Position(pos),
+		Normal(norm),
+		UV(uv),
+		Color(col),
+		Tangent(glm::vec3(0.0f)),
+		BiTangent(glm::vec3(0.0f))
+	{}
+	VertexPosNormTexColTangents(const glm::vec3& pos, const glm::vec3& norm, const glm::vec2& uv, const glm::vec4& col, const glm::vec3& tangent, const glm::vec3& bitangent) :
+		Position(pos),
+		Normal(norm),
+		UV(uv),
+		Color(col),
+		Tangent(tangent),
+		BiTangent(bitangent)
+	{}
+	VertexPosNormTexColTangents(float x, float y, float z, float nX, float nY, float nZ, float u, float v, float r, float g, float b, float a = 1.0f) :
+		Position({ x, y, z }),
+		Normal({ nX, nY, nZ }),
+		UV({ u, v }),
+		Color({ r, g, b, a }),
+		Tangent(glm::vec3(0.0f)),
+		BiTangent(glm::vec3(0.0f))
+	{}
+
+	static const std::vector<BufferAttribute> V_DECL;
+};
