@@ -28,6 +28,7 @@
 #include "Graphics/VertexArrayObject.h"
 #include "Graphics/Shader.h"
 #include "Graphics/Texture2D.h"
+#include "Graphics/TextureCube.h"
 #include "Graphics/VertexTypes.h"
 
 // Utilities
@@ -61,6 +62,7 @@
 #include "Gameplay/Components/ConveyorBeltBehaviour.h"
 #include "Gameplay/Components/SpillBehaviour.h"
 
+
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
 #include "Gameplay/Physics/Colliders/BoxCollider.h"
@@ -69,6 +71,8 @@
 #include "Gameplay/Physics/Colliders/ConvexMeshCollider.h"
 #include "Gameplay/Physics/TriggerVolume.h"
 #include "Graphics/DebugDraw.h"
+#include "Gameplay/Components/SimpleCameraControl.h"
+#include "Gameplay/Physics/Colliders/CylinderCollider.h"
 
 #include "CPathAnimator.h"
 //#define LOG_GL_NOTIFICATIONS
@@ -338,6 +342,30 @@ int main() {
 	ComponentManager::RegisterType<PlayerMovementBehavior>();
 	ComponentManager::RegisterType<ConveyorBeltBehaviour>();
 	ComponentManager::RegisterType<SpillBehaviour>();
+	/*ComponentManager::RegisterType<SimpleCameraControl>();
+
+	ComponentManager::RegisterType<RectTransform>();
+	ComponentManager::RegisterType<GuiPanel>();
+	ComponentManager::RegisterType<GuiText>();*/
+	// Structure for our frame-level uniforms, matches layout from
+	// fragments/frame_uniforms.glsl
+	// For use with a UBO.
+	struct FrameLevelUniforms {
+		// The camera's view matrix
+		glm::mat4 u_View;
+		// The camera's projection matrix
+		glm::mat4 u_Projection;
+		// The combined viewProject matrix
+		glm::mat4 u_ViewProjection;
+		// The camera's position in world space
+		glm::vec4 u_CameraPos;
+		// The time in seconds since the start of the application
+		float u_Time;
+	};
+	// This uniform buffer will hold all our frame level uniforms, to be shared between shaders
+	UniformBuffer<FrameLevelUniforms>::Sptr frameUniforms = std::make_shared<UniformBuffer<FrameLevelUniforms>>(BufferUsage::DynamicDraw);
+	// The slot that we'll bind our frame level UBO to
+	const int FRAME_UBO_BINDING = 0;
 
 	// Structure for our isntance-level uniforms, matches layout from
 	// fragments/frame_uniforms.glsl
@@ -351,9 +379,12 @@ int main() {
 		glm::mat4 u_NormalMatrix;
 	};
 
+
 	// This uniform buffer will hold all our instance level uniforms, to be shared between shaders
 	UniformBuffer<InstanceLevelUniforms>::Sptr instanceUniforms = std::make_shared<UniformBuffer<InstanceLevelUniforms>>(BufferUsage::DynamicDraw);
 
+	// The slot that we'll bind our instance level UBO to
+	const int INSTANCE_UBO_BINDING = 1;
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
@@ -371,11 +402,57 @@ int main() {
 
 	}
 	else {
-		// Create our OpenGL resources
-		Shader::Sptr uboShader = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
+		// This time we'll have 2 different shaders, and share data between both of them using the UBO
+		// This shader will handle reflective materials 
+		Shader::Sptr reflectiveShader = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_environment_reflective.glsl" }
+		});
+
+		// This shader handles our basic materials without reflections (cause they expensive)
+		Shader::Sptr basicShader = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
-		}); 
+		});
+
+		// This shader handles our basic materials without reflections (cause they expensive)
+		Shader::Sptr specShader = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/textured_specular.glsl" }
+		});
+
+		// This shader handles our foliage vertex shader example
+		Shader::Sptr foliageShader = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/foliage.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/screendoor_transparency.glsl" }
+		});
+
+		// This shader handles our cel shading example
+		Shader::Sptr toonShader = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/toon_shading.glsl" }
+		});
+
+
+		///////////////////// NEW SHADERS ////////////////////////////////////////////
+
+		// This shader handles our displacement mapping example
+		Shader::Sptr displacementShader = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/displacement_mapping.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
+		});
+
+		// This shader handles our displacement mapping example
+		Shader::Sptr tangentSpaceMapping = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
+		});
+
+		// This shader handles our multitexturing example
+		Shader::Sptr multiTextureShader = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/vert_multitextured.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_multitextured.glsl" }
+		});
 
 		
 		// Create an empty scene
@@ -419,7 +496,7 @@ int main() {
 		MeshResource::Sptr trashyMesh = ResourceManager::CreateAsset<MeshResource>("trashy.obj");
 		Texture2D::Sptr trashyTex = ResourceManager::CreateAsset<Texture2D>("textures/trashyTEX.png");
 		// Create our material
-		Material::Sptr trashyMaterial = ResourceManager::CreateAsset<Material>(uboShader);
+		Material::Sptr trashyMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			trashyMaterial->Name = "Trashy";
 			trashyMaterial->Set("u_Material.Diffuse", trashyTex);
@@ -466,7 +543,7 @@ int main() {
 		MeshResource::Sptr planeMesh = ResourceManager::CreateAsset<MeshResource>();
 		planeMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(1.0f)));
 		planeMesh->GenerateMesh();
-		Material::Sptr planeMaterial = ResourceManager::CreateAsset<Material>(uboShader); {
+		Material::Sptr planeMaterial = ResourceManager::CreateAsset<Material>(basicShader); {
 			planeMaterial->Name = "Plane";
 			planeMaterial->Set("u_Material.Diffuse", planeTex);
 			planeMaterial->Set("u_Material.Shininess", 1.0f);
@@ -496,7 +573,7 @@ int main() {
 		MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<MeshResource>("plant.obj");
 		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/planttex.png");
 		// Create our material
-		Material::Sptr trashMaterial = ResourceManager::CreateAsset<Material>(uboShader);
+		Material::Sptr trashMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			trashMaterial->Name = "Trash";
 			trashMaterial->Set("u_Material.Diffuse", trashTex);
@@ -534,7 +611,7 @@ int main() {
 		MeshResource::Sptr spillMesh = ResourceManager::CreateAsset<MeshResource>("spill.obj");
 		Texture2D::Sptr spillTex = ResourceManager::CreateAsset<Texture2D>("textures/goo.png");
 		// Create our material
-		Material::Sptr spillMaterial = ResourceManager::CreateAsset<Material>(uboShader);
+		Material::Sptr spillMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			spillMaterial->Name = "Spill";
 			spillMaterial->Set("u_Material.Diffuse", spillTex);
@@ -572,7 +649,7 @@ int main() {
 		MeshResource::Sptr binMesh = ResourceManager::CreateAsset<MeshResource>("Big_Bin2.obj");
 		Texture2D::Sptr binTex = ResourceManager::CreateAsset<Texture2D>("textures/big_bintex2.png");
 		// Create our material
-		Material::Sptr binMaterial = ResourceManager::CreateAsset<Material>(uboShader);
+		Material::Sptr binMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			binMaterial->Name = "Bin";
 			binMaterial->Set("u_Material.Diffuse", binTex);
@@ -610,7 +687,7 @@ int main() {
 		MeshResource::Sptr recMesh = ResourceManager::CreateAsset<MeshResource>("RecOBJ.obj");
 		Texture2D::Sptr recTex = ResourceManager::CreateAsset<Texture2D>("textures/Rec1.png");
 		// Create our material
-		Material::Sptr recMaterial = ResourceManager::CreateAsset<Material>(uboShader);
+		Material::Sptr recMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			recMaterial->Name = "Rec";
 			recMaterial->Set("u_Material.Diffuse", recTex);
@@ -633,7 +710,7 @@ int main() {
 		MeshResource::Sptr trashyEMesh = ResourceManager::CreateAsset<MeshResource>("trashy2OBJ.obj");
 		Texture2D::Sptr trashyETex = ResourceManager::CreateAsset<Texture2D>("textures/Trashy2.png");
 		// Create our material
-		Material::Sptr trashyEMaterial = ResourceManager::CreateAsset<Material>(uboShader);
+		Material::Sptr trashyEMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			trashyEMaterial->Name = "trashyE";
 			trashyEMaterial->Set("u_Material.Diffuse", trashyETex);
@@ -652,8 +729,13 @@ int main() {
 			//RigidBody::Sptr physics = trashyE->Add<RigidBody>(RigidBodyType::Kinematic);
 			
 		}
+		// Call scene awake to start up all of our components
+		scene->Window = window;
+		scene->Awake();
+
 		// Save the asset manifest for all the resources we just loaded
 		ResourceManager::SaveManifest("manifest.json");
+
 		// Save the scene to a JSON file
 		scene->Save("scene.json");
 		scene->brick_count = 0;
@@ -661,10 +743,6 @@ int main() {
 	//our score
 	scene->trash = 0;
 
-
-	// Call scene awake to start up all of our components
-	scene->Window = window;
-	scene->Awake();
 
 	// We'll use this to allow editing the save/load path
 	// via ImGui, note the reserve to allocate extra space
@@ -802,6 +880,8 @@ int main() {
 				//trashyM->SetDirty(true);
 			}
 		}
+		// Draw our material properties window!
+		//DrawMaterialsWindow();
 		// Showcasing how to use the imGui library!
 		bool isDebugWindowOpen = ImGui::Begin("Debugging");
 		if (isDebugWindowOpen)
@@ -901,6 +981,10 @@ int main() {
 		//movement update
 		//keyboard(trashyM->Get<RigidBody>());
 
+		dt *= playbackSpeed;
+
+		// Perform updates for all components
+		scene->Update(dt);
 		// Grab shorthands to the camera and shader from the scene
 		Camera::Sptr camera = scene->MainCamera;
 
@@ -910,10 +994,6 @@ int main() {
 		// Cache the camera's viewprojection
 		glm::mat4 viewProj = camera->GetViewProjection();
 		DebugDrawer::Get().SetViewProjection(viewProj);
-
-		// Perform updates for all components
-		scene->Update(dt);
-		
 
 		// Update our worlds physics!
 		scene->DoPhysics(dt);
@@ -927,6 +1007,25 @@ int main() {
 		// The current material that is bound for rendering
 		Material::Sptr currentMat = nullptr;
 		Shader::Sptr shader = nullptr;
+
+		// Bind the skybox texture to a reserved texture slot
+		// See Material.h and Material.cpp for how we're reserving texture slots
+		TextureCube::Sptr environment = scene->GetSkyboxTexture();
+		if (environment) environment->Bind(0);
+
+		// Here we'll bind all the UBOs to their corresponding slots
+		scene->PreRender();
+		frameUniforms->Bind(FRAME_UBO_BINDING);
+		instanceUniforms->Bind(INSTANCE_UBO_BINDING);
+
+		// Upload frame level uniforms
+		auto& frameData = frameUniforms->GetData();
+		frameData.u_Projection = camera->GetProjection();
+		frameData.u_View = camera->GetView();
+		frameData.u_ViewProjection = camera->GetViewProjection();
+		frameData.u_CameraPos = glm::vec4(camera->GetGameObject()->GetPosition(), 1.0f);
+		frameData.u_Time = static_cast<float>(thisFrame);
+		frameUniforms->Update();
 
 		// Render all our objects
 		ComponentManager::Each<RenderComponent>([&](const RenderComponent::Sptr& renderable) {
@@ -970,6 +1069,8 @@ int main() {
 			renderable->GetMesh()->Draw();
 			});
 
+		// Use our cubemap to draw our skybox
+		scene->DrawSkybox();
 
 		// End our ImGui window
 		ImGui::End();

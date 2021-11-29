@@ -44,7 +44,12 @@ namespace Gameplay {
 	void Scene::SetPhysicsDebugDrawMode(BulletDebugMode mode) {
 		_bulletDebugDraw->setDebugMode((btIDebugDraw::DebugDrawModes)mode);
 	}
-
+	std::shared_ptr<TextureCube> Scene::GetSkyboxTexture() const {
+		return _skyboxTexture;
+	}
+	void Scene::PreRender() {
+		_lightingUbo->Bind(LIGHT_UBO_BINDING);
+	}
 	GameObject::Sptr Scene::CreateGameObject(const std::string& name)
 	{
 		GameObject::Sptr result(new GameObject());
@@ -322,6 +327,40 @@ namespace Gameplay {
 		if (ImGui::Button("Add Object")) {
 			CreateGameObject(buffer);
 			memset(buffer, 0, 256);
+		}
+	}
+	//void Scene::RenderGUI()
+	//{
+	//	for (auto& obj : Objects) {
+	//		// Parents handle rendering for children, so ignore parented objects
+	//		if (obj->GetParent() == nullptr) {
+	//			obj->RenderGUI();
+	//		}
+	//	}
+	//}
+
+	void Scene::DrawSkybox()
+	{
+		if (_skyboxShader != nullptr &&
+			_skyboxMesh != nullptr &&
+			_skyboxMesh->Mesh != nullptr &&
+			_skyboxTexture != nullptr &&
+			MainCamera != nullptr) {
+
+			glDepthMask(false);
+			glDisable(GL_CULL_FACE);
+			glDepthFunc(GL_LEQUAL);
+
+			_skyboxShader->Bind();
+			_skyboxShader->SetUniformMatrix("u_View", MainCamera->GetProjection() * glm::mat4(glm::mat3(MainCamera->GetView())));
+			_skyboxShader->SetUniformMatrix("u_EnvironmentRotation", _skyboxRotation);
+			_skyboxTexture->Bind(0);
+			_skyboxMesh->Mesh->Draw();
+
+			glDepthFunc(GL_LESS);
+			glEnable(GL_CULL_FACE);
+			glDepthMask(true);
+
 		}
 	}
 

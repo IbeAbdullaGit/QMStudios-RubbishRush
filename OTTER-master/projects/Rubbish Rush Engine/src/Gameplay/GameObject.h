@@ -69,6 +69,8 @@ namespace Gameplay {
 
 		void SetDirty(bool val);
 
+		GameObject::Sptr GetParent() const;
+
 		/// <summary>
 		/// Invoked when the rigidbody attached to this game object (if any) enters
 		/// a trigger volume for the first time
@@ -263,6 +265,10 @@ namespace Gameplay {
 		mutable glm::mat4 _transform;
 		mutable glm::mat4 _inverseTransform;
 		mutable bool _isTransformDirty;
+
+		//// For the hierarchy
+		//WeakRef _parent;
+		//std::vector<WeakRef> _children;
 
 		// The components that this game object has attached to it
 		std::vector<IComponent::Sptr> _components;

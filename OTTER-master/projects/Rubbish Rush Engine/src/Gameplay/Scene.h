@@ -1,12 +1,14 @@
 #pragma once
 #include <btBulletDynamicsCommon.h>
 #include "BulletCollision/CollisionDispatch/btGhostObject.h"
+
 #include "Gameplay/Components/Camera.h"
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Light.h"
-#include "Physics/BulletDebugDraw.h"
-#include "Graphics/UniformBuffer.h"
 
+#include "Physics/BulletDebugDraw.h"
+
+#include "Graphics/UniformBuffer.h"
 struct GLFWwindow;
 
 class TextureCube;
@@ -52,6 +54,7 @@ namespace Gameplay {
 		~Scene();
 
 		void SetPhysicsDebugDrawMode(BulletDebugMode mode);
+		std::shared_ptr<TextureCube> GetSkyboxTexture() const;
 
 		/**
 		 * Gets whether the scene has already called Awake()
@@ -126,6 +129,11 @@ namespace Gameplay {
 		/// <param name="dt">The time in seconds since the last frame</param>
 		void Update(float dt);
 
+		/// <summary>
+		/// Performs setup before rendering
+		/// </summary>
+		void PreRender();
+
 		//delete game object
 		void DeleteGameObject(const std::shared_ptr<GameObject>& object);
 
@@ -141,6 +149,13 @@ namespace Gameplay {
 		/// Creates the shader and sets up all the lights
 		/// </summary>
 		void SetupShaderAndLights();
+
+		void DrawSkybox();
+
+		/// <summary>
+		/// Draws all GUI objects in the scene
+		/// </summary>
+		void RenderGUI();
 
 		/// <summary>
 		/// Draws ImGui stuff for all gameobjects in the scene
@@ -211,6 +226,12 @@ namespace Gameplay {
 		std::vector<GameObject::Sptr>  Objects;
 		//std::vector<GameObject::Sptr> bricks;
 		
+		// Info for rendering our skybox will be stored in the scene itself
+		std::shared_ptr<Shader>       _skyboxShader;
+		std::shared_ptr<MeshResource> _skyboxMesh;
+		std::shared_ptr<TextureCube>  _skyboxTexture;
+		glm::mat3                     _skyboxRotation;
+
 		
 		std::vector<GameObject::Sptr> _deletionQueue;
 

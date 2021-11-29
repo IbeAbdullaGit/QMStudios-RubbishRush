@@ -269,6 +269,9 @@ namespace Gameplay {
 			}
 		}
 	}
+	/*GameObject::Sptr GameObject::GetParent() const {
+		return _parent;
+	}*/
 
 	bool GameObject::Has(const std::type_index& type) {
 		// Iterate over all the pointers in the components list
