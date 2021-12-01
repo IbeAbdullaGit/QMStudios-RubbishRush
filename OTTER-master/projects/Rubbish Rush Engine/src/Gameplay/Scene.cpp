@@ -162,13 +162,14 @@ namespace Gameplay {
 	}
 
 	void Scene::Update(float dt) {
-		_FlushDeleteQueue();
+		//_FlushDeleteQueue();
 		if (IsPlaying) {
 			for (auto& obj : _objects) {
 				obj->Update(dt);
 			}
+			_FlushDeleteQueue();
 		}
-		_FlushDeleteQueue();
+		
 	}
 
 	void Scene::PreRender() {

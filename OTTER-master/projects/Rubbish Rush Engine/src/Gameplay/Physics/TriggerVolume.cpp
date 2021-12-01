@@ -117,19 +117,21 @@ namespace Gameplay::Physics {
 
 			}
 		}
+		//if (GetGameObject()->Name != "Trash")
+		{// Compare our current frame list to the previous frame to see if anything has left
+			for (auto& weakPtr : _currentCollisions) {
+				// Search the the current list to see if the item still exists
+				auto& it = std::find_if(thisFrameCollision.begin(), thisFrameCollision.end(), [&](const std::weak_ptr<RigidBody>& item) {
+					return item.lock() == weakPtr.lock();
+					});
 
-		// Compare our current frame list to the previous frame to see if anything has left
-		for (auto& weakPtr : _currentCollisions) {
-			// Search the the current list to see if the item still exists
-			auto& it = std::find_if(thisFrameCollision.begin(), thisFrameCollision.end(), [&](const std::weak_ptr<RigidBody>& item) {
-				return item.lock() == weakPtr.lock();
-				});
-
-			//// If the item no longer exists in the list, we need to invoke exit callbacks
-			//if (it == thisFrameCollision.end()) {
-			//	weakPtr.lock()->GetGameObject()->OnLeavingTrigger(std::dynamic_pointer_cast<TriggerVolume>(SelfRef().lock()));
-			//	GetGameObject()->OnTriggerVolumeLeaving(weakPtr.lock());
-			//}
+				
+				// If the item no longer exists in the list, we need to invoke exit callbacks
+				if (it == thisFrameCollision.end()) {
+					//weakPtr.lock()->GetGameObject()->OnLeavingTrigger(std::dynamic_pointer_cast<TriggerVolume>(SelfRef().lock()));
+					GetGameObject()->OnTriggerVolumeLeaving(weakPtr.lock());
+				}
+			}
 		}
 
 		// Load the contents of the current collision items into the cache
