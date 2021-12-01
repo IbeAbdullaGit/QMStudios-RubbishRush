@@ -1,6 +1,8 @@
 #include "Scene.h"
 
 #include <GLFW/glfw3.h>
+#include <locale>
+#include <codecvt>
 
 #include "Utils/FileHelpers.h"
 #include "Utils/GlmBulletConversions.h"
@@ -13,18 +15,20 @@
 #include "Graphics/TextureCube.h"
 #include "Graphics/VertexArrayObject.h"
 
-
-
 namespace Gameplay {
 	Scene::Scene() :
-		Objects(std::vector<GameObject::Sptr>()),
-		//bricks(std::vector<GameObject::Sptr>()),
+		_objects(std::vector<GameObject::Sptr>()),
+		_deletionQueue(std::vector<std::weak_ptr<GameObject>>()),
 		Lights(std::vector<Light>()),
 		IsPlaying(false),
 		MainCamera(nullptr),
 		DefaultMaterial(nullptr),
 		_isAwake(false),
 		_filePath(""),
+		_skyboxShader(nullptr),
+		_skyboxMesh(nullptr),
+		_skyboxTexture(nullptr),
+		_skyboxRotation(glm::mat3(1.0f)),
 		_gravity(glm::vec3(0.0f, 0.0f, -9.81f))
 	{
 		_lightingUbo = std::make_shared<UniformBuffer<LightingUboStruct>>();
@@ -33,29 +37,51 @@ namespace Gameplay {
 		_lightingUbo->Bind(LIGHT_UBO_BINDING_SLOT);
 
 		_InitPhysics();
+
 	}
 
 	Scene::~Scene() {
-		Objects.clear();
-		//bricks.clear();
+		_objects.clear();
 		_CleanupPhysics();
 	}
 
 	void Scene::SetPhysicsDebugDrawMode(BulletDebugMode mode) {
 		_bulletDebugDraw->setDebugMode((btIDebugDraw::DebugDrawModes)mode);
 	}
+
+	void Scene::SetSkyboxShader(const std::shared_ptr<Shader>& shader) {
+		_skyboxShader = shader;
+	}
+
+	std::shared_ptr<Shader> Scene::GetSkyboxShader() const {
+		return _skyboxShader;
+	}
+
+	void Scene::SetSkyboxTexture(const std::shared_ptr<TextureCube>& texture) {
+		_skyboxTexture = texture;
+	}
+
 	std::shared_ptr<TextureCube> Scene::GetSkyboxTexture() const {
 		return _skyboxTexture;
 	}
-	void Scene::PreRender() {
-		_lightingUbo->Bind(LIGHT_UBO_BINDING);
+
+	void Scene::SetSkyboxRotation(const glm::mat3& value) {
+		_skyboxRotation = value;
+		_lightingUbo->GetData().EnvironmentRotation = value;
+		_lightingUbo->Update();
 	}
+
+	const glm::mat3& Scene::GetSkyboxRotation() const {
+		return _skyboxRotation;
+	}
+
 	GameObject::Sptr Scene::CreateGameObject(const std::string& name)
 	{
 		GameObject::Sptr result(new GameObject());
 		result->Name = name;
 		result->_scene = this;
-		Objects.push_back(result);
+		result->_selfRef = result;
+		_objects.push_back(result);
 		return result;
 	}
 
@@ -63,18 +89,18 @@ namespace Gameplay {
 		_deletionQueue.push_back(object);
 	}
 
-	GameObject::Sptr Scene::FindObjectByName(const std::string name) {
-		auto it = std::find_if(Objects.begin(), Objects.end(), [&](const GameObject::Sptr& obj) {
+	GameObject::Sptr Scene::FindObjectByName(const std::string name) const {
+		auto it = std::find_if(_objects.begin(), _objects.end(), [&](const GameObject::Sptr& obj) {
 			return obj->Name == name;
-		});
-		return it == Objects.end() ? nullptr : *it;
+			});
+		return it == _objects.end() ? nullptr : *it;
 	}
 
-	GameObject::Sptr Scene::FindObjectByGUID(Guid id) {
-		auto it = std::find_if(Objects.begin(), Objects.end(), [&](const GameObject::Sptr& obj) {
-			return obj->GUID == id;
-		});
-		return it == Objects.end() ? nullptr : *it;
+	GameObject::Sptr Scene::FindObjectByGUID(Guid id) const {
+		auto it = std::find_if(_objects.begin(), _objects.end(), [&](const GameObject::Sptr& obj) {
+			return obj->_guid == id;
+			});
+		return it == _objects.end() ? nullptr : *it;
 	}
 
 	void Scene::SetAmbientLight(const glm::vec3& value) {
@@ -82,7 +108,7 @@ namespace Gameplay {
 		_lightingUbo->Update();
 	}
 
-	const glm::vec3& Scene::GetAmbientLight() const { 
+	const glm::vec3& Scene::GetAmbientLight() const {
 		return _lightingUbo->GetData().AmbientCol;
 	}
 
@@ -93,8 +119,15 @@ namespace Gameplay {
 		glfwGetWindowSize(Window, &width, &height);
 		MainCamera->ResizeWindow(width, height);
 
+		if (_skyboxMesh == nullptr) {
+			_skyboxMesh = ResourceManager::CreateAsset<MeshResource>();
+			_skyboxMesh->AddParam(MeshBuilderParam::CreateCube(glm::vec3(0.0f), glm::vec3(1.0f)));
+			_skyboxMesh->AddParam(MeshBuilderParam::CreateInvert());
+			_skyboxMesh->GenerateMesh();
+		}
+
 		// Call awake on all gameobjects
-		for (auto& obj : Objects) {
+		for (auto& obj : _objects) {
 			obj->Awake();
 		}
 		// Set up our lighting 
@@ -104,22 +137,23 @@ namespace Gameplay {
 	}
 
 	void Scene::DoPhysics(float dt) {
-		if (IsPlaying) {
-			ComponentManager::Each<Gameplay::Physics::RigidBody>([=](const std::shared_ptr<Gameplay::Physics::RigidBody>& body) {
-				body->PhysicsPreStep(dt);
+		ComponentManager::Each<Gameplay::Physics::RigidBody>([=](const std::shared_ptr<Gameplay::Physics::RigidBody>& body) {
+			body->PhysicsPreStep(dt);
 			});
-			ComponentManager::Each<Gameplay::Physics::TriggerVolume>([=](const std::shared_ptr<Gameplay::Physics::TriggerVolume>& body) {
-				body->PhysicsPreStep(dt);
-			}); 
+		ComponentManager::Each<Gameplay::Physics::TriggerVolume>([=](const std::shared_ptr<Gameplay::Physics::TriggerVolume>& body) {
+			body->PhysicsPreStep(dt);
+			});
+
+		if (IsPlaying) {
 
 			_physicsWorld->stepSimulation(dt, 15);
 
 			ComponentManager::Each<Gameplay::Physics::RigidBody>([=](const std::shared_ptr<Gameplay::Physics::RigidBody>& body) {
 				body->PhysicsPostStep(dt);
-			});
+				});
 			ComponentManager::Each<Gameplay::Physics::TriggerVolume>([=](const std::shared_ptr<Gameplay::Physics::TriggerVolume>& body) {
 				body->PhysicsPostStep(dt);
-			});
+				});
 			if (_bulletDebugDraw->getDebugMode() != btIDebugDraw::DBG_NoDebug) {
 				_physicsWorld->debugDrawWorld();
 				DebugDrawer::Get().FlushAll();
@@ -128,26 +162,27 @@ namespace Gameplay {
 	}
 
 	void Scene::Update(float dt) {
+		_FlushDeleteQueue();
 		if (IsPlaying) {
-			for (auto& obj : Objects) {
+			for (auto& obj : _objects) {
 				obj->Update(dt);
 			}
-			//iterate over deletion queue
-			for (int i = 0; i < _deletionQueue.size(); i++)
-			{
-				//delete from objects
-				//remove(Objects.begin(), Objects.end(), _deletionQueue[i]);
-				Objects.erase(remove(Objects.begin(), Objects.end(), _deletionQueue[i]), Objects.end());
-				this->brick_count -= 1;
-			}
-			//empty queue each frame
-			_deletionQueue.clear();
 		}
+		_FlushDeleteQueue();
 	}
 
-	void Scene::DeleteGameObject(const std::shared_ptr<GameObject>& object)
+	void Scene::PreRender() {
+		_lightingUbo->Bind(LIGHT_UBO_BINDING);
+	}
+
+	void Scene::RenderGUI()
 	{
-		_deletionQueue.push_back(object);
+		for (auto& obj : _objects) {
+			// Parents handle rendering for children, so ignore parented objects
+			if (obj->GetParent() == nullptr) {
+				obj->RenderGUI();
+			}
+		}
 	}
 
 	void Scene::SetShaderLight(int index, bool update /*= true*/) {
@@ -191,16 +226,34 @@ namespace Gameplay {
 		Scene::Sptr result = std::make_shared<Scene>();
 		result->DefaultMaterial = ResourceManager::Get<Material>(Guid(data["default_material"]));
 
+		if (data.contains("ambient")) {
+			result->SetAmbientLight(ParseJsonVec3(data["ambient"]));
+		}
+
+		if (data.contains("skybox") && data["skybox"].is_object()) {
+			nlohmann::json& blob = data["skybox"].get<nlohmann::json>();
+			result->_skyboxMesh = ResourceManager::Get<MeshResource>(Guid(blob["mesh"]));
+			result->SetSkyboxShader(ResourceManager::Get<Shader>(Guid(blob["shader"])));
+			result->SetSkyboxTexture(ResourceManager::Get<TextureCube>(Guid(blob["texture"])));
+			result->SetSkyboxRotation(glm::mat3_cast(ParseJsonQuat(blob["orientation"])));
+		}
+
 		// Make sure the scene has objects, then load them all in!
 		LOG_ASSERT(data["objects"].is_array(), "Objects not present in scene!");
 		for (auto& object : data["objects"]) {
-			result->Objects.push_back(GameObject::FromJson(object, result.get()));
+			GameObject::Sptr obj = GameObject::FromJson(object);
+			obj->_scene = result.get();
+			obj->_parent.SceneContext = result.get();
+			obj->_selfRef = obj;
+			result->_objects.push_back(obj);
 		}
-		//// Make sure the scene has bricks, then load them all in!
-		//LOG_ASSERT(data["Bricks"].is_array(), "bricks not present in scene!");
-		//for (auto& object : data["Bricks"]) {
-		//	result->bricks.push_back(GameObject::FromJson(object, result.get()));
-		//}
+
+		// Re-build the parent hierarchy 
+		for (const auto& object : result->_objects) {
+			if (object->GetParent() != nullptr) {
+				object->GetParent()->AddChild(object);
+			}
+		}
 
 		// Make sure the scene has lights, then load all
 		LOG_ASSERT(data["lights"].is_array(), "Lights not present in scene!");
@@ -210,7 +263,7 @@ namespace Gameplay {
 
 		// Create and load camera config
 		result->MainCamera = ComponentManager::GetComponentByGUID<Camera>(Guid(data["main_camera"]));
-	
+
 		return result;
 	}
 
@@ -220,21 +273,21 @@ namespace Gameplay {
 		// Save the default shader (really need a material class)
 		blob["default_material"] = DefaultMaterial ? DefaultMaterial->GetGUID().str() : "null";
 
+		blob["ambient"] = GlmToJson(GetAmbientLight());
+
+		blob["skybox"] = nlohmann::json();
+		blob["skybox"]["mesh"] = _skyboxMesh ? _skyboxMesh->GetGUID().str() : "null";
+		blob["skybox"]["shader"] = _skyboxShader ? _skyboxShader->GetGUID().str() : "null";
+		blob["skybox"]["texture"] = _skyboxTexture ? _skyboxTexture->GetGUID().str() : "null";
+		blob["skybox"]["orientation"] = GlmToJson(_skyboxRotation);
+
 		// Save renderables
 		std::vector<nlohmann::json> objects;
-		objects.resize(Objects.size());
-		for (int ix = 0; ix < Objects.size(); ix++) {
-			objects[ix] = Objects[ix]->ToJson();
+		objects.resize(_objects.size());
+		for (int ix = 0; ix < _objects.size(); ix++) {
+			objects[ix] = _objects[ix]->ToJson();
 		}
 		blob["objects"] = objects;
-
-		// Save renderables 2
-		/*std::vector<nlohmann::json> Bricks;
-		objects.resize(bricks.size());
-		for (int ix = 0; ix < bricks.size(); ix++) {
-			Bricks[ix] = bricks[ix]->ToJson();
-		}
-		blob["Bricks"] = Bricks;*/
 
 		// Save lights
 		std::vector<nlohmann::json> lights;
@@ -268,23 +321,12 @@ namespace Gameplay {
 	}
 
 	int Scene::NumObjects() const {
-		return Objects.size();
+		return _objects.size();
 	}
 
 	GameObject::Sptr Scene::GetObjectByIndex(int index) const {
-		return Objects[index];
+		return _objects[index];
 	}
-
-	/*std::vector<GameObject::Sptr> Scene::getBricks()
-	{
-		return bricks;
-	}*/
-
-
-	//void Scene::addBricks(GameObject::Sptr b)
-	//{
-	//	bricks.push_back(b);
-	//}
 
 	void Scene::_InitPhysics() {
 		_collisionConfig = new btDefaultCollisionConfiguration();
@@ -315,9 +357,21 @@ namespace Gameplay {
 		delete _collisionConfig;
 	}
 
+
+	void Scene::_FlushDeleteQueue() {
+		for (auto& weakPtr : _deletionQueue) {
+			if (weakPtr.expired()) continue;
+			auto& it = std::find(_objects.begin(), _objects.end(), weakPtr.lock());
+			if (it != _objects.end()) {
+				_objects.erase(it);
+			}
+		}
+		_deletionQueue.clear();
+	}
+
 	void Scene::DrawAllGameObjectGUIs()
 	{
-		for (auto& object : Objects) {
+		for (auto& object : _objects) {
 			object->DrawImGui();
 		}
 
@@ -329,15 +383,6 @@ namespace Gameplay {
 			memset(buffer, 0, 256);
 		}
 	}
-	//void Scene::RenderGUI()
-	//{
-	//	for (auto& obj : Objects) {
-	//		// Parents handle rendering for children, so ignore parented objects
-	//		if (obj->GetParent() == nullptr) {
-	//			obj->RenderGUI();
-	//		}
-	//	}
-	//}
 
 	void Scene::DrawSkybox()
 	{
@@ -364,14 +409,4 @@ namespace Gameplay {
 		}
 	}
 
-	/*void Scene::_FlushDeleteQueue() {
-		for (std::weakPtr : _deletionQueue) {
-			if (weakPtr.expired()) continue;
-			auto& it = std::find(Objects.begin(), Objects.end(), weakPtr.lock());
-			if (it != Objects.end()) {
-				Objects.erase(it);
-			}
-		}
-		_deletionQueue.clear();
-	}*/
 }

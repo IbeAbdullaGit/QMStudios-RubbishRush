@@ -44,7 +44,7 @@ struct VertexParamMap {
 			// If the attribute is a float2 texture UV, store it's byte offset
 			else if (vDecl[ix].Usage == AttribUsage::Color && vDecl[ix].Type == AttributeType::Float) {
 				ColorOffset = vDecl[ix].Offset;
-				ColorSize   = vDecl[ix].Size;
+				ColorSize = vDecl[ix].Size;
 			}
 			// If the attribute is a float3 tangent, store it's byte offset
 			else if (vDecl[ix].Usage == AttribUsage::Tangent && vDecl[ix].Size == 3 && vDecl[ix].Type == AttributeType::Float) {
@@ -128,12 +128,12 @@ struct VertexParamMap {
 	glm::vec4 GetColor(Vertex& vertex) const {
 		if (ColorOffset != (uint32_t)-1) {
 			switch (ColorSize) {
-				case 2:
-					return glm::vec4(*GetPtrOffset<Vertex, glm::vec2>(vertex, ColorOffset), 0, 1);
-				case 3:
-					return glm::vec4(*GetPtrOffset<Vertex, glm::vec3>(vertex, ColorOffset), 1);
-				case 4:
-					return *GetPtrOffset<Vertex, glm::vec4>(vertex, ColorOffset);
+			case 2:
+				return glm::vec4(*GetPtrOffset<Vertex, glm::vec2>(vertex, ColorOffset), 0, 1);
+			case 3:
+				return glm::vec4(*GetPtrOffset<Vertex, glm::vec3>(vertex, ColorOffset), 1);
+			case 4:
+				return *GetPtrOffset<Vertex, glm::vec4>(vertex, ColorOffset);
 			}
 		}
 		return glm::vec4(1.0f);

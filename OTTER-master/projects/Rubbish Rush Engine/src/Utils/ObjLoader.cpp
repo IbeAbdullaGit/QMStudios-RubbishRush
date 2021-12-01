@@ -26,6 +26,8 @@ VertexArrayObject::Sptr ObjLoader::LoadFromFile(const std::string& filename)
 	}
 
 	std::string line;
+	bool isduplicate = false;
+
 	
 	// TODO: Load data from file
 	std::vector<glm::vec3> positions;
@@ -80,6 +82,7 @@ VertexArrayObject::Sptr ObjLoader::LoadFromFile(const std::string& filename)
 
 			// We'll support only triangles
 			for (int ix = 0; ix < 3; ix++) {
+				isduplicate = false;
 				// Read in the 3 attributes (position, UV, normal)
 				char separator;
 				stream >> vertexIndices.x >> separator >> vertexIndices.y >> separator >> vertexIndices.z;
@@ -96,7 +99,25 @@ VertexArrayObject::Sptr ObjLoader::LoadFromFile(const std::string& filename)
 				// NOTE: This will create duplicate vertices!
 				// A smarter solution would create a map of what attribute
 				// combos have already been added
-				vertices.push_back(vertexIndices);
+				if (ix != 0) {
+					for (int c = 0; c < ix; c++) {
+						if (vertices[vertices.size() - 1 - c] == vertexIndices) {
+							isduplicate = true;
+
+						}
+					}
+					//counter += 1;
+					if (!isduplicate) {
+
+						//vertices[counter] = vertexIndices;
+						vertices.push_back(vertexIndices);
+					}
+				}
+				else {
+					vertices.push_back(vertexIndices);
+
+				}
+
 			}
 		}
 	}

@@ -45,9 +45,9 @@ namespace Gameplay::Physics {
 		btBroadphasePairArray& collisionPairs = _ghost->getOverlappingPairCache()->getOverlappingPairArray();
 
 		// Determine how many objects are intersecting the volume
-		const int numObjects=collisionPairs.size();
+		const int numObjects = collisionPairs.size();
 		thisFrameCollision.reserve(numObjects);
-        //std::cout << numObjects << std::endl;
+
 		// Will store our contact manifolds, can be static to be shared between frames and instances
 		static btManifoldArray	m_manifoldArray;
 
@@ -87,7 +87,7 @@ namespace Gameplay::Physics {
 
 					// Make sure that the object is not a kinematic or static object (note: you may want
 					// to modify this behaviour depending on your game)
-					if ((body->getCollisionFlags() & btCollisionObject::CF_STATIC_OBJECT & btCollisionObject::CF_KINEMATIC_OBJECT == 0) ||
+					if ((body->getCollisionFlags() & btCollisionObject::CF_STATIC_OBJECT) ||
 						((body->getCollisionFlags() & btCollisionObject::CF_STATIC_OBJECT) == *(_typeFlags & TriggerTypeFlags::Statics)) ||
 						((body->getCollisionFlags() & btCollisionObject::CF_KINEMATIC_OBJECT) == *(_typeFlags & TriggerTypeFlags::Kinematics))) {
 
@@ -189,11 +189,6 @@ namespace Gameplay::Physics {
 		return result;
 	}
 
-	 void TriggerVolume::OnEnteredTrigger(const std::shared_ptr<Physics::TriggerVolume>& trigger)
-	{
-
-	}
-
 	btBroadphaseProxy* TriggerVolume::_GetBroadphaseHandle() {
 		return _ghost != nullptr ? _ghost->getBroadphaseHandle() : nullptr;
 	}
@@ -207,6 +202,4 @@ namespace Gameplay::Physics {
 	}
 
 }
-
-
 

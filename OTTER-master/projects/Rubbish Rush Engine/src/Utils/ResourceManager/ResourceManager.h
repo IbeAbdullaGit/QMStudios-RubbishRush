@@ -11,6 +11,7 @@
 
 #include "Utils/GUID.hpp"
 #include "Utils/ResourceManager/IResource.h"
+#include "Utils/StringUtils.h"
 
 /// <summary>
 /// Utility class for managing and loading resources from JSON
@@ -86,6 +87,7 @@ public:
 		}
 	}
 
+
 	/// <summary>
 	/// Iterates over all resources of the given type and invokes a method with them
 	/// </summary>
@@ -110,7 +112,6 @@ public:
 		}
 	}
 
-	
 	/// <summary>
 	/// Gets the current JSON manifest
 	/// </summary>
@@ -143,5 +144,9 @@ protected:
 	/// </summary>
 	static std::map<std::string, std::function<Guid(const nlohmann::json&)>> _typeLoaders;
 
+	/// <summary>
+	/// We use an ORDERED JSON file to allow serializing types in the order they are registered.
+	/// This allows us to register dependencies before the dependent resource
+	/// </summary>
 	static nlohmann::ordered_json _manifest;
 };

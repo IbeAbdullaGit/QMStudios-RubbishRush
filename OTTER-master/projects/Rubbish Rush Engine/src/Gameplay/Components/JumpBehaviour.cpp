@@ -1,8 +1,13 @@
 #include "Gameplay/Components/JumpBehaviour.h"
+#include "Gameplay/Components/ComponentManager.h"
+#include "Utils/GlmBulletConversions.h"
+#include "Gameplay/Components/IComponent.h"
 #include <GLFW/glfw3.h>
+#include "Gameplay/Physics/RigidBody.h"
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Scene.h"
 #include "Utils/ImGuiHelper.h"
+
 
 void JumpBehaviour::Awake()
 {

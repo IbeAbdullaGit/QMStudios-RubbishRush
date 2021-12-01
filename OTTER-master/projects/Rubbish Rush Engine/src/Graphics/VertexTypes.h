@@ -12,7 +12,21 @@ struct VertexPosCol {
 	VertexPosCol(const glm::vec3& pos, const glm::vec4& col) :
 		Position(pos), Color(col) {}
 	VertexPosCol(float x, float y, float z, float r, float g, float b, float a = 1.0f) :
-		Position({x, y, z}), Color({r, g, b, a}) {}
+		Position({ x, y, z }), Color({ r, g, b, a }) {}
+
+	static const std::vector<BufferAttribute> V_DECL;
+};
+
+struct VertexPosColTex {
+	glm::vec3 Position;
+	glm::vec4 Color;
+	glm::vec2 UV;
+
+	VertexPosColTex() : Position(glm::vec3(0.0f)), Color(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)), UV({ 0.0f, 0.0f }) {}
+	VertexPosColTex(const glm::vec3& pos, const glm::vec4& col, const glm::vec2& uv) :
+		Position(pos), Color(col), UV(uv) {}
+	VertexPosColTex(float x, float y, float z, float r, float g, float b, float a, float u, float v) :
+		Position({ x, y, z }), Color({ r, g, b, a }), UV({ u, v }) {}
 
 	static const std::vector<BufferAttribute> V_DECL;
 };
@@ -26,8 +40,8 @@ struct VertexPosNormCol {
 	VertexPosNormCol(const glm::vec3& pos, const glm::vec3& norm, const glm::vec4& col) :
 		Position(pos), Normal(norm), Color(col) {}
 	VertexPosNormCol(float x, float y, float z, float nX, float nY, float nZ, float r, float g, float b, float a = 1.0f) :
-		Position({ x, y, z }), Normal({nX, nY, nZ}), Color({ r, g, b, a }) {}
-	
+		Position({ x, y, z }), Normal({ nX, nY, nZ }), Color({ r, g, b, a }) {}
+
 	static const std::vector<BufferAttribute> V_DECL;
 };
 
@@ -55,7 +69,7 @@ struct VertexPosNormTexCol {
 	VertexPosNormTexCol(const glm::vec3& pos, const glm::vec3& norm, const glm::vec2& uv, const glm::vec4& col) :
 		Position(pos), Normal(norm), UV(uv), Color(col) {}
 	VertexPosNormTexCol(float x, float y, float z, float nX, float nY, float nZ, float u, float v, float r, float g, float b, float a = 1.0f) :
-		Position({ x, y, z }), Normal({ nX, nY, nZ }), UV({ u, v }), Color({r, g, b, a}) {}
+		Position({ x, y, z }), Normal({ nX, nY, nZ }), UV({ u, v }), Color({ r, g, b, a }) {}
 
 	static const std::vector<BufferAttribute> V_DECL;
 };

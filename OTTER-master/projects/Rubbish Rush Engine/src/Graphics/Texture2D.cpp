@@ -4,11 +4,25 @@
 #include "GLM/glm.hpp"
 #include "Utils/JsonGlmHelpers.h"
 
+/// <summary>
+/// Get the number of mipmap levels required for a texture of the given size
+/// </summary>
+/// <param name="width">The width of the texture in pixels</param>
+/// <param name="height">The height of the texture in pixels</param>
+/// <returns>Number of mip levels required for the texture</returns>
+inline int CalcRequiredMipLevels(int width, int height) {
+	return (1 + floor(log2(glm::max(width, height))));
+}
+
 nlohmann::json Texture2D::ToJson() const {
 	return {
 		{ "filename", _description.Filename },
 		{ "wrap_s",  ~_description.HorizontalWrap },
 		{ "wrap_t",  ~_description.VerticalWrap },
+		{ "filter_min",       ~_description.MinificationFilter },
+		{ "filter_mag",       ~_description.MagnificationFilter },
+		{ "anisotropic",       _description.MaxAnisotropic },
+		{ "generate_mipmaps",  _description.GenerateMipMaps },
 	};
 }
 
@@ -17,20 +31,47 @@ Texture2D::Sptr Texture2D::FromJson(const nlohmann::json& data)
 	Texture2DDescription descr = Texture2DDescription();
 	descr.Filename = data["filename"];
 	descr.HorizontalWrap = JsonParseEnum(WrapMode, data, "wrap_s", WrapMode::ClampToEdge);
-	descr.VerticalWrap   = JsonParseEnum(WrapMode, data, "wrap_t", WrapMode::ClampToEdge);
+	descr.VerticalWrap = JsonParseEnum(WrapMode, data, "wrap_t", WrapMode::ClampToEdge);
+	descr.MinificationFilter = JsonParseEnum(MinFilter, data, "filter_min", MinFilter::NearestMipNearest);
+	descr.MagnificationFilter = JsonParseEnum(MagFilter, data, "filter_mag", MagFilter::Linear);
+	descr.MaxAnisotropic = JsonGet(data, "anisotropic", 0.0f);
+	descr.GenerateMipMaps = JsonGet(data, "generate_mipmaps", false);
 	return std::make_shared<Texture2D>(descr);
 }
 
 Texture2D::Texture2D(const Texture2DDescription& description) : ITexture(TextureType::_2D) {
 	_description = description;
 	_SetTextureParams();
-	_LoadDataFromFile();
+	if (!description.Filename.empty()) {
+		_LoadDataFromFile();
+	}
 }
 
 Texture2D::Texture2D(const std::string& filePath) : ITexture(TextureType::_2D) {
 	_description.Filename = filePath;
 	_SetTextureParams();
 	_LoadDataFromFile();
+}
+
+void Texture2D::SetMinFilter(MinFilter value) {
+	_description.MinificationFilter = value;
+	glTextureParameteri(_handle, GL_TEXTURE_MIN_FILTER, *_description.MinificationFilter);
+}
+
+void Texture2D::SetMagFilter(MagFilter value) {
+	_description.MagnificationFilter = value;
+	glTextureParameteri(_handle, GL_TEXTURE_MAG_FILTER, *_description.MagnificationFilter);
+}
+
+void Texture2D::SetAnisoLevel(float value) {
+	if (value != _description.MaxAnisotropic) {
+		_description.MaxAnisotropic = glm::clamp(value, 1.0f, ITexture::GetLimits().MAX_ANISOTROPY);
+		glTextureParameterf(_handle, GL_TEXTURE_MAX_ANISOTROPY, _description.MaxAnisotropic);
+
+		if (_description.GenerateMipMaps) {
+			glGenerateTextureMipmap(_handle);
+		}
+	}
 }
 
 void Texture2D::LoadData(uint32_t width, uint32_t height, PixelFormat format, PixelType type, void* data, uint32_t offsetX, uint32_t offsetY) {
@@ -45,6 +86,11 @@ void Texture2D::LoadData(uint32_t width, uint32_t height, PixelFormat format, Pi
 
 	// Upload our data to our image
 	glTextureSubImage2D(_handle, 0, offsetX, offsetY, width, height, (GLenum)format, (GLenum)type, data);
+
+	// If requested, generate mip-maps for our texture
+	if (_description.GenerateMipMaps) {
+		glGenerateTextureMipmap(_handle);
+	}
 }
 
 void Texture2D::_LoadDataFromFile() {
@@ -62,7 +108,7 @@ void Texture2D::_LoadDataFromFile() {
 		// If we could not load any data, warn and return null
 		if (data == nullptr) {
 			LOG_WARN("STBI Failed to load image from \"{}\"", _description.Filename);
-			return ;
+			return;
 		}
 
 		// We should estimate a good format for our data
@@ -74,29 +120,8 @@ void Texture2D::_LoadDataFromFile() {
 		// We'll determine a recommended format for the image based on number of channels
 		// We hinted that we wanted a certain number of channels, but we're not guaranteed
 		// that all those channels exist (ex: loading an RGB image but requesting RGBA)
-		InternalFormat internal_format;
-		PixelFormat    image_format;
-		switch (numChannels) {
-			case 1:
-				internal_format = InternalFormat::R8;
-				image_format = PixelFormat::Red;
-				break;
-			case 2:
-				internal_format = InternalFormat::RG8;
-				image_format = PixelFormat::RG;
-				break;
-			case 3:
-				internal_format = InternalFormat::RGB8;
-				image_format = PixelFormat::RGB;
-				break;
-			case 4:
-				internal_format = InternalFormat::RGBA8;
-				image_format = PixelFormat::RGBA;
-				break;
-			default:
-				LOG_ASSERT(false, "Unsupported texture format for texture \"{}\" with {} channels", _description.Filename, numChannels)
-					break;
-		}
+		InternalFormat internal_format = GetInternalFormatForChannels8(numChannels);
+		PixelFormat    image_format = GetPixelFormatForChannels(numChannels);
 
 		// This is one of those poorly documented things in OpenGL
 		if ((numChannels * width) % 4 != 0) {
@@ -120,13 +145,23 @@ void Texture2D::_LoadDataFromFile() {
 }
 
 void Texture2D::_SetTextureParams() {
+	// If the anisotropy is negative, we assume that we want max anisotropy
+	if (_description.MaxAnisotropic < 0.0f) {
+		_description.MaxAnisotropic = ITexture::GetLimits().MAX_ANISOTROPY;
+	}
+
 	// Make sure the size is greater than zero and that we have a format specified before trying to set parameters
 	if ((_description.Width * _description.Height > 0) && _description.Format != InternalFormat::Unknown) {
+		// Calculate how many layers of storage to allocate based on whether mipmaps are enabled or not
+		int layers = _description.GenerateMipMaps ? CalcRequiredMipLevels(_description.Width, _description.Height) : 1;
 		// Allocates the memory for our texture
-		glTextureStorage2D(_handle, 1, (GLenum)_description.Format, _description.Width, _description.Height);
+		glTextureStorage2D(_handle, layers, (GLenum)_description.Format, _description.Width, _description.Height);
 
 		glTextureParameteri(_handle, GL_TEXTURE_WRAP_S, (GLenum)_description.HorizontalWrap);
 		glTextureParameteri(_handle, GL_TEXTURE_WRAP_T, (GLenum)_description.VerticalWrap);
+		glTextureParameteri(_handle, GL_TEXTURE_MIN_FILTER, (GLenum)_description.MinificationFilter);
+		glTextureParameteri(_handle, GL_TEXTURE_MAG_FILTER, (GLenum)_description.MagnificationFilter);
+		glTextureParameterf(_handle, GL_TEXTURE_MAX_ANISOTROPY, _description.MaxAnisotropic);
 	}
 }
 

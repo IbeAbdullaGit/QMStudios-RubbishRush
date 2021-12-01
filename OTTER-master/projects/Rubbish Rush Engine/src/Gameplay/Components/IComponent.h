@@ -66,6 +66,19 @@ namespace Gameplay {
 		virtual void OnTriggerVolumeLeaving(const std::shared_ptr<Physics::RigidBody>& body) {};
 
 		/// <summary>
+		/// Allows components to perform an action before child GUI items are rendered
+		/// </summary>
+		virtual void StartGUI() {}
+		/// <summary>
+		/// Allows components to render GUI elements to the screen
+		/// </summary>
+		virtual void RenderGUI() {}
+		/// <summary>
+		///  Allows components to perform an action after child GUI items are rendered
+		/// </summary>
+		virtual void FinishGUI() {}
+
+		/// <summary>
 		/// Invoked when a component has been added to a game object, note that this function
 		/// should only perform local setup (i.e never look for game objects or other components)
 		/// </summary>

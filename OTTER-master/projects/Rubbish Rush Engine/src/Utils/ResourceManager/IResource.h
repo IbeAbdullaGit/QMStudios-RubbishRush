@@ -16,6 +16,7 @@
 class IResource {
 public:
 	typedef std::shared_ptr<IResource> Sptr;
+	typedef std::weak_ptr<IResource> Wptr;
 
 	virtual ~IResource() = default;
 
@@ -42,7 +43,7 @@ public:
 
 protected:
 	Guid _guid;
-	IResource() : _guid(Guid::New()){}
+	IResource() : _guid(Guid::New()) {}
 };
 
 /// <summary>

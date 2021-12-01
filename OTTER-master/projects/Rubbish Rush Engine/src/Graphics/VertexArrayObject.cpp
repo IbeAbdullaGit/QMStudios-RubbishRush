@@ -42,7 +42,8 @@ void VertexArrayObject::AddVertexBuffer(const VertexBuffer::Sptr& buffer, const 
 		if (_indexBuffer == nullptr) {
 			_elementCount = _vertexCount;
 		}
-	} else if (buffer->GetElementCount() != _vertexCount) {
+	}
+	else if (buffer->GetElementCount() != _vertexCount) {
 		LOG_WARN("Buffer element count does not match vertex count of this VAO!!!");
 	}
 
@@ -57,7 +58,7 @@ void VertexArrayObject::AddVertexBuffer(const VertexBuffer::Sptr& buffer, const 
 	for (const BufferAttribute& attrib : attributes) {
 		glEnableVertexArrayAttrib(_handle, attrib.Slot);
 		glVertexAttribPointer(attrib.Slot, attrib.Size, (GLenum)attrib.Type, attrib.Normalized, attrib.Stride,
-							  (void*)attrib.Offset);
+			(void*)attrib.Offset);
 	}
 	Unbind();
 }
@@ -65,9 +66,12 @@ void VertexArrayObject::AddVertexBuffer(const VertexBuffer::Sptr& buffer, const 
 void VertexArrayObject::Draw(DrawMode mode) {
 	Bind();
 	if (_indexBuffer == nullptr) {
-		glDrawArrays((GLenum)mode, 0, _elementCount);
-	} else {
-		glDrawElements((GLenum)mode, _elementCount, (GLenum)_indexBuffer->GetElementType(), nullptr);
+		size_t elements = _elementCount == 0 ? _vertexBuffers[0].Buffer->GetElementCount() : _elementCount;
+		glDrawArrays((GLenum)mode, 0, elements);
+	}
+	else {
+		size_t elements = _elementCount == 0 ? _indexBuffer->GetElementCount() : _elementCount;
+		glDrawElements((GLenum)mode, elements, (GLenum)_indexBuffer->GetElementType(), nullptr);
 	}
 	Unbind();
 }
@@ -92,7 +96,7 @@ const VertexArrayObject::VertexBufferBinding* VertexArrayObject::GetBufferBindin
 	for (auto& binding : _vertexBuffers) {
 		auto& it = std::find_if(binding.Attributes.begin(), binding.Attributes.end(), [&](const BufferAttribute& attrib) {
 			return attrib.Usage == usage;
-		});
+			});
 		if (it != binding.Attributes.end()) {
 			return &binding;
 		}

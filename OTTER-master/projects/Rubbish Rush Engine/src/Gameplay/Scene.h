@@ -9,6 +9,7 @@
 #include "Physics/BulletDebugDraw.h"
 
 #include "Graphics/UniformBuffer.h"
+
 struct GLFWwindow;
 
 class TextureCube;
@@ -44,7 +45,7 @@ namespace Gameplay {
 		// Instead of a "base shader", we can specify a default material
 		std::shared_ptr<Material>  DefaultMaterial;
 
-		GLFWwindow*                Window; // another place that can use improvement
+		GLFWwindow* Window; // another place that can use improvement
 
 		// Whether the application is in "play mode", lets us leverage editors!
 		bool                       IsPlaying;
@@ -54,7 +55,15 @@ namespace Gameplay {
 		~Scene();
 
 		void SetPhysicsDebugDrawMode(BulletDebugMode mode);
+
+		void SetSkyboxShader(const std::shared_ptr<Shader>& shader);
+		std::shared_ptr<Shader> GetSkyboxShader() const;
+
+		void SetSkyboxTexture(const std::shared_ptr<TextureCube>& texture);
 		std::shared_ptr<TextureCube> GetSkyboxTexture() const;
+
+		void SetSkyboxRotation(const glm::mat3& value);
+		const glm::mat3& GetSkyboxRotation() const;
 
 		/**
 		 * Gets whether the scene has already called Awake()
@@ -81,14 +90,14 @@ namespace Gameplay {
 		/// is found
 		/// </summary>
 		/// <param name="name">The name of the object to find</param>
-		GameObject::Sptr FindObjectByName(const std::string name);
+		GameObject::Sptr FindObjectByName(const std::string name) const;
 		/// <summary>
 		/// Searches all render objects in the scene and returns the first
 		/// one who's guid matches the one given, or nullptr if no object
 		/// is found
 		/// </summary>
 		/// <param name="id">The guid of the object to find</param>
-		GameObject::Sptr FindObjectByGUID(Guid id);
+		GameObject::Sptr FindObjectByGUID(Guid id) const;
 
 		/// <summary>
 		/// Sets the ambient light color for this scene
@@ -134,8 +143,10 @@ namespace Gameplay {
 		/// </summary>
 		void PreRender();
 
-		//delete game object
-		void DeleteGameObject(const std::shared_ptr<GameObject>& object);
+		/// <summary>
+		/// Draws all GUI objects in the scene
+		/// </summary>
+		void RenderGUI();
 
 		/// <summary>
 		/// Handles setting the shader uniforms for our light structure in our array of lights
@@ -150,17 +161,12 @@ namespace Gameplay {
 		/// </summary>
 		void SetupShaderAndLights();
 
-		void DrawSkybox();
-
-		/// <summary>
-		/// Draws all GUI objects in the scene
-		/// </summary>
-		void RenderGUI();
-
 		/// <summary>
 		/// Draws ImGui stuff for all gameobjects in the scene
 		/// </summary>
 		void DrawAllGameObjectGUIs();
+
+		void DrawSkybox();
 
 		/// <summary>
 		/// Gets the scene's Bullet physics world
@@ -192,27 +198,22 @@ namespace Gameplay {
 		int NumObjects() const;
 		GameObject::Sptr GetObjectByIndex(int index) const;
 
-		int brick_count;
-		int trash;
-		bool need_update = false;
-		//std::vector<GameObject::Sptr> getBricks();
-		//void addBricks(GameObject::Sptr b);
-
-		
+		int trash = 0;
+		int brick_count = 0;
 
 	protected:
 		// Bullet physics stuff world
-		btDynamicsWorld*          _physicsWorld;
+		btDynamicsWorld* _physicsWorld;
 		// Our bullet physics configuration
-		btCollisionConfiguration* _collisionConfig; 
+		btCollisionConfiguration* _collisionConfig;
 		// Handles dispatching collisions between objects
-		btCollisionDispatcher*    _collisionDispatcher;
+		btCollisionDispatcher* _collisionDispatcher;
 		// Provides rough broadphase (AABB) checks to improve performance
-		btBroadphaseInterface*    _broadphaseInterface;
+		btBroadphaseInterface* _broadphaseInterface;
 		// Resolves contraints (ex: hinge constraints, angle axis, etc...)
-		btConstraintSolver*       _constraintSolver;
+		btConstraintSolver* _constraintSolver;
 		// this is what allows us to get our pairs from the trigger volumes
-		btGhostPairCallback*      _ghostCallback;
+		btGhostPairCallback* _ghostCallback;
 
 		BulletDebugDraw* _bulletDebugDraw;
 
@@ -223,17 +224,14 @@ namespace Gameplay {
 		glm::vec3 _gravity;
 
 		// Stores all the objects in our scene
-		std::vector<GameObject::Sptr>  Objects;
-		//std::vector<GameObject::Sptr> bricks;
-		
+		std::vector<GameObject::Sptr>  _objects;
+		std::vector<std::weak_ptr<GameObject>>  _deletionQueue;
+
 		// Info for rendering our skybox will be stored in the scene itself
 		std::shared_ptr<Shader>       _skyboxShader;
 		std::shared_ptr<MeshResource> _skyboxMesh;
 		std::shared_ptr<TextureCube>  _skyboxTexture;
 		glm::mat3                     _skyboxRotation;
-
-		
-		std::vector<GameObject::Sptr> _deletionQueue;
 
 		/// <summary>
 		/// Represents a c++ struct layout that matches that of
@@ -265,9 +263,8 @@ namespace Gameplay {
 			glm::mat4 EnvironmentRotation;
 		};
 		UniformBuffer<LightingUboStruct>::Sptr _lightingUbo;
-		bool                       _isAwake;
 
-	
+		bool                       _isAwake;
 
 		/// <summary>
 		/// Handles configuring our bullet physics stuff

@@ -47,7 +47,7 @@ namespace Gameplay::Physics {
 
 	ICollider* ICollider::SetPosition(const glm::vec3& value) {
 		_position = value;
-		_isDirty  = true;
+		_isDirty = true;
 		return this;
 	}
 
@@ -82,18 +82,18 @@ namespace Gameplay::Physics {
 	ICollider::Sptr ICollider::Create(ColliderType type) {
 		switch (type)
 		{
-			case ColliderType::Plane:       return PlaneCollider::Create();
-			case ColliderType::Box:         return BoxCollider::Create();
-			case ColliderType::Sphere:      return SphereCollider::Create();
-			case ColliderType::Capsule:     return CapsuleCollider::Create();
-			case ColliderType::Cone:        return ConeCollider::Create();
-			case ColliderType::Cylinder:    return CylinderCollider::Create();
-			case ColliderType::ConvexMesh:  return ConvexMeshCollider::Create();
-			case ColliderType::ConcaveMesh: throw std::runtime_error("Collider type not supported!"); return nullptr;
-			case ColliderType::Terrain:     throw std::runtime_error("Collider type not supported!"); return nullptr;
-			case ColliderType::Unknown:
-			default:
-				return nullptr;
+		case ColliderType::Plane:       return PlaneCollider::Create();
+		case ColliderType::Box:         return BoxCollider::Create();
+		case ColliderType::Sphere:      return SphereCollider::Create();
+		case ColliderType::Capsule:     return CapsuleCollider::Create();
+		case ColliderType::Cone:        return ConeCollider::Create();
+		case ColliderType::Cylinder:    return CylinderCollider::Create();
+		case ColliderType::ConvexMesh:  return ConvexMeshCollider::Create();
+		case ColliderType::ConcaveMesh: throw std::runtime_error("Collider type not supported!"); return nullptr;
+		case ColliderType::Terrain:     throw std::runtime_error("Collider type not supported!"); return nullptr;
+		case ColliderType::Unknown:
+		default:
+			return nullptr;
 		}
 
 	}

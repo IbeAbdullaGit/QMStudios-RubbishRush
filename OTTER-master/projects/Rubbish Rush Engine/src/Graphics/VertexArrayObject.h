@@ -11,24 +11,24 @@
 /// <summary>
 /// We'll use this just to make it more clear what the intended usage of an attribute is in our code!
 /// </summary>
-ENUM(AttribUsage, uint8_t, 
-	Unknown  = 0,
+ENUM(AttribUsage, uint8_t,
+	Unknown = 0,
 	Position = 1,
-	Color    = 2,
-	Color1   = 3,   //
-	Color2   = 4,   // Extras
-	Color3   = 5,   //
-	Texture  = 6,
+	Color = 2,
+	Color1 = 3,   //
+	Color2 = 4,   // Extras
+	Color3 = 5,   //
+	Texture = 6,
 	Texture1 = 7, //
 	Texture2 = 8, // Extras
 	Texture3 = 9, //
-	Normal   = 10,
-	Tangent  = 11,
+	Normal = 10,
+	Tangent = 11,
 	BiTangent = 12,
-	User0    = 13,    //
-	User1    = 14,    //
-	User2    = 15,    // Extras
-	User3    = 16     //
+	User0 = 13,    //
+	User1 = 14,    //
+	User2 = 15,    // Extras
+	User3 = 16     //
 );
 
 /// <summary>
@@ -36,14 +36,14 @@ ENUM(AttribUsage, uint8_t,
 /// </summary>
 /// <see>https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml</see>
 ENUM(AttributeType, GLenum,
-	Byte    = GL_BYTE,
-	UByte   = GL_UNSIGNED_BYTE,
-	Short   = GL_SHORT,
-	UShort  = GL_UNSIGNED_SHORT,
-	Int     = GL_INT,
-	UInt    = GL_UNSIGNED_INT,
-	Float   = GL_FLOAT,
-	Double  = GL_DOUBLE,
+	Byte = GL_BYTE,
+	UByte = GL_UNSIGNED_BYTE,
+	Short = GL_SHORT,
+	UShort = GL_UNSIGNED_SHORT,
+	Int = GL_INT,
+	UInt = GL_UNSIGNED_INT,
+	Float = GL_FLOAT,
+	Double = GL_DOUBLE,
 	Unknown = GL_NONE
 );
 
@@ -52,13 +52,13 @@ ENUM(AttributeType, GLenum,
 /// </summary>
 /// <see>https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glDrawArrays.xhtml</see>
 ENUM(DrawMode, GLenum,
-	Points        = GL_POINTS,
-	LineStrip     = GL_LINE_STRIP,
-	LineLoop      = GL_LINE_LOOP,
-	LineList      = GL_LINES,
+	Points = GL_POINTS,
+	LineStrip = GL_LINE_STRIP,
+	LineLoop = GL_LINE_LOOP,
+	LineList = GL_LINES,
 	TriangleStrip = GL_TRIANGLE_STRIP,
-	TriangleFan   = GL_TRIANGLE_FAN,
-	TriangleList  = GL_TRIANGLES
+	TriangleFan = GL_TRIANGLE_FAN,
+	TriangleList = GL_TRIANGLES
 );
 
 /// <summary>
@@ -95,7 +95,7 @@ struct BufferAttribute {
 	AttribUsage Usage;
 
 	BufferAttribute() :
-		Slot(0), Size(0), Type(AttributeType::Unknown), Normalized(false), Stride(0), Offset(0), Usage(AttribUsage::Unknown){}
+		Slot(0), Size(0), Type(AttributeType::Unknown), Normalized(false), Stride(0), Offset(0), Usage(AttribUsage::Unknown) {}
 
 	BufferAttribute(uint32_t slot, uint32_t size, AttributeType type, GLsizei stride, GLsizei offset, AttribUsage usage, bool normalized = false) :
 		Slot(slot), Size(size), Type(type), Stride(stride), Offset(offset), Usage(usage), Normalized(normalized) { }
@@ -126,7 +126,7 @@ public:
 		VertexBuffer::Sptr Buffer;
 		std::vector<BufferAttribute> Attributes;
 	};
-	
+
 public:
 	/// <summary>
 	/// Creates a new empty Vertex Array Object
@@ -180,7 +180,7 @@ public:
 	const VertexDeclaration& GetVDecl();
 
 protected:
-	
+
 	// The index buffer bound to this VAO
 	IndexBuffer::Sptr _indexBuffer;
 	// The vertex buffers bound to this VAO

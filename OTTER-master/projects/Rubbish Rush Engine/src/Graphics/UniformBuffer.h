@@ -9,7 +9,7 @@
 /// different structures
 /// </summary>
 class AbstractUniformBuffer : public IBuffer {
-public :
+public:
 	typedef std::shared_ptr<AbstractUniformBuffer> Sptr;
 
 	virtual ~AbstractUniformBuffer();
@@ -62,7 +62,7 @@ public:
 	/// </summary>
 	/// <param name="usage">The buffer's usage hint, default DynamicDraw</param>
 	UniformBuffer(BufferUsage usage = BufferUsage::DynamicDraw) :
-		AbstractUniformBuffer(sizeof(Structure), usage) 
+		AbstractUniformBuffer(sizeof(Structure), usage)
 	{}
 	/// <summary>
 	/// Creates a new Uniform Buffer with the given usage
@@ -70,7 +70,7 @@ public:
 	/// </summary>
 	/// <param name="usage">The buffer's usage hint, default DynamicDraw</param>
 	UniformBuffer(const Structure& data, BufferUsage usage = BufferUsage::DynamicDraw) :
-		AbstractUniformBuffer(sizeof(Structure), usage) 
+		AbstractUniformBuffer(sizeof(Structure), usage)
 	{
 		SetData(data);
 	}

@@ -21,10 +21,12 @@ std::string FileHelpers::ReadFile(const std::string& filename) {
 			// Seek to beginning of file, then read contents to string
 			in.seekg(0, std::ios::beg);
 			in.read(&result[0], size);
-		} else {
+		}
+		else {
 			LOG_ERROR("Could not read from file '{}'", filename);
 		}
-	} else {
+	}
+	else {
 		LOG_ERROR("Could not open file '{}'", filename);
 	}
 

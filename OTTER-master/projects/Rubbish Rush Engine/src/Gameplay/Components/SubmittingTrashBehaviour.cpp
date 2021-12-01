@@ -62,6 +62,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 			{
 				std::cout << "No trash to submit!\n";
 			}
+
 		}
 	}
 }

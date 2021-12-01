@@ -12,27 +12,27 @@
 /// Represents the shape of a collider
 /// </summary>
 ENUM(ColliderType, int,
-	 // The collider type is not known
-	 Unknown   = 0,
-	 // Plane with a normal that extends to infinity
-	 Plane     = 1,
-	 // Simple box colliders
-	 Box       = 2,
-	 // Simple sphere
-	 Sphere    = 3,
-	 // Capsule along the Z axis
-	 Capsule   = 4,
-	 // Cone along the Z axis
-	 Cone      = 5,
-	 // Cylinder along the Z axis
-	 Cylinder  = 6,
-	 // Convex meshes have no inward faces, ie no caves
-	 ConvexMesh = 7,
-	 // Concave meshes can have inward faces (NOT IMPLEMENTED)
-	 ConcaveMesh = 8,
-	 // Used for creating terrain colliders,
-	 // much more complex than the other colliders (NOT IMPLEMENTED)
-	 Terrain   = 9
+	// The collider type is not known
+	Unknown = 0,
+	// Plane with a normal that extends to infinity
+	Plane = 1,
+	// Simple box colliders
+	Box = 2,
+	// Simple sphere
+	Sphere = 3,
+	// Capsule along the Z axis
+	Capsule = 4,
+	// Cone along the Z axis
+	Cone = 5,
+	// Cylinder along the Z axis
+	Cylinder = 6,
+	// Convex meshes have no inward faces, ie no caves
+	ConvexMesh = 7,
+	// Concave meshes can have inward faces (NOT IMPLEMENTED)
+	ConcaveMesh = 8,
+	// Used for creating terrain colliders,
+	// much more complex than the other colliders (NOT IMPLEMENTED)
+	Terrain = 9
 );
 
 namespace Gameplay {

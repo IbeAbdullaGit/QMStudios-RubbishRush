@@ -19,7 +19,7 @@ public:
 	/// </summary>
 	/// <param name="usage">The usage hint for the buffer, default is GL_STATIC_DRAW</param>
 	VertexBuffer(BufferUsage usage = BufferUsage::StaticDraw) : IBuffer(BufferType::Vertex, usage) { }
-	
+
 	/// <summary>
 	/// Unbinds the current vertex buffer
 	/// </summary>

@@ -26,6 +26,24 @@ struct Texture2DDescription {
 	/// </summary>
 	WrapMode       VerticalWrap;
 	/// <summary>
+	/// The filter to use when multiple texels will map to a single pixel
+	/// </summary>
+	MinFilter      MinificationFilter;
+	/// <summary>
+	/// The filter to use when one texel will map to multiple pixels
+	/// </summary>
+	MagFilter      MagnificationFilter;
+	/// <summary>
+	/// The level of anisotropic filtering to use when this texture is viewed at an oblique angle
+	/// </summary>
+	/// <see>https://en.wikipedia.org/wiki/Anisotropic_filtering</see>
+	float          MaxAnisotropic;
+	/// <summary>
+	/// True if this texture should generate mip maps (smaller copies of the image with filtering pre-applied)
+	/// </summary>
+	bool           GenerateMipMaps;
+
+	/// <summary>
 	/// The path to the source file for the image, or an empty string if the file has been
 	/// generated
 	/// </summary>
@@ -43,6 +61,10 @@ struct Texture2DDescription {
 		Format(InternalFormat::Unknown),
 		HorizontalWrap(WrapMode::Repeat),
 		VerticalWrap(WrapMode::Repeat),
+		MinificationFilter(MinFilter::NearestMipLinear),
+		MagnificationFilter(MagFilter::Linear),
+		MaxAnisotropic(-1.0f), // max aniso by default
+		GenerateMipMaps(true),
 		Filename(""),
 		FormatHint(PixelFormat::RGBA)
 	{ }
@@ -66,6 +88,10 @@ public:
 	Texture2D(const Texture2DDescription& description);
 
 	/// <summary>
+	/// Gets the internal format OpenGL is using for this texture
+	/// </summary>
+	InternalFormat GetFormat() const { return _description.Format; }
+	/// <summary>
 	/// Gets the width of this texture in pixels
 	/// </summary>
 	uint32_t GetWidth() const { return _description.Width; }
@@ -74,10 +100,6 @@ public:
 	/// </summary>
 	uint32_t GetHeight() const { return _description.Height; }
 	/// <summary>
-	/// Gets the internal format OpenGL is using for this texture
-	/// </summary>
-	InternalFormat GetFormat() const { return _description.Format; }
-	/// <summary>
 	/// Gets the sampler wrap mode along the x/s/u axis for this texture
 	/// </summary>
 	WrapMode GetWrapS() const { return _description.HorizontalWrap; }
@@ -85,6 +107,20 @@ public:
 	/// Gets the sampler wrap mode along the y/t/v axis for this texture
 	/// </summary>
 	WrapMode GetWrapT() const { return _description.VerticalWrap; }
+
+	/// <summary>
+	/// Gets the minification filter that the texture is using
+	/// </summary>
+	MinFilter GetMinFilter() const { return _description.MinificationFilter; }
+	void SetMinFilter(MinFilter value);
+	/// <summary>
+	/// Gets the magnification filter that the texture is using
+	/// </summary>
+	MagFilter GetMagFilter() const { return _description.MagnificationFilter; }
+	void SetMagFilter(MagFilter value);
+
+	float GetAnisoLevel() const { return _description.MaxAnisotropic; }
+	void SetAnisoLevel(float value);
 
 	/// <summary>
 	/// Loads a region of data into this texture

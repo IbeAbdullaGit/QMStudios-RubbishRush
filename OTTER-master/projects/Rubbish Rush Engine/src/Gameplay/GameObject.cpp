@@ -15,6 +15,7 @@
 
 namespace Gameplay {
 	GameObject::GameObject() :
+		IResource(),
 		Name("Unknown"),
 		GUID(Guid::New()),
 		_components(std::vector<IComponent::Sptr>()),
@@ -22,26 +23,15 @@ namespace Gameplay {
 		_position(ZERO),
 		_rotation(glm::quat(glm::vec3(0.0f))),
 		_scale(ONE),
-		_transform(MAT4_IDENTITY),
-		_inverseTransform(MAT4_IDENTITY),
-		_isTransformDirty(true)
+		_localTransform(MAT4_IDENTITY),
+		_inverseLocalTransform(MAT4_IDENTITY),
+		_isLocalTransformDirty(true),
+		_worldTransform(MAT4_IDENTITY),
+		_inverseWorldTransform(MAT4_IDENTITY),
+		_isWorldTransformDirty(true),
+		_parent(WeakRef()),
+		_children(std::vector<WeakRef>())
 	{ }
-
-	void GameObject::_RecalcTransform() const
-	{
-		if (_isTransformDirty) {
-			_transform = glm::translate(MAT4_IDENTITY, _position) * glm::mat4_cast(_rotation) * glm::scale(MAT4_IDENTITY, _scale);
-			_inverseTransform = glm::inverse(_transform);
-			_isTransformDirty = false;
-		}
-	}
-
-	void GameObject::LookAt(const glm::vec3& point) {
-		glm::mat3 rot = glm::lookAt(_position, point, glm::vec3(0.0f, 0.0f, 1.0f));
-		// Take the conjugate of the quaternion, as lookAt returns the *inverse* rotation
-		SetRotation(glm::conjugate(glm::quat_cast(rot)));
-	}
-
 	void GameObject::UpdateLerp(std::vector<glm::vec3> points, float deltaTime)
 	{
 		if (points.size() <= m_segmentIndex)
@@ -64,7 +54,7 @@ namespace Gameplay {
 		}
 
 		_position = glm::vec3(LERP(points[m_segmentIndex], points[m_segmentIndex + 1], m_segmentTimer));
-		_isTransformDirty = true;
+		_isLocalTransformDirty = true;
 	}
 
 	void GameObject::UpdateScale(std::vector<glm::vec3> points, std::vector<glm::vec3> points2, float deltaTime)
@@ -112,7 +102,7 @@ namespace Gameplay {
 			_rotation = glm::quat(LERPLINEAR(glm::radians(points2[p0_index]), glm::radians(points2[p1_index]), t));
 
 		}
-		_isTransformDirty = true;
+		_isLocalTransformDirty = true;
 	}
 
 	void GameObject::UpdateCAT(std::vector<glm::vec3> points, float deltaTima)
@@ -166,14 +156,53 @@ namespace Gameplay {
 
 			_position = CatmullRomm(p0, p1, p2, p3, t);
 		}
-		_isTransformDirty = true;
+		_isLocalTransformDirty = true;
 	}
-
-	void GameObject::SetDirty(bool val)
+	void GameObject::_RecalcLocalTransform() const
 	{
-		_isTransformDirty = val;
+		if (_isLocalTransformDirty) {
+			_localTransform = glm::translate(MAT4_IDENTITY, _position) * glm::mat4_cast(_rotation) * glm::scale(MAT4_IDENTITY, _scale);
+			_inverseLocalTransform = glm::inverse(_localTransform);
+			_isLocalTransformDirty = false;
+			_isWorldTransformDirty = true;
+
+			// Dirty all the child objects world transforms
+			for (const auto& childPtr : _children) {
+				GameObject::Sptr childSptr = childPtr;
+				if (childSptr != nullptr) {
+					childSptr->_isWorldTransformDirty = true;
+				}
+			}
+		}
 	}
 
+	void GameObject::_RecalcWorldTransform() const {
+		_RecalcLocalTransform();
+		if (_isWorldTransformDirty) {
+			GameObject::Sptr parent = _parent;
+			if (parent != nullptr) {
+				_worldTransform = parent->GetTransform() * _localTransform;
+				_inverseWorldTransform = glm::inverse(_worldTransform);
+			}
+			else {
+				_worldTransform = _localTransform;
+				_inverseWorldTransform = _inverseLocalTransform;
+			}
+			_isWorldTransformDirty = false;
+		}
+	}
+
+	void GameObject::_PurgeDeletedChildren() {
+		std::remove_if(_children.begin(), _children.end(), [](WeakRef child) {
+			return child == nullptr;
+			});
+	}
+
+	void GameObject::LookAt(const glm::vec3& point) {
+		glm::mat4 rot = glm::lookAt(_position, point, glm::vec3(0.0f, 0.0f, 1.0f));
+		// Take the conjugate of the quaternion, as lookAt returns the *inverse* rotation
+		SetRotation(glm::conjugate(glm::quat_cast(rot)));
+	}
 
 	void GameObject::OnEnteredTrigger(const std::shared_ptr<Physics::TriggerVolume>& trigger) {
 		for (auto& component : _components) {
@@ -201,22 +230,20 @@ namespace Gameplay {
 
 	void GameObject::SetPostion(const glm::vec3& position) {
 		_position = position;
-		_isTransformDirty = true;
-
+		_isLocalTransformDirty = true;
 	}
 	void GameObject::SetPostionZ(float val)
 	{
 		_position.y = val;
-		_isTransformDirty = true;
+		_isLocalTransformDirty = true;
 	}
-
 	const glm::vec3& GameObject::GetPosition() const {
 		return _position;
 	}
 
 	void GameObject::SetRotation(const glm::quat& value) {
 		_rotation = value;
-		_isTransformDirty = true;
+		_isLocalTransformDirty = true;
 	}
 
 	const glm::quat& GameObject::GetRotation() const {
@@ -225,16 +252,16 @@ namespace Gameplay {
 
 	void GameObject::SetRotation(const glm::vec3& eulerAngles) {
 		_rotation = glm::quat(glm::radians(eulerAngles));
-		_isTransformDirty = true;
+		_isLocalTransformDirty = true;
 	}
 
-	const glm::vec3& GameObject::GetRotationEuler() const {
+	glm::vec3 GameObject::GetRotationEuler() const {
 		return glm::degrees(glm::eulerAngles(_rotation));
 	}
 
 	void GameObject::SetScale(const glm::vec3& value) {
 		_scale = value;
-		_isTransformDirty = true;
+		_isLocalTransformDirty = true;
 	}
 
 	const glm::vec3& GameObject::GetScale() const {
@@ -242,15 +269,46 @@ namespace Gameplay {
 	}
 
 	const glm::mat4& GameObject::GetTransform() const {
-		_RecalcTransform();
-		return _transform;
+		_RecalcWorldTransform();
+		return _worldTransform;
 	}
 
 	const glm::mat4& GameObject::GetInverseTransform() const {
-		_RecalcTransform();
-		return _inverseTransform;
+		_RecalcWorldTransform();
+		return _inverseWorldTransform;
 	}
 
+	const glm::mat4& GameObject::GetLocalTransform() const
+	{
+		_RecalcLocalTransform();
+		return _localTransform;
+	}
+
+	const glm::mat4& GameObject::GetInverseLocalTransform() const {
+		_RecalcLocalTransform();
+		return _inverseLocalTransform;
+	}
+
+	void GameObject::RenderGUI() {
+		for (auto& component : _components) {
+			if (component->IsEnabled) {
+				component->StartGUI();
+			}
+		}
+		for (auto& component : _components) {
+			if (component->IsEnabled) {
+				component->RenderGUI();
+			}
+		}
+		for (auto& child : _children) {
+			child->RenderGUI();
+		}
+		for (auto& component : _components) {
+			if (component->IsEnabled) {
+				component->FinishGUI();
+			}
+		}
+	}
 
 	Scene* GameObject::GetScene() const {
 		return _scene;
@@ -268,10 +326,11 @@ namespace Gameplay {
 				component->Update(dt);
 			}
 		}
+
+		_RecalcLocalTransform();
+		_RecalcWorldTransform();
+		_PurgeDeletedChildren();
 	}
-	/*GameObject::Sptr GameObject::GetParent() const {
-		return _parent;
-	}*/
 
 	bool GameObject::Has(const std::type_index& type) {
 		// Iterate over all the pointers in the components list
@@ -316,11 +375,63 @@ namespace Gameplay {
 		return component;
 	}
 
-	void GameObject::DrawImGui(float indent) {
+	void GameObject::AddChild(const GameObject::Sptr& child) {
+		// If the object already has a parent, remove it from the other object
+		if (child->_parent != nullptr) {
+			child->_parent->RemoveChild(child);
+		}
+
+		// Make sure the object isn't already a child of this object
+		auto it = std::find_if(_children.begin(), _children.end(), [child](GameObject::WeakRef wPtr) { return wPtr == child; });
+
+		if (it == _children.end()) {
+			// Add child, set parent, and mark it's world transform as dirty, since the parent's transform now 
+			// applies to the child
+			_children.push_back(child);
+			child->_parent = _selfRef.lock();
+			child->_isWorldTransformDirty = true;
+		}
+		else {
+			LOG_WARN("Attempting to add same child twice, ignoring: {}", child->Name);
+		}
+	}
+
+	bool GameObject::RemoveChild(const GameObject::Sptr& child) {
+		// Find the child in our list of children if it exists
+		auto it = std::find_if(_children.begin(), _children.end(), [child](GameObject::WeakRef wPtr) { return wPtr == child; });
+
+		if (it != _children.end()) {
+			// Clear the object's parent and remove from our list of children
+			child->_parent.Reset();
+			_children.erase(it);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	const std::vector<GameObject::WeakRef>& GameObject::GetChildren() const {
+		return _children;
+	}
+
+	GameObject::Sptr GameObject::GetParent() const {
+		return _parent;
+	}
+
+	void GameObject::DrawImGui(bool invokedFromScene) {
+		if (invokedFromScene && _parent != nullptr) {
+			return;
+		}
+
 		ImGui::PushID(this); // Push a new ImGui ID scope for this object
-		if (ImGui::CollapsingHeader(Name.c_str())) {
+		// Since we're allowing names to change, we need to use the ### to have a static ID for the header
+		static char buffer[256];
+		sprintf_s(buffer, 256, "%s###GO_HEADER", Name.c_str());
+		if (ImGui::CollapsingHeader(buffer)) {
 			ImGui::Indent();
 
+			// Draw a textbox for our name
 			static char nameBuff[256];
 			memcpy(nameBuff, Name.c_str(), Name.size());
 			nameBuff[Name.size()] = '\0';
@@ -355,8 +466,8 @@ namespace Gameplay {
 			}
 
 			// Render position label
-			_isTransformDirty |= LABEL_LEFT(ImGui::DragFloat3, "Position", &_position.x, 0.01f);
-			
+			_isLocalTransformDirty |= LABEL_LEFT(ImGui::DragFloat3, "Position", &_position.x, 0.01f);
+
 			// Get the ImGui storage state so we can avoid gimbal locking issues by storing euler angles in the editor
 			glm::vec3 euler = GetRotationEuler();
 			ImGuiStorage* guiStore = ImGui::GetStateStorage();
@@ -379,9 +490,9 @@ namespace Gameplay {
 				//Send new rotation to the gameobject
 				SetRotation(euler);
 			}
-			
+
 			// Draw the scale
-			_isTransformDirty |= LABEL_LEFT(ImGui::DragFloat3, "Scale   ", &_scale.x, 0.01f, 0.0f);
+			_isLocalTransformDirty |= LABEL_LEFT(ImGui::DragFloat3, "Scale   ", &_scale.x, 0.01f, 0.0f);
 
 			ImGui::Separator();
 			ImGui::TextUnformatted("Components");
@@ -428,31 +539,42 @@ namespace Gameplay {
 			}
 
 			ImGui::Separator();
+			ImGui::TextUnformatted("Children");
+			ImGui::Separator();
+
+			_PurgeDeletedChildren();
+			for (auto& child : _children) {
+				child->DrawImGui(false);
+			}
 
 			ImGui::Unindent();
 		}
 		ImGui::PopID(); // Pop the ImGui ID scope for the object
-	}
 
+		// For if we're not in play mode
+		_RecalcLocalTransform();
+		_RecalcWorldTransform();
+	}
 
 	std::shared_ptr<GameObject> GameObject::SelfRef() {
 		return _selfRef.lock();
 	}
 
-	GameObject::Sptr GameObject::FromJson(const nlohmann::json& data, Scene* scene)
+	GameObject::Sptr GameObject::FromJson(const nlohmann::json& data)
 	{
 		// We need to manually construct since the GameObject constructor is
 		// protected. We can call it here since Scene is a friend class of GameObjects
 		GameObject::Sptr result(new GameObject());
-		result->_scene = scene;
 
 		// Load in basic info
 		result->Name = data["name"];
-		result->GUID = Guid(data["guid"]);
+		result->_guid = Guid(data["guid"]);
+		result->_parent = WeakRef(Guid(data["parent"]), nullptr);
 		result->_position = ParseJsonVec3(data["position"]);
 		result->_rotation = ParseJsonQuat(data["rotation"]);
-		result->_scale    = ParseJsonVec3(data["scale"]);
-		result->_isTransformDirty = true;
+		result->_scale = ParseJsonVec3(data["scale"]);
+		result->_isLocalTransformDirty = true;
+		result->_isWorldTransformDirty = true;
 
 		// Since our components are stored based on the type name, we iterate
 		// on the keys and values from the components object
@@ -468,22 +590,109 @@ namespace Gameplay {
 			result->_components.push_back(component);
 			component->OnLoad();
 		}
+
 		return result;
 	}
 
 	nlohmann::json GameObject::ToJson() const {
+		GameObject::Sptr parent = _parent;
 		nlohmann::json result = {
 			{ "name", Name },
-			{ "guid", GUID.str() },
+			{ "guid", _guid.str() },
 			{ "position", GlmToJson(_position) },
 			{ "rotation", GlmToJson(_rotation) },
 			{ "scale",    GlmToJson(_scale) },
+			{ "parent",   parent == nullptr ? "null" : parent->_guid.str() },
 		};
 		result["components"] = nlohmann::json();
 		for (auto& component : _components) {
 			result["components"][component->ComponentTypeName()] = component->ToJson();
 			IComponent::SaveBaseJson(component, result["components"][component->ComponentTypeName()]);
 		}
+		result["children"] = std::vector<nlohmann::json>();
+		for (auto& child : _children) {
+			GameObject::Sptr childPtr = child;
+			if (childPtr != nullptr) {
+				result["children"].push_back(childPtr->ToJson());
+			}
+		}
 		return result;
 	}
+
+	Gameplay::GameObject::WeakRef& GameObject::WeakRef::operator=(const GameObject::Sptr& ptr) {
+		ResourceGUID = ptr->GetGUID();
+		SceneContext = ptr->GetScene();
+		Ptr = ptr;
+		return *this;
+	}
+
+	GameObject::WeakRef::WeakRef(const GameObject::Sptr& ptr) {
+		*this = ptr;
+	}
+
+	GameObject::WeakRef::WeakRef() :
+		ResourceGUID(Guid()),
+		SceneContext(nullptr),
+		Ptr(std::weak_ptr<GameObject>())
+	{ }
+
+	GameObject::WeakRef::WeakRef(const Guid& guid, const Scene* scene) :
+		ResourceGUID(guid),
+		SceneContext(scene),
+		Ptr(std::weak_ptr<GameObject>())
+	{ }
+
+	bool GameObject::WeakRef::operator==(const GameObject::Sptr& other) {
+		return Resolve() == other;
+	}
+
+	bool GameObject::WeakRef::operator!=(const GameObject::Sptr& other) {
+		return Resolve() != other;
+	}
+
+	GameObject::Sptr GameObject::WeakRef::operator->() {
+		return Resolve();
+	}
+
+	const GameObject::Sptr GameObject::WeakRef::operator->() const {
+		return Resolve();
+	}
+
+	GameObject::Sptr GameObject::WeakRef::Resolve() const {
+		// If the Ptr is uninitialized, try and look up the object in the scene
+		if (GetIsEmpty()) {
+			// We need a reference to the scene in order to search gameobjects :pensive:
+			if (SceneContext != nullptr) {
+				Ptr = SceneContext->FindObjectByGUID(ResourceGUID);
+				return Ptr.lock();
+			}
+			// If there's no scene, return null
+			else {
+				return nullptr;
+			}
+		}
+		// We've looked up the weak ptr, try and lock it
+		else {
+			return Ptr.lock();
+		}
+	}
+
+	bool GameObject::WeakRef::GetIsEmpty() const {
+		return !Ptr.owner_before(std::weak_ptr<GameObject>()) && !std::weak_ptr<GameObject>().owner_before(Ptr);
+	}
+
+	bool GameObject::WeakRef::IsAlive() const {
+		return !GetIsEmpty() && !Ptr.expired();
+	}
+
+	void GameObject::WeakRef::Reset() {
+		ResourceGUID = Guid();
+		Ptr.reset();
+		SceneContext = nullptr;
+	}
+
+	GameObject::WeakRef::operator GameObject::Sptr() const {
+		return Resolve();
+	}
+
 }

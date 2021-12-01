@@ -30,6 +30,8 @@
 #include "Graphics/Texture2D.h"
 #include "Graphics/TextureCube.h"
 #include "Graphics/VertexTypes.h"
+#include "Graphics/Font.h"
+#include "Graphics/GuiBatcher.h"
 
 // Utilities
 #include "Utils/MeshBuilder.h"
@@ -46,6 +48,7 @@
 #include "Gameplay/Material.h"
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Scene.h"
+#include "Gameplay/InputEngine.h"
 
 // Components
 #include "Gameplay/Components/IComponent.h"
@@ -61,6 +64,8 @@
 #include "Gameplay/Components/PlayerMovementBehavior.h"
 #include "Gameplay/Components/ConveyorBeltBehaviour.h"
 #include "Gameplay/Components/SpillBehaviour.h"
+#include "Gameplay/Components/SteeringBehaviour.h"
+#include "Gameplay/Components/FollowBehaviour.h"
 
 
 // Physics
@@ -73,6 +78,12 @@
 #include "Graphics/DebugDraw.h"
 #include "Gameplay/Components/SimpleCameraControl.h"
 #include "Gameplay/Physics/Colliders/CylinderCollider.h"
+
+// GUI
+#include "Gameplay/Components/GUI/RectTransform.h"
+#include "Gameplay/Components/GUI/GuiPanel.h"
+#include "Gameplay/Components/GUI/GuiText.h"
+#include "Gameplay/InputEngine.h"
 
 #include "CPathAnimator.h"
 //#define LOG_GL_NOTIFICATIONS
@@ -228,74 +239,6 @@ bool DrawLightImGui(const Scene::Sptr& scene, const char* title, int ix) {
 GLfloat movX = 0.0f;
 GLfloat movZ = 0.0f;
 
-//void keyboard(RigidBody::Sptr& body) {
-//
-//	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-//	{
-//		movX += 1.0f;
-//		if (movX > 3)
-//		{
-//			movX = 3;
-//		}
-//		body->SetLinearVelocity(glm::vec3(1.0f, 0.0f, 0.0f) * movX);
-//	}
-//	else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-//	{
-//		movX += 1.0f;
-//		if (movX > 3)
-//		{
-//			movX = 3;
-//		}
-//		body->SetLinearVelocity(glm::vec3(-1.0f, 0.0f, 0.0f) * movX);
-//	}
-//	else if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-//	{
-//		movZ += 1.0f;
-//		if (movZ > 3)
-//		{
-//			movZ = 3;
-//		}
-//		body->SetLinearVelocity(glm::vec3(0.0f, -1.0f, 0.0f) * movZ);
-//	}
-//	else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-//	{
-//		movZ += 1.0f;
-//		if (movZ > 3)
-//		{
-//			movZ = 3;
-//		}
-//		body->SetLinearVelocity(glm::vec3(0.0f, 1.0f, 0.0f) * movZ);
-//	}
-//	else
-//	{
-//		if (movX > 0)
-//		{
-//			movX -= 1; //second slope
-//		}
-//		if (movZ > 0)
-//		{
-//			movZ -= 1; //second slope
-//		}
-//	}
-//
-//	
-//	
-//}
-
-
-//RenderObject createBrick(glm::vec3 pos)
-//{
-//	RenderObject blockM = RenderObject();
-//	blockM.Position = pos;
-//	blockM.Rotation.z = 180.0f;
-//	blockM.Rotation.x = 45.0f;
-//	blockM.Name = "Block" + std::to_string(count);
-//	blockM.Scale = glm::vec3(0.3f, 0.3f, 0.3f);
-//	count += 1;
-//	return blockM;
-//
-//}
-
 int main() {
 	//how many balls we have left
 	int balls = 3;
@@ -342,11 +285,13 @@ int main() {
 	ComponentManager::RegisterType<PlayerMovementBehavior>();
 	ComponentManager::RegisterType<ConveyorBeltBehaviour>();
 	ComponentManager::RegisterType<SpillBehaviour>();
-	/*ComponentManager::RegisterType<SimpleCameraControl>();
+	ComponentManager::RegisterType<SteeringBehaviour>();
+	ComponentManager::RegisterType<FollowBehaviour>();
+	ComponentManager::RegisterType<SimpleCameraControl>();
 
 	ComponentManager::RegisterType<RectTransform>();
 	ComponentManager::RegisterType<GuiPanel>();
-	ComponentManager::RegisterType<GuiText>();*/
+	ComponentManager::RegisterType<GuiText>();
 	// Structure for our frame-level uniforms, matches layout from
 	// fragments/frame_uniforms.glsl
 	// For use with a UBO.
@@ -538,11 +483,9 @@ int main() {
 		}
 		
 
-		Texture2D::Sptr planeTex = ResourceManager::CreateAsset<Texture2D>("textures/L3P0.png");
-		// We'll create a mesh that is a simple plane that we can resize later
-		MeshResource::Sptr planeMesh = ResourceManager::CreateAsset<MeshResource>();
-		planeMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(1.0f)));
-		planeMesh->GenerateMesh();
+		Texture2D::Sptr planeTex = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
+		
+		MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
 		Material::Sptr planeMaterial = ResourceManager::CreateAsset<Material>(basicShader); {
 			planeMaterial->Name = "Plane";
 			planeMaterial->Set("u_Material.Diffuse", planeTex);
@@ -552,7 +495,7 @@ int main() {
 		// Set up all our sample objects
 		GameObject::Sptr plane = scene->CreateGameObject("Plane");
 		{
-			plane->SetRotation(glm::vec3(9.0f, 0.0f, 0.0f));
+			plane->SetRotation(glm::vec3(100.0f, 0.0f, 0.0f));
 			// Make a big tiled mesh
 			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
 			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(100.0f), glm::vec2(20.0f)));
@@ -561,17 +504,20 @@ int main() {
 
 			// Create and attach a RenderComponent to the object to draw our mesh
 			RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
-			renderer->SetMesh(tiledMesh);
+			renderer->SetMesh(layoutMesh);
 			renderer->SetMaterial(planeMaterial);
 
 			// Attach a plane collider that extends infinitely along the X/Y axis
 			RigidBody::Sptr physics = plane->Add<RigidBody>(RigidBodyType::Kinematic);
-			physics->AddCollider(BoxCollider::Create(glm::vec3(50.0f, 50.0f, 1.0f)))->SetPosition({ 0,0,-1 });
+			BoxCollider::Sptr box = BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box->SetScale(glm::vec3(11.98f, -0.12f, 12.88f));
+			physics->AddCollider(box);
 		}
 		//placeholder trash object
 		//setup trash
-		MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<MeshResource>("plant.obj");
-		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/planttex.png");
+		MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<MeshResource>("cup.obj");
+		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/acup.jpg");
 		// Create our material
 		Material::Sptr trashMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
@@ -582,7 +528,7 @@ int main() {
 		}
 		GameObject::Sptr trashM = scene->CreateGameObject("Trash");
 		{
-			trashM->SetPostion(glm::vec3(-1.5f, -2.0f, -0.16f));
+			trashM->SetPostion(glm::vec3(0.43f, -1.67f, -0.12f));
 			trashM->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
 			trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
@@ -592,8 +538,8 @@ int main() {
 			// Add a dynamic rigid body to this monkey
 			RigidBody::Sptr physics = trashM->Add<RigidBody>(RigidBodyType::Kinematic);
 			BoxCollider::Sptr box = BoxCollider::Create();
-			box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-			box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+			box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
@@ -601,11 +547,75 @@ int main() {
 			//physics->SetMass(0.0f);
 			TriggerVolume::Sptr volume = trashM->Add<TriggerVolume>();
 			BoxCollider::Sptr box2 = BoxCollider::Create();
-			box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-			box2->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+			box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
 			volume->AddCollider(box2);
 			CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
 
+		}
+		//setup moving toy
+		MeshResource::Sptr toyMesh = ResourceManager::CreateAsset<MeshResource>("toy.obj");
+		Texture2D::Sptr toyTex = ResourceManager::CreateAsset<Texture2D>("textures/toy.jpg");
+		// Create our material
+		Material::Sptr toyMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		{
+			toyMaterial->Name = "Toy";
+			toyMaterial->Set("u_Material.Diffuse", toyTex);
+			toyMaterial->Set("u_Material.Shininess", 1.0f);
+
+		}
+		GameObject::Sptr toyM = scene->CreateGameObject("Toy");
+		{
+			toyM->SetPostion(glm::vec3(-0.19f, -4.25f, -0.63f));
+			toyM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			toyM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+			// Add a render component
+			RenderComponent::Sptr renderer = toyM->Add<RenderComponent>();
+			renderer->SetMesh(toyMesh);
+			renderer->SetMaterial(toyMaterial);
+			// Add a dynamic rigid body to this monkey
+			RigidBody::Sptr physics = toyM->Add<RigidBody>(RigidBodyType::Kinematic);
+			BoxCollider::Sptr box = BoxCollider::Create();
+			box->SetPosition(glm::vec3(0.00f, 0.22f, 0.0f));
+			box->SetScale(glm::vec3(0.28f*0.4f, 0.24f*0.4f, 0.57f*0.4f));
+			physics->AddCollider(box);
+			TriggerVolume::Sptr volume = toyM->Add<TriggerVolume>();
+			BoxCollider::Sptr box2 = BoxCollider::Create();
+			box2->SetPosition(glm::vec3(0.00f, 0.22f, 0.0f));
+			box2->SetScale(glm::vec3(0.28f*0.4f, 0.24f*0.4f, 0.57f*0.4f));
+			volume->AddCollider(box2);
+			SteeringBehaviour::Sptr behaviour2 = toyM->Add<SteeringBehaviour>();
+			std::vector<glm::vec3> points;
+			//points for catmull movement
+			points.push_back(glm::vec3(-0.19f, -4.25f, -0.63f));
+			points.push_back(glm::vec3(-7.18f, -4.25f, -0.63f));
+			points.push_back(glm::vec3(-4.25f, -7.010f, -0.63f));
+			points.push_back(glm::vec3(-0.67f, -7.32f, -0.63f));
+			behaviour2->SetPoints(points);
+		}
+		GameObject::Sptr toyM2 = scene->CreateGameObject("Toy2");
+		{
+			toyM2->SetPostion(glm::vec3(2.00f, -4.25f, -0.63f));
+			toyM2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			toyM2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+			// Add a render component
+			RenderComponent::Sptr renderer = toyM2->Add<RenderComponent>();
+			renderer->SetMesh(toyMesh);
+			renderer->SetMaterial(toyMaterial);
+			// Add a dynamic rigid body to this monkey
+			RigidBody::Sptr physics = toyM2->Add<RigidBody>(RigidBodyType::Kinematic);
+			BoxCollider::Sptr box = BoxCollider::Create();
+			box->SetPosition(glm::vec3(0.00f, 0.22f, 0.0f));
+			box->SetScale(glm::vec3(0.28f*0.4f, 0.24f*0.4f, 0.57f*0.4f));
+			physics->AddCollider(box);
+			TriggerVolume::Sptr volume = toyM2->Add<TriggerVolume>();
+			BoxCollider::Sptr box2 = BoxCollider::Create();
+			box2->SetPosition(glm::vec3(0.00f, 0.22f, 0.0f));
+			box2->SetScale(glm::vec3(0.28f*0.4f, 0.24f*0.4f, 0.57f*0.4f));
+			volume->AddCollider(box2);
+			FollowBehaviour::Sptr behaviour2 = toyM2->Add<FollowBehaviour>();
+			behaviour2->SetTarget(toyM);
+			
 		}
 		//spill object
 		MeshResource::Sptr spillMesh = ResourceManager::CreateAsset<MeshResource>("spill.obj");
@@ -620,7 +630,7 @@ int main() {
 		}
 		GameObject::Sptr spillM = scene->CreateGameObject("Spill");
 		{
-			spillM->SetPostion(glm::vec3(-0.09f, -2.88f, -0.45f));
+			spillM->SetPostion(glm::vec3(1.27f, -2.88f, -0.40f));
 			spillM->SetRotation(glm::vec3(100.0f, 0.0f, 0.0f));
 			spillM->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 			// Add a render component
@@ -659,7 +669,7 @@ int main() {
 		GameObject::Sptr binM = scene->CreateGameObject("Bin");
 		{
 			binM->SetPostion(glm::vec3(-1.5f, 2.0f, 0.76f));
-			binM->SetRotation(glm::vec3(90.0f, -36.0f, 90.0f));
+			binM->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
 			binM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
 			RenderComponent::Sptr renderer = binM->Add<RenderComponent>();
@@ -729,6 +739,38 @@ int main() {
 			//RigidBody::Sptr physics = trashyE->Add<RigidBody>(RigidBodyType::Kinematic);
 			
 		}
+		///////////////////////////// UI //////////////////////////////
+		//GameObject::Sptr canvas = scene->CreateGameObject("UI Canvas");
+		//{
+		//	RectTransform::Sptr transform = canvas->Add<RectTransform>();
+		//	transform->SetMin({ 16, 16 });
+		//	transform->SetMax({ 256, 256 });
+
+		//	GuiPanel::Sptr canPanel = canvas->Add<GuiPanel>();
+
+		//	GameObject::Sptr subPanel = scene->CreateGameObject("Sub Item");
+		//	{
+		//		RectTransform::Sptr transform = subPanel->Add<RectTransform>();
+		//		transform->SetMin({ 10, 10 });
+		//		transform->SetMax({ 128, 128 });
+
+		//		GuiPanel::Sptr panel = subPanel->Add<GuiPanel>();
+		//		panel->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+
+		//		Font::Sptr font = ResourceManager::CreateAsset<Font>("fonts/Roboto-Medium.ttf", 16.0f);
+		//		font->Bake();
+
+		//		GuiText::Sptr text = subPanel->Add<GuiText>();
+		//		text->SetText("Hello world!");
+		//		text->SetFont(font);
+		//	}
+
+		//	canvas->AddChild(subPanel);
+		//}
+
+		//GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui-sprite.png"));
+		//GuiBatcher::SetDefaultBorderRadius(8);
+
 		// Call scene awake to start up all of our components
 		scene->Window = window;
 		scene->Awake();
@@ -869,12 +911,12 @@ int main() {
 			{
 				TrashyE->SetPostionZ(-10.0f);
 				RectangleE->SetPostionZ(-10.0f);
-				TrashyE->SetDirty(true);
-				RectangleE->SetDirty(true);
+				//TrashyE->SetDirty(true);
+				//RectangleE->SetDirty(true);
 				//TrashyE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(TrashyE->GUID));
 				//RectangleE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(RectangleE->GUID));
-				scene->DeleteGameObject(TrashyE);
-				scene->DeleteGameObject(RectangleE);
+				scene->RemoveGameObject(TrashyE);
+				scene->RemoveGameObject(RectangleE);
 				std::cout << "should be deleted\n";
 				playMenu = false;
 				//trashyM->SetDirty(true);
@@ -1071,6 +1113,39 @@ int main() {
 
 		// Use our cubemap to draw our skybox
 		scene->DrawSkybox();
+
+		////////UNCOMMENT THIS FOR UI////////
+
+		//// Disable culling
+		//glDisable(GL_CULL_FACE);
+		//// Disable depth testing, we're going to use order-dependant layering
+		//glDisable(GL_DEPTH_TEST);
+		//// Disable depth writing
+		//glDepthMask(GL_FALSE);
+
+		//// Enable alpha blending
+		//glEnable(GL_BLEND);
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		//// Enable the scissor test;
+		//glEnable(GL_SCISSOR_TEST);
+
+		//// Our projection matrix will be our entire window for now
+		//glm::mat4 proj = glm::ortho(0.0f, (float)windowSize.x, (float)windowSize.y, 0.0f, -1.0f, 1.0f);
+		//GuiBatcher::SetProjection(proj);
+
+		//// Iterate over and render all the GUI objects
+		//scene->RenderGUI();
+
+		//// Flush the Gui Batch renderer
+		//GuiBatcher::Flush();
+
+		//// Disable alpha blending
+		//glDisable(GL_BLEND);
+		//// Disable scissor testing
+		//glDisable(GL_SCISSOR_TEST);
+		//// Re-enable depth writing
+		//glDepthMask(GL_TRUE);
 
 		// End our ImGui window
 		ImGui::End();

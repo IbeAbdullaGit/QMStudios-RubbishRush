@@ -49,10 +49,9 @@ namespace Gameplay::Physics {
 		virtual nlohmann::json ToJson() const override;
 		static TriggerVolume::Sptr FromJson(const nlohmann::json& data);
 		MAKE_TYPENAME(TriggerVolume);
-		void OnEnteredTrigger(const std::shared_ptr<Physics::TriggerVolume>& trigger) override;
 
 	protected:
-		btPairCachingGhostObject*   _ghost;
+		btPairCachingGhostObject* _ghost;
 		TriggerTypeFlags            _typeFlags;
 
 		std::vector<std::weak_ptr<RigidBody>> _currentCollisions;

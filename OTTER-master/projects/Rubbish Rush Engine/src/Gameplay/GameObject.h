@@ -11,12 +11,12 @@
 // Others
 #include "Gameplay/Components/IComponent.h"
 #include "Gameplay/Components/ComponentManager.h"
+#include "Utils/ResourceManager/IResource.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
-
 namespace Gameplay {
-// Predeclaration for Scene
+	// Predeclaration for Scene
 	class Scene;
 
 	namespace Physics {
@@ -28,19 +28,109 @@ namespace Gameplay {
 	/// Represents an object in our scene with a transformation and a collection
 	/// of components. Components provide gameobject's with behaviours
 	/// </summary>
-	struct GameObject {
+	struct GameObject : public IResource {
 		typedef std::shared_ptr<GameObject> Sptr;
+		typedef std::weak_ptr<GameObject> Wptr;
+
+		/// <summary>
+		/// Structure to assist in wrapping weak references to GameObjects
+		/// Can track the object's GUID before and after creation
+		/// </summary>
+		struct WeakRef {
+		protected:
+			Guid ResourceGUID;
+			const Scene* SceneContext;
+			mutable std::weak_ptr<GameObject> Ptr;
+
+			friend class Scene;
+
+		public:
+
+			
+			/// <summary>
+			/// Creates an empty weak reference
+			/// </summary>
+			WeakRef();
+			/// <summary>
+			/// Constructs a weak reference from a strong pointer
+			/// </summary>
+			/// <param name="ptr">The shared pointer to create a reference to</param>
+			WeakRef(const GameObject::Sptr& ptr);
+			/// <summary>
+			/// Constructs a weak reference from a GUID
+			/// </summary>
+			/// <param name="guid">The ID of the gameobject to point to</param>
+			/// <param name="scene">The scene to use when looking up the referene</param>
+			WeakRef(const Guid& guid, const Scene* scene);
+
+			/// <summary>
+			/// Assigns this weak reference to a given strong pointer
+			/// </summary>
+			/// <param name="ptr">The shared pointer to create a reference to</param>
+			/// <returns>A reference to this</returns>
+			WeakRef& operator =(const GameObject::Sptr& ptr);
+
+			/// <summary>
+			/// Checks to see if this weak reference holds the given pointer
+			/// </summary>
+			/// <param name="other">The pointer to check against</param>
+			/// <returns>True if this reference points to the given object</returns>
+			bool operator ==(const GameObject::Sptr& other);
+			/// <summary>
+			/// Checks to see if this weak reference does NOT hold the given pointer
+			/// </summary>
+			/// <param name="other">The pointer to check against</param>
+			/// <returns>True if this reference does not point to the given object</returns>
+			bool operator !=(const GameObject::Sptr& other);
+
+			/// <summary>
+			/// Allows us to use the arrow operator on this weak reference, note that you 
+			/// should check to ensure that the resource is alive before doing any operations!
+			/// 
+			/// This is not a thread-safe access mode, cast to a shared ptr instead
+			/// </summary>
+			/// <returns>The underlying GameObject ptr, or nullptr if none exists</returns>
+			GameObject::Sptr operator->();
+			/// <summary>
+			/// Allows us to use the arrow operator on this weak reference, note that you 
+			/// should check to ensure that the resource is alive before doing any operations!
+			/// 
+			/// This is not a thread-safe access mode, cast to a shared ptr instead
+			/// </summary>
+			/// <returns>The underlying GameObject ptr, or nullptr if none exists</returns>
+			const GameObject::Sptr operator->() const;
+
+			/// <summary>
+			/// Implicitly casts a weak reference to a shared ptr, either returning
+			/// the pointer to the gameobject, or null if the reference is invalid
+			/// </summary>
+			operator GameObject::Sptr() const;
+
+			/// <summary>
+			/// Returns a strong pointer to the underlying gameobject, either returning
+			/// the pointer to the gameobject, or null if the reference is invalid
+			/// </summary>
+			GameObject::Sptr Resolve() const;
+
+			/// <summary>
+			/// Returns true if this reference is uninitialized
+			/// </summary>
+			bool GetIsEmpty() const;
+			/// <summary>
+			/// Returns true if this reference is initialized and the resource is not
+			/// expired, false if otherwise
+			/// </summary>
+			bool IsAlive() const;
+			/// <summary>
+			/// Resets this reference to it's default state (basically setting to null)
+			/// </summary>
+			void Reset();
+		};
 
 		// Human readable name for the object
 		std::string             Name;
 		// Unique ID for the object
 		Guid                    GUID;
-
-		/// <summary>
-		/// Rotates this object to look at the given point in world coordinates
-		/// </summary>
-		void LookAt(const glm::vec3& point);
-
 		// LERP function
 		template<typename T>
 		static T LERP(const T& p0, const T& p1, float t)
@@ -63,13 +153,16 @@ namespace Gameplay {
 				+ t * t * (2.f * p0 - 5.f * p1 + 4.f * p2 - p3)
 				+ t * t * t * (-p0 + 3.f * p1 - 3.f * p2 + p3));
 		}
+
+		void SetPostionZ(float val);
+
 		void UpdateLerp(std::vector<glm::vec3> points, float deltaTime);
 		void UpdateScale(std::vector<glm::vec3> points, std::vector<glm::vec3> points2, float deltaTime);
 		void UpdateCAT(std::vector<glm::vec3> points, float deltaTima);
-
-		void SetDirty(bool val);
-
-		GameObject::Sptr GetParent() const;
+		/// <summary>
+		/// Rotates this object to look at the given point in world coordinates
+		/// </summary>
+		void LookAt(const glm::vec3& point);
 
 		/// <summary>
 		/// Invoked when the rigidbody attached to this game object (if any) enters
@@ -102,7 +195,6 @@ namespace Gameplay {
 		/// </summary>
 		/// <param name="position">The new position for the object in world space</param>
 		void SetPostion(const glm::vec3& position);
-		void SetPostionZ(float val);
 		/// <summary>
 		/// Gets the object's position in world space
 		/// </summary>
@@ -126,7 +218,7 @@ namespace Gameplay {
 		/// <summary>
 		/// Gets the euler angles from this object in degrees
 		/// </summary>
-		const glm::vec3& GetRotationEuler() const;
+		glm::vec3 GetRotationEuler() const;
 
 		/// <summary>
 		/// Sets the scaling factor for the game object, should be non-zero
@@ -140,6 +232,7 @@ namespace Gameplay {
 
 		/// <summary>
 		/// Gets or recalculates and gets the object's world transform
+		/// This matrix transforms points from local space to world space
 		/// </summary>
 		const glm::mat4& GetTransform() const;
 		/// <summary>
@@ -147,6 +240,14 @@ namespace Gameplay {
 		/// This matrix transforms points from world space to local space
 		/// </summary>
 		const glm::mat4& GetInverseTransform() const;
+
+		const glm::mat4& GetLocalTransform() const;
+		const glm::mat4& GetInverseLocalTransform() const;
+
+		/// <summary>
+		/// Allows components to render GUI elements to the screen
+		/// </summary>
+		void RenderGUI();
 
 		/// <summary>
 		/// Returns a pointer to the scene that this GameObject belongs to
@@ -179,6 +280,7 @@ namespace Gameplay {
 			}
 			return false;
 		}
+
 		bool Has(const std::type_index& type);
 
 		/// <summary>
@@ -196,6 +298,7 @@ namespace Gameplay {
 			}
 			return nullptr;
 		}
+
 		std::shared_ptr<IComponent> Get(const std::type_index& type);
 
 		/// <summary>
@@ -224,19 +327,26 @@ namespace Gameplay {
 
 			return component;
 		}
+
 		std::shared_ptr<IComponent> Add(const std::type_index& type);
+
+		void AddChild(const GameObject::Sptr& child);
+		bool RemoveChild(const GameObject::Sptr& child);
+		const std::vector<WeakRef>& GetChildren() const;
+
+		GameObject::Sptr GetParent() const;
 
 		/// <summary>
 		/// Draws the ImGui window for this game object and all nested components
 		/// </summary>
-		void DrawImGui(float indent = 0.0f);
+		void DrawImGui(bool invokedFromScene = true);
 
 		std::shared_ptr<GameObject> SelfRef();
 
 		/// <summary>
 		/// Loads a render object from a JSON blob
 		/// </summary>
-		static GameObject::Sptr FromJson(const nlohmann::json& data, Scene* scene);
+		static GameObject::Sptr FromJson(const nlohmann::json& data);
 		/// <summary>
 		/// Converts this object into it's JSON representation for storage
 		/// </summary>
@@ -245,14 +355,11 @@ namespace Gameplay {
 	private:
 		friend class Scene;
 
-		//lerp variables
-		float m_segmentIndex = 0;
+		int m_segmentIndex = 0;
 		float m_segmentTimer = 0.0f;
-		float m_segmentTravelTime = 1.0f;
-
-		float m_segmentIndex2 = 0;
+		int m_segmentIndex2 = 0;
 		float m_segmentTimer2 = 0.0f;
-
+		float m_segmentTravelTime = 1.0f;
 
 		// Rotation of the object as a quaternion
 		glm::quat _rotation;
@@ -262,17 +369,22 @@ namespace Gameplay {
 		glm::vec3 _scale;
 
 		// The object's world transform
-		mutable glm::mat4 _transform;
-		mutable glm::mat4 _inverseTransform;
-		mutable bool _isTransformDirty;
+		mutable glm::mat4 _localTransform;
+		mutable glm::mat4 _inverseLocalTransform;
+		mutable bool _isLocalTransformDirty;
 
-		//// For the hierarchy
-		//WeakRef _parent;
-		//std::vector<WeakRef> _children;
+		mutable glm::mat4 _worldTransform;
+		mutable glm::mat4 _inverseWorldTransform;
+		mutable bool _isWorldTransformDirty;
+
+		// For the hierarchy
+		WeakRef _parent;
+		std::vector<WeakRef> _children;
 
 		// The components that this game object has attached to it
 		std::vector<IComponent::Sptr> _components;
 		std::weak_ptr<GameObject> _selfRef;
+
 		// Pointer to the scene, we use raw pointers since 
 		// this will always be set by the scene on creation
 		// or load, we don't need to worry about ref counting
@@ -284,6 +396,10 @@ namespace Gameplay {
 		GameObject();
 
 		// Recalculates the transform matrix for the object when required
-		void _RecalcTransform() const;
+		void _RecalcLocalTransform() const;
+		void _RecalcWorldTransform() const;
+
+		void _PurgeDeletedChildren();
 	};
+
 }

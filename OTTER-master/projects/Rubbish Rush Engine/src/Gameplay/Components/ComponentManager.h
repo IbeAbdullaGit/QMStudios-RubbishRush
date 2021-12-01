@@ -48,7 +48,6 @@ namespace Gameplay {
 			return nullptr;
 		}
 
-
 		/// <summary>
 		/// Creates a component with the given type name
 		/// If the type name does not correspond to a registered type, will
@@ -116,7 +115,6 @@ namespace Gameplay {
 			}
 		}
 
-
 		/// <summary>
 		/// Creates a new component and adds it to the global component pools
 		/// </summary>
@@ -125,10 +123,10 @@ namespace Gameplay {
 		/// <param name="...args">The arguments to forward to the constructor</param>
 		/// <returns>The new component that has been created</returns>
 		template <
-			typename ComponentType, 
-			typename ... TArgs, 
+			typename ComponentType,
+			typename ... TArgs,
 			typename = typename std::enable_if<std::is_base_of<IComponent, ComponentType>::value>::type>
-		static std::shared_ptr<ComponentType> Create(TArgs&& ... args) {
+			static std::shared_ptr<ComponentType> Create(TArgs&& ... args) {
 			// We can use typeid and type_index to get a unique ID for our types
 			std::type_index type = std::type_index(typeid(ComponentType));
 			LOG_ASSERT(_TypeLoadRegistry[type] != nullptr, "You must register component types before creating them!");
@@ -158,7 +156,7 @@ namespace Gameplay {
 		template <
 			typename ComponentType,
 			typename = typename std::enable_if<std::is_base_of<IComponent, ComponentType>::value>::type>
-		static std::shared_ptr<ComponentType> GetComponentByGUID(Guid id) {
+			static std::shared_ptr<ComponentType> GetComponentByGUID(Guid id) {
 			// We can use typeid and type_index to get a unique ID for our types
 			std::type_index type = std::type_index(typeid(ComponentType));
 			LOG_ASSERT(_TypeLoadRegistry[type] != nullptr, "You must register component types before creating them!");
@@ -166,18 +164,19 @@ namespace Gameplay {
 			// Clear any dead weak pointers
 			std::remove_if(_Components[type].begin(), _Components[type].end(), [](const std::weak_ptr<IComponent>& ptr) {
 				return ptr.expired();
-			});
+				});
 
 			// Search the component store for a component that matches that ID
 			auto& it = std::find_if(_Components[type].begin(), _Components[type].end(), [&](const std::weak_ptr<IComponent>& ptr) {
 				return (ptr.lock())->GetGUID() == id;
-			});
+				});
 
 			// If the component was found, return it. Otherwise return nullptr
 			if (it != _Components[type].end()) {
 				// We need to lock the weak pointer to convert it to a shared ptr
 				return std::dynamic_pointer_cast<ComponentType>((*it).lock());
-			} else {
+			}
+			else {
 				return nullptr;
 			}
 		}
@@ -191,7 +190,7 @@ namespace Gameplay {
 		template <
 			typename ComponentType,
 			typename = typename std::enable_if<std::is_base_of<IComponent, ComponentType>::value>::type>
-		static void Each(std::function<void(const std::shared_ptr<ComponentType>&)> callback, bool includeDisabled = false) {
+			static void Each(std::function<void(const std::shared_ptr<ComponentType>&)> callback, bool includeDisabled = false) {
 			// We can use typeid and type_index to get a unique ID for our types
 			std::type_index type = std::type_index(typeid(ComponentType));
 			LOG_ASSERT(_TypeLoadRegistry[type] != nullptr, "You must register component types before creating them!");
@@ -247,7 +246,7 @@ namespace Gameplay {
 		// Weak pointers let us store a reference to an object stored by a shared pointer, without
 		// actually increasing the reference count. Thus components will be destroyed at the correct
 		// time (when the only reference is the one stored here).
-		inline static std::unordered_map<std::type_index, std::vector<std::weak_ptr<IComponent>>> _Components;  
+		inline static std::unordered_map<std::type_index, std::vector<std::weak_ptr<IComponent>>> _Components;
 
 		template <typename T>
 		static IComponent::Sptr ParseTypeFromBlob(const nlohmann::json& blob) {
@@ -265,12 +264,12 @@ namespace Gameplay {
 			LOG_ASSERT(_TypeLoadRegistry[component->_realType] != nullptr, "You must register component types before creating them!");
 
 			// Get a reference to the vector of components for easy access
-			auto& componentStore = _Components[component->_realType];
+			std::vector<std::weak_ptr<IComponent>>& componentStore = _Components[component->_realType];
 
 			// Clear any dead weak pointers
 			std::remove_if(componentStore.begin(), componentStore.end(), [](const std::weak_ptr<IComponent>& ptr) {
 				return ptr.expired();
-			});
+				});
 		}
 	};
 }

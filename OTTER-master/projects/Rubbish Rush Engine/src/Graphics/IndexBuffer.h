@@ -9,20 +9,20 @@
 /// Represents the element type of an Index Buffer
 /// </summary>
 ENUM(IndexType, GLenum,
-	UByte   = GL_UNSIGNED_BYTE,
-	UShort  = GL_UNSIGNED_SHORT,
-	UInt    = GL_UNSIGNED_INT,
+	UByte = GL_UNSIGNED_BYTE,
+	UShort = GL_UNSIGNED_SHORT,
+	UInt = GL_UNSIGNED_INT,
 	Unknown = GL_NONE
 );
 
 inline size_t GetIndexTypeSize(IndexType type) {
 	switch (type) {
-		case IndexType::UByte:  return sizeof(uint8_t);
-		case IndexType::UShort: return sizeof(uint16_t);
-		case IndexType::UInt:   return sizeof(uint32_t);
-		case IndexType::Unknown:
-		default:
-			return 0;
+	case IndexType::UByte:  return sizeof(uint8_t);
+	case IndexType::UShort: return sizeof(uint16_t);
+	case IndexType::UInt:   return sizeof(uint32_t);
+	case IndexType::Unknown:
+	default:
+		return 0;
 
 	}
 }
@@ -35,16 +35,16 @@ class IndexBuffer : public IBuffer
 public:
 	typedef std::shared_ptr<IndexBuffer> Sptr;
 
-	static inline Sptr Create(BufferUsage usage = BufferUsage::StaticDraw) {
-		return std::make_shared<IndexBuffer>(usage);
+	static inline Sptr Create(BufferUsage usage = BufferUsage::StaticDraw, IndexType indexType = IndexType::Unknown) {
+		return std::make_shared<IndexBuffer>(usage, indexType);
 	}
 
 	/// <summary>
 	/// Creates a new index buffer, with the given usage. Data will still need to be uploaded before it can be used
 	/// </summary>
 	/// <param name="usage">The usage hint for the buffer, default is GL_STATIC_DRAW</param>
-	IndexBuffer(BufferUsage usage = BufferUsage::StaticDraw) :
-		IBuffer(BufferType::Index, usage), _elementType(IndexType::Unknown) { }
+	IndexBuffer(BufferUsage usage = BufferUsage::StaticDraw, IndexType indexType = IndexType::Unknown) :
+		IBuffer(BufferType::Index, usage), _elementType(indexType) { }
 
 	// We'll override the LoadData to force users to use our overload that takes in the element type as well
 	inline void LoadData(const void* data, size_t elementSize, size_t elementCount) override {

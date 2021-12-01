@@ -38,17 +38,20 @@ void CollectTrashBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Gamepla
 }
 void CollectTrashBehaviour::Update(float deltatime)
 {
-	if (activated)
+	if (activated && GetGameObject() !=nullptr)
 	{
 		if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E))
 		{
 			//get our scene, delete this line later
 			_scene = GetGameObject()->GetScene();
 			//delete trash from scene
-			_scene->DeleteGameObject(_scene->FindObjectByGUID(GetGameObject()->GUID));
+			GameObject::Sptr trash = _scene->FindObjectByName(GetGameObject()->Name);
+			_scene->RemoveGameObject(trash);
 			//increment trash count?
 			_scene->trash += 1;
 			std::cout << "Current trash collected: " << _scene->trash << std::endl;
+
+			activated = false;
 		}
 	}
 }

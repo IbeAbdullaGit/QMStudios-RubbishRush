@@ -140,7 +140,13 @@ public:
 
 		return result;
 	}
-	
+	/// <summary>
+	/// Resets this mesh, removing all vertices and indices
+	/// </summary>
+	void Reset() {
+		_vertices.clear();
+		_indices.clear();
+	}
 	/// <summary>
 	/// Gets a pointer to the underlying vertex data in the mesh, valid only
 	/// until another call to AddVertex
