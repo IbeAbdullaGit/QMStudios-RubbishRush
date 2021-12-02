@@ -211,6 +211,20 @@ bool DrawSaveLoadImGui(Scene::Sptr& scene, std::string& path) {
 	return false;
 }
 
+void TimeCountdown(float DisplayTime) {
+	if (DisplayTime < 0) {
+		DisplayTime = 0;
+	}
+	else if (DisplayTime > 0) {
+		DisplayTime += 1;
+	}
+
+	float minutes = floorf(DisplayTime / 60);
+	float seconds = floorf(fmodf(DisplayTime, 60));
+
+}
+
+
 /// <summary>
 /// Draws some ImGui controls for the given light
 /// </summary>
@@ -340,6 +354,7 @@ int main() {
 	bool loadScene = false;
 	bool isPressed = false;
 	bool timerDone = false;
+	bool timeleveltDone = false;
 	// For now we can use a toggle to generate our scene vs load from file
 	if (loadScene) {
 		ResourceManager::LoadManifest("Brick Brea-manifest.json");
@@ -842,6 +857,7 @@ int main() {
 	pointsR2.push_back(glm::vec3(90.0f, 0.0f, 90.0f));
 	
 	float timeLoop = 7.0f;
+	float timelevelt = 180.f;
 	bool playMenu = true;
 	///// Game loop /////
 	while (!glfwWindowShouldClose(window)) {
@@ -921,6 +937,24 @@ int main() {
 				playMenu = false;
 				//trashyM->SetDirty(true);
 			}
+		}
+		else if (scene->IsPlaying && !playMenu) {
+
+			if (scene->trash == 0) {
+				timerDone = true;
+			}
+			else {
+
+			}
+
+			if (timelevelt > 0 && !timeleveltDone) {
+				timelevelt -= dt;
+			}
+			else {
+				timeleveltDone = true;
+			}
+
+			std::cout << timelevelt;
 		}
 		// Draw our material properties window!
 		//DrawMaterialsWindow();
