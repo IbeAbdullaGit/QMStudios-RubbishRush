@@ -508,21 +508,21 @@ int main() {
 			renderer->SetMaterial(trashyMaterial);
 			// Add a dynamic rigid body to this monkey
 			RigidBody::Sptr physics = trashyM->Add<RigidBody>(RigidBodyType::Dynamic);
-			BoxCollider::Sptr box = BoxCollider::Create(glm::vec3(1.51f, 2.68f, 0.831f));
+			BoxCollider::Sptr box = BoxCollider::Create();
 
 			box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-			box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
-			box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			box->SetScale(glm::vec3(0.35f, 0.580f, 0.130f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
 			//physics->AddCollider(BoxCollider::Create());
 			//physics->SetMass(0.0f);
 			//add trigger for collisions and behaviours
 			TriggerVolume::Sptr volume = trashyM->Add<TriggerVolume>();
-			BoxCollider::Sptr box2 = BoxCollider::Create(glm::vec3(1.51f, 2.68f, 0.831f));
+			BoxCollider::Sptr box2 = BoxCollider::Create();
 
 			box2->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-			box2->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
-			box2->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			box2->SetScale(glm::vec3(0.35f, 0.58f, 0.130f));
+			//box2->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			volume->AddCollider(box2);
 			JumpBehaviour::Sptr behaviour = trashyM->Add<JumpBehaviour>();
 			//CollectTrashBehaviour::Sptr behaviour2 = trashyM->Add<CollectTrashBehaviour>();
@@ -539,7 +539,7 @@ int main() {
 			MeshResource::Sptr trashyMesh2 = ResourceManager::CreateAsset<MeshResource>("trashyWalk/trashywalk_000002.obj");
 			MeshResource::Sptr trashyMesh3 = ResourceManager::CreateAsset<MeshResource>("trashyWalk/trashywalk_000016.obj");
 			walking = frames; //may need to more manually copy frames over
-
+			
 			//need to also set frames for other animations
 			//simply switch the set frames
 			frames.push_back(trashyMesh2);
@@ -1228,6 +1228,34 @@ int main() {
 			//RigidBody::Sptr physics = trashyE->Add<RigidBody>(RigidBodyType::Kinematic);
 			
 		}
+		//start menu
+		Texture2D::Sptr startTex = ResourceManager::CreateAsset<Texture2D>("textures/start_Screen.png");
+
+		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
+		Material::Sptr startMaterial = ResourceManager::CreateAsset<Material>(basicShader); {
+			startMaterial->Name = "StartMenu";
+			startMaterial->Set("u_Material.Diffuse",startTex);
+			startMaterial->Set("u_Material.Shininess", 1.0f);
+		}
+
+		// Set up all our sample objects
+		GameObject::Sptr start = scene->CreateGameObject("Start");
+		{
+			start->SetPostion(glm::vec3(-1.44f, -0.11f, 3.91f));
+			start->SetRotation(glm::vec3(-37.0f, -180.0f, -180.0f));
+			start->SetScale(glm::vec3(0.21f, 0.19f, 0.42f));
+			// Make a big tiled mesh
+			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
+			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(20.0f), glm::vec2(1.0f)));
+			tiledMesh->GenerateMesh();
+
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = start->Add<RenderComponent>();
+			renderer->SetMesh(tiledMesh);
+			renderer->SetMaterial(startMaterial);
+		}
+
 		///////////////////////////// UI //////////////////////////////
 		//GameObject::Sptr canvas = scene->CreateGameObject("UI Canvas");
 		//{
@@ -1246,28 +1274,28 @@ int main() {
 		//		GuiPanel::Sptr panel = subPanel->Add<GuiPanel>();
 		//		panel->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
-		//		Font::Sptr font = ResourceManager::CreateAsset<Font>("fonts/Roboto-Medium.ttf", 16.0f);
-		//		font->Bake();
+//		Font::Sptr font = ResourceManager::CreateAsset<Font>("fonts/Roboto-Medium.ttf", 16.0f);
+//		font->Bake();
 
-		//		GuiText::Sptr text = subPanel->Add<GuiText>();
-		//		text->SetText("Hello world!");
-		//		text->SetFont(font);
-		//	}
+//		GuiText::Sptr text = subPanel->Add<GuiText>();
+//		text->SetText("Hello world!");
+//		text->SetFont(font);
+//	}
 
-		//	canvas->AddChild(subPanel);
-		//}
+//	canvas->AddChild(subPanel);
+//}
 
-		//GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui-sprite.png"));
-		//GuiBatcher::SetDefaultBorderRadius(8);
+//GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui-sprite.png"));
+//GuiBatcher::SetDefaultBorderRadius(8);
 
-		// Call scene awake to start up all of our components
+// Call scene awake to start up all of our components
 		scene->Window = window;
 		scene->Awake();
 
-		// Save the asset manifest for all the resources we just loaded
+// Save the asset manifest for all the resources we just loaded
 		ResourceManager::SaveManifest("manifest.json");
 
-		// Save the scene to a JSON file
+// Save the scene to a JSON file
 		scene->Save("scene.json");
 		scene->brick_count = 0;
 	}
@@ -1278,8 +1306,8 @@ int main() {
 	// We'll use this to allow editing the save/load path
 	// via ImGui, note the reserve to allocate extra space
 	// for input!
-	std::string scenePath = "scene.json"; 
-	scenePath.reserve(256); 
+	std::string scenePath = "scene.json";
+	scenePath.reserve(256);
 
 	bool isRotating = true;
 	float rotateSpeed = 90.0f;
@@ -1298,10 +1326,11 @@ int main() {
 	GameObject::Sptr binM = scene->FindObjectByName("Bin");
 	GameObject::Sptr RectangleE = scene->FindObjectByName("Rec");
 	GameObject::Sptr TrashyE = scene->FindObjectByName("TrashyE");
+	GameObject::Sptr startMenu = scene->FindObjectByName("Start");
 	//limit rotation
 	trashyM->Get<RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
 	trashyM->Get<RigidBody>()->SetLinearDamping(0.9f);
-	
+
 	//limit pos of the bin??
 
 	//create points we need for lerping
@@ -1329,348 +1358,375 @@ int main() {
 	std::vector<glm::vec3> pointsR2;
 	pointsR2.push_back(glm::vec3(90.0f, 0.0f, 90.0f));
 	pointsR2.push_back(glm::vec3(90.0f, 0.0f, 90.0f));
-	
+
 	float timeLoop = 7.0f;
 	float timelevelt = 180.f;
 	bool playMenu = true;
+
+	bool start = false;
+	bool spressed = false;
+
 	///// Game loop /////
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 		ImGuiHelper::StartFrame();
-
-		// Calculate the time since our last frame (dt)
-		double thisFrame = glfwGetTime();
-		float dt = static_cast<float>(thisFrame - lastFrame);
-
-
-		//MENU ANIMATED UPDATED
-		if (scene->IsPlaying && !timerDone && playMenu)
+		if (!start)
 		{
-			if (timeLoop > 0) {
-				timerDone = false;
-				timeLoop -= dt;
-			}
-			else {
-				timerDone = true;
-			}
-
-			if (RectangleE->GetPosition().z > 3.3f)
+			if (glfwGetKey(scene->Window, GLFW_KEY_ENTER))
 			{
-				RectangleE->UpdateLerp(pointsPos, dt);
+				spressed = true;
 			}
-			else
-			{
-				if (TrashyE->GetPosition().x >= -1.22f)
-				{
-					TrashyE->UpdateCAT(pointsPos2, dt);
-				}
-				else
-				{
-					TrashyE->UpdateScale(pointsS, pointsR, dt);
-				}
-			}
+			//scene->IsPlaying = false;
+			playMenu = false;
 			//FREEZE TRASHY
-			if (trashyM->GetPosition().z < 1.0f)
+			trashyM->Get<RigidBody>()->IsEnabled = false;
+
+
+			if (spressed)
 			{
-				trashyM->Get<RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
+				start = true;
+				startMenu->Get<RenderComponent>()->IsEnabled = false;
+				trashyM->Get<RigidBody>()->IsEnabled = true;
+				scene->RemoveGameObject(startMenu);
+				playMenu = true;
+				
 			}
-			//trashyM->Get<RigidBody>()->SetMass(0.0f);
+			
 		}
-		else if (scene->IsPlaying && timerDone && playMenu)
-		{
-			if (TrashyE->GetPosition().x < 0.5f)
+		// Calculate the time since our last frame (dt)
+			double thisFrame = glfwGetTime();
+			float dt = static_cast<float>(thisFrame - lastFrame);
+
+			//start screen?
+
+			//MENU ANIMATED UPDATED
+			if (scene->IsPlaying && !timerDone && playMenu && start)
 			{
-				TrashyE->UpdateCAT(pointsPos2, dt);
-				TrashyE->UpdateScale(pointsS2, pointsR2, dt);
-			}
-			else
-			{
-				if (RectangleE->GetPosition().z < 7.0f)
+				if (timeLoop > 0) {
+					timerDone = false;
+					timeLoop -= dt;
+				}
+				else {
+					timerDone = true;
+				}
+
+				if (RectangleE->GetPosition().z > 3.3f)
 				{
 					RectangleE->UpdateLerp(pointsPos, dt);
 				}
-			}
-			//FREEZE TRASHY
-			if (trashyM->GetPosition().z < 1.0f)
-			{
-				trashyM->Get<RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
-			}
-			//FREEZE TRASHY
-			//trashyM->Get<RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
-			if (TrashyE->GetPosition().x >= 0.4f && RectangleE->GetPosition().z >= 6.9f)
-			{
-				TrashyE->SetPostionZ(-10.0f);
-				RectangleE->SetPostionZ(-10.0f);
-				//TrashyE->SetDirty(true);
-				//RectangleE->SetDirty(true);
-				//TrashyE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(TrashyE->GUID));
-				//RectangleE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(RectangleE->GUID));
-				scene->RemoveGameObject(TrashyE);
-				scene->RemoveGameObject(RectangleE);
-				std::cout << "should be deleted\n";
-				playMenu = false;
-				//trashyM->SetDirty(true);
-			}
-		}
-		else if (scene->IsPlaying && !playMenu) {
-
-			if (scene->trash == 0) {
-				timerDone = true;
-			}
-			else {
-
-			}
-
-			if (timelevelt > 0 && !timeleveltDone) {
-				timelevelt -= dt;
-			}
-			else {
-				timeleveltDone = true;
-			}
-
-			std::cout << timelevelt;
-		}
-		// Draw our material properties window!
-		//DrawMaterialsWindow();
-		// Showcasing how to use the imGui library!
-		bool isDebugWindowOpen = ImGui::Begin("Debugging");
-		if (isDebugWindowOpen)
-		{
-			if (ImGui::Button("Add brick"))
-			{
+				else
 				{
-
+					if (TrashyE->GetPosition().x >= -1.22f)
+					{
+						TrashyE->UpdateCAT(pointsPos2, dt);
+					}
+					else
+					{
+						TrashyE->UpdateScale(pointsS, pointsR, dt);
+					}
 				}
-				
-			}
-			ImGui::Separator();
-			if (ImGui::Button("Add brick2"))
-			{
+				//FREEZE TRASHY
+				if (trashyM->GetPosition().z < 1.0f)
 				{
-
+					trashyM->Get<RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
 				}
-				
+				//trashyM->Get<RigidBody>()->IsEnabled = false;
+				//trashyM->Get<RigidBody>()->SetMass(0.0f);
 			}
-			ImGui::Separator();
-		}
-		if (isDebugWindowOpen) {
-			// Draws a button to control whether or not the game is currently playing
-			static char buttonLabel[64];
-			sprintf_s(buttonLabel, "%s###playmode", scene->IsPlaying ? "Exit Play Mode" : "Enter Play Mode");
-			if (ImGui::Button(buttonLabel)) {
-				// Save scene so it can be restored when exiting play mode
-				if (!scene->IsPlaying) {
-					editorSceneState = scene->ToJson();
+			else if (scene->IsPlaying && timerDone && playMenu && start)
+			{
+				if (TrashyE->GetPosition().x < 0.5f)
+				{
+					TrashyE->UpdateCAT(pointsPos2, dt);
+					TrashyE->UpdateScale(pointsS2, pointsR2, dt);
+				}
+				else
+				{
+					if (RectangleE->GetPosition().z < 7.0f)
+					{
+						RectangleE->UpdateLerp(pointsPos, dt);
+					}
+				}
+				//FREEZE TRASHY
+				if (trashyM->GetPosition().z < 1.0f)
+				{
+					trashyM->Get<RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
+				}
+				if (TrashyE->GetPosition().x >= 0.4f && RectangleE->GetPosition().z >= 6.9f)
+				{
+					TrashyE->SetPostionZ(-10.0f);
+					RectangleE->SetPostionZ(-10.0f);
+					//TrashyE->SetDirty(true);
+					//RectangleE->SetDirty(true);
+					//TrashyE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(TrashyE->GUID));
+					//RectangleE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(RectangleE->GUID));
+					scene->RemoveGameObject(TrashyE);
+					scene->RemoveGameObject(RectangleE);
+					std::cout << "should be deleted\n";
+					playMenu = false;
+					//trashyM->Get<RigidBody>()->IsEnabled = true;
+					//trashyM->SetDirty(true);
+				}
+			}
+			else if (scene->IsPlaying && !playMenu && start) {
+
+				if (scene->trash == 0) {
+					timerDone = true;
+				}
+				else {
+
 				}
 
-				// Toggle state
-				scene->IsPlaying = !scene->IsPlaying;
+				if (timelevelt > 0 && !timeleveltDone) {
+					timelevelt -= dt;
+				}
+				else {
+					timeleveltDone = true;
+				}
 
-				// If we've gone from playing to not playing, restore the state from before we started playing
-				if (!scene->IsPlaying) {
-					scene = nullptr;
-					// We reload to scene from our cached state
-					scene = Scene::FromJson(editorSceneState);
-					// Don't forget to reset the scene's window and wake all the objects!
+				std::cout << timelevelt;
+			}
+			// Draw our material properties window!
+			//DrawMaterialsWindow();
+			// Showcasing how to use the imGui library!
+			bool isDebugWindowOpen = ImGui::Begin("Debugging");
+			if (isDebugWindowOpen)
+			{
+				if (ImGui::Button("Add brick"))
+				{
+					{
+
+					}
+
+				}
+				ImGui::Separator();
+				if (ImGui::Button("Add brick2"))
+				{
+					{
+
+					}
+
+				}
+				ImGui::Separator();
+			}
+			if (isDebugWindowOpen) {
+				// Draws a button to control whether or not the game is currently playing
+				static char buttonLabel[64];
+				sprintf_s(buttonLabel, "%s###playmode", scene->IsPlaying ? "Exit Play Mode" : "Enter Play Mode");
+				if (ImGui::Button(buttonLabel)) {
+					// Save scene so it can be restored when exiting play mode
+					if (!scene->IsPlaying) {
+						editorSceneState = scene->ToJson();
+					}
+
+					// Toggle state
+					scene->IsPlaying = !scene->IsPlaying;
+
+					// If we've gone from playing to not playing, restore the state from before we started playing
+					if (!scene->IsPlaying) {
+						scene = nullptr;
+						// We reload to scene from our cached state
+						scene = Scene::FromJson(editorSceneState);
+						// Don't forget to reset the scene's window and wake all the objects!
+						scene->Window = window;
+						scene->Awake();
+					}
+				}
+
+				// Make a new area for the scene saving/loading
+				ImGui::Separator();
+				if (DrawSaveLoadImGui(scene, scenePath)) {
+					// C++ strings keep internal lengths which can get annoying
+					// when we edit it's underlying datastore, so recalcualte size
+					scenePath.resize(strlen(scenePath.c_str()));
+
+					// We have loaded a new scene, call awake to set
+					// up all our components
 					scene->Window = window;
 					scene->Awake();
 				}
-			}
-
-			// Make a new area for the scene saving/loading
-			ImGui::Separator();
-			if (DrawSaveLoadImGui(scene, scenePath)) {
-				// C++ strings keep internal lengths which can get annoying
-				// when we edit it's underlying datastore, so recalcualte size
-				scenePath.resize(strlen(scenePath.c_str()));
-
-				// We have loaded a new scene, call awake to set
-				// up all our components
-				scene->Window = window;
-				scene->Awake();
-			}
-			ImGui::Separator();
-			// Draw a dropdown to select our physics debug draw mode
-			if (BulletDebugDraw::DrawModeGui("Physics Debug Mode:", physicsDebugMode)) {
-				scene->SetPhysicsDebugDrawMode(physicsDebugMode);
-			}
-			LABEL_LEFT(ImGui::SliderFloat, "Playback Speed:    ", &playbackSpeed, 0.0f, 10.0f);
-			ImGui::Separator();
-		}
-
-		// Clear the color and depth buffers
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// Update our application level uniforms every frame
-
-		// Draw some ImGui stuff for the lights
-		if (isDebugWindowOpen) {
-			for (int ix = 0; ix < scene->Lights.size(); ix++) {
-				char buff[256];
-				sprintf_s(buff, "Light %d##%d", ix, ix);
-				// DrawLightImGui will return true if the light was deleted
-				if (DrawLightImGui(scene, buff, ix)) {
-					// Remove light from scene, restore all lighting data
-					scene->Lights.erase(scene->Lights.begin() + ix);
-					scene->SetupShaderAndLights();
-					// Move back one element so we don't skip anything!
-					ix--;
+				ImGui::Separator();
+				// Draw a dropdown to select our physics debug draw mode
+				if (BulletDebugDraw::DrawModeGui("Physics Debug Mode:", physicsDebugMode)) {
+					scene->SetPhysicsDebugDrawMode(physicsDebugMode);
 				}
+				LABEL_LEFT(ImGui::SliderFloat, "Playback Speed:    ", &playbackSpeed, 0.0f, 10.0f);
+				ImGui::Separator();
 			}
-			// As long as we don't have max lights, draw a button
-			// to add another one
-			if (scene->Lights.size() < scene->MAX_LIGHTS) {
-				if (ImGui::Button("Add Light")) {
-					scene->Lights.push_back(Light());
-					scene->SetupShaderAndLights();
+
+			// Clear the color and depth buffers
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			// Update our application level uniforms every frame
+
+			// Draw some ImGui stuff for the lights
+			if (isDebugWindowOpen) {
+				for (int ix = 0; ix < scene->Lights.size(); ix++) {
+					char buff[256];
+					sprintf_s(buff, "Light %d##%d", ix, ix);
+					// DrawLightImGui will return true if the light was deleted
+					if (DrawLightImGui(scene, buff, ix)) {
+						// Remove light from scene, restore all lighting data
+						scene->Lights.erase(scene->Lights.begin() + ix);
+						scene->SetupShaderAndLights();
+						// Move back one element so we don't skip anything!
+						ix--;
+					}
 				}
-			}
-			// Split lights from the objects in ImGui
-			ImGui::Separator();
-		}
-		//movement update
-		//keyboard(trashyM->Get<RigidBody>());
-
-		dt *= playbackSpeed;
-		
-		/// <summary>
-		/// /ANIMATION STUFF
-		/// </summary>
-		/// <returns></returns>
-		//trashyM->Get<MorphAnimator>()->Update(dt);
-		//trashyM->Get<MorphMeshRenderer>()->Draw();
-
-
-		// Perform updates for all components
-		scene->Update(dt);
-		// Grab shorthands to the camera and shader from the scene
-		Camera::Sptr camera = scene->MainCamera;
-
-		camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
-		camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
-
-		// Cache the camera's viewprojection
-		glm::mat4 viewProj = camera->GetViewProjection();
-		DebugDrawer::Get().SetViewProjection(viewProj);
-
-		// Update our worlds physics!
-		scene->DoPhysics(dt);
-
-
-		// Draw object GUIs
-		if (isDebugWindowOpen) {
-			scene->DrawAllGameObjectGUIs();
-		}
-		
-		// The current material that is bound for rendering
-		Material::Sptr currentMat = nullptr;
-		Shader::Sptr shader = nullptr;
-
-		// Bind the skybox texture to a reserved texture slot
-		// See Material.h and Material.cpp for how we're reserving texture slots
-		TextureCube::Sptr environment = scene->GetSkyboxTexture();
-		if (environment) environment->Bind(0);
-
-		// Here we'll bind all the UBOs to their corresponding slots
-		scene->PreRender();
-		frameUniforms->Bind(FRAME_UBO_BINDING);
-		instanceUniforms->Bind(INSTANCE_UBO_BINDING);
-
-		// Upload frame level uniforms
-		auto& frameData = frameUniforms->GetData();
-		frameData.u_Projection = camera->GetProjection();
-		frameData.u_View = camera->GetView();
-		frameData.u_ViewProjection = camera->GetViewProjection();
-		frameData.u_CameraPos = glm::vec4(camera->GetGameObject()->GetPosition(), 1.0f);
-		frameData.u_Time = static_cast<float>(thisFrame);
-		frameUniforms->Update();
-
-		// Render all our objects
-		ComponentManager::Each<RenderComponent>([&](const RenderComponent::Sptr& renderable) {
-			// Early bail if mesh not set
-			if (renderable->GetMesh() == nullptr) {
-				return;
-			}
-
-			// If we don't have a material, try getting the scene's fallback material
-			// If none exists, do not draw anything
-			if (renderable->GetMaterial() == nullptr) {
-				if (scene->DefaultMaterial != nullptr) {
-					renderable->SetMaterial(scene->DefaultMaterial);
+				// As long as we don't have max lights, draw a button
+				// to add another one
+				if (scene->Lights.size() < scene->MAX_LIGHTS) {
+					if (ImGui::Button("Add Light")) {
+						scene->Lights.push_back(Light());
+						scene->SetupShaderAndLights();
+					}
 				}
-				else {
+				// Split lights from the objects in ImGui
+				ImGui::Separator();
+			}
+			//movement update
+			//keyboard(trashyM->Get<RigidBody>());
+
+			dt *= playbackSpeed;
+
+			/// <summary>
+			/// /ANIMATION STUFF
+			/// </summary>
+			/// <returns></returns>
+			//trashyM->Get<MorphAnimator>()->Update(dt);
+			//trashyM->Get<MorphMeshRenderer>()->Draw();
+
+
+			// Perform updates for all components
+			scene->Update(dt);
+			// Grab shorthands to the camera and shader from the scene
+			Camera::Sptr camera = scene->MainCamera;
+
+			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
+			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
+
+			// Cache the camera's viewprojection
+			glm::mat4 viewProj = camera->GetViewProjection();
+			DebugDrawer::Get().SetViewProjection(viewProj);
+
+			// Update our worlds physics!
+			scene->DoPhysics(dt);
+
+
+			// Draw object GUIs
+			if (isDebugWindowOpen) {
+				scene->DrawAllGameObjectGUIs();
+			}
+
+			// The current material that is bound for rendering
+			Material::Sptr currentMat = nullptr;
+			Shader::Sptr shader = nullptr;
+
+			// Bind the skybox texture to a reserved texture slot
+			// See Material.h and Material.cpp for how we're reserving texture slots
+			TextureCube::Sptr environment = scene->GetSkyboxTexture();
+			if (environment) environment->Bind(0);
+
+			// Here we'll bind all the UBOs to their corresponding slots
+			scene->PreRender();
+			frameUniforms->Bind(FRAME_UBO_BINDING);
+			instanceUniforms->Bind(INSTANCE_UBO_BINDING);
+
+			// Upload frame level uniforms
+			auto& frameData = frameUniforms->GetData();
+			frameData.u_Projection = camera->GetProjection();
+			frameData.u_View = camera->GetView();
+			frameData.u_ViewProjection = camera->GetViewProjection();
+			frameData.u_CameraPos = glm::vec4(camera->GetGameObject()->GetPosition(), 1.0f);
+			frameData.u_Time = static_cast<float>(thisFrame);
+			frameUniforms->Update();
+
+			// Render all our objects
+			ComponentManager::Each<RenderComponent>([&](const RenderComponent::Sptr& renderable) {
+				// Early bail if mesh not set
+				if (renderable->GetMesh() == nullptr) {
 					return;
 				}
-			}
 
-			// If the material has changed, we need to bind the new shader and set up our material and frame data
-			// Note: This is a good reason why we should be sorting the render components in ComponentManager
-			if (renderable->GetMaterial() != currentMat) {
-				currentMat = renderable->GetMaterial();
-				shader = currentMat->GetShader();
+				// If we don't have a material, try getting the scene's fallback material
+				// If none exists, do not draw anything
+				if (renderable->GetMaterial() == nullptr) {
+					if (scene->DefaultMaterial != nullptr) {
+						renderable->SetMaterial(scene->DefaultMaterial);
+					}
+					else {
+						return;
+					}
+				}
 
-				shader->Bind();
-				currentMat->Apply();
-			}
+				// If the material has changed, we need to bind the new shader and set up our material and frame data
+				// Note: This is a good reason why we should be sorting the render components in ComponentManager
+				if (renderable->GetMaterial() != currentMat) {
+					currentMat = renderable->GetMaterial();
+					shader = currentMat->GetShader();
 
-			// Grab the game object so we can do some stuff with it
-			GameObject* object = renderable->GetGameObject();
+					shader->Bind();
+					currentMat->Apply();
+				}
 
-			// Use our uniform buffer for our instance level uniforms
-			auto& instanceData = instanceUniforms->GetData();
-			instanceData.u_Model = object->GetTransform();
-			instanceData.u_ModelViewProjection = viewProj * object->GetTransform();
-			instanceData.u_NormalMatrix = glm::mat3(glm::transpose(glm::inverse(object->GetTransform())));
-			instanceUniforms->Update();
+				// Grab the game object so we can do some stuff with it
+				GameObject* object = renderable->GetGameObject();
 
-			// Draw the object
-			renderable->GetMesh()->Draw();
-			});
+				// Use our uniform buffer for our instance level uniforms
+				auto& instanceData = instanceUniforms->GetData();
+				instanceData.u_Model = object->GetTransform();
+				instanceData.u_ModelViewProjection = viewProj * object->GetTransform();
+				instanceData.u_NormalMatrix = glm::mat3(glm::transpose(glm::inverse(object->GetTransform())));
+				instanceUniforms->Update();
 
-		// Use our cubemap to draw our skybox
-		scene->DrawSkybox();
+				// Draw the object
+				renderable->GetMesh()->Draw();
+				});
 
-		////////UNCOMMENT THIS FOR UI////////
+			// Use our cubemap to draw our skybox
+			scene->DrawSkybox();
 
-		//// Disable culling
-		//glDisable(GL_CULL_FACE);
-		//// Disable depth testing, we're going to use order-dependant layering
-		//glDisable(GL_DEPTH_TEST);
-		//// Disable depth writing
-		//glDepthMask(GL_FALSE);
+			////////UNCOMMENT THIS FOR UI////////
 
-		//// Enable alpha blending
-		//glEnable(GL_BLEND);
-		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			//// Disable culling
+			//glDisable(GL_CULL_FACE);
+			//// Disable depth testing, we're going to use order-dependant layering
+			//glDisable(GL_DEPTH_TEST);
+			//// Disable depth writing
+			//glDepthMask(GL_FALSE);
 
-		//// Enable the scissor test;
-		//glEnable(GL_SCISSOR_TEST);
+			//// Enable alpha blending
+			//glEnable(GL_BLEND);
+			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		//// Our projection matrix will be our entire window for now
-		//glm::mat4 proj = glm::ortho(0.0f, (float)windowSize.x, (float)windowSize.y, 0.0f, -1.0f, 1.0f);
-		//GuiBatcher::SetProjection(proj);
+			//// Enable the scissor test;
+			//glEnable(GL_SCISSOR_TEST);
 
-		//// Iterate over and render all the GUI objects
-		//scene->RenderGUI();
+			//// Our projection matrix will be our entire window for now
+			//glm::mat4 proj = glm::ortho(0.0f, (float)windowSize.x, (float)windowSize.y, 0.0f, -1.0f, 1.0f);
+			//GuiBatcher::SetProjection(proj);
 
-		//// Flush the Gui Batch renderer
-		//GuiBatcher::Flush();
+			//// Iterate over and render all the GUI objects
+			//scene->RenderGUI();
 
-		//// Disable alpha blending
-		//glDisable(GL_BLEND);
-		//// Disable scissor testing
-		//glDisable(GL_SCISSOR_TEST);
-		//// Re-enable depth writing
-		//glDepthMask(GL_TRUE);
+			//// Flush the Gui Batch renderer
+			//GuiBatcher::Flush();
 
-		// End our ImGui window
-		ImGui::End();
+			//// Disable alpha blending
+			//glDisable(GL_BLEND);
+			//// Disable scissor testing
+			//glDisable(GL_SCISSOR_TEST);
+			//// Re-enable depth writing
+			//glDepthMask(GL_TRUE);
 
-		VertexArrayObject::Unbind();
+			// End our ImGui window
+			ImGui::End();
 
-		lastFrame = thisFrame;
-		ImGuiHelper::EndFrame();
-		glfwSwapBuffers(window);
+			VertexArrayObject::Unbind();
+
+			lastFrame = thisFrame;
+			ImGuiHelper::EndFrame();
+			glfwSwapBuffers(window);
 	}
 
 	// Clean up the ImGui library

@@ -61,6 +61,7 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 		if (_body->GetLinearVelocity().y >= -5.0f) {
 			_body->ApplyImpulse(glm::vec3(0.0f, -_impulse, 0.0f));
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			_//body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(0.0f, -_impulse, 0.0f));
 		}
 	}
 
@@ -68,6 +69,7 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 		if (_body->GetLinearVelocity().y <= 5.0f) {
 			_body->ApplyImpulse(glm::vec3(0.0f, _impulse, 0.0f));
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 180.0f));
+			//_body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(0.0f, _impulse, 0.0f));
 		}
 	}
 
@@ -76,6 +78,7 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 			_body->ApplyImpulse(glm::vec3(_impulse, 0.0f, 0.0f));
 
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+			//_body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(_impulse, 0.0f, 0.0f));
 		}
 	}
 
@@ -83,6 +86,7 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 		if (_body->GetLinearVelocity().x >= -5.0f) {
 			_body->ApplyImpulse(glm::vec3(-_impulse, 0.0f, 0.0f));
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+			//_body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(-_impulse, 0.0f, 0.0f));
 		}
 	}
 

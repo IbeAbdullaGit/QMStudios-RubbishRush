@@ -31,35 +31,19 @@ void MorphMeshRenderer::UpdateData(MeshResource::Sptr frame0, MeshResource::Sptr
 	VertexBuffer::Sptr vbo2 = VertexBuffer::Create();
 	vbo = frame1->Mesh->GetBufferBinding(AttribUsage::Position)->Buffer;
 	vbo2 = frame1->Mesh->GetBufferBinding(AttribUsage::Normal)->Buffer;
-
-	
 	VertexArrayObject::VertexDeclaration newvd = frame1->Mesh->GetVDecl();
 	//std::cout << newvd[0].Usage << std::endl; //position
 	//std::cout << newvd[1].Usage << std::endl; //color
 	//std::cout << newvd[2].Usage << std::endl; //normal
 	//std::cout << newvd[3].Usage << std::endl; //texture
 	//std::cout << newvd.size() << std::endl; =4
-
-	BufferAttribute ba1 = BufferAttribute(4, 3, AttributeType::Float, newvd[0].Stride, newvd[0].Offset, AttribUsage::Position);
-	BufferAttribute ba2 = BufferAttribute(5, 3, AttributeType::Float, newvd[2].Stride, newvd[2].Offset, AttribUsage::Normal);
+	BufferAttribute ba1 = BufferAttribute(6, 3, AttributeType::Float, newvd[0].Stride, newvd[0].Offset, AttribUsage::Position);
+	BufferAttribute ba2 = BufferAttribute(7, 3, AttributeType::Float, newvd[2].Stride, newvd[2].Offset, AttribUsage::Normal);
 	m_vao->AddVertexBuffer(vbo, std::vector<BufferAttribute>{ba1});
 	m_vao->AddVertexBuffer(vbo2, std::vector<BufferAttribute>{ba2});
-	////BufferAttribute ba;
-	////ba.Slot = 0;
-	////ba.Usage = AttribUsage::Position;
-	//m_vao->AddVertexBuffer(vbo, frame0->Mesh->GetVDecl()); //position 0 DUNNO IF THIS IS CORRECT
-	//vbo = frame1->Mesh->GetBufferBinding(AttribUsage::Position)->Buffer;
-	//m_vao->AddVertexBuffer(vbo, frame1->Mesh->GetVDecl()); //position 1
-
-	//vbo = frame0->Mesh->GetBufferBinding(AttribUsage::Normal)->Buffer;
-	//m_vao->AddVertexBuffer(vbo, frame0->Mesh->GetVDecl()); //normal 0
-	//vbo = frame1->Mesh->GetBufferBinding(AttribUsage::Normal)->Buffer;
-	//m_vao->AddVertexBuffer(vbo, frame1->Mesh->GetVDecl()); //normal 1
-
+	
 	GetGameObject()->Get<RenderComponent>()->GetMeshResource()->Mesh = m_vao;
-	//GetGameObject()->Get<RenderComponent>()->Setm
-	//GetGameObject()->SetRotation(glm::vec3(120.0f, GetGameObject()->GetRotation().y, GetGameObject()->GetRotation().z));
-	//GetGameObject()->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+	
 	m_t = t;
 }
 
