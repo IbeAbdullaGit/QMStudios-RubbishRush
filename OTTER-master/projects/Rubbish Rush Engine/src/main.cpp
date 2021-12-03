@@ -66,6 +66,11 @@
 #include "Gameplay/Components/SpillBehaviour.h"
 #include "Gameplay/Components/SteeringBehaviour.h"
 #include "Gameplay/Components/FollowBehaviour.h"
+#include "Gameplay/Components/MorphAnimator.h"
+#include "Gameplay/Components/MorphMeshRenderer.h"
+
+#include "CMorphMeshRenderer.h"
+#include "CMorphAnimator.h"
 
 
 // Physics
@@ -85,7 +90,7 @@
 #include "Gameplay/Components/GUI/GuiText.h"
 #include "Gameplay/InputEngine.h"
 
-#include "CPathAnimator.h"
+
 //#define LOG_GL_NOTIFICATIONS
 
 /*
@@ -302,10 +307,16 @@ int main() {
 	ComponentManager::RegisterType<SteeringBehaviour>();
 	ComponentManager::RegisterType<FollowBehaviour>();
 	ComponentManager::RegisterType<SimpleCameraControl>();
+	ComponentManager::RegisterType<MorphAnimator>();
+	ComponentManager::RegisterType<MorphMeshRenderer>();
 
+	
 	ComponentManager::RegisterType<RectTransform>();
 	ComponentManager::RegisterType<GuiPanel>();
 	ComponentManager::RegisterType<GuiText>();
+
+	//ComponentManager::RegisterType<CMorphMeshRenderer>();
+	//ComponentManager::RegisterType<CMorphAnimator>();
 	// Structure for our frame-level uniforms, matches layout from
 	// fragments/frame_uniforms.glsl
 	// For use with a UBO.
@@ -355,6 +366,12 @@ int main() {
 	bool isPressed = false;
 	bool timerDone = false;
 	bool timeleveltDone = false;
+
+	std::vector <MeshResource::Sptr> walking;
+	std::vector <MeshResource::Sptr> idle;
+	std::vector <MeshResource::Sptr> jumping;
+	std::vector <MeshResource::Sptr> interaction;
+
 	// For now we can use a toggle to generate our scene vs load from file
 	if (loadScene) {
 		ResourceManager::LoadManifest("Brick Brea-manifest.json");
@@ -372,6 +389,12 @@ int main() {
 		// This shader handles our basic materials without reflections (cause they expensive)
 		Shader::Sptr basicShader = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
+		});
+
+		// ANIMATION SHADER??
+		Shader::Sptr animShader = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/morph.vert" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
 		});
 
@@ -456,7 +479,7 @@ int main() {
 		MeshResource::Sptr trashyMesh = ResourceManager::CreateAsset<MeshResource>("trashy.obj");
 		Texture2D::Sptr trashyTex = ResourceManager::CreateAsset<Texture2D>("textures/trashyTEX.png");
 		// Create our material
-		Material::Sptr trashyMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		Material::Sptr trashyMaterial = ResourceManager::CreateAsset<Material>(animShader);
 		{
 			trashyMaterial->Name = "Trashy";
 			trashyMaterial->Set("u_Material.Diffuse", trashyTex);
@@ -476,7 +499,7 @@ int main() {
 			// Add a dynamic rigid body to this monkey
 			RigidBody::Sptr physics = trashyM->Add<RigidBody>(RigidBodyType::Dynamic);
 			BoxCollider::Sptr box = BoxCollider::Create(glm::vec3(1.51f, 2.68f, 0.831f));
-			
+
 			box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
@@ -495,7 +518,27 @@ int main() {
 			//CollectTrashBehaviour::Sptr behaviour2 = trashyM->Add<CollectTrashBehaviour>();
 
 			PlayerMovementBehavior::Sptr movement = trashyM->Add<PlayerMovementBehavior>();
+
+			//ANIMATION STUFF////
+			MorphMeshRenderer::Sptr morph1 = trashyM->Add<MorphMeshRenderer>();
+			morph1->SetMorphMeshRenderer(trashyMesh, trashyMaterial);
+			MorphAnimator::Sptr morph2 = trashyM->Add<MorphAnimator>();
+
+			//walking frames
+			std::vector <MeshResource::Sptr> frames;
+			MeshResource::Sptr trashyMesh2 = ResourceManager::CreateAsset<MeshResource>("trashyWalk/trashywalk_000002.obj");
+			MeshResource::Sptr trashyMesh3 = ResourceManager::CreateAsset<MeshResource>("trashyWalk/trashywalk_000016.obj");
+			walking = frames; //may need to more manually copy frames over
+
+			//need to also set frames for other animations
+			//simply switch the set frames
+			frames.push_back(trashyMesh2);
+			frames.push_back(trashyMesh3);
+			morph2->SetInitial();
+			morph2->SetFrameTime(0.5f);
+			morph2->SetFrames(frames);
 		}
+
 		
 
 		Texture2D::Sptr planeTex = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
@@ -566,6 +609,8 @@ int main() {
 			box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
 			volume->AddCollider(box2);
 			CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
+
+			
 
 		}
 		//setup moving toy
@@ -1058,6 +1103,14 @@ int main() {
 		//keyboard(trashyM->Get<RigidBody>());
 
 		dt *= playbackSpeed;
+		
+		/// <summary>
+		/// /ANIMATION STUFF
+		/// </summary>
+		/// <returns></returns>
+		//trashyM->Get<MorphAnimator>()->Update(dt);
+		//trashyM->Get<MorphMeshRenderer>()->Draw();
+
 
 		// Perform updates for all components
 		scene->Update(dt);

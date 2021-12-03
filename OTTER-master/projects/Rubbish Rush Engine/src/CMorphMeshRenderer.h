@@ -19,7 +19,7 @@ namespace nou
 {
 	class CMorphMeshRenderer : CMeshRenderer
 	{
-		public:
+	public:
 
 		enum class Attrib
 		{
@@ -41,7 +41,7 @@ namespace nou
 		void UpdateData(const Mesh& frame0, const Mesh& frame1, float t);
 		virtual void Draw();
 
-		protected:
+	protected:
 
 		//Pointers to the frames we're currently in between.
 		Mesh* m_frame0;

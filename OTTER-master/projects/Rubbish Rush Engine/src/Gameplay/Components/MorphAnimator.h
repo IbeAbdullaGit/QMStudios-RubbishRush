@@ -11,33 +11,60 @@
 #include "Gameplay/Scene.h"
 #include "Utils/ImGuiHelper.h"
 
+#include <memory>
+
 /// <summary>
 /// Provides an example behaviour that uses some of the trigger interface to change the material
 /// of the game object the component is attached to when entering or leaving a trigger
 /// </summary>
 using namespace Gameplay;
-class CollectTrashBehaviour : public Gameplay::IComponent {
+class MorphAnimator : public Gameplay::IComponent {
 
 public:
-	typedef std::shared_ptr<CollectTrashBehaviour> Sptr;
-	CollectTrashBehaviour();
-	virtual ~CollectTrashBehaviour();
 	
-	//Gameplay::IComponent::Wptr Panel;
-	// Inherited from IComponent
+	typedef std::shared_ptr<MorphAnimator> Sptr;
+	MorphAnimator();
+	virtual ~MorphAnimator();
+
+	//MorphAnimator(MorphAnimator&&) = default;
+	//MorphAnimator& operator=(MorphAnimator&&) = default;
+
+	virtual void Update(float deltaTime) override;
+	virtual void Awake() override;
+	void SetInitial();
 
 	virtual void OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) override;
 	virtual void OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) override;
-	virtual void Awake() override;
-	virtual void Update(float deltaTime) override;
 	virtual void RenderImGui() override;
+	void SetFrameTime(float t);
+	void SetFrames(std::vector<MeshResource::Sptr>& f);
+
 	virtual nlohmann::json ToJson() const override;
-	static CollectTrashBehaviour::Sptr FromJson(const nlohmann::json& blob);
-	MAKE_TYPENAME(CollectTrashBehaviour);
+	static MorphAnimator::Sptr FromJson(const nlohmann::json& blob);
+	MAKE_TYPENAME(MorphAnimator);
 
 protected:
 
-	RenderComponent::Sptr _renderer;
-	Scene* _scene;
-	bool activated = false;
+	class AnimData
+	{
+	public:
+
+		//TODO: You'll need to define a way to store and manage full
+		//animation clips for the exercise.
+		//make a vector
+		std::vector<MeshResource::Sptr> frames;
+		//const Mesh* frame0;
+		//const Mesh* frame1;
+
+		//The time inbetween frames.
+		float frameTime;
+
+		AnimData();
+		~AnimData() = default;
+	};
+	std::unique_ptr<AnimData> m_data;
+	float m_timer;
+	bool m_forwards;
+	size_t m_segmentIndex;
+
 };

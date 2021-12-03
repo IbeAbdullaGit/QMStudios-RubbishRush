@@ -53,6 +53,11 @@ void CollectTrashBehaviour::Update(float deltatime)
 
 			activated = false;
 		}
+		/*Gameplay::IComponent::Sptr ptr = Panel.lock();
+		if (ptr != nullptr)
+		{
+			ptr->IsEnabled = !ptr->IsEnabled;
+		}*/
 	}
 }
 

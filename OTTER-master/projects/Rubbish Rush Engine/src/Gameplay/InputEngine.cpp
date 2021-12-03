@@ -86,7 +86,7 @@ void InputEngine::__KeyCallback(GLFWwindow* window, int key, int scancode, int a
 			__keyState[key] = ButtonState::Pressed;
 			break;
 		case GLFW_RELEASE:
-			__keyState[key] == ButtonState::Released;
+			__keyState[key] = ButtonState::Released;
 			break;
 		default:
 			break;
