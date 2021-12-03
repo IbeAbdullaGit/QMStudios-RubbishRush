@@ -563,7 +563,7 @@ int main() {
 		// Set up all our sample objects
 		GameObject::Sptr plane = scene->CreateGameObject("Plane");
 		{
-			plane->SetPostion(glm::vec3(0.0f, 0.0f, -0.08f));
+			plane->SetPostion(glm::vec3(0.04f, 0.99f, -0.32f));
 			plane->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 			// Make a big tiled mesh
 			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
@@ -594,7 +594,7 @@ int main() {
 		}
 		GameObject::Sptr layout = scene->CreateGameObject("Layout");
 		{
-			layout->SetPostion(glm::vec3(6.33f, -1.44f, 0.0f));
+			layout->SetPostion(glm::vec3(-1.71f, -4.12f, -1.35f));
 			layout->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
 			layout->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 
