@@ -227,8 +227,21 @@ void TimeCountdown(float DisplayTime) {
 	float minutes = floorf(DisplayTime / 60);
 	float seconds = floorf(fmodf(DisplayTime, 60));
 
-}
+	std::cout << std::setfill('0') << std::setw(2);
+	std::cout << minutes << ":";
 
+	if (seconds < 10) {
+		std::cout << std::setfill('0') << std::setw(2);
+		std::cout << seconds;
+	}
+	else {
+		std::cout << seconds;
+	}
+
+	std::cout << "\n";
+
+
+}
 
 /// <summary>
 /// Draws some ImGui controls for the given light
@@ -366,6 +379,8 @@ int main() {
 	bool isPressed = false;
 	bool timerDone = false;
 	bool timeleveltDone = false;
+	bool lose = false;
+	bool Victory = false;
 
 	std::vector <MeshResource::Sptr> walking;
 	std::vector <MeshResource::Sptr> idle;
@@ -1577,10 +1592,11 @@ int main() {
 				//trashyM->SetDirty(true);
 			}
 		}
-		else if (scene->IsPlaying && !playMenu) {
+		else if (scene->IsPlaying && !playMenu && !timeleveltDone) {
 
 			if (scene->trash == 0) {
-				timerDone = true;
+
+				//timeleveltDone = true;
 			}
 			else {
 
@@ -1588,13 +1604,28 @@ int main() {
 
 			if (timelevelt > 0 && !timeleveltDone) {
 				timelevelt -= dt;
+				TimeCountdown(timelevelt);
 			}
 			else {
 				timeleveltDone = true;
+				lose = true;
+
 			}
 
-			std::cout << timelevelt;
+
+
 		}
+		else if (timeleveltDone && scene->IsPlaying) {
+			if (lose) {
+				std::cout << "You lost!" << "\n";
+				lose = false;
+			}
+
+			if (Victory) {
+
+			}
+		}
+
 		// Draw our material properties window!
 		//DrawMaterialsWindow();
 		// Showcasing how to use the imGui library!
