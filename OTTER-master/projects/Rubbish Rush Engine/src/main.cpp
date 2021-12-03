@@ -952,26 +952,6 @@ int main() {
 			SubmittingTrashBehaviour::Sptr behaviour2 = binM->Add<SubmittingTrashBehaviour>();
 			
 		}
-		//statue object
-		MeshResource::Sptr statueMesh = ResourceManager::CreateAsset<MeshResource>("wolfstatue.obj");
-		Texture2D::Sptr statueTex = ResourceManager::CreateAsset <Texture2D>("textures/statue.jpg");
-		//Create Material
-		Material::Sptr statueMaterial = ResourceManager::CreateAsset<Material>(basicShader);
-		{
-			statueMaterial->Name = "Statue";
-			statueMaterial->Set("u_Material.Diffuse", statueTex);
-			statueMaterial->Set("u_Material.Shininess", 1.0f);
-		}
-		GameObject::Sptr wolfstatue = scene->CreateGameObject("Statue");
-		{
-			wolfstatue->SetPostion(glm::vec3(0.0f, 0.0f, 0.0f));
-			wolfstatue->SetRotation(glm::vec3(90.0, 0.0f, 90.0f));
-			wolfstatue->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-			
-			RenderComponent::Sptr renderer = wolfstatue->Add<RenderComponent>();
-			renderer->SetMesh(statueMesh);
-			renderer->SetMaterial(statueMaterial);
-		}
 		//Shelf object
 		MeshResource::Sptr shelfMesh = ResourceManager::CreateAsset<MeshResource>("shelf.obj");
 		Texture2D::Sptr shelfTex = ResourceManager::CreateAsset <Texture2D>("textures/shelf.png");
@@ -1227,6 +1207,179 @@ int main() {
 			renderer->SetMaterial(trashyEMaterial);
 			//RigidBody::Sptr physics = trashyE->Add<RigidBody>(RigidBodyType::Kinematic);
 			
+		}
+		//Modelling Static objects
+		{
+			//Bench
+			MeshResource::Sptr benchMesh = ResourceManager::CreateAsset<MeshResource>("bench.obj");
+			Texture2D::Sptr benchTex = ResourceManager::CreateAsset<Texture2D>("textures/bench.jpg");
+			Material::Sptr benchMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				benchMaterial->Name = "Bench";
+				benchMaterial->Set("u_Material.Diffuse", benchTex);
+				benchMaterial->Set("u_Material.Shininess", 0.0f);
+			}
+			GameObject::Sptr bench = scene->CreateGameObject("Bench");
+			{
+				bench->SetPostion(glm::vec3(-0.02f, -2.23f, 0.0f));
+				bench->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				bench->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+				
+				RenderComponent::Sptr renderer = bench->Add<RenderComponent>();
+				renderer->SetMesh(benchMesh);
+				renderer->SetMaterial(benchMaterial);
+			}
+			//Cash Counter
+			GameObject::Sptr cashModel = scene->CreateGameObject("cash Modelling");
+			{
+				cashModel->SetPostion(glm::vec3(-6.34f, -1.61f, 0.0f));
+				cashModel->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+				cashModel->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+				
+				RenderComponent::Sptr renderer = cashModel->Add<RenderComponent>();
+				renderer->SetMesh(cashMesh);
+				renderer->SetMaterial(cashMaterial);
+
+			}
+			//Cup
+			GameObject::Sptr cupModel = scene->CreateGameObject("cup Modelling");
+			{
+				cupModel->SetPostion(glm::vec3(-3.76f, -1.52f, 0.0f));
+				cupModel->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+				cupModel->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+				
+				RenderComponent::Sptr renderer = cupModel->Add<RenderComponent>();
+				renderer->SetMesh(trashMesh);
+				renderer->SetMaterial(trashMaterial);
+			}
+			//Plant
+			MeshResource::Sptr plantMesh = ResourceManager::CreateAsset<MeshResource>("plant.obj");
+			Texture2D::Sptr plantTex = ResourceManager::CreateAsset<Texture2D>("textures/planttex.png");
+			Material::Sptr plantMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				plantMaterial->Name = "Plant";
+				plantMaterial->Set("u_Material.Diffuse", plantTex);
+				plantMaterial->Set("u_Material.Shininess", 0.0f);
+			}
+			GameObject::Sptr plant = scene->CreateGameObject("Plant");
+			{
+				plant->SetPostion(glm::vec3(-3.17f, -1.51f, 0.0f));
+				plant->SetRotation(glm::vec3(90.0f, 0.0f, 72.0f));
+				plant->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+				
+				RenderComponent::Sptr renderer = plant->Add<RenderComponent>();
+				renderer->SetMesh(plantMesh);
+				renderer->SetMaterial(plantMaterial);
+			}
+			//Rack
+			MeshResource::Sptr rackMesh = ResourceManager::CreateAsset<MeshResource>("rack.obj");
+			Texture2D::Sptr rackTex = ResourceManager::CreateAsset<Texture2D>("textures/rack.png");
+			Material::Sptr rackMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				rackMaterial->Name = "Rack";
+				rackMaterial->Set("u_Material.Diffuse", rackTex);
+				rackMaterial->Set("u_Material.Shininess", 0.2f);
+			}
+			GameObject::Sptr rack = scene->CreateGameObject("Rack");
+			{
+				rack->SetPostion(glm::vec3(-1.64f, -1.97f, 0.0f));
+				rack->SetRotation(glm::vec3(90.0f, 0.0f, 63.0f));
+				rack->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
+				
+				RenderComponent::Sptr renderer = rack->Add<RenderComponent>();
+				renderer->SetMesh(rackMesh);
+				renderer->SetMaterial(rackMaterial);
+			}
+			//Shelf
+			GameObject::Sptr shelfModel = scene->CreateGameObject("Shelf Modelling");
+			{
+				shelfModel ->SetPostion(glm::vec3(-9.54f, -1.87f, 0.0f));
+				shelfModel->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+				shelfModel->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = shelfModel->Add<RenderComponent>();
+				renderer->SetMesh(shelfMesh);
+				renderer->SetMaterial(shelfMaterial);
+			}
+			//Shower
+			MeshResource::Sptr showerMesh = ResourceManager::CreateAsset<MeshResource>("shower.obj");
+			Texture2D::Sptr showerTex = ResourceManager::CreateAsset<Texture2D>("textures/shower.png");
+			Material::Sptr showerMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				showerMaterial->Name = "Shower";
+				showerMaterial->Set("u_Material.Diffuse", showerTex);
+				showerMaterial->Set("u_Material.Shininess", 0.5f);
+			}
+			GameObject::Sptr shower = scene->CreateGameObject("Shower");
+			{
+				shower->SetPostion(glm::vec3(-4.5f, -1.84f, 0.0f));
+				shower->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+				shower->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+
+				RenderComponent::Sptr renderer = shower->Add<RenderComponent>();
+				renderer->SetMesh(showerMesh);
+				renderer->SetMaterial(showerMaterial);
+			}
+			MeshResource::Sptr tubMesh = ResourceManager::CreateAsset<MeshResource>("tub.obj");
+			Texture2D::Sptr tubTex = ResourceManager::CreateAsset<Texture2D>("textures/tub.png");
+			Material::Sptr tubMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				tubMaterial->Name = "Tub";
+				tubMaterial->Set("u_Material.Diffuse", tubTex);
+				tubMaterial->Set("u_Material.Shininess", 0.5f);
+			}
+			GameObject::Sptr tub = scene->CreateGameObject("Tub");
+			{
+				tub->SetPostion(glm::vec3(-12.25f, -1.78f, 0.0f));
+				tub->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				tub->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+				
+				RenderComponent::Sptr renderer = tub->Add<RenderComponent>();
+				renderer->SetMesh(tubMesh);
+				renderer->SetMaterial(tubMaterial);
+			}
+			//Tv
+			GameObject::Sptr tvModel = scene->CreateGameObject("Tv Modelling");
+			{
+				tvModel->SetPostion(glm::vec3(-14.07f, -1.9f, 0.0f));
+				tvModel->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				tvModel->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+
+				RenderComponent::Sptr renderer = tvModel->Add<RenderComponent>();
+				renderer->SetMesh(tvMesh);
+				renderer->SetMaterial(tvMaterial);
+			}
+			//Tv Box
+			GameObject::Sptr tvboxModel = scene->CreateGameObject("Tv Box Modelling");
+			{
+				tvboxModel->SetPostion(glm::vec3(-15.69f, -1.68f, 0.0f));
+				tvboxModel->SetRotation(glm::vec3(90.0f, 0.0f, 37.0f));
+				tvboxModel->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
+
+				RenderComponent::Sptr renderer = tvboxModel->Add <RenderComponent>();
+				renderer->SetMesh(tvboxMesh);
+				renderer->SetMaterial(tvboxMaterial);
+			}
+			//Wolf statue object
+			MeshResource::Sptr statueMesh = ResourceManager::CreateAsset<MeshResource>("wolfstatue.obj");
+			Texture2D::Sptr statueTex = ResourceManager::CreateAsset <Texture2D>("textures/statue.jpg");
+			//Create Material
+			Material::Sptr statueMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				statueMaterial->Name = "Statue";
+				statueMaterial->Set("u_Material.Diffuse", statueTex);
+				statueMaterial->Set("u_Material.Shininess", 1.0f);
+			}
+			GameObject::Sptr wolfstatue = scene->CreateGameObject("Wolf Statue");
+			{
+				wolfstatue->SetPostion(glm::vec3(1.01f, -2.63f, 0.0f));
+				wolfstatue->SetRotation(glm::vec3(90.0, 0.0f, -180.f));
+				wolfstatue->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = wolfstatue->Add<RenderComponent>();
+				renderer->SetMesh(statueMesh);
+				renderer->SetMaterial(statueMaterial);
+			}
 		}
 		///////////////////////////// UI //////////////////////////////
 		//GameObject::Sptr canvas = scene->CreateGameObject("UI Canvas");
