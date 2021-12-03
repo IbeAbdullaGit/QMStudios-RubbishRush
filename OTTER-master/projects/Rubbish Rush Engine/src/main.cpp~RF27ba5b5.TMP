@@ -347,8 +347,8 @@ int main() {
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_CULL_FACE);
-	//glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
 	bool loadScene = false;
@@ -414,38 +414,28 @@ int main() {
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_multitextured.glsl" }
 		});
 
-
+		
 		// Create an empty scene
 		scene = std::make_shared<Scene>();
 
 		// I hate this
 		/*scene->BaseShader = uboShader;*/
 
-
-
+		
+		
 		// Create some lights for our scene
-		scene->Lights.resize(5);
-		scene->Lights[0].Position = glm::vec3(11.77f, 0.21f, 3.0f);
+		scene->Lights.resize(3);
+		scene->Lights[0].Position = glm::vec3(0.0f, 8.50f, 3.0f);
 		scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
 		scene->Lights[0].Range = 10.0f;
 
-		scene->Lights[1].Position = glm::vec3(7.9f, -4.89f, 3.0f);
+		scene->Lights[1].Position = glm::vec3(1.0f, 5.0f, 3.0f);
 		scene->Lights[1].Color = glm::vec3(1.0f, 1.0f, 1.1f);
-		scene->Lights[1].Range = 10.0f;
 
-		scene->Lights[2].Position = glm::vec3(2.58f, -6.29f, 3.0f);
+		scene->Lights[2].Position = glm::vec3(0.0f, 1.0f, 3.0f);
 		scene->Lights[2].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[2].Range = 10.0f;
 
-		scene->Lights[3].Position = glm::vec3(3.83f, 3.13f, 3.0f);
-		scene->Lights[3].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[3].Range = 10.0f;
-
-		scene->Lights[4].Position = glm::vec3(0.0f, 1.0f, 3.0f);
-		scene->Lights[4].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[4].Range = 10.0f;
-
-
+		
 		// Set up the scene's camera
 		GameObject::Sptr camera = scene->CreateGameObject("Main Camera");
 		{
@@ -460,7 +450,7 @@ int main() {
 			//cam->SetOrthoVerticalScale(10.0f);
 			// Make sure that the camera is set as the scene's main camera!
 			scene->MainCamera = cam;
-
+			
 		}
 		//setup trashy
 		MeshResource::Sptr trashyMesh = ResourceManager::CreateAsset<MeshResource>("trashy.obj");
@@ -471,7 +461,7 @@ int main() {
 			trashyMaterial->Name = "Trashy";
 			trashyMaterial->Set("u_Material.Diffuse", trashyTex);
 			trashyMaterial->Set("u_Material.Shininess", 1.0f);
-
+			
 
 		}
 		GameObject::Sptr trashyM = scene->CreateGameObject("Trashy");
@@ -486,7 +476,7 @@ int main() {
 			// Add a dynamic rigid body to this monkey
 			RigidBody::Sptr physics = trashyM->Add<RigidBody>(RigidBodyType::Dynamic);
 			BoxCollider::Sptr box = BoxCollider::Create(glm::vec3(1.51f, 2.68f, 0.831f));
-
+			
 			box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
@@ -506,10 +496,11 @@ int main() {
 
 			PlayerMovementBehavior::Sptr movement = trashyM->Add<PlayerMovementBehavior>();
 		}
+		
 
 		Texture2D::Sptr planeTex = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
-
-		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
+		
+		MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
 		Material::Sptr planeMaterial = ResourceManager::CreateAsset<Material>(basicShader); {
 			planeMaterial->Name = "Plane";
 			planeMaterial->Set("u_Material.Diffuse", planeTex);
@@ -519,45 +510,24 @@ int main() {
 		// Set up all our sample objects
 		GameObject::Sptr plane = scene->CreateGameObject("Plane");
 		{
-			plane->SetPostion(glm::vec3(0.0f, 0.0f, -0.08f));
-			plane->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			plane->SetRotation(glm::vec3(100.0f, 0.0f, 0.0f));
 			// Make a big tiled mesh
 			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
 			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(100.0f), glm::vec2(20.0f)));
 			tiledMesh->GenerateMesh();
-
+			
 
 			// Create and attach a RenderComponent to the object to draw our mesh
-			/*RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
+			RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
 			renderer->SetMesh(layoutMesh);
-			renderer->SetMaterial(planeMaterial);*/
+			renderer->SetMaterial(planeMaterial);
 
 			// Attach a plane collider that extends infinitely along the X/Y axis
 			RigidBody::Sptr physics = plane->Add<RigidBody>(RigidBodyType::Kinematic);
 			BoxCollider::Sptr box = BoxCollider::Create();
 			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-			box->SetScale(glm::vec3(50.0f, -0.12f, 50.0f));
+			box->SetScale(glm::vec3(11.98f, -0.12f, 12.88f));
 			physics->AddCollider(box);
-		}
-		//layout
-		MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layoutclean.obj");
-		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
-		Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Material>(basicShader);
-		{
-			layoutMaterial->Name = "Layout";
-			layoutMaterial->Set("u_Material.Diffuse", layoutTex);
-			layoutMaterial->Set("u_Material.Shininess", 0.0f);
-		}
-		GameObject::Sptr layout = scene->CreateGameObject("Layout");
-		{
-			layout->SetPostion(glm::vec3(6.33f, -1.44f, 0.0f));
-			layout->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
-			layout->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-
-			RenderComponent::Sptr renderer = layout->Add<RenderComponent>();
-			renderer->SetMesh(layoutMesh);
-			renderer->SetMaterial(layoutMaterial);
-
 		}
 		//placeholder trash object
 		//setup trash
@@ -568,119 +538,35 @@ int main() {
 		{
 			trashMaterial->Name = "Trash";
 			trashMaterial->Set("u_Material.Diffuse", trashTex);
-			trashMaterial->Set("u_Material.Shininess", 0.3f);
+			trashMaterial->Set("u_Material.Shininess", 1.0f);
 
 		}
-		//cup collection
+		GameObject::Sptr trashM = scene->CreateGameObject("Trash");
 		{
-			GameObject::Sptr trashM = scene->CreateGameObject("Trash1");
-			{
-				trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.0f));
-				trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
-				trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-				// Add a render component
-				RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
-				renderer->SetMesh(trashMesh);
-				renderer->SetMaterial(trashMaterial);
-				// Add a dynamic rigid body to this monkey
-				RigidBody::Sptr physics = trashM->Add<RigidBody>(RigidBodyType::Kinematic);
-				BoxCollider::Sptr box = BoxCollider::Create();
-				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
-				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
-				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
-				physics->AddCollider(box);
-				//physics->SetMass(0.0f);
-				TriggerVolume::Sptr volume = trashM->Add<TriggerVolume>();
-				BoxCollider::Sptr box2 = BoxCollider::Create();
-				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
-				volume->AddCollider(box2);
-				CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
+			trashM->SetPostion(glm::vec3(0.43f, -1.67f, -0.12f));
+			trashM->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
+			trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+			// Add a render component
+			RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
+			renderer->SetMesh(trashMesh);
+			renderer->SetMaterial(trashMaterial);
+			// Add a dynamic rigid body to this monkey
+			RigidBody::Sptr physics = trashM->Add<RigidBody>(RigidBodyType::Kinematic);
+			BoxCollider::Sptr box = BoxCollider::Create();
+			box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+			box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			TriggerVolume::Sptr volume = trashM->Add<TriggerVolume>();
+			BoxCollider::Sptr box2 = BoxCollider::Create();
+			box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+			box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+			volume->AddCollider(box2);
+			CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
 
-			}
-			GameObject::Sptr trash2 = scene->CreateGameObject("Trash2");
-			{
-				trash2->SetPostion(glm::vec3(6.36f, 2.64f, 0.0f));
-				trash2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				trash2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-				// Add a render component
-				RenderComponent::Sptr renderer = trash2->Add<RenderComponent>();
-				renderer->SetMesh(trashMesh);
-				renderer->SetMaterial(trashMaterial);
-				// Add a dynamic rigid body to this monkey
-				RigidBody::Sptr physics = trash2->Add<RigidBody>(RigidBodyType::Kinematic);
-				BoxCollider::Sptr box = BoxCollider::Create();
-				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
-				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
-				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
-				physics->AddCollider(box);
-				//physics->SetMass(0.0f);
-				TriggerVolume::Sptr volume = trash2->Add<TriggerVolume>();
-				BoxCollider::Sptr box2 = BoxCollider::Create();
-				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
-				volume->AddCollider(box2);
-				CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
-
-			}
-			GameObject::Sptr trash3 = scene->CreateGameObject("Trash3");
-			{
-				trash3->SetPostion(glm::vec3(10.08f, -4.97f, 0.0f));
-				trash3->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
-				trash3->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-				// Add a render component
-				RenderComponent::Sptr renderer = trash3->Add<RenderComponent>();
-				renderer->SetMesh(trashMesh);
-				renderer->SetMaterial(trashMaterial);
-				// Add a dynamic rigid body to this monkey
-				RigidBody::Sptr physics = trash3->Add<RigidBody>(RigidBodyType::Kinematic);
-				BoxCollider::Sptr box = BoxCollider::Create();
-				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
-				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
-				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
-				physics->AddCollider(box);
-				//physics->SetMass(0.0f);
-				TriggerVolume::Sptr volume = trash3->Add<TriggerVolume>();
-				BoxCollider::Sptr box2 = BoxCollider::Create();
-				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
-				volume->AddCollider(box2);
-				CollectTrashBehaviour::Sptr behaviour2 = trash3->Add<CollectTrashBehaviour>();
-
-			}
-			GameObject::Sptr trash4 = scene->CreateGameObject("Trash4");
-			{
-				trash4->SetPostion(glm::vec3(13.680, -1.67f, 0.0f));
-				trash4->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
-				trash4->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-				// Add a render component
-				RenderComponent::Sptr renderer = trash4->Add<RenderComponent>();
-				renderer->SetMesh(trashMesh);
-				renderer->SetMaterial(trashMaterial);
-				// Add a dynamic rigid body to this monkey
-				RigidBody::Sptr physics = trash4->Add<RigidBody>(RigidBodyType::Kinematic);
-				BoxCollider::Sptr box = BoxCollider::Create();
-				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
-				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
-				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
-				physics->AddCollider(box);
-				//physics->SetMass(0.0f);
-				TriggerVolume::Sptr volume = trash4->Add<TriggerVolume>();
-				BoxCollider::Sptr box2 = BoxCollider::Create();
-				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
-				volume->AddCollider(box2);
-				CollectTrashBehaviour::Sptr behaviour2 = trash4->Add<CollectTrashBehaviour>();
-
-			}
 		}
 		//setup moving toy
 		MeshResource::Sptr toyMesh = ResourceManager::CreateAsset<MeshResource>("toy.obj");
@@ -690,64 +576,61 @@ int main() {
 		{
 			toyMaterial->Name = "Toy";
 			toyMaterial->Set("u_Material.Diffuse", toyTex);
-			toyMaterial->Set("u_Material.Shininess", 0.0f);
+			toyMaterial->Set("u_Material.Shininess", 1.0f);
 
 		}
-		// rolling toy collection
+		GameObject::Sptr toyM = scene->CreateGameObject("Toy");
 		{
-			GameObject::Sptr toyM = scene->CreateGameObject("Toy");
-			{
-				toyM->SetPostion(glm::vec3(-0.19f, -4.25f, -0.63f));
-				toyM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				toyM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-				// Add a render component
-				RenderComponent::Sptr renderer = toyM->Add<RenderComponent>();
-				renderer->SetMesh(toyMesh);
-				renderer->SetMaterial(toyMaterial);
-				// Add a dynamic rigid body to this monkey
-				RigidBody::Sptr physics = toyM->Add<RigidBody>(RigidBodyType::Kinematic);
-				BoxCollider::Sptr box = BoxCollider::Create();
-				box->SetPosition(glm::vec3(0.00f, 0.22f, 0.0f));
-				box->SetScale(glm::vec3(0.28f * 0.4f, 0.24f * 0.4f, 0.57f * 0.4f));
-				physics->AddCollider(box);
-				TriggerVolume::Sptr volume = toyM->Add<TriggerVolume>();
-				BoxCollider::Sptr box2 = BoxCollider::Create();
-				box2->SetPosition(glm::vec3(0.00f, 0.22f, 0.0f));
-				box2->SetScale(glm::vec3(0.28f * 0.4f, 0.24f * 0.4f, 0.57f * 0.4f));
-				volume->AddCollider(box2);
-				SteeringBehaviour::Sptr behaviour2 = toyM->Add<SteeringBehaviour>();
-				std::vector<glm::vec3> points;
-				//points for catmull movement
-				points.push_back(glm::vec3(-0.19f, -4.25f, -0.63f));
-				points.push_back(glm::vec3(-7.18f, -4.25f, -0.63f));
-				points.push_back(glm::vec3(-4.25f, -7.010f, -0.63f));
-				points.push_back(glm::vec3(-0.67f, -7.32f, -0.63f));
-				behaviour2->SetPoints(points);
-			}
-			GameObject::Sptr toyM2 = scene->CreateGameObject("Toy2");
-			{
-				toyM2->SetPostion(glm::vec3(2.00f, -4.25f, -0.63f));
-				toyM2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				toyM2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-				// Add a render component
-				RenderComponent::Sptr renderer = toyM2->Add<RenderComponent>();
-				renderer->SetMesh(toyMesh);
-				renderer->SetMaterial(toyMaterial);
-				// Add a dynamic rigid body to this monkey
-				RigidBody::Sptr physics = toyM2->Add<RigidBody>(RigidBodyType::Kinematic);
-				BoxCollider::Sptr box = BoxCollider::Create();
-				box->SetPosition(glm::vec3(0.00f, 0.22f, 0.0f));
-				box->SetScale(glm::vec3(0.28f * 0.4f, 0.24f * 0.4f, 0.57f * 0.4f));
-				physics->AddCollider(box);
-				TriggerVolume::Sptr volume = toyM2->Add<TriggerVolume>();
-				BoxCollider::Sptr box2 = BoxCollider::Create();
-				box2->SetPosition(glm::vec3(0.00f, 0.22f, 0.0f));
-				box2->SetScale(glm::vec3(0.28f * 0.4f, 0.24f * 0.4f, 0.57f * 0.4f));
-				volume->AddCollider(box2);
-				FollowBehaviour::Sptr behaviour2 = toyM2->Add<FollowBehaviour>();
-				behaviour2->SetTarget(toyM);
-
-			}
+			toyM->SetPostion(glm::vec3(-0.19f, -4.25f, -0.63f));
+			toyM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			toyM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+			// Add a render component
+			RenderComponent::Sptr renderer = toyM->Add<RenderComponent>();
+			renderer->SetMesh(toyMesh);
+			renderer->SetMaterial(toyMaterial);
+			// Add a dynamic rigid body to this monkey
+			RigidBody::Sptr physics = toyM->Add<RigidBody>(RigidBodyType::Kinematic);
+			BoxCollider::Sptr box = BoxCollider::Create();
+			box->SetPosition(glm::vec3(0.00f, 0.22f, 0.0f));
+			box->SetScale(glm::vec3(0.28f*0.4f, 0.24f*0.4f, 0.57f*0.4f));
+			physics->AddCollider(box);
+			TriggerVolume::Sptr volume = toyM->Add<TriggerVolume>();
+			BoxCollider::Sptr box2 = BoxCollider::Create();
+			box2->SetPosition(glm::vec3(0.00f, 0.22f, 0.0f));
+			box2->SetScale(glm::vec3(0.28f*0.4f, 0.24f*0.4f, 0.57f*0.4f));
+			volume->AddCollider(box2);
+			SteeringBehaviour::Sptr behaviour2 = toyM->Add<SteeringBehaviour>();
+			std::vector<glm::vec3> points;
+			//points for catmull movement
+			points.push_back(glm::vec3(-0.19f, -4.25f, -0.63f));
+			points.push_back(glm::vec3(-7.18f, -4.25f, -0.63f));
+			points.push_back(glm::vec3(-4.25f, -7.010f, -0.63f));
+			points.push_back(glm::vec3(-0.67f, -7.32f, -0.63f));
+			behaviour2->SetPoints(points);
+		}
+		GameObject::Sptr toyM2 = scene->CreateGameObject("Toy2");
+		{
+			toyM2->SetPostion(glm::vec3(2.00f, -4.25f, -0.63f));
+			toyM2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			toyM2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+			// Add a render component
+			RenderComponent::Sptr renderer = toyM2->Add<RenderComponent>();
+			renderer->SetMesh(toyMesh);
+			renderer->SetMaterial(toyMaterial);
+			// Add a dynamic rigid body to this monkey
+			RigidBody::Sptr physics = toyM2->Add<RigidBody>(RigidBodyType::Kinematic);
+			BoxCollider::Sptr box = BoxCollider::Create();
+			box->SetPosition(glm::vec3(0.00f, 0.22f, 0.0f));
+			box->SetScale(glm::vec3(0.28f*0.4f, 0.24f*0.4f, 0.57f*0.4f));
+			physics->AddCollider(box);
+			TriggerVolume::Sptr volume = toyM2->Add<TriggerVolume>();
+			BoxCollider::Sptr box2 = BoxCollider::Create();
+			box2->SetPosition(glm::vec3(0.00f, 0.22f, 0.0f));
+			box2->SetScale(glm::vec3(0.28f*0.4f, 0.24f*0.4f, 0.57f*0.4f));
+			volume->AddCollider(box2);
+			FollowBehaviour::Sptr behaviour2 = toyM2->Add<FollowBehaviour>();
+			behaviour2->SetTarget(toyM);
+			
 		}
 		//spill object
 		MeshResource::Sptr spillMesh = ResourceManager::CreateAsset<MeshResource>("spill.obj");
@@ -760,113 +643,32 @@ int main() {
 			spillMaterial->Set("u_Material.Shininess", 1.0f);
 
 		}
-		//spill collection
+		GameObject::Sptr spillM = scene->CreateGameObject("Spill");
 		{
-			GameObject::Sptr spillM = scene->CreateGameObject("Spill");
-			{
-				spillM->SetPostion(glm::vec3(4.15f, 0.39f, 0.03f));
-				spillM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				spillM->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-				// Add a render component
-				RenderComponent::Sptr renderer = spillM->Add<RenderComponent>();
-				renderer->SetMesh(spillMesh);
-				renderer->SetMaterial(spillMaterial);
-				// Add a dynamic rigid body to this monkey
-				RigidBody::Sptr physics = spillM->Add<RigidBody>(RigidBodyType::Kinematic);
-				BoxCollider::Sptr box = BoxCollider::Create();
-				//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-				//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
-				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-				box->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
-				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
-				physics->AddCollider(box);
-				//physics->SetMass(0.0f);
-				TriggerVolume::Sptr volume = spillM->Add<TriggerVolume>();
-				BoxCollider::Sptr box2 = BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-				box2->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
-				volume->AddCollider(box2);
-				SpillBehaviour::Sptr behaviour = spillM->Add<SpillBehaviour>();
-
-			}
-			GameObject::Sptr spill2 = scene->CreateGameObject("Spill2");
-			{
-				spill2->SetPostion(glm::vec3(6.32f, -3.39f, 0.03f));
-				spill2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				spill2->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-				// Add a render component
-				RenderComponent::Sptr renderer = spill2->Add<RenderComponent>();
-				renderer->SetMesh(spillMesh);
-				renderer->SetMaterial(spillMaterial);
-				// Add a dynamic rigid body to this monkey
-				RigidBody::Sptr physics = spill2->Add<RigidBody>(RigidBodyType::Kinematic);
-				BoxCollider::Sptr box = BoxCollider::Create();
-				//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-				//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
-				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-				box->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
-				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
-				physics->AddCollider(box);
-				//physics->SetMass(0.0f);
-				TriggerVolume::Sptr volume = spill2->Add<TriggerVolume>();
-				BoxCollider::Sptr box2 = BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-				box2->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
-				volume->AddCollider(box2);
-				SpillBehaviour::Sptr behaviour = spill2->Add<SpillBehaviour>();
-			}
-			GameObject::Sptr spill3 = scene->CreateGameObject("Spill3");
-			{
-				spill3->SetPostion(glm::vec3(6.38, -0.68f, 0.03f));
-				spill3->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				spill3->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-				// Add a render component
-				RenderComponent::Sptr renderer = spill3->Add<RenderComponent>();
-				renderer->SetMesh(spillMesh);
-				renderer->SetMaterial(spillMaterial);
-				// Add a dynamic rigid body to this monkey
-				RigidBody::Sptr physics = spill3->Add<RigidBody>(RigidBodyType::Kinematic);
-				BoxCollider::Sptr box = BoxCollider::Create();
-				//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-				//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
-				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-				box->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
-				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
-				physics->AddCollider(box);
-				//physics->SetMass(0.0f);
-				TriggerVolume::Sptr volume = spill3->Add<TriggerVolume>();
-				BoxCollider::Sptr box2 = BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-				box2->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
-				volume->AddCollider(box2);
-				SpillBehaviour::Sptr behaviour = spill3->Add<SpillBehaviour>();
-			}
-			GameObject::Sptr spill4 = scene->CreateGameObject("Spill4");
-			{
-				spill4->SetPostion(glm::vec3(12.41f, 0.94, 0.03f));
-				spill4->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				spill4->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
-				// Add a render component
-				RenderComponent::Sptr renderer = spill4->Add<RenderComponent>();
-				renderer->SetMesh(spillMesh);
-				renderer->SetMaterial(spillMaterial);
-				// Add a dynamic rigid body to this monkey
-				RigidBody::Sptr physics = spill4->Add<RigidBody>(RigidBodyType::Kinematic);
-				BoxCollider::Sptr box = BoxCollider::Create();
-				//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-				//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
-				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-				box->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
-				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
-				physics->AddCollider(box);
-				//physics->SetMass(0.0f);
-				TriggerVolume::Sptr volume = spill4->Add<TriggerVolume>();
-				BoxCollider::Sptr box2 = BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-				box2->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
-				volume->AddCollider(box2);
-				SpillBehaviour::Sptr behaviour = spill4->Add<SpillBehaviour>();
-			}
+			spillM->SetPostion(glm::vec3(1.27f, -2.88f, -0.40f));
+			spillM->SetRotation(glm::vec3(100.0f, 0.0f, 0.0f));
+			spillM->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spillM->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			RigidBody::Sptr physics = spillM->Add<RigidBody>(RigidBodyType::Kinematic);
+			BoxCollider::Sptr box = BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			TriggerVolume::Sptr volume = spillM->Add<TriggerVolume>();
+			BoxCollider::Sptr box2 = BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spillM->Add<SpillBehaviour>();
+			
 		}
 		//bin model
 		MeshResource::Sptr binMesh = ResourceManager::CreateAsset<MeshResource>("Big_Bin2.obj");
@@ -881,7 +683,7 @@ int main() {
 		}
 		GameObject::Sptr binM = scene->CreateGameObject("Bin");
 		{
-			binM->SetPostion(glm::vec3(-1.5f, 2.0f, 0.07f));
+			binM->SetPostion(glm::vec3(-1.5f, 2.0f, 0.76f));
 			binM->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
 			binM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
@@ -938,205 +740,38 @@ int main() {
 		}
 		//shelf collection
 		{
-			GameObject::Sptr shelf = scene->CreateGameObject("Shelf1");
+			GameObject::Sptr shelf = scene->CreateGameObject("Shelf");
 			{
-				shelf->SetPostion(glm::vec3(4.250f, -4.690f, 0.0f));
-				shelf->SetRotation(glm::vec3(90.0, 0.0f, 0.0f));
+				shelf->SetPostion(glm::vec3(0.0f, 0.0f, 0.0f));
+				shelf->SetRotation(glm::vec3(90.0, 0.0f, 90.0f));
 				shelf->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 
 				RenderComponent::Sptr renderer = shelf->Add<RenderComponent>();
 				renderer->SetMesh(shelfMesh);
 				renderer->SetMaterial(shelfMaterial);
 			}
-			GameObject::Sptr shelf2 = scene->CreateGameObject("Shelf2");
+			GameObject::Sptr shelf2 = scene->CreateGameObject("Shelf");
 			{
-				shelf2->SetPostion(glm::vec3(6.20f, -5.69f, 0.0f));
-				shelf2->SetRotation(glm::vec3(90.0, 0.0f, -90.0f));
+				shelf2->SetPostion(glm::vec3(0.0f, 0.0f, 0.0f));
+				shelf2->SetRotation(glm::vec3(90.0, 0.0f, 90.0f));
 				shelf2->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 
 				RenderComponent::Sptr renderer = shelf2->Add<RenderComponent>();
 				renderer->SetMesh(shelfMesh);
 				renderer->SetMaterial(shelfMaterial);
 			}
-			GameObject::Sptr shelf3 = scene->CreateGameObject("Shelf3");
+			GameObject::Sptr shelf3 = scene->CreateGameObject("Shelf");
 			{
-				shelf3->SetPostion(glm::vec3(9.26f, -5.69f, 0.0f));
-				shelf3->SetRotation(glm::vec3(90.0, 0.0f, -90.0f));
+				shelf3->SetPostion(glm::vec3(0.0f, 0.0f, 0.0f));
+				shelf3->SetRotation(glm::vec3(90.0, 0.0f, 90.0f));
 				shelf3->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 
 				RenderComponent::Sptr renderer = shelf3->Add<RenderComponent>();
 				renderer->SetMesh(shelfMesh);
 				renderer->SetMaterial(shelfMaterial);
 			}
-			GameObject::Sptr shelf4 = scene->CreateGameObject("Shelf4");
-			{
-				shelf4->SetPostion(glm::vec3(7.9f, 0.1f, 0.0f));
-				shelf4->SetRotation(glm::vec3(90.0, 0.0f, 0.0f));
-				shelf4->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
-				RenderComponent::Sptr renderer = shelf4->Add<RenderComponent>();
-				renderer->SetMesh(shelfMesh);
-				renderer->SetMaterial(shelfMaterial);
-			}
-			GameObject::Sptr shelf5 = scene->CreateGameObject("Shelf5");
-			{
-				shelf5->SetPostion(glm::vec3(8.910f, 0.1f, 0.0f));
-				shelf5->SetRotation(glm::vec3(90.0, 0.0f, -180.0f));
-				shelf5->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
-				RenderComponent::Sptr renderer = shelf5->Add<RenderComponent>();
-				renderer->SetMesh(shelfMesh);
-				renderer->SetMaterial(shelfMaterial);
-			}
-		}
-		//tv box object
-		MeshResource::Sptr tvboxMesh = ResourceManager::CreateAsset<MeshResource>("tvbox.obj");
-		Texture2D::Sptr tvboxTex = ResourceManager::CreateAsset<Texture2D>("textures/tvbox.png");
-		//Create Material
-		Material::Sptr tvboxMaterial = ResourceManager::CreateAsset<Material>(basicShader);
-		{
-			tvboxMaterial->Name = "TvBox";
-			tvboxMaterial->Set("u_Material.Diffuse", tvboxTex);
-			tvboxMaterial->Set("u_Material.Shininess", 0.0f);
-		}
-		//tv box collection
-		{
-			GameObject::Sptr tvbox1 = scene->CreateGameObject("tvbox1");
-			{
-				tvbox1->SetPostion(glm::vec3(8.37f, 2.1f, 0.0f));
-				tvbox1->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-				tvbox1->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-				
-				RenderComponent::Sptr renderer = tvbox1->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-			}
-			GameObject::Sptr tvbox2 = scene->CreateGameObject("tvbox2");
-			{
-				tvbox2->SetPostion(glm::vec3(8.37f, 2.51f, 0.0f));
-				tvbox2->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-				tvbox2->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox2->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-			}
-			GameObject::Sptr tvbox3 = scene->CreateGameObject("tvbox3");
-			{
-				tvbox3->SetPostion(glm::vec3(8.37f, 2.92f, 0.0f));
-				tvbox3->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-				tvbox3->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox3->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-			}
-			GameObject::Sptr tvbox4 = scene->CreateGameObject("tvbox4");
-			{
-				tvbox4->SetPostion(glm::vec3(5.09f, -0.76f, 0.0f));
-				tvbox4->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				tvbox4->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox4->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-			}
-			GameObject::Sptr tvbox5 = scene->CreateGameObject("tvbox5");
-			{
-				tvbox5->SetPostion(glm::vec3(5.09f, 0.98f, 0.0f));
-				tvbox5->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
-				tvbox5->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox5->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-			}
-			GameObject::Sptr tvbox6 = scene->CreateGameObject("tvbox6");
-			{
-				tvbox6->SetPostion(glm::vec3(9.97f, -3.45f, 0.0f));
-				tvbox6->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-				tvbox6->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox6->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-			}
-			GameObject::Sptr tvbox7 = scene->CreateGameObject("tvbox7");
-			{
-				tvbox7->SetPostion(glm::vec3(8.31f, -3.45f, 0.0f));
-				tvbox7->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
-				tvbox7->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox7->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-			}
-		}
-		//tv object
-		MeshResource::Sptr tvMesh = ResourceManager::CreateAsset<MeshResource>("TV.obj");
-		Texture2D::Sptr tvTex = ResourceManager::CreateAsset<Texture2D>("textures/tvtex.jpg");
-		//Create Material
-		Material::Sptr tvMaterial = ResourceManager::CreateAsset<Material>(basicShader);
-		{
-			tvMaterial->Name = "Tv";
-			tvMaterial->Set("u_Material.Diffuse", tvTex);
-			tvMaterial->Set("u_Material.Shininess", 0.75f);
-		}
-		//tv collection
-		{
-			GameObject::Sptr tv1 = scene->CreateGameObject("tv1");
-			{
-				tv1->SetPostion(glm::vec3(2.47f, 0.91f, 0.0f));
-				tv1->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
-				tv1->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-
-				RenderComponent::Sptr renderer = tv1->Add<RenderComponent>();
-				renderer->SetMesh(tvMesh);
-				renderer->SetMaterial(tvMaterial);
-			}
-			GameObject::Sptr tv2 = scene->CreateGameObject("tv2");
-			{
-				tv2->SetPostion(glm::vec3(4.27f, -2.89f, 0.0f));
-				tv2->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-				tv2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-
-				RenderComponent::Sptr renderer = tv2->Add<RenderComponent>();
-				renderer->SetMesh(tvMesh);
-				renderer->SetMaterial(tvMaterial);
-			}
-			GameObject::Sptr tv3 = scene->CreateGameObject("tv3");
-			{
-				tv3->SetPostion(glm::vec3(12.91f, 2.5f, 0.0f));
-				tv3->SetRotation(glm::vec3(90.0f, 0.0f, -152.0f));
-				tv3->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-
-				RenderComponent::Sptr renderer = tv3->Add<RenderComponent>();
-				renderer->SetMesh(tvMesh);
-				renderer->SetMaterial(tvMaterial);
-			}
 		}
 		//rectangle and trashy images for menu
-		//cash counter
-		MeshResource::Sptr cashMesh = ResourceManager::CreateAsset<MeshResource>("cashcounter.obj");
-		Texture2D::Sptr cashTex = ResourceManager::CreateAsset<Texture2D>("textures/cash.png");
-		//create Material
-		Material::Sptr cashMaterial = ResourceManager::CreateAsset<Material>(basicShader);
-		{
-			cashMaterial->Name = "Cash";
-			cashMaterial->Set("u_Material.Diffuse", cashTex);
-			cashMaterial->Set("u_Material.Shininess", 0.75f);
-		}
-		//cash counter
-		GameObject::Sptr cashcounter = scene->CreateGameObject("CashCounter");
-		{
-			cashcounter->SetPostion(glm::vec3(12.3f, -1.79f, 0.0f));
-			cashcounter->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
-			cashcounter->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
-			RenderComponent::Sptr renderer = cashcounter->Add<RenderComponent>();
-			renderer->SetMesh(cashMesh);
-			renderer->SetMaterial(cashMaterial);
-		}
 		MeshResource::Sptr recMesh = ResourceManager::CreateAsset<MeshResource>("RecOBJ.obj");
 		Texture2D::Sptr recTex = ResourceManager::CreateAsset<Texture2D>("textures/Rec1.png");
 		// Create our material
