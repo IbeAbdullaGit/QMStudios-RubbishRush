@@ -447,7 +447,7 @@ int main() {
 
 
 		// Create some lights for our scene
-		scene->Lights.resize(5);
+		scene->Lights.resize(8);
 		scene->Lights[0].Position = glm::vec3(11.77f, 0.21f, 3.0f);
 		scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
 		scene->Lights[0].Range = 10.0f;
@@ -467,6 +467,18 @@ int main() {
 		scene->Lights[4].Position = glm::vec3(0.0f, 1.0f, 3.0f);
 		scene->Lights[4].Color = glm::vec3(1.0f, 1.0f, 1.0f);
 		scene->Lights[4].Range = 10.0f;
+
+		scene->Lights[5].Position = glm::vec3(-14.41f, 0.56f, 3.0f);
+		scene->Lights[5].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[5].Range = 10.0f;
+
+		scene->Lights[6].Position = glm::vec3(-8.17f, 0.87f, 3.0f);
+		scene->Lights[6].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[6].Range = 10.0f;
+
+		scene->Lights[7].Position = glm::vec3(-2.2f, 0.5f, 3.0f);
+		scene->Lights[7].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[7].Range = 10.0f;
 
 
 		// Set up the scene's camera
@@ -563,7 +575,7 @@ int main() {
 		// Set up all our sample objects
 		GameObject::Sptr plane = scene->CreateGameObject("Plane");
 		{
-			plane->SetPostion(glm::vec3(0.04f, 0.99f, -0.32f));
+			plane->SetPostion(glm::vec3(0.0f, 0.0f, -0.08));
 			plane->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 			// Make a big tiled mesh
 			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
@@ -594,7 +606,7 @@ int main() {
 		}
 		GameObject::Sptr layout = scene->CreateGameObject("Layout");
 		{
-			layout->SetPostion(glm::vec3(-1.71f, -4.12f, -1.35f));
+			layout->SetPostion(glm::vec3(6.33, -1.44f, 0.0f));
 			layout->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
 			layout->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 
