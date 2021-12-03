@@ -43,6 +43,8 @@ void MorphMeshRenderer::UpdateData(MeshResource::Sptr frame0, MeshResource::Sptr
 	m_vao->AddVertexBuffer(vbo2, std::vector<BufferAttribute>{ba2});
 	
 	GetGameObject()->Get<RenderComponent>()->GetMeshResource()->Mesh = m_vao;
+	//GetGameObject()->Get<RenderComponent>()->GetMesh()->AddVertexBuffer(vbo, std::vector<BufferAttribute>{ba1});
+	//GetGameObject()->Get<RenderComponent>()->GetMesh()->AddVertexBuffer(vbo2, std::vector<BufferAttribute>{ba2});
 	
 	m_t = t;
 }

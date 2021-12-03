@@ -1700,258 +1700,258 @@ int main() {
 
 			}
 		}
-			
 
-			// Draw our material properties window!
-			//DrawMaterialsWindow();
-			// Showcasing how to use the imGui library!
-			bool isDebugWindowOpen = ImGui::Begin("Debugging");
+
+		// Draw our material properties window!
+		//DrawMaterialsWindow();
+		// Showcasing how to use the imGui library!
+		bool isDebugWindowOpen = ImGui::Begin("Debugging");
+		if (isDebugWindowOpen)
+		{
+			if (ImGui::Button("Add brick"))
+				// Draw our material properties window!
+				//DrawMaterialsWindow();
+				// Showcasing how to use the imGui library!
+				bool isDebugWindowOpen = ImGui::Begin("Debugging");
 			if (isDebugWindowOpen)
 			{
 				if (ImGui::Button("Add brick"))
-					// Draw our material properties window!
-					//DrawMaterialsWindow();
-					// Showcasing how to use the imGui library!
-					bool isDebugWindowOpen = ImGui::Begin("Debugging");
-				if (isDebugWindowOpen)
 				{
-					if (ImGui::Button("Add brick"))
 					{
-						{
-
-						}
 
 					}
-					ImGui::Separator();
-					if (ImGui::Button("Add brick2"))
-					{
-						{
 
-						}
-
-					}
-					ImGui::Separator();
 				}
-				if (isDebugWindowOpen) {
-					// Draws a button to control whether or not the game is currently playing
-					static char buttonLabel[64];
-					sprintf_s(buttonLabel, "%s###playmode", scene->IsPlaying ? "Exit Play Mode" : "Enter Play Mode");
-					if (ImGui::Button(buttonLabel)) {
-						// Save scene so it can be restored when exiting play mode
-						if (!scene->IsPlaying) {
-							editorSceneState = scene->ToJson();
-						}
+				ImGui::Separator();
+				if (ImGui::Button("Add brick2"))
+				{
+					{
 
-						// Toggle state
-						scene->IsPlaying = !scene->IsPlaying;
-
-						// If we've gone from playing to not playing, restore the state from before we started playing
-						if (!scene->IsPlaying) {
-							scene = nullptr;
-							// We reload to scene from our cached state
-							scene = Scene::FromJson(editorSceneState);
-							// Don't forget to reset the scene's window and wake all the objects!
-							scene->Window = window;
-							scene->Awake();
-						}
 					}
 
-					// Make a new area for the scene saving/loading
-					ImGui::Separator();
-					if (DrawSaveLoadImGui(scene, scenePath)) {
-						// C++ strings keep internal lengths which can get annoying
-						// when we edit it's underlying datastore, so recalcualte size
-						scenePath.resize(strlen(scenePath.c_str()));
+				}
+				ImGui::Separator();
+			}
+			if (isDebugWindowOpen) {
+				// Draws a button to control whether or not the game is currently playing
+				static char buttonLabel[64];
+				sprintf_s(buttonLabel, "%s###playmode", scene->IsPlaying ? "Exit Play Mode" : "Enter Play Mode");
+				if (ImGui::Button(buttonLabel)) {
+					// Save scene so it can be restored when exiting play mode
+					if (!scene->IsPlaying) {
+						editorSceneState = scene->ToJson();
+					}
 
-						// We have loaded a new scene, call awake to set
-						// up all our components
+					// Toggle state
+					scene->IsPlaying = !scene->IsPlaying;
+
+					// If we've gone from playing to not playing, restore the state from before we started playing
+					if (!scene->IsPlaying) {
+						scene = nullptr;
+						// We reload to scene from our cached state
+						scene = Scene::FromJson(editorSceneState);
+						// Don't forget to reset the scene's window and wake all the objects!
 						scene->Window = window;
 						scene->Awake();
 					}
-					ImGui::Separator();
-					// Draw a dropdown to select our physics debug draw mode
-					if (BulletDebugDraw::DrawModeGui("Physics Debug Mode:", physicsDebugMode)) {
-						scene->SetPhysicsDebugDrawMode(physicsDebugMode);
-					}
-					LABEL_LEFT(ImGui::SliderFloat, "Playback Speed:    ", &playbackSpeed, 0.0f, 10.0f);
-					ImGui::Separator();
 				}
 
-				// Clear the color and depth buffers
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				// Make a new area for the scene saving/loading
+				ImGui::Separator();
+				if (DrawSaveLoadImGui(scene, scenePath)) {
+					// C++ strings keep internal lengths which can get annoying
+					// when we edit it's underlying datastore, so recalcualte size
+					scenePath.resize(strlen(scenePath.c_str()));
 
-				// Update our application level uniforms every frame
-
-				// Draw some ImGui stuff for the lights
-				if (isDebugWindowOpen) {
-					for (int ix = 0; ix < scene->Lights.size(); ix++) {
-						char buff[256];
-						sprintf_s(buff, "Light %d##%d", ix, ix);
-						// DrawLightImGui will return true if the light was deleted
-						if (DrawLightImGui(scene, buff, ix)) {
-							// Remove light from scene, restore all lighting data
-							scene->Lights.erase(scene->Lights.begin() + ix);
-							scene->SetupShaderAndLights();
-							// Move back one element so we don't skip anything!
-							ix--;
-						}
-					}
-					// As long as we don't have max lights, draw a button
-					// to add another one
-					if (scene->Lights.size() < scene->MAX_LIGHTS) {
-						if (ImGui::Button("Add Light")) {
-							scene->Lights.push_back(Light());
-							scene->SetupShaderAndLights();
-						}
-					}
-					// Split lights from the objects in ImGui
-					ImGui::Separator();
+					// We have loaded a new scene, call awake to set
+					// up all our components
+					scene->Window = window;
+					scene->Awake();
 				}
-				//movement update
-				//keyboard(trashyM->Get<RigidBody>());
-
-				dt *= playbackSpeed;
-
-				/// <summary>
-				/// /ANIMATION STUFF
-				/// </summary>
-				/// <returns></returns>
-				//trashyM->Get<MorphAnimator>()->Update(dt);
-				//trashyM->Get<MorphMeshRenderer>()->Draw();
-
-
-				// Perform updates for all components
-				scene->Update(dt);
-				// Grab shorthands to the camera and shader from the scene
-				Camera::Sptr camera = scene->MainCamera;
-
-				camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
-				camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
-
-				// Cache the camera's viewprojection
-				glm::mat4 viewProj = camera->GetViewProjection();
-				DebugDrawer::Get().SetViewProjection(viewProj);
-
-				// Update our worlds physics!
-				scene->DoPhysics(dt);
-
-
-				// Draw object GUIs
-				if (isDebugWindowOpen) {
-					scene->DrawAllGameObjectGUIs();
+				ImGui::Separator();
+				// Draw a dropdown to select our physics debug draw mode
+				if (BulletDebugDraw::DrawModeGui("Physics Debug Mode:", physicsDebugMode)) {
+					scene->SetPhysicsDebugDrawMode(physicsDebugMode);
 				}
-
-				// The current material that is bound for rendering
-				Material::Sptr currentMat = nullptr;
-				Shader::Sptr shader = nullptr;
-
-				// Bind the skybox texture to a reserved texture slot
-				// See Material.h and Material.cpp for how we're reserving texture slots
-				TextureCube::Sptr environment = scene->GetSkyboxTexture();
-				if (environment) environment->Bind(0);
-
-				// Here we'll bind all the UBOs to their corresponding slots
-				scene->PreRender();
-				frameUniforms->Bind(FRAME_UBO_BINDING);
-				instanceUniforms->Bind(INSTANCE_UBO_BINDING);
-
-				// Upload frame level uniforms
-				auto& frameData = frameUniforms->GetData();
-				frameData.u_Projection = camera->GetProjection();
-				frameData.u_View = camera->GetView();
-				frameData.u_ViewProjection = camera->GetViewProjection();
-				frameData.u_CameraPos = glm::vec4(camera->GetGameObject()->GetPosition(), 1.0f);
-				frameData.u_Time = static_cast<float>(thisFrame);
-				frameUniforms->Update();
-
-				// Render all our objects
-				ComponentManager::Each<RenderComponent>([&](const RenderComponent::Sptr& renderable) {
-					// Early bail if mesh not set
-					if (renderable->GetMesh() == nullptr) {
-						return;
-					}
-
-					// If we don't have a material, try getting the scene's fallback material
-					// If none exists, do not draw anything
-					if (renderable->GetMaterial() == nullptr) {
-						if (scene->DefaultMaterial != nullptr) {
-							renderable->SetMaterial(scene->DefaultMaterial);
-						}
-						else {
-							return;
-						}
-					}
-
-					// If the material has changed, we need to bind the new shader and set up our material and frame data
-					// Note: This is a good reason why we should be sorting the render components in ComponentManager
-					if (renderable->GetMaterial() != currentMat) {
-						currentMat = renderable->GetMaterial();
-						shader = currentMat->GetShader();
-
-						shader->Bind();
-						currentMat->Apply();
-					}
-
-					// Grab the game object so we can do some stuff with it
-					GameObject* object = renderable->GetGameObject();
-
-					// Use our uniform buffer for our instance level uniforms
-					auto& instanceData = instanceUniforms->GetData();
-					instanceData.u_Model = object->GetTransform();
-					instanceData.u_ModelViewProjection = viewProj * object->GetTransform();
-					instanceData.u_NormalMatrix = glm::mat3(glm::transpose(glm::inverse(object->GetTransform())));
-					instanceUniforms->Update();
-
-					// Draw the object
-					renderable->GetMesh()->Draw();
-					});
-
-				// Use our cubemap to draw our skybox
-				scene->DrawSkybox();
-
-				////////UNCOMMENT THIS FOR UI////////
-
-				//// Disable culling
-				//glDisable(GL_CULL_FACE);
-				//// Disable depth testing, we're going to use order-dependant layering
-				//glDisable(GL_DEPTH_TEST);
-				//// Disable depth writing
-				//glDepthMask(GL_FALSE);
-
-				//// Enable alpha blending
-				//glEnable(GL_BLEND);
-				//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-				//// Enable the scissor test;
-				//glEnable(GL_SCISSOR_TEST);
-
-				//// Our projection matrix will be our entire window for now
-				//glm::mat4 proj = glm::ortho(0.0f, (float)windowSize.x, (float)windowSize.y, 0.0f, -1.0f, 1.0f);
-				//GuiBatcher::SetProjection(proj);
-
-				//// Iterate over and render all the GUI objects
-				//scene->RenderGUI();
-
-				//// Flush the Gui Batch renderer
-				//GuiBatcher::Flush();
-
-				//// Disable alpha blending
-				//glDisable(GL_BLEND);
-				//// Disable scissor testing
-				//glDisable(GL_SCISSOR_TEST);
-				//// Re-enable depth writing
-				//glDepthMask(GL_TRUE);
-
-				// End our ImGui window
-				ImGui::End();
-
-				VertexArrayObject::Unbind();
-
-				lastFrame = thisFrame;
-				ImGuiHelper::EndFrame();
-				glfwSwapBuffers(window);
+				LABEL_LEFT(ImGui::SliderFloat, "Playback Speed:    ", &playbackSpeed, 0.0f, 10.0f);
+				ImGui::Separator();
 			}
 
+			// Clear the color and depth buffers
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			// Update our application level uniforms every frame
+
+			// Draw some ImGui stuff for the lights
+			if (isDebugWindowOpen) {
+				for (int ix = 0; ix < scene->Lights.size(); ix++) {
+					char buff[256];
+					sprintf_s(buff, "Light %d##%d", ix, ix);
+					// DrawLightImGui will return true if the light was deleted
+					if (DrawLightImGui(scene, buff, ix)) {
+						// Remove light from scene, restore all lighting data
+						scene->Lights.erase(scene->Lights.begin() + ix);
+						scene->SetupShaderAndLights();
+						// Move back one element so we don't skip anything!
+						ix--;
+					}
+				}
+				// As long as we don't have max lights, draw a button
+				// to add another one
+				if (scene->Lights.size() < scene->MAX_LIGHTS) {
+					if (ImGui::Button("Add Light")) {
+						scene->Lights.push_back(Light());
+						scene->SetupShaderAndLights();
+					}
+				}
+				// Split lights from the objects in ImGui
+				ImGui::Separator();
+			}
+			//movement update
+			//keyboard(trashyM->Get<RigidBody>());
+
+			dt *= playbackSpeed;
+
+			/// <summary>
+			/// /ANIMATION STUFF
+			/// </summary>
+			/// <returns></returns>
+			//trashyM->Get<MorphAnimator>()->Update(dt);
+			//trashyM->Get<MorphMeshRenderer>()->Draw();
+
+
+			// Perform updates for all components
+			scene->Update(dt);
+			// Grab shorthands to the camera and shader from the scene
+			Camera::Sptr camera = scene->MainCamera;
+
+			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
+			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
+
+			// Cache the camera's viewprojection
+			glm::mat4 viewProj = camera->GetViewProjection();
+			DebugDrawer::Get().SetViewProjection(viewProj);
+
+			// Update our worlds physics!
+			scene->DoPhysics(dt);
+
+
+			// Draw object GUIs
+			if (isDebugWindowOpen) {
+				scene->DrawAllGameObjectGUIs();
+			}
+
+			// The current material that is bound for rendering
+			Material::Sptr currentMat = nullptr;
+			Shader::Sptr shader = nullptr;
+
+			// Bind the skybox texture to a reserved texture slot
+			// See Material.h and Material.cpp for how we're reserving texture slots
+			TextureCube::Sptr environment = scene->GetSkyboxTexture();
+			if (environment) environment->Bind(0);
+
+			// Here we'll bind all the UBOs to their corresponding slots
+			scene->PreRender();
+			frameUniforms->Bind(FRAME_UBO_BINDING);
+			instanceUniforms->Bind(INSTANCE_UBO_BINDING);
+
+			// Upload frame level uniforms
+			auto& frameData = frameUniforms->GetData();
+			frameData.u_Projection = camera->GetProjection();
+			frameData.u_View = camera->GetView();
+			frameData.u_ViewProjection = camera->GetViewProjection();
+			frameData.u_CameraPos = glm::vec4(camera->GetGameObject()->GetPosition(), 1.0f);
+			frameData.u_Time = static_cast<float>(thisFrame);
+			frameUniforms->Update();
+
+			// Render all our objects
+			ComponentManager::Each<RenderComponent>([&](const RenderComponent::Sptr& renderable) {
+				// Early bail if mesh not set
+				if (renderable->GetMesh() == nullptr) {
+					return;
+				}
+
+				// If we don't have a material, try getting the scene's fallback material
+				// If none exists, do not draw anything
+				if (renderable->GetMaterial() == nullptr) {
+					if (scene->DefaultMaterial != nullptr) {
+						renderable->SetMaterial(scene->DefaultMaterial);
+					}
+					else {
+						return;
+					}
+				}
+
+				// If the material has changed, we need to bind the new shader and set up our material and frame data
+				// Note: This is a good reason why we should be sorting the render components in ComponentManager
+				if (renderable->GetMaterial() != currentMat) {
+					currentMat = renderable->GetMaterial();
+					shader = currentMat->GetShader();
+
+					shader->Bind();
+					currentMat->Apply();
+				}
+
+				// Grab the game object so we can do some stuff with it
+				GameObject* object = renderable->GetGameObject();
+
+				// Use our uniform buffer for our instance level uniforms
+				auto& instanceData = instanceUniforms->GetData();
+				instanceData.u_Model = object->GetTransform();
+				instanceData.u_ModelViewProjection = viewProj * object->GetTransform();
+				instanceData.u_NormalMatrix = glm::mat3(glm::transpose(glm::inverse(object->GetTransform())));
+				instanceUniforms->Update();
+
+				// Draw the object
+				renderable->GetMesh()->Draw();
+				});
+
+			// Use our cubemap to draw our skybox
+			scene->DrawSkybox();
+
+			////////UNCOMMENT THIS FOR UI////////
+
+			//// Disable culling
+			//glDisable(GL_CULL_FACE);
+			//// Disable depth testing, we're going to use order-dependant layering
+			//glDisable(GL_DEPTH_TEST);
+			//// Disable depth writing
+			//glDepthMask(GL_FALSE);
+
+			//// Enable alpha blending
+			//glEnable(GL_BLEND);
+			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			//// Enable the scissor test;
+			//glEnable(GL_SCISSOR_TEST);
+
+			//// Our projection matrix will be our entire window for now
+			//glm::mat4 proj = glm::ortho(0.0f, (float)windowSize.x, (float)windowSize.y, 0.0f, -1.0f, 1.0f);
+			//GuiBatcher::SetProjection(proj);
+
+			//// Iterate over and render all the GUI objects
+			//scene->RenderGUI();
+
+			//// Flush the Gui Batch renderer
+			//GuiBatcher::Flush();
+
+			//// Disable alpha blending
+			//glDisable(GL_BLEND);
+			//// Disable scissor testing
+			//glDisable(GL_SCISSOR_TEST);
+			//// Re-enable depth writing
+			//glDepthMask(GL_TRUE);
+
+			// End our ImGui window
+			ImGui::End();
+
+			VertexArrayObject::Unbind();
+
+			lastFrame = thisFrame;
+			ImGuiHelper::EndFrame();
+			glfwSwapBuffers(window);
+		}
+	}
 			// Clean up the ImGui library
 			ImGuiHelper::Cleanup();
 
@@ -1961,6 +1961,6 @@ int main() {
 			// Clean up the toolkit logger so we don't leak memory
 			Logger::Uninitialize();
 			return 0;
-		}
 	}
+	
 
