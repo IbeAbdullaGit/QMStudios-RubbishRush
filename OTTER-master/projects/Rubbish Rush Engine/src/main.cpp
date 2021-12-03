@@ -227,8 +227,21 @@ void TimeCountdown(float DisplayTime) {
 	float minutes = floorf(DisplayTime / 60);
 	float seconds = floorf(fmodf(DisplayTime, 60));
 
-}
+	std::cout << std::setfill('0') << std::setw(2);
+	std::cout << minutes << ":";
 
+	if (seconds < 10) {
+		std::cout << std::setfill('0') << std::setw(2);
+		std::cout << seconds;
+	}
+	else {
+		std::cout << seconds;
+	}
+
+	std::cout << "\n";
+
+
+}
 
 /// <summary>
 /// Draws some ImGui controls for the given light
@@ -366,6 +379,8 @@ int main() {
 	bool isPressed = false;
 	bool timerDone = false;
 	bool timeleveltDone = false;
+	bool lose = false;
+	bool Victory = false;
 
 	std::vector <MeshResource::Sptr> walking;
 	std::vector <MeshResource::Sptr> idle;
@@ -447,7 +462,7 @@ int main() {
 
 
 		// Create some lights for our scene
-		scene->Lights.resize(5);
+		scene->Lights.resize(8);
 		scene->Lights[0].Position = glm::vec3(11.77f, 0.21f, 3.0f);
 		scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
 		scene->Lights[0].Range = 10.0f;
@@ -467,6 +482,18 @@ int main() {
 		scene->Lights[4].Position = glm::vec3(0.0f, 1.0f, 3.0f);
 		scene->Lights[4].Color = glm::vec3(1.0f, 1.0f, 1.0f);
 		scene->Lights[4].Range = 10.0f;
+
+		scene->Lights[5].Position = glm::vec3(-14.41f, 0.56f, 3.0f);
+		scene->Lights[5].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[5].Range = 10.0f;
+
+		scene->Lights[6].Position = glm::vec3(-8.17f, 0.87f, 3.0f);
+		scene->Lights[6].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[6].Range = 10.0f;
+
+		scene->Lights[7].Position = glm::vec3(-2.2f, 0.5f, 3.0f);
+		scene->Lights[7].Color = glm::vec3(1.0f, 1.0f, 1.0f);
+		scene->Lights[7].Range = 10.0f;
 
 
 		// Set up the scene's camera
@@ -563,7 +590,7 @@ int main() {
 		// Set up all our sample objects
 		GameObject::Sptr plane = scene->CreateGameObject("Plane");
 		{
-			plane->SetPostion(glm::vec3(0.04f, 0.99f, -0.32f));
+			plane->SetPostion(glm::vec3(0.0f, 0.0f, -0.08));
 			plane->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 			// Make a big tiled mesh
 			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
@@ -594,7 +621,7 @@ int main() {
 		}
 		GameObject::Sptr layout = scene->CreateGameObject("Layout");
 		{
-			layout->SetPostion(glm::vec3(-1.71f, -4.12f, -1.35f));
+			layout->SetPostion(glm::vec3(6.33, -1.44f, 0.0f));
 			layout->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
 			layout->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 
@@ -952,26 +979,6 @@ int main() {
 			SubmittingTrashBehaviour::Sptr behaviour2 = binM->Add<SubmittingTrashBehaviour>();
 			
 		}
-		//statue object
-		MeshResource::Sptr statueMesh = ResourceManager::CreateAsset<MeshResource>("wolfstatue.obj");
-		Texture2D::Sptr statueTex = ResourceManager::CreateAsset <Texture2D>("textures/statue.jpg");
-		//Create Material
-		Material::Sptr statueMaterial = ResourceManager::CreateAsset<Material>(basicShader);
-		{
-			statueMaterial->Name = "Statue";
-			statueMaterial->Set("u_Material.Diffuse", statueTex);
-			statueMaterial->Set("u_Material.Shininess", 1.0f);
-		}
-		GameObject::Sptr wolfstatue = scene->CreateGameObject("Statue");
-		{
-			wolfstatue->SetPostion(glm::vec3(0.0f, 0.0f, 0.0f));
-			wolfstatue->SetRotation(glm::vec3(90.0, 0.0f, 90.0f));
-			wolfstatue->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-			
-			RenderComponent::Sptr renderer = wolfstatue->Add<RenderComponent>();
-			renderer->SetMesh(statueMesh);
-			renderer->SetMaterial(statueMaterial);
-		}
 		//Shelf object
 		MeshResource::Sptr shelfMesh = ResourceManager::CreateAsset<MeshResource>("shelf.obj");
 		Texture2D::Sptr shelfTex = ResourceManager::CreateAsset <Texture2D>("textures/shelf.png");
@@ -1228,6 +1235,179 @@ int main() {
 			//RigidBody::Sptr physics = trashyE->Add<RigidBody>(RigidBodyType::Kinematic);
 			
 		}
+		//Modelling Static objects
+		{
+			//Bench
+			MeshResource::Sptr benchMesh = ResourceManager::CreateAsset<MeshResource>("bench.obj");
+			Texture2D::Sptr benchTex = ResourceManager::CreateAsset<Texture2D>("textures/bench.jpg");
+			Material::Sptr benchMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				benchMaterial->Name = "Bench";
+				benchMaterial->Set("u_Material.Diffuse", benchTex);
+				benchMaterial->Set("u_Material.Shininess", 0.0f);
+			}
+			GameObject::Sptr bench = scene->CreateGameObject("Bench");
+			{
+				bench->SetPostion(glm::vec3(-0.02f, -2.23f, 0.0f));
+				bench->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				bench->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+				
+				RenderComponent::Sptr renderer = bench->Add<RenderComponent>();
+				renderer->SetMesh(benchMesh);
+				renderer->SetMaterial(benchMaterial);
+			}
+			//Cash Counter
+			GameObject::Sptr cashModel = scene->CreateGameObject("cash Modelling");
+			{
+				cashModel->SetPostion(glm::vec3(-6.34f, -1.61f, 0.0f));
+				cashModel->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+				cashModel->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+				
+				RenderComponent::Sptr renderer = cashModel->Add<RenderComponent>();
+				renderer->SetMesh(cashMesh);
+				renderer->SetMaterial(cashMaterial);
+
+			}
+			//Cup
+			GameObject::Sptr cupModel = scene->CreateGameObject("cup Modelling");
+			{
+				cupModel->SetPostion(glm::vec3(-3.76f, -1.52f, 0.0f));
+				cupModel->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+				cupModel->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+				
+				RenderComponent::Sptr renderer = cupModel->Add<RenderComponent>();
+				renderer->SetMesh(trashMesh);
+				renderer->SetMaterial(trashMaterial);
+			}
+			//Plant
+			MeshResource::Sptr plantMesh = ResourceManager::CreateAsset<MeshResource>("plant.obj");
+			Texture2D::Sptr plantTex = ResourceManager::CreateAsset<Texture2D>("textures/planttex.png");
+			Material::Sptr plantMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				plantMaterial->Name = "Plant";
+				plantMaterial->Set("u_Material.Diffuse", plantTex);
+				plantMaterial->Set("u_Material.Shininess", 0.0f);
+			}
+			GameObject::Sptr plant = scene->CreateGameObject("Plant");
+			{
+				plant->SetPostion(glm::vec3(-3.17f, -1.51f, 0.0f));
+				plant->SetRotation(glm::vec3(90.0f, 0.0f, 72.0f));
+				plant->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+				
+				RenderComponent::Sptr renderer = plant->Add<RenderComponent>();
+				renderer->SetMesh(plantMesh);
+				renderer->SetMaterial(plantMaterial);
+			}
+			//Rack
+			MeshResource::Sptr rackMesh = ResourceManager::CreateAsset<MeshResource>("rack.obj");
+			Texture2D::Sptr rackTex = ResourceManager::CreateAsset<Texture2D>("textures/rack.png");
+			Material::Sptr rackMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				rackMaterial->Name = "Rack";
+				rackMaterial->Set("u_Material.Diffuse", rackTex);
+				rackMaterial->Set("u_Material.Shininess", 0.2f);
+			}
+			GameObject::Sptr rack = scene->CreateGameObject("Rack");
+			{
+				rack->SetPostion(glm::vec3(-1.64f, -1.97f, 0.0f));
+				rack->SetRotation(glm::vec3(90.0f, 0.0f, 63.0f));
+				rack->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
+				
+				RenderComponent::Sptr renderer = rack->Add<RenderComponent>();
+				renderer->SetMesh(rackMesh);
+				renderer->SetMaterial(rackMaterial);
+			}
+			//Shelf
+			GameObject::Sptr shelfModel = scene->CreateGameObject("Shelf Modelling");
+			{
+				shelfModel ->SetPostion(glm::vec3(-9.54f, -1.87f, 0.0f));
+				shelfModel->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+				shelfModel->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = shelfModel->Add<RenderComponent>();
+				renderer->SetMesh(shelfMesh);
+				renderer->SetMaterial(shelfMaterial);
+			}
+			//Shower
+			MeshResource::Sptr showerMesh = ResourceManager::CreateAsset<MeshResource>("shower.obj");
+			Texture2D::Sptr showerTex = ResourceManager::CreateAsset<Texture2D>("textures/shower.png");
+			Material::Sptr showerMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				showerMaterial->Name = "Shower";
+				showerMaterial->Set("u_Material.Diffuse", showerTex);
+				showerMaterial->Set("u_Material.Shininess", 0.5f);
+			}
+			GameObject::Sptr shower = scene->CreateGameObject("Shower");
+			{
+				shower->SetPostion(glm::vec3(-4.5f, -1.84f, 0.0f));
+				shower->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+				shower->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+
+				RenderComponent::Sptr renderer = shower->Add<RenderComponent>();
+				renderer->SetMesh(showerMesh);
+				renderer->SetMaterial(showerMaterial);
+			}
+			MeshResource::Sptr tubMesh = ResourceManager::CreateAsset<MeshResource>("tub.obj");
+			Texture2D::Sptr tubTex = ResourceManager::CreateAsset<Texture2D>("textures/tub.png");
+			Material::Sptr tubMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				tubMaterial->Name = "Tub";
+				tubMaterial->Set("u_Material.Diffuse", tubTex);
+				tubMaterial->Set("u_Material.Shininess", 0.5f);
+			}
+			GameObject::Sptr tub = scene->CreateGameObject("Tub");
+			{
+				tub->SetPostion(glm::vec3(-12.25f, -1.78f, 0.0f));
+				tub->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				tub->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+				
+				RenderComponent::Sptr renderer = tub->Add<RenderComponent>();
+				renderer->SetMesh(tubMesh);
+				renderer->SetMaterial(tubMaterial);
+			}
+			//Tv
+			GameObject::Sptr tvModel = scene->CreateGameObject("Tv Modelling");
+			{
+				tvModel->SetPostion(glm::vec3(-14.07f, -1.9f, 0.0f));
+				tvModel->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				tvModel->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+
+				RenderComponent::Sptr renderer = tvModel->Add<RenderComponent>();
+				renderer->SetMesh(tvMesh);
+				renderer->SetMaterial(tvMaterial);
+			}
+			//Tv Box
+			GameObject::Sptr tvboxModel = scene->CreateGameObject("Tv Box Modelling");
+			{
+				tvboxModel->SetPostion(glm::vec3(-15.69f, -1.68f, 0.0f));
+				tvboxModel->SetRotation(glm::vec3(90.0f, 0.0f, 37.0f));
+				tvboxModel->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
+
+				RenderComponent::Sptr renderer = tvboxModel->Add <RenderComponent>();
+				renderer->SetMesh(tvboxMesh);
+				renderer->SetMaterial(tvboxMaterial);
+			}
+			//Wolf statue object
+			MeshResource::Sptr statueMesh = ResourceManager::CreateAsset<MeshResource>("wolfstatue.obj");
+			Texture2D::Sptr statueTex = ResourceManager::CreateAsset <Texture2D>("textures/statue.jpg");
+			//Create Material
+			Material::Sptr statueMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				statueMaterial->Name = "Statue";
+				statueMaterial->Set("u_Material.Diffuse", statueTex);
+				statueMaterial->Set("u_Material.Shininess", 1.0f);
+			}
+			GameObject::Sptr wolfstatue = scene->CreateGameObject("Wolf Statue");
+			{
+				wolfstatue->SetPostion(glm::vec3(1.01f, -2.63f, 0.0f));
+				wolfstatue->SetRotation(glm::vec3(90.0, 0.0f, -180.f));
+				wolfstatue->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = wolfstatue->Add<RenderComponent>();
+				renderer->SetMesh(statueMesh);
+				renderer->SetMaterial(statueMaterial);
+			}
+		}
 		//start menu
 		Texture2D::Sptr startTex = ResourceManager::CreateAsset<Texture2D>("textures/start_Screen.png");
 
@@ -1468,8 +1648,35 @@ int main() {
 					//trashyM->SetDirty(true);
 				}
 			}
-			else if (scene->IsPlaying && !playMenu && start) {
+			//FREEZE TRASHY
+			if (trashyM->GetPosition().z < 1.0f)
+			{
+				trashyM->Get<RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
+			}
+			//FREEZE TRASHY
+			//trashyM->Get<RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
+			if (TrashyE->GetPosition().x >= 0.4f && RectangleE->GetPosition().z >= 6.9f)
+			{
+				TrashyE->SetPostionZ(-10.0f);
+				RectangleE->SetPostionZ(-10.0f);
+				//TrashyE->SetDirty(true);
+				//RectangleE->SetDirty(true);
+				//TrashyE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(TrashyE->GUID));
+				//RectangleE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(RectangleE->GUID));
+				scene->RemoveGameObject(TrashyE);
+				scene->RemoveGameObject(RectangleE);
+				std::cout << "should be deleted\n";
+				playMenu = false;
+				//trashyM->SetDirty(true);
+			}
+		}
+		else if (scene->IsPlaying && !playMenu && !timeleveltDone) {
 
+			if (scene->trash == 0) {
+
+				//timeleveltDone = true;
+			}
+			else {
 				if (scene->trash == 0) {
 					timerDone = true;
 				}
@@ -1477,6 +1684,9 @@ int main() {
 
 				}
 
+			if (timelevelt > 0 && !timeleveltDone) {
+				timelevelt -= dt;
+				TimeCountdown(timelevelt);
 				if (timelevelt > 0 && !timeleveltDone) {
 					timelevelt -= dt;
 				}
@@ -1486,6 +1696,33 @@ int main() {
 
 				std::cout << timelevelt;
 			}
+			else {
+				timeleveltDone = true;
+				lose = true;
+
+			}
+
+
+
+		}
+		else if (timeleveltDone && scene->IsPlaying) {
+			if (lose) {
+				std::cout << "You lost!" << "\n";
+				lose = false;
+			}
+
+			if (Victory) {
+
+			}
+		}
+
+		// Draw our material properties window!
+		//DrawMaterialsWindow();
+		// Showcasing how to use the imGui library!
+		bool isDebugWindowOpen = ImGui::Begin("Debugging");
+		if (isDebugWindowOpen)
+		{
+			if (ImGui::Button("Add brick"))
 			// Draw our material properties window!
 			//DrawMaterialsWindow();
 			// Showcasing how to use the imGui library!
