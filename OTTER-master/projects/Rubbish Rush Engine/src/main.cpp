@@ -1367,6 +1367,44 @@ int main() {
 				renderer->SetMaterial(cashMaterial);
 
 			}
+			//Computer
+			MeshResource::Sptr computerMesh = ResourceManager::CreateAsset<MeshResource>("Computer.obj");
+			Texture2D::Sptr computerTex = ResourceManager::CreateAsset<Texture2D>("textures/desktoptex.png");
+			Material::Sptr computerMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				computerMaterial->Name = "Computer";
+				computerMaterial->Set("u_Material.Diffuse", computerTex);
+				computerMaterial->Set("u_Material.Shininess", 0.3f);
+			}
+			GameObject::Sptr computer = scene->CreateGameObject("Desktop");
+			{
+				computer->SetPostion(glm::vec3(-2.61f, -1.08f, 0.0f));
+				computer->SetRotation(glm::vec3(90.0f, 0.0f, 59.0f));
+				computer->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
+				
+				RenderComponent::Sptr renderer = computer->Add<RenderComponent>();
+				renderer->SetMesh(computerMesh);
+				renderer->SetMaterial(computerMaterial);
+			}
+			//Conveyor
+			MeshResource::Sptr conveyorMesh = ResourceManager::CreateAsset<MeshResource>("conveyor.obj");
+			Texture2D::Sptr conveyorTex = ResourceManager::CreateAsset<Texture2D>("textures/conayortex.png");
+			Material::Sptr conveyorMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				conveyorMaterial->Name = "Conveyor";
+				conveyorMaterial->Set("u_Material.Diffuse", conveyorTex);
+				conveyorMaterial->Set("u_Material.Shininess", 0.2f);
+			}
+			GameObject::Sptr conveyor = scene->CreateGameObject("Conveyor");
+			{
+				conveyor->SetPostion(glm::vec3(-2.13f, -4.49f, 0.0f));
+				conveyor->SetRotation(glm::vec3(90.0f, 0.0f, -75.0f));
+				conveyor->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
+
+				RenderComponent::Sptr renderer = conveyor->Add<RenderComponent>();
+				renderer->SetMesh(conveyorMesh);
+				renderer->SetMaterial(conveyorMaterial);
+			}
 			//Cup
 			GameObject::Sptr cupModel = scene->CreateGameObject("cup Modelling");
 			{
@@ -1377,6 +1415,25 @@ int main() {
 				RenderComponent::Sptr renderer = cupModel->Add<RenderComponent>();
 				renderer->SetMesh(trashMesh);
 				renderer->SetMaterial(trashMaterial);
+			}
+			//Mirror
+			MeshResource::Sptr mirrorMesh = ResourceManager::CreateAsset<MeshResource>("Mirror.obj");
+			Texture2D::Sptr mirrorTex = ResourceManager::CreateAsset<Texture2D>("textures/mirror.jpg");
+			Material::Sptr mirrorMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				mirrorMaterial->Name = "Mirror";
+				mirrorMaterial->Set("u_Material.Diffuse", mirrorTex);
+				mirrorMaterial->Set("u_Material.Shininess", 0.6f);
+			}
+			GameObject::Sptr mirror = scene->CreateGameObject("Mirror");
+			{
+				mirror->SetPostion(glm::vec3(-12.1f, -2.65f, 0.0f));
+				mirror->SetRotation(glm::vec3(90.0f, -2.0f, 93.0f));
+				mirror->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+
+				RenderComponent::Sptr renderer = mirror->Add<RenderComponent>();
+				renderer->SetMesh(mirrorMesh);
+				renderer->SetMaterial(mirrorMaterial);
 			}
 			//Plant
 			MeshResource::Sptr plantMesh = ResourceManager::CreateAsset<MeshResource>("plant.obj");
@@ -1446,6 +1503,26 @@ int main() {
 				renderer->SetMesh(showerMesh);
 				renderer->SetMaterial(showerMaterial);
 			}
+			//Sink
+			MeshResource::Sptr sinkMesh = ResourceManager::CreateAsset<MeshResource>("Sink.obj");
+			Texture2D::Sptr sinkTex = ResourceManager::CreateAsset<Texture2D>("textures/sinktex.png");
+			Material::Sptr sinkMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			{
+				sinkMaterial->Name = "Sink";
+				sinkMaterial->Set("u_Material.Diffuse", sinkTex);
+				sinkMaterial->Set("u_Material.Shininess", 0.5f);
+			}
+			GameObject::Sptr sink = scene->CreateGameObject("Sink");
+			{
+				sink->SetPostion(glm::vec3(-3.47f, -3.14f, 0.0f));
+				sink->SetRotation(glm::vec3(90.0f, 0.0f, -34.0f));
+				sink->SetScale(glm::vec3(0.25f, 0.25, 0.25f));
+
+				RenderComponent::Sptr renderer = sink->Add<RenderComponent>();
+				renderer->SetMesh(sinkMesh);
+				renderer->SetMaterial(sinkMaterial);
+			}
+			//Tub
 			MeshResource::Sptr tubMesh = ResourceManager::CreateAsset<MeshResource>("tub.obj");
 			Texture2D::Sptr tubTex = ResourceManager::CreateAsset<Texture2D>("textures/tub.png");
 			Material::Sptr tubMaterial = ResourceManager::CreateAsset<Material>(basicShader);
