@@ -789,6 +789,94 @@ int main() {
 
 			}
 		}
+		//set up robo toy
+		MeshResource::Sptr roboMesh = ResourceManager::CreateAsset<MeshResource>("Robo/RoboWalk_000001.obj");
+		Texture2D::Sptr roboTex = ResourceManager::CreateAsset<Texture2D>("textures/robo.png");
+		Material::Sptr roboMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		{
+			roboMaterial->Name = "Robo";
+			roboMaterial->Set("u_Material.Diffuse", roboTex);
+			roboMaterial->Set("u_Material.Shininess", 0.5f);
+		}
+		GameObject::Sptr robo = scene->CreateGameObject("Robo");
+		{
+			robo->SetPostion(glm::vec3(0.0f, 0.0f, 0.0f));
+			robo->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			robo->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+
+			RenderComponent::Sptr renderer = robo->Add<RenderComponent>();
+			renderer->SetMesh(roboMesh);
+			renderer->SetMaterial(roboMaterial);
+
+			MorphMeshRenderer::Sptr morph1 = robo->Add<MorphMeshRenderer>();
+			morph1->SetMorphMeshRenderer(roboMesh, roboMaterial);
+			MorphAnimator::Sptr morph2 = robo->Add<MorphAnimator>();
+
+			//moving
+
+			MeshResource::Sptr roboMesh2 = ResourceManager::CreateAsset<MeshResource>("Robo/RoboWalk_000001.obj");
+			MeshResource::Sptr roboMesh3 = ResourceManager::CreateAsset<MeshResource>("Robo/RoboWalk_000005.obj");
+			MeshResource::Sptr roboMesh4 = ResourceManager::CreateAsset<MeshResource>("Robo/RoboWalk_000008.obj");
+			MeshResource::Sptr roboMesh5 = ResourceManager::CreateAsset<MeshResource>("Robo/RoboWalk_000010.obj");
+			MeshResource::Sptr roboMesh6 = ResourceManager::CreateAsset<MeshResource>("Robo/RoboWalk_000015.obj");
+			MeshResource::Sptr roboMesh7 = ResourceManager::CreateAsset<MeshResource>("Robo/RoboWalk_000018.obj");
+			MeshResource::Sptr roboMesh8 = ResourceManager::CreateAsset<MeshResource>("Robo/RoboWalk_000020.obj");
+			
+			std::vector<MeshResource::Sptr> frames;
+			frames.push_back(roboMesh2);
+			frames.push_back(roboMesh3);
+			frames.push_back(roboMesh4);
+			frames.push_back(roboMesh5);
+			frames.push_back(roboMesh6);
+			frames.push_back(roboMesh7);
+			frames.push_back(roboMesh8);
+
+			morph2->SetInitial();
+			morph2->SetFrameTime(0.1f);
+			morph2->SetFrames(frames);
+		}
+		//set up book
+		MeshResource::Sptr bookMesh = ResourceManager::CreateAsset<MeshResource>("Book/AnimBook_000001.obj");
+		Texture2D::Sptr bookTex = ResourceManager::CreateAsset<Texture2D>("textures/robo.png");
+		Material::Sptr bookMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		{
+			bookMaterial->Name = "Book";
+			bookMaterial->Set("u_Material.Diffuse", bookTex);
+			bookMaterial->Set("u_Material.Shininess", 0.0f);
+		}
+		GameObject::Sptr book = scene->CreateGameObject("Book");
+		{
+			book->SetPostion(glm::vec3(1.0f, 1.0f, 0.0f));
+			book->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			book->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+
+			RenderComponent::Sptr renderer = book->Add<RenderComponent>();
+			renderer->SetMesh(bookMesh);
+			renderer->SetMaterial(bookMaterial);
+
+			MorphMeshRenderer::Sptr morph1 = book->Add<MorphMeshRenderer>();
+			morph1->SetMorphMeshRenderer(bookMesh, bookMaterial);
+			MorphAnimator::Sptr morph2 = book->Add<MorphAnimator>();
+
+			//moving
+
+			MeshResource::Sptr bookMesh2 = ResourceManager::CreateAsset<MeshResource>("Book/AnimBook_000001.obj");
+			MeshResource::Sptr bookMesh3 = ResourceManager::CreateAsset<MeshResource>("Book/AnimBook_000004.obj");
+			MeshResource::Sptr bookMesh4 = ResourceManager::CreateAsset<MeshResource>("Book/AnimBook_000008.obj");
+			MeshResource::Sptr bookMesh5 = ResourceManager::CreateAsset<MeshResource>("Book/AnimBook_000012.obj");
+			MeshResource::Sptr bookMesh6 = ResourceManager::CreateAsset<MeshResource>("Book/AnimBook_000016.obj");
+			
+			std::vector<MeshResource::Sptr> frames;
+			frames.push_back(bookMesh2);
+			frames.push_back(bookMesh3);
+			frames.push_back(bookMesh4);
+			frames.push_back(bookMesh5);
+			frames.push_back(bookMesh6);
+
+			morph2->SetInitial();
+			morph2->SetFrameTime(0.2f);
+			morph2->SetFrames(frames);
+		}
 		//setup moving toy
 		MeshResource::Sptr toyMesh = ResourceManager::CreateAsset<MeshResource>("toy.obj");
 		Texture2D::Sptr toyTex = ResourceManager::CreateAsset<Texture2D>("textures/toy.jpg");
@@ -853,7 +941,7 @@ int main() {
 				frames.push_back(toyMesh6);
 
 				morph2->SetInitial();
-				morph2->SetFrameTime(0.5f);
+				morph2->SetFrameTime(0.1f);
 				morph2->SetFrames(frames);
 			}
 			GameObject::Sptr toyM2 = scene->CreateGameObject("Toy2");
@@ -900,7 +988,7 @@ int main() {
 				frames.push_back(toyMesh6);
 
 				morph2->SetInitial();
-				morph2->SetFrameTime(0.5f);
+				morph2->SetFrameTime(0.1f);
 				morph2->SetFrames(frames);
 
 			}
