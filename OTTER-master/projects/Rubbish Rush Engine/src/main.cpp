@@ -1575,7 +1575,7 @@ int main() {
 		{
 			end->SetPostion(glm::vec3(-0.99f, -0.23f, 1.92f));
 			end->SetRotation(glm::vec3(-138.0f, -180.0f, 0.0f));
-			end->SetScale(glm::vec3(0.26f, 0.21f, 0.42f));
+			end->SetScale(glm::vec3(0.20f, 0.21f, 0.42f));
 			// Make a big tiled mesh
 			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
 			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(20.0f), glm::vec2(1.0f)));
@@ -1602,7 +1602,7 @@ int main() {
 		{
 			win->SetPostion(glm::vec3(-0.99f, -0.23f, 1.92f));
 			win->SetRotation(glm::vec3(-138.0f, -180.0f, 0.0f));
-			win ->SetScale(glm::vec3(0.26f, 0.21f, 0.42f));
+			win ->SetScale(glm::vec3(0.20f, 0.21f, 0.42f));
 			// Make a big tiled mesh
 			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
 			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(20.0f), glm::vec2(1.0f)));
@@ -1723,7 +1723,7 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 	pointsR2.push_back(glm::vec3(90.0f, 0.0f, 90.0f));
 
 	float timeLoop = 7.0f;
-	float timelevelt = 180.f;
+	float timelevelt = 65.f;
 	bool playMenu = true;
 
 	bool start = false;
@@ -1839,10 +1839,11 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 		else if (scene->IsPlaying && !playMenu && !timeleveltDone && start)
 		{
 	
-			if (scene->trash == 0)
+			if (scene->score == 4)
 			{
 
-				//timeleveltDone = true;
+				timeleveltDone = true;
+				Victory = true;
 			}
 			else
 			{
@@ -1852,38 +1853,58 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 				else {
 
 				}
+			}
+			if (!isPaused) 
+			{
 
-				if (timelevelt > 0 && !timeleveltDone)
-				{
-					
-					if (timelevelt > 0 && !timeleveltDone) {
-						timelevelt -= dt;
-						TimeCountdown(timelevelt);
-					}
-					else {
-						timeleveltDone = true;
-					}
-
-					//std::cout << timelevelt;
+				if (timelevelt > 0 && !timeleveltDone) {
+					timelevelt -= dt;
+					TimeCountdown(timelevelt);
 				}
-				else
+				else if(timelevelt <= 0 )
 				{
 					timeleveltDone = true;
 					lose = true;
 
 				}
 			}
+			else 
+			{
+
+			}
+			
 		}
 		else if (timeleveltDone && scene->IsPlaying && start)
 		{
 			if (lose)
 			{
-				std::cout << "You lost!" << "\n";
+				
 				lose = false;
 				//end menu
+				failMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
+				trashyM->Get<RigidBody>()->IsEnabled = false;
+				failMenu->Get<RenderComponent>()->IsEnabled = true;
+				//pause the timer*****
+				if (glfwGetKey(scene->Window, GLFW_KEY_ENTER)) //return to game
+				{
+					trashyM->Get<RigidBody>()->IsEnabled = true;
+					failMenu->Get<RenderComponent>()->IsEnabled = false;
+				}
+
 			}
 			if (Victory)
 			{
+				Victory = false;
+				winMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
+				trashyM->Get<RigidBody>()->IsEnabled = false;
+				winMenu->Get<RenderComponent>()->IsEnabled = true;
+				//pause the timer*****
+				if (glfwGetKey(scene->Window, GLFW_KEY_ENTER)) //return to game
+				{
+					trashyM->Get<RigidBody>()->IsEnabled = true;
+					winMenu->Get<RenderComponent>()->IsEnabled = false;
+				}
+
 				//victory menu?
 
 			}
@@ -1894,7 +1915,7 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 			if (glfwGetKey(scene->Window, GLFW_KEY_ESCAPE) && !isPaused)
 			{
 				isPaused = true;
-				pauseMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f,0.15f, 2.33f)); //offset from player
+				pauseMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
 			}
 			if (isPaused)
 			{
