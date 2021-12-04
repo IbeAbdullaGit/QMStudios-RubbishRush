@@ -82,7 +82,7 @@ void main()
     
     //Output position - our viewprojection matrix
     //multiplied by world-space position.
-    gl_Position = u_ModelViewProjection * vec4(outWorldPos, 1.0);
+    gl_Position = u_ViewProjection * vec4(outWorldPos, 1.0);
 
     // We use a TBN matrix for tangent space normal mapping
     vec3 T = normalize(vec3(mat3(u_NormalMatrix) * inTangent));

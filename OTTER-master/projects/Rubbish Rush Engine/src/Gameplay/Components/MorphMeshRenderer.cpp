@@ -47,6 +47,7 @@ void MorphMeshRenderer::UpdateData(MeshResource::Sptr frame0, MeshResource::Sptr
 	//GetGameObject()->Get<RenderComponent>()->GetMesh()->AddVertexBuffer(vbo2, std::vector<BufferAttribute>{ba2});
 	
 	m_t = t;
+	GetGameObject()->Get<RenderComponent>()->GetMaterial()->Set("t", m_t);
 }
 
 void MorphMeshRenderer::Draw()
@@ -62,7 +63,7 @@ void MorphMeshRenderer::Draw()
 	//m_vao->Draw();
 
 	//change in time
-	GetGameObject()->Get<RenderComponent>()->GetMaterial()->Set("t", m_t);
+	//GetGameObject()->Get<RenderComponent>()->GetMaterial()->Set("t", m_t);
 }
 
 void MorphMeshRenderer::Update(float deltaTime)
