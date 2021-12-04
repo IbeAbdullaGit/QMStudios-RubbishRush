@@ -147,6 +147,7 @@ void GlfwWindowResizedCallback(GLFWwindow* window, int width, int height) {
 	if (windowSize.x * windowSize.y > 0) {
 		scene->MainCamera->ResizeWindow(width, height);
 	}
+	GuiBatcher::SetWindowSize({ width, height });
 }
 
 /// <summary>
@@ -167,6 +168,11 @@ bool initGLFW() {
 	
 	// Set our window resized callback
 	glfwSetWindowSizeCallback(window, GlfwWindowResizedCallback);
+
+	// Pass the window to the input engine and let it initialize itself
+	InputEngine::Init(window);
+
+	GuiBatcher::SetWindowSize(windowSize);
 
 	return true;
 }
@@ -1437,36 +1443,36 @@ int main() {
 		}
 
 		///////////////////////////// UI //////////////////////////////
-		//GameObject::Sptr canvas = scene->CreateGameObject("UI Canvas");
-		//{
-		//	RectTransform::Sptr transform = canvas->Add<RectTransform>();
-		//	transform->SetMin({ 16, 16 });
-		//	transform->SetMax({ 256, 256 });
+		/*GameObject::Sptr canvas = scene->CreateGameObject("UI Canvas");
+		{
+			RectTransform::Sptr transform = canvas->Add<RectTransform>();
+			transform->SetMin({ 16, 16 });
+			transform->SetMax({ 256, 256 });
 
-		//	GuiPanel::Sptr canPanel = canvas->Add<GuiPanel>();
+			GuiPanel::Sptr canPanel = canvas->Add<GuiPanel>();
 
-		//	GameObject::Sptr subPanel = scene->CreateGameObject("Sub Item");
-		//	{
-		//		RectTransform::Sptr transform = subPanel->Add<RectTransform>();
-		//		transform->SetMin({ 10, 10 });
-		//		transform->SetMax({ 128, 128 });
+			GameObject::Sptr subPanel = scene->CreateGameObject("Sub Item");
+			{
+				RectTransform::Sptr transform = subPanel->Add<RectTransform>();
+				transform->SetMin({ 10, 10 });
+				transform->SetMax({ 128, 128 });
 
-		//		GuiPanel::Sptr panel = subPanel->Add<GuiPanel>();
-		//		panel->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+				GuiPanel::Sptr panel = subPanel->Add<GuiPanel>();
+				panel->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 
-//		Font::Sptr font = ResourceManager::CreateAsset<Font>("fonts/Roboto-Medium.ttf", 16.0f);
-//		font->Bake();
+		Font::Sptr font = ResourceManager::CreateAsset<Font>("fonts/Roboto-Medium.ttf", 16.0f);
+		font->Bake();
 
-//		GuiText::Sptr text = subPanel->Add<GuiText>();
-//		text->SetText("Hello world!");
-//		text->SetFont(font);
-//	}
+		GuiText::Sptr text = subPanel->Add<GuiText>();
+		text->SetText("Hello world!");
+		text->SetFont(font);
+	}
 
-//	canvas->AddChild(subPanel);
-//}
+	canvas->AddChild(subPanel);
+}
 
-//GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui-sprite.png"));
-//GuiBatcher::SetDefaultBorderRadius(8);
+GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui-sprite.png"));
+GuiBatcher::SetDefaultBorderRadius(8);*/
 
 // Call scene awake to start up all of our components
 		scene->Window = window;
