@@ -57,6 +57,8 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 				//update UI
 
 				std::cout << "Submitted trash!\n";
+				//increase score
+				_scene->score += 1;
 			}
 			else
 			{

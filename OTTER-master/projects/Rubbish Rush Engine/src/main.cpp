@@ -532,7 +532,7 @@ int main() {
 		}
 		GameObject::Sptr trashyM = scene->CreateGameObject("Trashy");
 		{
-			trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 2.0f));
+			trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f));
 			trashyM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 			trashyM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
@@ -1427,8 +1427,8 @@ int main() {
 		// Set up all our sample objects
 		GameObject::Sptr start = scene->CreateGameObject("Start");
 		{
-			start->SetPostion(glm::vec3(-1.44f, -0.11f, 3.91f));
-			start->SetRotation(glm::vec3(-37.0f, -180.0f, -180.0f));
+			start->SetPostion(glm::vec3(-1.44f, -0.11f, 2.91f));
+			start->SetRotation(glm::vec3(-138.0f, -180.0f, 0.0f));
 			start->SetScale(glm::vec3(0.21f, 0.19f, 0.42f));
 			// Make a big tiled mesh
 			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
@@ -1440,6 +1440,87 @@ int main() {
 			RenderComponent::Sptr renderer = start->Add<RenderComponent>();
 			renderer->SetMesh(tiledMesh);
 			renderer->SetMaterial(startMaterial);
+		}
+		//pause menu
+		Texture2D::Sptr pauseTex = ResourceManager::CreateAsset<Texture2D>("textures/pause.png");
+		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
+		Material::Sptr pauseMaterial = ResourceManager::CreateAsset<Material>(basicShader); {
+			pauseMaterial->Name = "PauseMenu";
+			pauseMaterial->Set("u_Material.Diffuse", pauseTex);
+			pauseMaterial->Set("u_Material.Shininess", 1.0f);
+		}
+
+		// Set up all our sample objects
+		GameObject::Sptr pause = scene->CreateGameObject("Pause");
+		{
+			pause->SetPostion(glm::vec3(-0.99f, -0.23f, 1.92f));
+			pause->SetRotation(glm::vec3(-138.0f, -180.0f, 0.0f));
+			pause->SetScale(glm::vec3(0.26f, 0.21f, 0.42f));
+			// Make a big tiled mesh
+			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
+			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(20.0f), glm::vec2(1.0f)));
+			tiledMesh->GenerateMesh();
+
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = pause->Add<RenderComponent>();
+			renderer->SetMesh(tiledMesh);
+			renderer->SetMaterial(pauseMaterial);
+			renderer->IsEnabled = false;
+		}
+		//end menu
+		Texture2D::Sptr endTex = ResourceManager::CreateAsset<Texture2D>("textures/fail.png");
+		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
+		Material::Sptr endMaterial = ResourceManager::CreateAsset<Material>(basicShader); {
+			endMaterial->Name = "FailMenu";
+			endMaterial->Set("u_Material.Diffuse", endTex);
+			endMaterial->Set("u_Material.Shininess", 1.0f);
+		}
+
+		// Set up all our sample objects
+		GameObject::Sptr end = scene->CreateGameObject("Fail");
+		{
+			end->SetPostion(glm::vec3(-0.99f, -0.23f, 1.92f));
+			end->SetRotation(glm::vec3(-138.0f, -180.0f, 0.0f));
+			end->SetScale(glm::vec3(0.26f, 0.21f, 0.42f));
+			// Make a big tiled mesh
+			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
+			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(20.0f), glm::vec2(1.0f)));
+			tiledMesh->GenerateMesh();
+
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = end->Add<RenderComponent>();
+			renderer->SetMesh(tiledMesh);
+			renderer->SetMaterial(endMaterial);
+			renderer->IsEnabled = false;
+		}
+		//victory menu
+		Texture2D::Sptr winTex = ResourceManager::CreateAsset<Texture2D>("textures/WIN.png");
+		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
+		Material::Sptr winMaterial = ResourceManager::CreateAsset<Material>(basicShader); {
+			winMaterial->Name = "WinMenu";
+			winMaterial->Set("u_Material.Diffuse", winTex);
+			winMaterial->Set("u_Material.Shininess", 1.0f);
+		}
+
+		// Set up all our sample objects
+		GameObject::Sptr win = scene->CreateGameObject("Win");
+		{
+			win->SetPostion(glm::vec3(-0.99f, -0.23f, 1.92f));
+			win->SetRotation(glm::vec3(-138.0f, -180.0f, 0.0f));
+			win ->SetScale(glm::vec3(0.26f, 0.21f, 0.42f));
+			// Make a big tiled mesh
+			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
+			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(20.0f), glm::vec2(1.0f)));
+			tiledMesh->GenerateMesh();
+
+
+			// Create and attach a RenderComponent to the object to draw our mesh
+			RenderComponent::Sptr renderer = win->Add<RenderComponent>();
+			renderer->SetMesh(tiledMesh);
+			renderer->SetMaterial(winMaterial);
+			renderer->IsEnabled = false;
 		}
 
 		///////////////////////////// UI //////////////////////////////
@@ -1513,6 +1594,9 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 	GameObject::Sptr RectangleE = scene->FindObjectByName("Rec");
 	GameObject::Sptr TrashyE = scene->FindObjectByName("TrashyE");
 	GameObject::Sptr startMenu = scene->FindObjectByName("Start");
+	GameObject::Sptr pauseMenu = scene->FindObjectByName("Pause");
+	GameObject::Sptr failMenu = scene->FindObjectByName("Fail");
+	GameObject::Sptr winMenu = scene->FindObjectByName("Win");
 	//limit rotation
 	trashyM->Get<RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
 	trashyM->Get<RigidBody>()->SetLinearDamping(0.9f);
@@ -1551,6 +1635,7 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 
 	bool start = false;
 	bool spressed = false;
+	bool isPaused = false;
 
 	///// Game loop /////
 	while (!glfwWindowShouldClose(window))
@@ -1647,6 +1732,8 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 				//RectangleE->SetDirty(true);
 				//TrashyE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(TrashyE->GUID));
 				//RectangleE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(RectangleE->GUID));
+				TrashyE->Get<RenderComponent>()->IsEnabled = false;
+				RectangleE->Get<RenderComponent>()->IsEnabled = false;
 				scene->RemoveGameObject(TrashyE);
 				scene->RemoveGameObject(RectangleE);
 				std::cout << "should be deleted\n";
@@ -1658,7 +1745,7 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 
 		else if (scene->IsPlaying && !playMenu && !timeleveltDone && start)
 		{
-
+	
 			if (scene->trash == 0)
 			{
 
@@ -1675,16 +1762,16 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 
 				if (timelevelt > 0 && !timeleveltDone)
 				{
-					timelevelt -= dt;
-					TimeCountdown(timelevelt);
+					
 					if (timelevelt > 0 && !timeleveltDone) {
 						timelevelt -= dt;
+						TimeCountdown(timelevelt);
 					}
 					else {
 						timeleveltDone = true;
 					}
 
-					std::cout << timelevelt;
+					//std::cout << timelevelt;
 				}
 				else
 				{
@@ -1700,12 +1787,37 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 			{
 				std::cout << "You lost!" << "\n";
 				lose = false;
+				//end menu
 			}
 			if (Victory)
 			{
+				//victory menu?
 
 			}
 		}
+		//PAUSE MENU
+		if (start && !playMenu)
+		{
+			if (glfwGetKey(scene->Window, GLFW_KEY_ESCAPE) && !isPaused)
+			{
+				isPaused = true;
+				pauseMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f,0.15f, 2.33f)); //offset from player
+			}
+			if (isPaused)
+			{
+				trashyM->Get<RigidBody>()->IsEnabled = false;
+				pauseMenu->Get<RenderComponent>()->IsEnabled = true;
+				//pause the timer*****
+				if (glfwGetKey(scene->Window, GLFW_KEY_ENTER)) //return to game
+				{
+					trashyM->Get<RigidBody>()->IsEnabled = true;
+					pauseMenu->Get<RenderComponent>()->IsEnabled = false;
+					isPaused = false;
+				}
+
+			}
+		}
+
 
 
 		// Draw our material properties window!

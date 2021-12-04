@@ -200,6 +200,7 @@ namespace Gameplay {
 
 		int trash = 0;
 		int brick_count = 0;
+		int score = 0;
 
 	protected:
 		// Bullet physics stuff world
