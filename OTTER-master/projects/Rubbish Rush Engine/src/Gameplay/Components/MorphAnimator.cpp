@@ -75,7 +75,9 @@ void MorphAnimator::Update(float deltaTime)
 		p1_index = m_segmentIndex;
 		p0_index = (p1_index == 0) ? m_data->frames.size() - 1 : p1_index - 1;
 
-		GetGameObject()->Get<MorphMeshRenderer>()->UpdateData(m_data->frames[p0_index], m_data->frames[p1_index], t);
+		float garb;
+
+		GetGameObject()->Get<MorphMeshRenderer>()->UpdateData(m_data->frames[p0_index], m_data->frames[p1_index], glm::modf(t, garb));
 
 	}
 	else
