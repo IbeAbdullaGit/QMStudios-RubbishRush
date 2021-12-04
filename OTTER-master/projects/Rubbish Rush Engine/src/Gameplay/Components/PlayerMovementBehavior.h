@@ -30,11 +30,4 @@ protected:
 	float _impulse;
 	bool in_spill = false;
 	Gameplay::Physics::RigidBody::Sptr _body;
-
-	glm::quat currentRot = GetGameObject()->GetRotation();
-	glm::vec3 rotationTarget = glm::vec3(90.0f, 0.0f, 90.0f);
-	
-	float timer = 0.0f;
-	float lerpDuration = 1.0f;
-	float t = 0.0f;
 };
