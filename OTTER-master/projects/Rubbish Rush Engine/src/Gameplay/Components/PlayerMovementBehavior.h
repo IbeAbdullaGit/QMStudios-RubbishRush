@@ -23,11 +23,13 @@ public:
 	static PlayerMovementBehavior::Sptr FromJson(const nlohmann::json& blob);
 
 	void SetSpill(bool state);
+	bool is_moving = false;
 
 	
 protected:
 	
 	float _impulse;
 	bool in_spill = false;
+	
 	Gameplay::Physics::RigidBody::Sptr _body;
 };

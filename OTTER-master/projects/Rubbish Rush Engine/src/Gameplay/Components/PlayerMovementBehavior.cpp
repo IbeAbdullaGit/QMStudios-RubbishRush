@@ -21,7 +21,7 @@ void PlayerMovementBehavior::RenderImGui() {
 
 nlohmann::json PlayerMovementBehavior::ToJson() const {
 	return {
-		{ "impulse", _impulse }, {"spill_state", in_spill}
+		{ "impulse", _impulse }, {"spill_state", in_spill}, {"moving", is_moving}
 	};
 }
 
@@ -36,6 +36,7 @@ PlayerMovementBehavior::Sptr PlayerMovementBehavior::FromJson(const nlohmann::js
 	PlayerMovementBehavior::Sptr result = std::make_shared<PlayerMovementBehavior>();
 	result->_impulse = blob["impulse"];
 	result->in_spill = blob["spill_state"];
+	result->is_moving = blob["moving"];
 	return result;
 }
 
@@ -46,7 +47,7 @@ void PlayerMovementBehavior::SetSpill(bool state)
 
 void PlayerMovementBehavior::Update(float deltaTime) {
 
-
+	is_moving = false;
 	if (in_spill)
 	{
 		_impulse = 0.05f;
@@ -62,6 +63,7 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 			_body->ApplyImpulse(glm::vec3(0.0f, -_impulse, 0.0f));
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 			//body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(0.0f, -_impulse, 0.0f));
+			is_moving = true;
 		}
 	}
 
@@ -70,6 +72,7 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 			_body->ApplyImpulse(glm::vec3(0.0f, _impulse, 0.0f));
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 180.0f));
 			//_body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(0.0f, _impulse, 0.0f));
+			is_moving = true;
 		}
 	}
 
@@ -79,6 +82,7 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
 			//_body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(_impulse, 0.0f, 0.0f));
+			is_moving = true;
 		}
 	}
 
@@ -87,6 +91,7 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 			_body->ApplyImpulse(glm::vec3(-_impulse, 0.0f, 0.0f));
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
 			//_body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(-_impulse, 0.0f, 0.0f));
+			is_moving = true;
 		}
 	}
 

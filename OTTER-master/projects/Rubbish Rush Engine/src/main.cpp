@@ -412,6 +412,11 @@ int main() {
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
 		});
+		// This shader handles our basic materials without reflections (cause they expensive)
+		Shader::Sptr rackShader = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_texturedRACK.glsl" }
+		});
 
 		// ANIMATION SHADER??
 		Shader::Sptr animShader = ResourceManager::CreateAsset<Shader>(std::unordered_map<ShaderPartType, std::string>{
@@ -544,7 +549,7 @@ int main() {
 			BoxCollider::Sptr box = BoxCollider::Create();
 
 			box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-			box->SetScale(glm::vec3(0.35f, 0.580f, 0.130f));
+			box->SetScale(glm::vec3(0.22f, 0.580f, 0.33f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
 			//physics->AddCollider(BoxCollider::Create());
@@ -554,7 +559,7 @@ int main() {
 			BoxCollider::Sptr box2 = BoxCollider::Create();
 
 			box2->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-			box2->SetScale(glm::vec3(0.35f, 0.58f, 0.130f));
+			box2->SetScale(glm::vec3(0.22f, 0.58f, 0.33f));
 			//box2->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			volume->AddCollider(box2);
 			JumpBehaviour::Sptr behaviour = trashyM->Add<JumpBehaviour>();
@@ -568,18 +573,41 @@ int main() {
 			MorphAnimator::Sptr morph2 = trashyM->Add<MorphAnimator>();
 
 			//walking frames
-			std::vector <MeshResource::Sptr> frames;
+			//std::vector <MeshResource::Sptr> frames;
+			//MeshResource::Sptr trashyMesh1 = ResourceManager::CreateAsset<MeshResource>("trashyWalk/trashywalk_000001.obj");
 			MeshResource::Sptr trashyMesh2 = ResourceManager::CreateAsset<MeshResource>("trashyWalk/trashywalk_000002.obj");
+			MeshResource::Sptr trashyMesh7 = ResourceManager::CreateAsset<MeshResource>("trashyWalk/trashywalk_000010.obj");
 			MeshResource::Sptr trashyMesh3 = ResourceManager::CreateAsset<MeshResource>("trashyWalk/trashywalk_000016.obj");
-			walking = frames; //may need to more manually copy frames over
+			MeshResource::Sptr trashyMesh4 = ResourceManager::CreateAsset<MeshResource>("trashyWalk/trashywalk_000020.obj");
+			MeshResource::Sptr trashyMesh5 = ResourceManager::CreateAsset<MeshResource>("trashyWalk/trashywalk_000025.obj");
+			MeshResource::Sptr trashyMesh6 = ResourceManager::CreateAsset<MeshResource>("trashyWalk/trashywalk_000030.obj");
+			//idle frames
+			//std::vector <MeshResource::Sptr> frames2;
+			MeshResource::Sptr trashyMesh8 = ResourceManager::CreateAsset<MeshResource>("trashyIdle/trashyidle_000001.obj");
+			MeshResource::Sptr trashyMesh11 = ResourceManager::CreateAsset<MeshResource>("trashyIdle/trashyidle_000011.obj");
+			MeshResource::Sptr trashyMesh10 = ResourceManager::CreateAsset<MeshResource>("trashyIdle/trashyidle_000020.obj");
+			MeshResource::Sptr trashyMesh12 = ResourceManager::CreateAsset<MeshResource>("trashyIdle/trashyidle_000030.obj");
+			MeshResource::Sptr trashyMesh9 = ResourceManager::CreateAsset<MeshResource>("trashyIdle/trashyidle_000040.obj");
+			
+			idle.push_back(trashyMesh8);
+			idle.push_back(trashyMesh11);
+			idle.push_back(trashyMesh10);
+			idle.push_back(trashyMesh12);
+			idle.push_back(trashyMesh9);
 			
 			//need to also set frames for other animations
 			//simply switch the set frames
-			frames.push_back(trashyMesh2);
-			frames.push_back(trashyMesh3);
+			//frames.push_back(trashyMesh1);
+			walking.push_back(trashyMesh2);
+			walking.push_back(trashyMesh7);
+			walking.push_back(trashyMesh3);
+			walking.push_back(trashyMesh4);
+			walking.push_back(trashyMesh5);
+			walking.push_back(trashyMesh6);
+			//walking = frames; //may need to more manually copy frames over
 			morph2->SetInitial();
-			morph2->SetFrameTime(0.5f);
-			morph2->SetFrames(frames);
+			morph2->SetFrameTime(0.2f);
+			morph2->SetFrames(idle);
 		}
 
 		
@@ -802,6 +830,31 @@ int main() {
 				points.push_back(glm::vec3(-4.25f, -7.010f, -0.63f));
 				points.push_back(glm::vec3(-0.67f, -7.32f, -0.63f));
 				behaviour2->SetPoints(points);
+
+				/////
+				//ANIMATION STUFF////
+				MorphMeshRenderer::Sptr morph1 = toyM->Add<MorphMeshRenderer>();
+				morph1->SetMorphMeshRenderer(toyMesh, toyMaterial);
+				MorphAnimator::Sptr morph2 = toyM->Add<MorphAnimator>();
+
+				//moving
+
+				MeshResource::Sptr toyMesh2 = ResourceManager::CreateAsset<MeshResource>("RollingToy/toyroll_000001.obj");
+				MeshResource::Sptr toyMesh3 = ResourceManager::CreateAsset<MeshResource>("RollingToy/toyroll_000005.obj");
+				MeshResource::Sptr toyMesh4 = ResourceManager::CreateAsset<MeshResource>("RollingToy/toyroll_000010.obj");
+				MeshResource::Sptr toyMesh5 = ResourceManager::CreateAsset<MeshResource>("RollingToy/toyroll_000015.obj");
+				MeshResource::Sptr toyMesh6 = ResourceManager::CreateAsset<MeshResource>("RollingToy/toyroll_000020.obj");
+
+				std::vector<MeshResource::Sptr> frames;
+				frames.push_back(toyMesh2);
+				frames.push_back(toyMesh3);
+				frames.push_back(toyMesh4);
+				frames.push_back(toyMesh5);
+				frames.push_back(toyMesh6);
+
+				morph2->SetInitial();
+				morph2->SetFrameTime(0.5f);
+				morph2->SetFrames(frames);
 			}
 			GameObject::Sptr toyM2 = scene->CreateGameObject("Toy2");
 			{
@@ -825,6 +878,30 @@ int main() {
 				volume->AddCollider(box2);
 				FollowBehaviour::Sptr behaviour2 = toyM2->Add<FollowBehaviour>();
 				behaviour2->SetTarget(toyM);
+
+				//ANIMATION STUFF////
+				MorphMeshRenderer::Sptr morph1 = toyM2->Add<MorphMeshRenderer>();
+				morph1->SetMorphMeshRenderer(toyMesh, toyMaterial);
+				MorphAnimator::Sptr morph2 = toyM2->Add<MorphAnimator>();
+
+				//moving
+			
+				MeshResource::Sptr toyMesh2 = ResourceManager::CreateAsset<MeshResource>("RollingToy/toyroll_000001.obj");
+				MeshResource::Sptr toyMesh3 = ResourceManager::CreateAsset<MeshResource>("RollingToy/toyroll_000005.obj");
+				MeshResource::Sptr toyMesh4 = ResourceManager::CreateAsset<MeshResource>("RollingToy/toyroll_000010.obj");
+				MeshResource::Sptr toyMesh5 = ResourceManager::CreateAsset<MeshResource>("RollingToy/toyroll_000015.obj");
+				MeshResource::Sptr toyMesh6 = ResourceManager::CreateAsset<MeshResource>("RollingToy/toyroll_000020.obj");
+		
+				std::vector<MeshResource::Sptr> frames;
+				frames.push_back(toyMesh2);
+				frames.push_back(toyMesh3);
+				frames.push_back(toyMesh4);
+				frames.push_back(toyMesh5);
+				frames.push_back(toyMesh6);
+
+				morph2->SetInitial();
+				morph2->SetFrameTime(0.5f);
+				morph2->SetFrames(frames);
 
 			}
 		}
@@ -948,8 +1025,8 @@ int main() {
 			}
 		}
 		//bin model
-		MeshResource::Sptr binMesh = ResourceManager::CreateAsset<MeshResource>("Big_Bin2.obj");
-		Texture2D::Sptr binTex = ResourceManager::CreateAsset<Texture2D>("textures/big_bintex2.png");
+		MeshResource::Sptr binMesh = ResourceManager::CreateAsset<MeshResource>("BigBenClosed_000001.obj");
+		Texture2D::Sptr binTex = ResourceManager::CreateAsset<Texture2D>("textures/bigben.png");
 		// Create our material
 		Material::Sptr binMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
@@ -983,6 +1060,22 @@ int main() {
 			box2->SetScale(glm::vec3(0.25f, 0.22f, 0.2f));
 			volume->AddCollider(box2);
 			SubmittingTrashBehaviour::Sptr behaviour2 = binM->Add<SubmittingTrashBehaviour>();
+
+			//ANIMATION STUFF////
+			MorphMeshRenderer::Sptr morph1 =binM->Add<MorphMeshRenderer>();
+			morph1->SetMorphMeshRenderer(binMesh, binMaterial);
+			MorphAnimator::Sptr morph2 = binM->Add<MorphAnimator>();
+
+			//idle frames
+			//std::vector <MeshResource::Sptr> frames2;
+			MeshResource::Sptr binMesh8 = ResourceManager::CreateAsset<MeshResource>("BigBenClosed_000001.obj");
+			std::vector<MeshResource::Sptr> closed;
+			closed.push_back(binMesh8);
+			behaviour2->getIdle(closed); //send idle frames to behaviour
+			
+			morph2->SetInitial();
+			morph2->SetFrameTime(0.2f);
+			morph2->SetFrames(closed);
 			
 		}
 		//Shelf object
@@ -1307,7 +1400,7 @@ int main() {
 			//Rack
 			MeshResource::Sptr rackMesh = ResourceManager::CreateAsset<MeshResource>("rack.obj");
 			Texture2D::Sptr rackTex = ResourceManager::CreateAsset<Texture2D>("textures/rack.png");
-			Material::Sptr rackMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+			Material::Sptr rackMaterial = ResourceManager::CreateAsset<Material>(rackShader); //CHANGE THIS SHADER
 			{
 				rackMaterial->Name = "Rack";
 				rackMaterial->Set("u_Material.Diffuse", rackTex);
@@ -1817,7 +1910,14 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 
 			}
 		}
-
+		if (trashyM->Get<PlayerMovementBehavior>()->is_moving)
+		{
+			trashyM->Get<MorphAnimator>()->SetFrames(walking);
+		}
+		else
+		{
+			trashyM->Get<MorphAnimator>()->SetFrames(idle);
+		}
 
 
 		// Draw our material properties window!

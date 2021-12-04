@@ -60,9 +60,10 @@ void MorphAnimator::Update(float deltaTime)
 
 			m_segmentIndex += 1;
 
-			if (m_segmentIndex >= m_data->frames.size())
-				m_segmentIndex = 0;
+			
 		}
+		if (m_segmentIndex >= m_data->frames.size())
+			m_segmentIndex = 0;
 		float t = m_timer / m_data->frameTime;
 		//lerp
 		if (m_data->frames.size() < 2)

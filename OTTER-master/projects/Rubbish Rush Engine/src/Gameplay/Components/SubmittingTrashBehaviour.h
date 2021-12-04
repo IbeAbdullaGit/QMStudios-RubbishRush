@@ -34,6 +34,10 @@ public:
 	static SubmittingTrashBehaviour::Sptr FromJson(const nlohmann::json& blob);
 	MAKE_TYPENAME(SubmittingTrashBehaviour);
 
+	std::vector<MeshResource::Sptr> open;
+	std::vector<MeshResource::Sptr> closed;
+	void getIdle(std::vector<MeshResource::Sptr> frames);
+
 protected:
 
 	RenderComponent::Sptr _renderer;

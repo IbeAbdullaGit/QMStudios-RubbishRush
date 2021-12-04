@@ -7,6 +7,7 @@
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Scene.h"
 #include "Utils/ImGuiHelper.h"
+#include "MorphAnimator.h"
 
 
 SubmittingTrashBehaviour::SubmittingTrashBehaviour() :
@@ -32,6 +33,7 @@ void SubmittingTrashBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Game
 		//	std::cout << "No trash to submit!\n";
 		//}
 		activated = true;
+		GetGameObject()->Get<MorphAnimator>()->SetFrames(open);
 
 	}
 	LOG_INFO("Entered trigger: {}", body->GetGameObject()->Name);
@@ -41,13 +43,16 @@ void SubmittingTrashBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Game
 
 	LOG_INFO("Left trigger: {}", body->GetGameObject()->Name);
 	activated = false;
+	GetGameObject()->Get<MorphAnimator>()->SetFrames(closed);
 }
 void SubmittingTrashBehaviour::Update(float deltatime)
 {
 	if (activated)
 	{
+		
 		if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E))
 		{
+			
 			//get our scene, delete this line later
 			_scene = GetGameObject()->GetScene();
 			//do we have any trash
@@ -64,13 +69,25 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 			{
 				std::cout << "No trash to submit!\n";
 			}
-
 		}
+		
 	}
+	
 }
 
-void SubmittingTrashBehaviour::Awake() {
-
+void SubmittingTrashBehaviour::Awake() 
+{
+	//ANIMATION STUFF////
+	
+	//open frames
+	MeshResource::Sptr binMesh2 = ResourceManager::CreateAsset<MeshResource>("Open/BigBenOpen_000001.obj");
+	MeshResource::Sptr binMesh3 = ResourceManager::CreateAsset<MeshResource>("Open/BigBenOpen_000005.obj");
+	MeshResource::Sptr binMesh4 = ResourceManager::CreateAsset<MeshResource>("Open/BigBenOpen_000010.obj");
+	MeshResource::Sptr binMesh5 = ResourceManager::CreateAsset<MeshResource>("Open/BigBenOpen_000020.obj");
+	open.push_back(binMesh2);
+	open.push_back(binMesh3);
+	open.push_back(binMesh4);
+	open.push_back(binMesh5);
 }
 
 void SubmittingTrashBehaviour::RenderImGui() { }
@@ -90,4 +107,12 @@ SubmittingTrashBehaviour::Sptr SubmittingTrashBehaviour::FromJson(const nlohmann
 	//
 	//result->trash = (GameObject::FromJson(Guid(blob["trash_collected"]), result->GetGameObject()->GetScene()));
 	return result;
+}
+
+void SubmittingTrashBehaviour::getIdle(std::vector<MeshResource::Sptr> frames)
+{
+	for (int i = 0; i < frames.size(); i++)
+	{
+		closed.push_back(frames[i]);
+	}
 }
