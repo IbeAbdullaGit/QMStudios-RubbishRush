@@ -549,7 +549,7 @@ int main() {
 			BoxCollider::Sptr box = BoxCollider::Create();
 
 			box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-			box->SetScale(glm::vec3(0.22f, 0.580f, 0.33f));
+			box->SetScale(glm::vec3(0.33f, 0.580f, 0.22f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
 			//physics->AddCollider(BoxCollider::Create());
@@ -559,7 +559,7 @@ int main() {
 			BoxCollider::Sptr box2 = BoxCollider::Create();
 
 			box2->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-			box2->SetScale(glm::vec3(0.22f, 0.58f, 0.33f));
+			box2->SetScale(glm::vec3(0.33f, 0.58f, 0.22f));
 			//box2->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			volume->AddCollider(box2);
 			JumpBehaviour::Sptr behaviour = trashyM->Add<JumpBehaviour>();
@@ -611,6 +611,7 @@ int main() {
 		}
 
 		
+		
 
 		Texture2D::Sptr planeTex = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
 
@@ -643,6 +644,25 @@ int main() {
 			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
 			box->SetScale(glm::vec3(50.0f, -0.12f, 50.0f));
 			physics->AddCollider(box);
+		}
+
+		MeshResource::Sptr enterMesh = ResourceManager::CreateAsset<MeshResource>("InvisPlane.obj");
+		Texture2D::Sptr enterTex = ResourceManager::CreateAsset<Texture2D>("textures/ENTER.png");
+		Material::Sptr enterMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		{
+			enterMaterial->Name = "Enter";
+			enterMaterial->Set("u_Material.Diffuse", enterTex);
+			enterMaterial->Set("u_Material.Shininess", 0.0f);
+		}
+		GameObject::Sptr enter = scene->CreateGameObject("Enter");
+		{
+			enter->SetPostion(glm::vec3(0.67f, -1.6f, 0.11f));
+			enter->SetRotation(glm::vec3(0.0f, -74.0f, -90.0f));
+			enter->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+			
+			RenderComponent::Sptr renderer = enter->Add<RenderComponent>();
+			renderer->SetMesh(enterMesh);
+			renderer->SetMaterial(enterMaterial);
 		}
 		//layout
 		MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layoutclean.obj");
@@ -1088,7 +1108,7 @@ int main() {
 		MeshResource::Sptr spillMesh = ResourceManager::CreateAsset<MeshResource>("spill.obj");
 		Texture2D::Sptr spillTex = ResourceManager::CreateAsset<Texture2D>("textures/goo.png");
 		// Create our material
-		Material::Sptr spillMaterial = ResourceManager::CreateAsset<Material>(basicShader);
+		Material::Sptr spillMaterial = ResourceManager::CreateAsset<Material>(rackShader);
 		{
 			spillMaterial->Name = "Spill";
 			spillMaterial->Set("u_Material.Diffuse", spillTex);
@@ -1101,7 +1121,7 @@ int main() {
 			{
 				spillM->SetPostion(glm::vec3(4.15f, 0.39f, 0.03f));
 				spillM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				spillM->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+				spillM->SetScale(glm::vec3(1.11f, 0.7f, 0.7f));
 				// Add a render component
 				RenderComponent::Sptr renderer = spillM->Add<RenderComponent>();
 				renderer->SetMesh(spillMesh);
@@ -1112,14 +1132,14 @@ int main() {
 				//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
 				//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
 				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-				box->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
+				box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
 				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 				physics->AddCollider(box);
 				//physics->SetMass(0.0f);
 				TriggerVolume::Sptr volume = spillM->Add<TriggerVolume>();
 				BoxCollider::Sptr box2 = BoxCollider::Create();
 				//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-				box2->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
+				box2->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
 				volume->AddCollider(box2);
 				SpillBehaviour::Sptr behaviour = spillM->Add<SpillBehaviour>();
 
@@ -1128,7 +1148,7 @@ int main() {
 			{
 				spill2->SetPostion(glm::vec3(6.32f, -3.39f, 0.03f));
 				spill2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				spill2->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+				spill2->SetScale(glm::vec3(1.35f, 0.7f, 0.7f));
 				// Add a render component
 				RenderComponent::Sptr renderer = spill2->Add<RenderComponent>();
 				renderer->SetMesh(spillMesh);
@@ -1139,14 +1159,14 @@ int main() {
 				//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
 				//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
 				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-				box->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
+				box->SetScale(glm::vec3(1.19f, 0.001f, 0.53f));
 				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 				physics->AddCollider(box);
 				//physics->SetMass(0.0f);
 				TriggerVolume::Sptr volume = spill2->Add<TriggerVolume>();
 				BoxCollider::Sptr box2 = BoxCollider::Create();
 				//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-				box2->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
+				box2->SetScale(glm::vec3(1.19f, 0.001f, 0.53f));
 				volume->AddCollider(box2);
 				SpillBehaviour::Sptr behaviour = spill2->Add<SpillBehaviour>();
 			}
@@ -1154,7 +1174,7 @@ int main() {
 			{
 				spill3->SetPostion(glm::vec3(6.38, -0.68f, 0.03f));
 				spill3->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				spill3->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+				spill3->SetScale(glm::vec3(1.18f, 0.75f, 0.73f));
 				// Add a render component
 				RenderComponent::Sptr renderer = spill3->Add<RenderComponent>();
 				renderer->SetMesh(spillMesh);
@@ -1165,14 +1185,14 @@ int main() {
 				//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
 				//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
 				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-				box->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
+				box->SetScale(glm::vec3(1.09f, 0.001f, 0.53f));
 				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 				physics->AddCollider(box);
 				//physics->SetMass(0.0f);
 				TriggerVolume::Sptr volume = spill3->Add<TriggerVolume>();
 				BoxCollider::Sptr box2 = BoxCollider::Create();
 				//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-				box2->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
+				box2->SetScale(glm::vec3(1.09f, 0.001f, 0.53));
 				volume->AddCollider(box2);
 				SpillBehaviour::Sptr behaviour = spill3->Add<SpillBehaviour>();
 			}
@@ -1180,7 +1200,7 @@ int main() {
 			{
 				spill4->SetPostion(glm::vec3(12.41f, 0.94, 0.03f));
 				spill4->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				spill4->SetScale(glm::vec3(0.7f, 0.7f, 0.7f));
+				spill4->SetScale(glm::vec3(0.7f, 0.7f, 1.43f));
 				// Add a render component
 				RenderComponent::Sptr renderer = spill4->Add<RenderComponent>();
 				renderer->SetMesh(spillMesh);
@@ -1191,14 +1211,14 @@ int main() {
 				//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
 				//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
 				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-				box->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
+				box->SetScale(glm::vec3(0.5f, 0.001f, 1.61f));
 				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 				physics->AddCollider(box);
 				//physics->SetMass(0.0f);
 				TriggerVolume::Sptr volume = spill4->Add<TriggerVolume>();
 				BoxCollider::Sptr box2 = BoxCollider::Create();
 				//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
-				box2->SetScale(glm::vec3(0.5f, 0.001f, 0.53f));
+				box2->SetScale(glm::vec3(0.5f, 0.001f, 1.61f));
 				volume->AddCollider(box2);
 				SpillBehaviour::Sptr behaviour = spill4->Add<SpillBehaviour>();
 			}
@@ -1281,7 +1301,7 @@ int main() {
 
 				RigidBody::Sptr physics = shelf->Add<RigidBody>(RigidBodyType::Static);
 				BoxCollider::Sptr box = BoxCollider::Create();
-				box->SetScale(glm::vec3(1.02f, 1.0f, 1.5f));
+				box->SetScale(glm::vec3(1.04f, 1.62f, 1.54f));
 				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
 				physics->AddCollider(box);
 			}
@@ -1297,7 +1317,7 @@ int main() {
 
 				RigidBody::Sptr physics = shelf2->Add<RigidBody>(RigidBodyType::Static);
 				BoxCollider::Sptr box = BoxCollider::Create();
-				box->SetScale(glm::vec3(1.02f, 1.0f, 1.5f));
+				box->SetScale(glm::vec3(1.04f, 1.62f, 1.54f));
 				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
 				physics->AddCollider(box);
 			}
@@ -1313,7 +1333,7 @@ int main() {
 
 				RigidBody::Sptr physics = shelf3->Add<RigidBody>(RigidBodyType::Static);
 				BoxCollider::Sptr box = BoxCollider::Create();
-				box->SetScale(glm::vec3(1.02f, 1.0f, 1.5f));
+				box->SetScale(glm::vec3(1.04f, 1.62f, 1.54f));
 				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
 				physics->AddCollider(box);
 			}
@@ -1329,7 +1349,7 @@ int main() {
 
 				RigidBody::Sptr physics = shelf4->Add<RigidBody>(RigidBodyType::Static);
 				BoxCollider::Sptr box = BoxCollider::Create();
-				box->SetScale(glm::vec3(1.02f, 1.0f, 1.5f));
+				box->SetScale(glm::vec3(1.04f, 1.62f, 1.54f));
 				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
 				physics->AddCollider(box);
 			}
@@ -1345,7 +1365,7 @@ int main() {
 
 				RigidBody::Sptr physics = shelf5->Add<RigidBody>(RigidBodyType::Static);
 				BoxCollider::Sptr box = BoxCollider::Create();
-				box->SetScale(glm::vec3(1.02f, 1.0f, 1.5f));
+				box->SetScale(glm::vec3(1.04f, 1.62f, 1.54f));
 				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
 				physics->AddCollider(box);
 			}
@@ -1501,7 +1521,7 @@ int main() {
 
 				RigidBody::Sptr physics = tv1->Add<RigidBody>(RigidBodyType::Static);
 				BoxCollider::Sptr box = BoxCollider::Create();
-				box->SetScale(glm::vec3(0.09f, 1.0f, 0.80f));
+				box->SetScale(glm::vec3(0.15f, 1.01f, 0.84f));
 				physics->AddCollider(box);
 			}
 			GameObject::Sptr tv2 = scene->CreateGameObject("tv2");
@@ -1516,7 +1536,7 @@ int main() {
 
 				RigidBody::Sptr physics = tv2->Add<RigidBody>(RigidBodyType::Static);
 				BoxCollider::Sptr box = BoxCollider::Create();
-				box->SetScale(glm::vec3(0.09f, 1.0f, 0.80f));
+				box->SetScale(glm::vec3(0.15f, 1.01f, 0.84f));
 				physics->AddCollider(box);
 			}
 			GameObject::Sptr tv3 = scene->CreateGameObject("tv3");
@@ -1531,7 +1551,7 @@ int main() {
 
 				RigidBody::Sptr physics = tv3->Add<RigidBody>(RigidBodyType::Static);
 				BoxCollider::Sptr box = BoxCollider::Create();
-				box->SetScale(glm::vec3(0.09f, 1.0f, 0.80f));
+				box->SetScale(glm::vec3(0.15f, 1.01f, 0.84f));
 				physics->AddCollider(box);
 			}
 		}
@@ -2073,7 +2093,7 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 	pointsR2.push_back(glm::vec3(90.0f, 0.0f, 90.0f));
 
 	float timeLoop = 7.0f;
-	float timelevelt = 65.f;
+	float timelevelt = 1000.f;
 	bool playMenu = true;
 
 	bool start = false;
