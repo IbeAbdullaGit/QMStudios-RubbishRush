@@ -98,18 +98,26 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 
 	//Rotate when the key is pressed
 	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_W) && GLFW_PRESS) {
-		GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+		currentRotation = GetGameObject()->GetRotation();
+		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 180.0f)));
 		
 	}
 	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_A) && GLFW_PRESS) {
-		GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 180.0f));
+		currentRotation = GetGameObject()->GetRotation();
+		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, -90.0f)));
 	}
 
 	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_S) && GLFW_PRESS) {
-		GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+		currentRotation = GetGameObject()->GetRotation();
+		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 0.0f)));
 	}
 	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_D) && GLFW_PRESS) {
-		GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+		currentRotation = GetGameObject()->GetRotation();
+		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 90.0f)));
 	}
+
+	currentRotation = glm::mix(currentRotation, targetRotation, speed * deltaTime);
+	GetGameObject()->SetRotation(currentRotation);
+	
 }
 
