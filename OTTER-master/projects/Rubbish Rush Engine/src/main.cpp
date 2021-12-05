@@ -2093,7 +2093,7 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 	pointsR2.push_back(glm::vec3(90.0f, 0.0f, 90.0f));
 
 	float timeLoop = 7.0f;
-	float timelevelt = 1000.f;
+	float timelevelt = 65.f;
 	bool playMenu = true;
 
 	bool start = false;
@@ -2210,8 +2210,8 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 				//RectangleE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(RectangleE->GUID));
 				TrashyE->Get<RenderComponent>()->IsEnabled = false;
 				RectangleE->Get<RenderComponent>()->IsEnabled = false;
-				scene->RemoveGameObject(TrashyE);
-				scene->RemoveGameObject(RectangleE);
+				//scene->RemoveGameObject(TrashyE); //DONT DELETE WE NEED TO REUSE
+				//scene->RemoveGameObject(RectangleE); //DONT DELETE WE NEED TO REUSE
 				std::cout << "should be deleted\n";
 				playMenu = false;
 				//trashyM->Get<RigidBody>()->IsEnabled = true;
@@ -2262,36 +2262,193 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 			if (lose)
 			{
 				
-				lose = false;
+				//lose = false;
 				//end menu
 				failMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
 				trashyM->Get<RigidBody>()->IsEnabled = false;
 				failMenu->Get<RenderComponent>()->IsEnabled = true;
 				//pause the timer*****
-				if (glfwGetKey(scene->Window, GLFW_KEY_ENTER)) //return to game
+				if (glfwGetKey(scene->Window, GLFW_KEY_SPACE)) //return to game
 				{
-					trashyM->Get<RigidBody>()->IsEnabled = true;
-					failMenu->Get<RenderComponent>()->IsEnabled = false;
+					//trashyM->Get<RigidBody>()->IsEnabled = true; 
+					failMenu->Get<RenderComponent>()->IsEnabled = false; //dont show win menu
+					startMenu->Get<RenderComponent>()->IsEnabled = true;
+					//reset variables
+					lose = false;
+					start = false;
+					playMenu = false;
+					timeLoop = 7.0f;
+					timelevelt = 65.f;
+					timerDone = false;
+					timeleveltDone = false;
+					trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f)); //reset position to start
+					scene->score = 0;
+					scene->trash = 0;
+					//create trash objects again
+					//delete any remaining trash objects
+					GameObject::Sptr trash1 = scene->FindObjectByName("Trash1");
+					GameObject::Sptr trash2 = scene->FindObjectByName("Trash2");
+					GameObject::Sptr trash3 = scene->FindObjectByName("Trash3");
+					GameObject::Sptr trash4 = scene->FindObjectByName("Trash4");
+					if (trash1 != nullptr)
+					{
+						scene->RemoveGameObject(trash1);
+					}
+					if (trash2 != nullptr)
+					{
+						scene->RemoveGameObject(trash2);
+					}
+					if (trash3 != nullptr)
+					{
+						scene->RemoveGameObject(trash3);
+					}
+					if (trash4 != nullptr)
+					{
+						scene->RemoveGameObject(trash4);
+					}
+					//cup collection
+					{
+						GameObject::Sptr trashM = scene->CreateGameObject("Trash1");
+						{
+							trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.0f));
+							trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
+							trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+							// Add a render component
+							RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
+							renderer->SetMesh(trashMesh);
+							renderer->SetMaterial(trashMaterial);
+							// Add a dynamic rigid body to this monkey
+							RigidBody::Sptr physics = trashM->Add<RigidBody>(RigidBodyType::Kinematic);
+							BoxCollider::Sptr box = BoxCollider::Create();
+							box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+							box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+							//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+							//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+							physics->AddCollider(box);
+							//physics->SetMass(0.0f);
+							TriggerVolume::Sptr volume = trashM->Add<TriggerVolume>();
+							BoxCollider::Sptr box2 = BoxCollider::Create();
+							box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+							box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							volume->AddCollider(box2);
+							CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
+
+
+
+						}
+						GameObject::Sptr trash2 = scene->CreateGameObject("Trash2");
+						{
+							trash2->SetPostion(glm::vec3(6.36f, 2.64f, 0.0f));
+							trash2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+							trash2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+							// Add a render component
+							RenderComponent::Sptr renderer = trash2->Add<RenderComponent>();
+							renderer->SetMesh(trashMesh);
+							renderer->SetMaterial(trashMaterial);
+							// Add a dynamic rigid body to this monkey
+							RigidBody::Sptr physics = trash2->Add<RigidBody>(RigidBodyType::Kinematic);
+							BoxCollider::Sptr box = BoxCollider::Create();
+							box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+							box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+							//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+							//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+							physics->AddCollider(box);
+							//physics->SetMass(0.0f);
+							TriggerVolume::Sptr volume = trash2->Add<TriggerVolume>();
+							BoxCollider::Sptr box2 = BoxCollider::Create();
+							box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+							box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							volume->AddCollider(box2);
+							CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
+
+						}
+						GameObject::Sptr trash3 = scene->CreateGameObject("Trash3");
+						{
+							trash3->SetPostion(glm::vec3(10.08f, -4.97f, 0.0f));
+							trash3->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
+							trash3->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+							// Add a render component
+							RenderComponent::Sptr renderer = trash3->Add<RenderComponent>();
+							renderer->SetMesh(trashMesh);
+							renderer->SetMaterial(trashMaterial);
+							// Add a dynamic rigid body to this monkey
+							RigidBody::Sptr physics = trash3->Add<RigidBody>(RigidBodyType::Kinematic);
+							BoxCollider::Sptr box = BoxCollider::Create();
+							box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+							box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+							//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+							//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+							physics->AddCollider(box);
+							//physics->SetMass(0.0f);
+							TriggerVolume::Sptr volume = trash3->Add<TriggerVolume>();
+							BoxCollider::Sptr box2 = BoxCollider::Create();
+							box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+							box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							volume->AddCollider(box2);
+							CollectTrashBehaviour::Sptr behaviour2 = trash3->Add<CollectTrashBehaviour>();
+
+						}
+						GameObject::Sptr trash4 = scene->CreateGameObject("Trash4");
+						{
+							trash4->SetPostion(glm::vec3(13.680, -1.67f, 0.0f));
+							trash4->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
+							trash4->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+							// Add a render component
+							RenderComponent::Sptr renderer = trash4->Add<RenderComponent>();
+							renderer->SetMesh(trashMesh);
+							renderer->SetMaterial(trashMaterial);
+							// Add a dynamic rigid body to this monkey
+							RigidBody::Sptr physics = trash4->Add<RigidBody>(RigidBodyType::Kinematic);
+							BoxCollider::Sptr box = BoxCollider::Create();
+							box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+							box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+							//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+							//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+							physics->AddCollider(box);
+							//physics->SetMass(0.0f);
+							TriggerVolume::Sptr volume = trash4->Add<TriggerVolume>();
+							BoxCollider::Sptr box2 = BoxCollider::Create();
+							box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+							box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							volume->AddCollider(box2);
+							CollectTrashBehaviour::Sptr behaviour2 = trash4->Add<CollectTrashBehaviour>();
+
+						}
+					}
+					//put menus back in
+					TrashyE->Get<RenderComponent>()->IsEnabled = true;
+					RectangleE->Get<RenderComponent>()->IsEnabled = true;
+					TrashyE->SetPostion(glm::vec3(0.5f, 1.49f, 3.3f));
+					RectangleE->SetPostion(glm::vec3(-1.36f, 1.22f, 7.0f));
+
+
 				}
 
 			}
 			if (Victory)
 			{
-				Victory = false;
+				//Victory = false;
 				winMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
 				trashyM->Get<RigidBody>()->IsEnabled = false;
 				winMenu->Get<RenderComponent>()->IsEnabled = true;
 				//pause the timer*****
-				if (glfwGetKey(scene->Window, GLFW_KEY_ENTER)) //return to game
+				if (glfwGetKey(scene->Window, GLFW_KEY_SPACE)) //return to game
 				{
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
 					winMenu->Get<RenderComponent>()->IsEnabled = false; //dont show win menu
+					startMenu->Get<RenderComponent>()->IsEnabled = true;
 					//reset variables
+					Victory = false;
 					start = false;
 					playMenu = false;
 					timeLoop = 7.0f;
-					timelevelt = 1000.f;
+					timelevelt = 65.f;
 					timerDone = false;
+					timeleveltDone = false;
 					trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f)); //reset position to start
 					scene->score = 0;
 					scene->trash = 0;
@@ -2410,6 +2567,13 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 
 						}
 					}
+					//put menus back in
+					TrashyE->Get<RenderComponent>()->IsEnabled = true;
+					RectangleE->Get<RenderComponent>()->IsEnabled = true;
+					TrashyE->SetPostion(glm::vec3(0.5f, 1.49f, 3.3f));
+					RectangleE->SetPostion(glm::vec3(-1.36f, 1.22f, 7.0f));
+					
+
 				}
 				if (glfwGetKey(scene->Window, GLFW_KEY_ESCAPE)) //exit
 				{
