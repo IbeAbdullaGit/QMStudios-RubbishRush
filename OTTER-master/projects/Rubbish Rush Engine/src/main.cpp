@@ -837,7 +837,7 @@ int main() {
 		}
 		//set up book
 		MeshResource::Sptr bookMesh = ResourceManager::CreateAsset<MeshResource>("Book/AnimBook_000001.obj");
-		Texture2D::Sptr bookTex = ResourceManager::CreateAsset<Texture2D>("textures/robo.png");
+		Texture2D::Sptr bookTex = ResourceManager::CreateAsset<Texture2D>("textures/Book.png");
 		Material::Sptr bookMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			bookMaterial->Name = "Book";
