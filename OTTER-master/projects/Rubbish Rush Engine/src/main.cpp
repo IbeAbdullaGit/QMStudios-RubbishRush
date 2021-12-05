@@ -1187,6 +1187,12 @@ int main() {
 				RenderComponent::Sptr renderer = shelf->Add<RenderComponent>();
 				renderer->SetMesh(shelfMesh);
 				renderer->SetMaterial(shelfMaterial);
+
+				RigidBody::Sptr physics = shelf->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(1.02f, 1.0f, 1.5f));
+				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
+				physics->AddCollider(box);
 			}
 			GameObject::Sptr shelf2 = scene->CreateGameObject("Shelf2");
 			{
@@ -1197,6 +1203,12 @@ int main() {
 				RenderComponent::Sptr renderer = shelf2->Add<RenderComponent>();
 				renderer->SetMesh(shelfMesh);
 				renderer->SetMaterial(shelfMaterial);
+
+				RigidBody::Sptr physics = shelf2->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(1.02f, 1.0f, 1.5f));
+				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
+				physics->AddCollider(box);
 			}
 			GameObject::Sptr shelf3 = scene->CreateGameObject("Shelf3");
 			{
@@ -1207,6 +1219,12 @@ int main() {
 				RenderComponent::Sptr renderer = shelf3->Add<RenderComponent>();
 				renderer->SetMesh(shelfMesh);
 				renderer->SetMaterial(shelfMaterial);
+
+				RigidBody::Sptr physics = shelf3->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(1.02f, 1.0f, 1.5f));
+				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
+				physics->AddCollider(box);
 			}
 			GameObject::Sptr shelf4 = scene->CreateGameObject("Shelf4");
 			{
@@ -1217,6 +1235,12 @@ int main() {
 				RenderComponent::Sptr renderer = shelf4->Add<RenderComponent>();
 				renderer->SetMesh(shelfMesh);
 				renderer->SetMaterial(shelfMaterial);
+
+				RigidBody::Sptr physics = shelf4->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(1.02f, 1.0f, 1.5f));
+				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
+				physics->AddCollider(box);
 			}
 			GameObject::Sptr shelf5 = scene->CreateGameObject("Shelf5");
 			{
@@ -1227,6 +1251,12 @@ int main() {
 				RenderComponent::Sptr renderer = shelf5->Add<RenderComponent>();
 				renderer->SetMesh(shelfMesh);
 				renderer->SetMaterial(shelfMaterial);
+
+				RigidBody::Sptr physics = shelf5->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(1.02f, 1.0f, 1.5f));
+				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
+				physics->AddCollider(box);
 			}
 		}
 		//tv box object
@@ -1250,6 +1280,13 @@ int main() {
 				RenderComponent::Sptr renderer = tvbox1->Add<RenderComponent>();
 				renderer->SetMesh(tvboxMesh);
 				renderer->SetMaterial(tvboxMaterial);
+
+				RigidBody::Sptr physics = tvbox1->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
+				box->SetExtents(glm::vec3(1.7f, 1.0f, 1.0f));
+				physics->AddCollider(box);
+
 			}
 			GameObject::Sptr tvbox2 = scene->CreateGameObject("tvbox2");
 			{
@@ -1260,6 +1297,12 @@ int main() {
 				RenderComponent::Sptr renderer = tvbox2->Add<RenderComponent>();
 				renderer->SetMesh(tvboxMesh);
 				renderer->SetMaterial(tvboxMaterial);
+
+				RigidBody::Sptr physics = tvbox2->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
+				box->SetExtents(glm::vec3(1.7f, 1.0f, 1.0f));
+				physics->AddCollider(box);
 			}
 			GameObject::Sptr tvbox3 = scene->CreateGameObject("tvbox3");
 			{
@@ -1270,6 +1313,13 @@ int main() {
 				RenderComponent::Sptr renderer = tvbox3->Add<RenderComponent>();
 				renderer->SetMesh(tvboxMesh);
 				renderer->SetMaterial(tvboxMaterial);
+
+				RigidBody::Sptr physics = tvbox3->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
+				box->SetExtents(glm::vec3(1.7f, 1.0f, 1.0f));
+				physics->AddCollider(box);
+
 			}
 			GameObject::Sptr tvbox4 = scene->CreateGameObject("tvbox4");
 			{
@@ -1280,6 +1330,12 @@ int main() {
 				RenderComponent::Sptr renderer = tvbox4->Add<RenderComponent>();
 				renderer->SetMesh(tvboxMesh);
 				renderer->SetMaterial(tvboxMaterial);
+
+				RigidBody::Sptr physics = tvbox4->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
+				box->SetExtents(glm::vec3(1.7f, 1.0f, 1.0f));
+				physics->AddCollider(box);
 			}
 			GameObject::Sptr tvbox5 = scene->CreateGameObject("tvbox5");
 			{
@@ -1290,6 +1346,12 @@ int main() {
 				RenderComponent::Sptr renderer = tvbox5->Add<RenderComponent>();
 				renderer->SetMesh(tvboxMesh);
 				renderer->SetMaterial(tvboxMaterial);
+
+				RigidBody::Sptr physics = tvbox5->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
+				box->SetExtents(glm::vec3(1.7f, 1.0f, 1.0f));
+				physics->AddCollider(box);
 			}
 			GameObject::Sptr tvbox6 = scene->CreateGameObject("tvbox6");
 			{
@@ -1300,6 +1362,12 @@ int main() {
 				RenderComponent::Sptr renderer = tvbox6->Add<RenderComponent>();
 				renderer->SetMesh(tvboxMesh);
 				renderer->SetMaterial(tvboxMaterial);
+
+				RigidBody::Sptr physics = tvbox6->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
+				box->SetExtents(glm::vec3(1.7f, 1.0f, 1.0f));
+				physics->AddCollider(box);
 			}
 			GameObject::Sptr tvbox7 = scene->CreateGameObject("tvbox7");
 			{
@@ -1310,6 +1378,12 @@ int main() {
 				RenderComponent::Sptr renderer = tvbox7->Add<RenderComponent>();
 				renderer->SetMesh(tvboxMesh);
 				renderer->SetMaterial(tvboxMaterial);
+
+				RigidBody::Sptr physics = tvbox7->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
+				box->SetExtents(glm::vec3(1.7f, 1.0f, 1.0f));
+				physics->AddCollider(box);
 			}
 		}
 		//tv object
@@ -1333,6 +1407,11 @@ int main() {
 				RenderComponent::Sptr renderer = tv1->Add<RenderComponent>();
 				renderer->SetMesh(tvMesh);
 				renderer->SetMaterial(tvMaterial);
+
+				RigidBody::Sptr physics = tv1->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(0.09f, 1.0f, 0.80f));
+				physics->AddCollider(box);
 			}
 			GameObject::Sptr tv2 = scene->CreateGameObject("tv2");
 			{
@@ -1343,6 +1422,11 @@ int main() {
 				RenderComponent::Sptr renderer = tv2->Add<RenderComponent>();
 				renderer->SetMesh(tvMesh);
 				renderer->SetMaterial(tvMaterial);
+
+				RigidBody::Sptr physics = tv2->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(0.09f, 1.0f, 0.80f));
+				physics->AddCollider(box);
 			}
 			GameObject::Sptr tv3 = scene->CreateGameObject("tv3");
 			{
@@ -1353,6 +1437,11 @@ int main() {
 				RenderComponent::Sptr renderer = tv3->Add<RenderComponent>();
 				renderer->SetMesh(tvMesh);
 				renderer->SetMaterial(tvMaterial);
+
+				RigidBody::Sptr physics = tv3->Add<RigidBody>(RigidBodyType::Static);
+				BoxCollider::Sptr box = BoxCollider::Create();
+				box->SetScale(glm::vec3(0.09f, 1.0f, 0.80f));
+				physics->AddCollider(box);
 			}
 		}
 		//rectangle and trashy images for menu
@@ -1376,6 +1465,11 @@ int main() {
 			RenderComponent::Sptr renderer = cashcounter->Add<RenderComponent>();
 			renderer->SetMesh(cashMesh);
 			renderer->SetMaterial(cashMaterial);
+
+			RigidBody::Sptr physics = cashcounter->Add<RigidBody>(RigidBodyType::Static);
+			BoxCollider::Sptr box = BoxCollider::Create();
+			box->SetScale(glm::vec3(0.520f, 0.740f, 1.210f));
+			physics->AddCollider(box);
 		}
 		MeshResource::Sptr recMesh = ResourceManager::CreateAsset<MeshResource>("RecOBJ.obj");
 		Texture2D::Sptr recTex = ResourceManager::CreateAsset<Texture2D>("textures/Rec1.png");
