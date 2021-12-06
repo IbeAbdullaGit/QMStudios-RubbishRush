@@ -1987,7 +1987,7 @@ int main() {
 		}
 
 		///////////////////////////// UI //////////////////////////////
-		/*GameObject::Sptr canvas = scene->CreateGameObject("UI Canvas");
+		GameObject::Sptr canvas = scene->CreateGameObject("UI Canvas");
 		{
 			RectTransform::Sptr transform = canvas->Add<RectTransform>();
 			transform->SetMin({ 16, 16 });
@@ -2002,21 +2002,21 @@ int main() {
 				transform->SetMax({ 128, 128 });
 
 				GuiPanel::Sptr panel = subPanel->Add<GuiPanel>();
-				panel->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+				panel->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 0.5f));
 
-		Font::Sptr font = ResourceManager::CreateAsset<Font>("fonts/Roboto-Medium.ttf", 16.0f);
-		font->Bake();
+				Font::Sptr font = ResourceManager::CreateAsset<Font>("fonts/Roboto-Medium.ttf", 16.0f);
+				font->Bake();
 
-		GuiText::Sptr text = subPanel->Add<GuiText>();
-		text->SetText("Hello world!");
-		text->SetFont(font);
-	}
+				GuiText::Sptr text = subPanel->Add<GuiText>();
+				text->SetText("Hello world!");
+				text->SetFont(font);
+			}
 
-	canvas->AddChild(subPanel);
-}
+			canvas->AddChild(subPanel);
+		}
 
-GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui-sprite.png"));
-GuiBatcher::SetDefaultBorderRadius(8);*/
+		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui-sprite.png"));
+		GuiBatcher::SetDefaultBorderRadius(8);
 
 // Call scene awake to start up all of our components
 		scene->Window = window;
@@ -2838,22 +2838,22 @@ GuiBatcher::SetDefaultBorderRadius(8);*/
 			//// Disable depth writing
 			//glDepthMask(GL_FALSE);
 
-			//// Enable alpha blending
-			//glEnable(GL_BLEND);
-			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			// Enable alpha blending
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 			//// Enable the scissor test;
 			//glEnable(GL_SCISSOR_TEST);
 
-			//// Our projection matrix will be our entire window for now
-			//glm::mat4 proj = glm::ortho(0.0f, (float)windowSize.x, (float)windowSize.y, 0.0f, -1.0f, 1.0f);
-			//GuiBatcher::SetProjection(proj);
+			// Our projection matrix will be our entire window for now
+			glm::mat4 proj = glm::ortho(0.0f, (float)windowSize.x, (float)windowSize.y, 0.0f, -1.0f, 1.0f);
+			GuiBatcher::SetProjection(proj);
 
-			//// Iterate over and render all the GUI objects
-			//scene->RenderGUI();
+			// Iterate over and render all the GUI objects
+			scene->RenderGUI();
 
-			//// Flush the Gui Batch renderer
-			//GuiBatcher::Flush();
+			// Flush the Gui Batch renderer
+			GuiBatcher::Flush();
 
 			//// Disable alpha blending
 			//glDisable(GL_BLEND);
