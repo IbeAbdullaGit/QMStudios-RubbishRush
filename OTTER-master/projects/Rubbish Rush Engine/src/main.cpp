@@ -2328,7 +2328,7 @@ int main() {
 					UIText->Get<GuiText>()->SetText(TimeCountdown(timelevelt));
 					trashRemainder->Get<GuiText>()->SetText(std::to_string(4 - scene->score - scene->trash) + " Trash Remaining!");
 
-					if (scene->score - scene->trash == 4)
+					if (4-scene->score - scene->trash == 0)
 					{
 						returnUI->Get<GuiText>()->IsEnabled = true;
 					}
