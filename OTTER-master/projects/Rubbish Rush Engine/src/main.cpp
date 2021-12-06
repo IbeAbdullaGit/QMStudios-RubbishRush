@@ -675,7 +675,7 @@ int main() {
 		}
 		//layout
 		MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layoutclean.obj");
-		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
+		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/layout.jpg");
 		Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Material>(basicShader);
 		{
 			layoutMaterial->Name = "Layout";
