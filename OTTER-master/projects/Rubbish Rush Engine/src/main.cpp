@@ -2023,16 +2023,17 @@ int main() {
 			GameObject::Sptr trashRemain = scene->CreateGameObject("Trash Remaining");
 			{
 				RectTransform::Sptr remainTransform = trashRemain->Add<RectTransform>();
-				remainTransform->SetMax({ 130,240 });
-				remainTransform->SetPosition({ 0,0 });
-				remainTransform->SetSize({ 0,0 });
+				remainTransform->SetMax({ 110,220 });
+				remainTransform->SetPosition({ 2,0 });
+				//remainTransform->SetSize({ 0,0 });
 				
 				GuiText::Sptr text = trashRemain->Add<GuiText>();
-				text->SetText("Trash Remaining");
+				text->SetText("Trash Remaining:");
 				text->SetFont(junkDogFont);
 				text->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
 				text->SetTextScale(3.0f);
 			}
+			//objectiveUI->AddChild(trashRemain);
 		}
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
@@ -2267,6 +2268,7 @@ int main() {
 				if (timelevelt > 0 && !timeleveltDone) {
 					timelevelt -= dt;
 					UIText->Get<GuiText>()->SetText(TimeCountdown(timelevelt));
+					trashRemainder->Get<GuiText>()->SetText("Trash Remaining: " + std::to_string(4 - scene->score - scene->trash));
 				}
 				else if(timelevelt <= 0 )
 				{
@@ -2636,6 +2638,7 @@ int main() {
 
 			}
 		}
+		//TRASHY ANIMATIONS
 		if (trashyM->Get<PlayerMovementBehavior>()->is_moving)
 		{
 			trashyM->Get<MorphAnimator>()->SetFrames(walking);
