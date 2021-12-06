@@ -499,9 +499,9 @@ int main() {
 		scene->Lights[3].Color = glm::vec3(1.0f, 1.0f, 1.0f);
 		scene->Lights[3].Range = 10.0f;
 
-		scene->Lights[4].Position = glm::vec3(0.0f, 1.0f, 3.0f);
+		scene->Lights[4].Position = glm::vec3(-0.150f, 5.470f, 3.0f);
 		scene->Lights[4].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[4].Range = 10.0f;
+		scene->Lights[4].Range = 189.500f;
 
 		scene->Lights[5].Position = glm::vec3(-14.41f, 0.56f, 3.0f);
 		scene->Lights[5].Color = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -511,9 +511,9 @@ int main() {
 		scene->Lights[6].Color = glm::vec3(1.0f, 1.0f, 1.0f);
 		scene->Lights[6].Range = 10.0f;
 
-		scene->Lights[7].Position = glm::vec3(-2.2f, 0.5f, 3.0f);
+		scene->Lights[7].Position = glm::vec3(-2.060f, -0.94f, 4.600f);
 		scene->Lights[7].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[7].Range = 10.0f;
+		scene->Lights[7].Range = -0.600f;
 
 
 		// Set up the scene's camera
