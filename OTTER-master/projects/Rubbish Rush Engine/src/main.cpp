@@ -2198,6 +2198,7 @@ int main() {
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
+		glfwSwapInterval(1); //vsynch
 		#ifdef DEBUGGING
 		ImGuiHelper::StartFrame();
 		#endif // DEBUG
@@ -2942,7 +2943,7 @@ int main() {
 			// Use our cubemap to draw our skybox
 			scene->DrawSkybox();
 
-			glfwSwapInterval(1); //vsynch
+			
 
 			////////UI UPDATING////////
 
