@@ -2187,6 +2187,8 @@ int main() {
 	GameObject::Sptr trashRemainder = scene->FindObjectByName("Trash Remaining");
 	GameObject::Sptr objective = scene->FindObjectByName("Objective UI Canvas");
 	GameObject::Sptr returnUI = scene->FindObjectByName("Return Feedback");
+	GameObject::Sptr submitUI = scene->FindObjectByName("Submit Feedback");
+	//scene->CreateGameObject("Submit Feedback");
 
 	returnUI->Get<GuiText>()->IsEnabled = false;
 	objective->Get<GuiPanel>()->IsEnabled = false;
@@ -2217,7 +2219,7 @@ int main() {
 			playMenu = false;
 			//FREEZE TRASHY
 			trashyM->Get<RigidBody>()->IsEnabled = false;
-
+			submitUI->Get<GuiText>()->IsEnabled = false;
 
 			if (spressed)
 			{
