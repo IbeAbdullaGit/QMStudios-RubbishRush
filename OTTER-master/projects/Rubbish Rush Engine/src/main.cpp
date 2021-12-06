@@ -2023,17 +2023,60 @@ int main() {
 			GameObject::Sptr trashRemain = scene->CreateGameObject("Trash Remaining");
 			{
 				RectTransform::Sptr remainTransform = trashRemain->Add<RectTransform>();
-				remainTransform->SetMax({ 110,220 });
-				remainTransform->SetPosition({ 2,0 });
+				remainTransform->SetMax({ 130,293 });
 				//remainTransform->SetSize({ 0,0 });
 				
 				GuiText::Sptr text = trashRemain->Add<GuiText>();
-				text->SetText("Trash Remaining:");
+				text->SetText("0 Trash Remaining!");
 				text->SetFont(junkDogFont);
 				text->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
-				text->SetTextScale(3.0f);
+				text->SetTextScale(1.0f);
 			}
-			//objectiveUI->AddChild(trashRemain);
+			objectiveUI->AddChild(trashRemain);
+		}
+
+		GameObject::Sptr feedbackUI = scene->CreateGameObject("Feedback UI");
+		{
+			RectTransform::Sptr feedbackTransform = feedbackUI->Add<RectTransform>();
+			feedbackTransform->SetPosition({ 450, 750 });
+			feedbackTransform->SetSize({ 35,35 });
+
+			GuiPanel::Sptr feedbackPanel = feedbackUI->Add<GuiPanel>();
+			feedbackPanel->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 0.f));
+
+			//Temporary for Feedback, lets make this prettier later
+			GameObject::Sptr pickupFeedback = scene->CreateGameObject("Pickup Feedback");
+			{
+				pickupFeedback->Add<RectTransform>();
+
+				GuiText::Sptr text = pickupFeedback->Add<GuiText>();
+				text->SetText("Press E to Pickup Trash!");
+				text->SetFont(junkDogFont);
+				text->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
+			}
+
+			GameObject::Sptr submitFeedback = scene->CreateGameObject("Submit Feedback");
+			{
+				submitFeedback->Add<RectTransform>();
+
+				GuiText::Sptr text = submitFeedback->Add<GuiText>();
+				text->SetText("Press E to Dump the Trash!");
+				text->SetFont(junkDogFont);
+				text->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
+			}
+
+			GameObject::Sptr returnFeedback = scene->CreateGameObject("Return Feedback");
+			{
+				returnFeedback->Add<RectTransform>();
+
+				GuiText::Sptr text = returnFeedback->Add<GuiText>();
+				text->SetText("Return to the Dumpster!");
+				text->SetFont(junkDogFont);
+				text->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
+			}
+			feedbackUI->AddChild(pickupFeedback);
+			feedbackUI->AddChild(submitFeedback);
+			feedbackUI->AddChild(returnFeedback);
 		}
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
@@ -2268,7 +2311,7 @@ int main() {
 				if (timelevelt > 0 && !timeleveltDone) {
 					timelevelt -= dt;
 					UIText->Get<GuiText>()->SetText(TimeCountdown(timelevelt));
-					trashRemainder->Get<GuiText>()->SetText("Trash Remaining: " + std::to_string(4 - scene->score - scene->trash));
+					trashRemainder->Get<GuiText>()->SetText(std::to_string(4 - scene->score - scene->trash) + " Trash Remaining!");
 				}
 				else if(timelevelt <= 0 )
 				{
