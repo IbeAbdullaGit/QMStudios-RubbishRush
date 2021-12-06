@@ -2023,7 +2023,7 @@ int main() {
 				GuiText::Sptr text = timeText->Add<GuiText>();
 				text->SetText("0:00");
 				text->SetFont(junkDogFont);
-				text->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
+				text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
 				text->SetTextScale(3.0f);
 
 			}
@@ -2038,7 +2038,7 @@ int main() {
 				GuiText::Sptr text = trashRemain->Add<GuiText>();
 				text->SetText("0 Trash Remaining!");
 				text->SetFont(junkDogFont);
-				text->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
+				text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
 				text->SetTextScale(1.0f);
 			}
 			objectiveUI->AddChild(trashRemain);
@@ -2061,7 +2061,7 @@ int main() {
 				GuiText::Sptr text = pickupFeedback->Add<GuiText>();
 				text->SetText("Press E to Pickup Trash!");
 				text->SetFont(junkDogFont);
-				text->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
+				text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
 				text->IsEnabled = false;
 			}
 
@@ -2072,18 +2072,19 @@ int main() {
 				GuiText::Sptr text = submitFeedback->Add<GuiText>();
 				text->SetText("Press E to Dump the Trash!");
 				text->SetFont(junkDogFont);
-				text->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
+				text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
 				text->IsEnabled = false;
 			}
 
 			GameObject::Sptr returnFeedback = scene->CreateGameObject("Return Feedback");
 			{
-				returnFeedback->Add<RectTransform>();
+				returnFeedback->Add<RectTransform>()
+					->SetMax({ 0, -150.f });
 
 				GuiText::Sptr text = returnFeedback->Add<GuiText>();
 				text->SetText("Return to the Dumpster!");
 				text->SetFont(junkDogFont);
-				text->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
+				text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
 			}
 			feedbackUI->AddChild(pickupFeedback);
 			feedbackUI->AddChild(submitFeedback);
