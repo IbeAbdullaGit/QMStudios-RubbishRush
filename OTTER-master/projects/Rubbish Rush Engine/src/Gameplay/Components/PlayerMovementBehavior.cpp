@@ -104,7 +104,7 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 	}
 	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_A) && GLFW_PRESS) {
 		currentRotation = GetGameObject()->GetRotation();
-		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, -90.0f)));
+		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 270.0f)));
 	}
 
 	if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_S) && GLFW_PRESS) {

@@ -147,7 +147,7 @@ void GlfwWindowResizedCallback(GLFWwindow* window, int width, int height) {
 	if (windowSize.x * windowSize.y > 0) {
 		scene->MainCamera->ResizeWindow(width, height);
 	}
-	GuiBatcher::SetWindowSize({ width, height });
+	GuiBatcher::SetWindowSize({ -width, -height });
 }
 
 /// <summary>
@@ -172,7 +172,7 @@ bool initGLFW() {
 	// Pass the window to the input engine and let it initialize itself
 	InputEngine::Init(window);
 
-	GuiBatcher::SetWindowSize(windowSize);
+	GuiBatcher::SetWindowSize(-windowSize);
 
 	return true;
 }
@@ -222,30 +222,30 @@ bool DrawSaveLoadImGui(Scene::Sptr& scene, std::string& path) {
 	return false;
 }
 
-void TimeCountdown(float DisplayTime) {
-	if (DisplayTime < 0) {
-		DisplayTime = 0;
-	}
-	else if (DisplayTime > 0) {
-		DisplayTime += 1;
-	}
-
+std::string TimeCountdown(float DisplayTime) { //Timer Function
 	float minutes = floorf(DisplayTime / 60);
 	float seconds = floorf(fmodf(DisplayTime, 60));
+	std::string minString;
 
-	std::cout << std::setfill('0') << std::setw(2);
-	std::cout << minutes << ":";
+	std::stringstream testm; //Minutes
+	testm << minutes << ":";
+	std::stringstream tests;
+	tests << seconds;
+	std::stringstream tests10;
+	tests10 << "0" << seconds;
+
+	//std::cout << testm.str(); //print minutes
 
 	if (seconds < 10) {
-		std::cout << std::setfill('0') << std::setw(2);
-		std::cout << seconds;
+		minString = tests10.str();
 	}
 	else {
-		std::cout << seconds;
+		minString = tests.str();
 	}
 
-	std::cout << "\n";
+	return (testm.str() + minString); //Adds the minute and seconds strings together
 
+	//std::cout << timeValue;
 
 }
 
@@ -535,10 +535,10 @@ int main() {
 
 
 		}
-		GameObject::Sptr trashyM = scene->CreateGameObject("Trashy");
+		GameObject::Sptr trashyM = scene->CreateGameObject("Trashy"); //SEARCHBAR TAGS: PLAYERENTITY, PLAYER, TRASHYENTITY, TRASHYOBJECT
 		{
 			trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f));
-			trashyM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			trashyM->SetRotation(glm::vec3(90.0f, 0.0f, 270.0f));
 			trashyM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
 			RenderComponent::Sptr renderer = trashyM->Add<RenderComponent>();
@@ -1987,35 +1987,41 @@ int main() {
 		}
 
 		///////////////////////////// UI //////////////////////////////
-		GameObject::Sptr canvas = scene->CreateGameObject("UI Canvas");
+
+
+		//Font: Junk Dog
+		Font::Sptr junkDogFont = ResourceManager::CreateAsset<Font>("fonts/JunkDog.otf", 35.f); //Font path, font size
+		junkDogFont->Bake();
+
+
+		GameObject::Sptr objectiveUI = scene->CreateGameObject("Objective UI Canvas"); //UI for Time and Garbage Remaining
 		{
-			RectTransform::Sptr transform = canvas->Add<RectTransform>();
-			transform->SetMin({ 16, 16 });
-			transform->SetMax({ 256, 256 });
+			RectTransform::Sptr transform = objectiveUI->Add<RectTransform>();
+			transform->SetMin({ 10, 10 });
+			transform->SetMax({ 200, 200 });
+			transform->SetPosition({ 400, 50 });
+			transform->SetSize({ 35,35 });
 
-			GuiPanel::Sptr canPanel = canvas->Add<GuiPanel>();
+			GuiPanel::Sptr canPanel = objectiveUI->Add<GuiPanel>();
+			canPanel->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.f));
+			canPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-clock.png"));
 
-			GameObject::Sptr subPanel = scene->CreateGameObject("Sub Item");
+			GameObject::Sptr timeText = scene->CreateGameObject("Time Text");
 			{
-				RectTransform::Sptr transform = subPanel->Add<RectTransform>();
-				transform->SetMin({ 10, 10 });
-				transform->SetMax({ 128, 128 });
+				RectTransform::Sptr timetransform = timeText->Add<RectTransform>();
+				timetransform->SetMax({ 130, 240 });
 
-				GuiPanel::Sptr panel = subPanel->Add<GuiPanel>();
-				panel->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 0.5f));
+				GuiText::Sptr text = timeText->Add<GuiText>();
+				text->SetText("0:00");
+				text->SetFont(junkDogFont);
+				text->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
+				text->SetTextScale(3.0f);
 
-				Font::Sptr font = ResourceManager::CreateAsset<Font>("fonts/Roboto-Medium.ttf", 16.0f);
-				font->Bake();
-
-				GuiText::Sptr text = subPanel->Add<GuiText>();
-				text->SetText("Hello world!");
-				text->SetFont(font);
 			}
-
-			canvas->AddChild(subPanel);
+			objectiveUI->AddChild(timeText);
 		}
 
-		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui-sprite.png"));
+		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);
 
 // Call scene awake to start up all of our components
@@ -2106,6 +2112,9 @@ int main() {
 	
 	// Create our material
 	Material::Sptr trashMaterial = scene->FindObjectByName("Trash1")->Get<RenderComponent>()->GetMaterial();
+	
+
+	GameObject::Sptr UIText = scene->FindObjectByName("Time Text");
 	
 	///// Game loop /////
 	while (!glfwWindowShouldClose(window))
@@ -2221,7 +2230,7 @@ int main() {
 
 		else if (scene->IsPlaying && !playMenu && !timeleveltDone && start)
 		{
-	
+			//put gui here
 			if (scene->score == 4)
 			{
 
@@ -2242,7 +2251,7 @@ int main() {
 
 				if (timelevelt > 0 && !timeleveltDone) {
 					timelevelt -= dt;
-					TimeCountdown(timelevelt);
+					UIText->Get<GuiText>()->SetText(TimeCountdown(timelevelt));
 				}
 				else if(timelevelt <= 0 )
 				{
@@ -2829,14 +2838,14 @@ int main() {
 			// Use our cubemap to draw our skybox
 			scene->DrawSkybox();
 
-			////////UNCOMMENT THIS FOR UI////////
+			////////UI UPDATING////////
 
 			//// Disable culling
-			//glDisable(GL_CULL_FACE);
+			glDisable(GL_CULL_FACE);
 			//// Disable depth testing, we're going to use order-dependant layering
-			//glDisable(GL_DEPTH_TEST);
+			glDisable(GL_DEPTH_TEST);
 			//// Disable depth writing
-			//glDepthMask(GL_FALSE);
+			glDepthMask(GL_FALSE);
 
 			// Enable alpha blending
 			glEnable(GL_BLEND);
@@ -2858,9 +2867,12 @@ int main() {
 			//// Disable alpha blending
 			//glDisable(GL_BLEND);
 			//// Disable scissor testing
-			//glDisable(GL_SCISSOR_TEST);
+			glDisable(GL_SCISSOR_TEST);
+
+			glEnable(GL_DEPTH_TEST);
+
 			//// Re-enable depth writing
-			//glDepthMask(GL_TRUE);
+			glDepthMask(GL_TRUE);
 
 			// End our ImGui window
 			ImGui::End();
