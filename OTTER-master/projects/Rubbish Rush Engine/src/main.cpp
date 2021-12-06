@@ -2053,6 +2053,7 @@ int main() {
 				text->SetText("Press E to Pickup Trash!");
 				text->SetFont(junkDogFont);
 				text->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
+				text->IsEnabled = false;
 			}
 
 			GameObject::Sptr submitFeedback = scene->CreateGameObject("Submit Feedback");
@@ -2063,6 +2064,7 @@ int main() {
 				text->SetText("Press E to Dump the Trash!");
 				text->SetFont(junkDogFont);
 				text->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
+				text->IsEnabled = false;
 			}
 
 			GameObject::Sptr returnFeedback = scene->CreateGameObject("Return Feedback");
@@ -2171,10 +2173,18 @@ int main() {
 	// Create our material
 	Material::Sptr trashMaterial = scene->FindObjectByName("Trash1")->Get<RenderComponent>()->GetMaterial();
 	
-
+	//UI
 	GameObject::Sptr UIText = scene->FindObjectByName("Time Text");
 	GameObject::Sptr trashRemainder = scene->FindObjectByName("Trash Remaining");
+	GameObject::Sptr objective = scene->FindObjectByName("Objective UI Canvas");
+	GameObject::Sptr returnUI = scene->FindObjectByName("Return Feedback");
+
+	returnUI->Get<GuiText>()->IsEnabled = false;
+	objective->Get<GuiPanel>()->IsEnabled = false;
+	UIText->Get<GuiText>()->IsEnabled = false;
+	trashRemainder->Get<GuiText>()->IsEnabled = false;
 	
+	scene->IsPlaying = true;
 	///// Game loop /////
 	while (!glfwWindowShouldClose(window))
 	{
@@ -2284,6 +2294,11 @@ int main() {
 				playMenu = false;
 				//trashyM->Get<RigidBody>()->IsEnabled = true;
 				//trashyM->SetDirty(true);
+
+				//enable timer stuff
+				UIText->Get<GuiText>()->IsEnabled = true;
+				trashRemainder->Get<GuiText>()->IsEnabled = true;
+				objective->Get<GuiPanel>()->IsEnabled = true;
 			}
 		}
 
@@ -2312,6 +2327,11 @@ int main() {
 					timelevelt -= dt;
 					UIText->Get<GuiText>()->SetText(TimeCountdown(timelevelt));
 					trashRemainder->Get<GuiText>()->SetText(std::to_string(4 - scene->score - scene->trash) + " Trash Remaining!");
+
+					if (scene->score - scene->trash == 4)
+					{
+						returnUI->Get<GuiText>()->IsEnabled = true;
+					}
 				}
 				else if(timelevelt <= 0 )
 				{
@@ -2336,12 +2356,16 @@ int main() {
 				failMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
 				trashyM->Get<RigidBody>()->IsEnabled = false;
 				failMenu->Get<RenderComponent>()->IsEnabled = true;
+				UIText->Get<GuiText>()->IsEnabled = false;
+				trashRemainder->Get<GuiText>()->IsEnabled = false;
+				objective->Get<GuiPanel>()->IsEnabled = false;
 				//pause the timer*****
 				if (glfwGetKey(scene->Window, GLFW_KEY_SPACE)) //return to game
 				{
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
 					failMenu->Get<RenderComponent>()->IsEnabled = false; //dont show win menu
 					startMenu->Get<RenderComponent>()->IsEnabled = true;
+
 					//reset variables
 					lose = false;
 					start = false;
@@ -2504,6 +2528,10 @@ int main() {
 				winMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
 				trashyM->Get<RigidBody>()->IsEnabled = false;
 				winMenu->Get<RenderComponent>()->IsEnabled = true;
+				UIText->Get<GuiText>()->IsEnabled = false;
+				trashRemainder->Get<GuiText>()->IsEnabled = false;
+				objective->Get<GuiPanel>()->IsEnabled = false;
+				returnUI->Get<GuiText>()->IsEnabled = false;
 				//pause the timer*****
 				if (glfwGetKey(scene->Window, GLFW_KEY_SPACE)) //return to game
 				{
@@ -2661,24 +2689,26 @@ int main() {
 			{
 				isPaused = true;
 				pauseMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
+				UIText->Get<GuiText>()->IsEnabled = false;
+				trashRemainder->Get<GuiText>()->IsEnabled = false;
+				objective->Get<GuiPanel>()->IsEnabled = false;
+				trashyM->Get<RigidBody>()->IsEnabled = false;
+				pauseMenu->Get<RenderComponent>()->IsEnabled = true;
+
 			}
 			if (isPaused)
 			{
-				trashyM->Get<RigidBody>()->IsEnabled = false;
-				pauseMenu->Get<RenderComponent>()->IsEnabled = true;
+				
 				//pause the timer*****
 				if (glfwGetKey(scene->Window, GLFW_KEY_ENTER)) //return to game
 				{
 					trashyM->Get<RigidBody>()->IsEnabled = true;
 					pauseMenu->Get<RenderComponent>()->IsEnabled = false;
 					isPaused = false;
+					UIText->Get<GuiText>()->IsEnabled = true;
+					trashRemainder->Get<GuiText>()->IsEnabled = true;
+					objective->Get<GuiPanel>()->IsEnabled = true;
 				}
-				if (glfwGetKey(scene->Window, GLFW_KEY_ESCAPE)) //exit
-				{
-					exit(0);
-
-				}
-
 			}
 		}
 		//TRASHY ANIMATIONS

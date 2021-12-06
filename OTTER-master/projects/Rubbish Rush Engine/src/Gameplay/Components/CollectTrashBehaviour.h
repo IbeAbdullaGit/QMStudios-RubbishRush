@@ -39,5 +39,6 @@ protected:
 
 	RenderComponent::Sptr _renderer;
 	Scene* _scene;
+	GameObject::Sptr ui;
 	bool activated = false;
 };

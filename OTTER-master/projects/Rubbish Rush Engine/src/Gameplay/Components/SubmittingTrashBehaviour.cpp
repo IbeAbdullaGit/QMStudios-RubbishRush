@@ -34,6 +34,7 @@ void SubmittingTrashBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Game
 		//}
 		activated = true;
 		GetGameObject()->Get<MorphAnimator>()->SetFrames(open);
+		ui->Get<GuiText>()->IsEnabled = true;
 
 	}
 	LOG_INFO("Entered trigger: {}", body->GetGameObject()->Name);
@@ -44,6 +45,7 @@ void SubmittingTrashBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Game
 	LOG_INFO("Left trigger: {}", body->GetGameObject()->Name);
 	activated = false;
 	GetGameObject()->Get<MorphAnimator>()->SetFrames(closed);
+	ui->Get<GuiText>()->IsEnabled = false;
 }
 void SubmittingTrashBehaviour::Update(float deltatime)
 {
@@ -54,7 +56,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 		{
 			
 			//get our scene, delete this line later
-			_scene = GetGameObject()->GetScene();
+			//_scene = GetGameObject()->GetScene();
 			//do we have any trash
 			if (_scene->trash >= 1)
 			{
@@ -77,6 +79,8 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 
 void SubmittingTrashBehaviour::Awake() 
 {
+	_scene = GetGameObject()->GetScene();
+	ui = _scene->FindObjectByName("Submit Feedback");
 	//ANIMATION STUFF////
 	
 	//open frames

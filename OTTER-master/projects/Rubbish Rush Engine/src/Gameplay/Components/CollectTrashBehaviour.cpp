@@ -7,6 +7,7 @@
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Scene.h"
 #include "Utils/ImGuiHelper.h"
+#include "GUI/GuiText.h"
 
 
 CollectTrashBehaviour::CollectTrashBehaviour() :
@@ -26,6 +27,7 @@ void CollectTrashBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Gamepla
 		//_scene->trash += 1;
 		//std::cout << "Current trash collected: " << _scene->trash << std::endl;
 		activated = true;
+		ui->Get<GuiText>()->IsEnabled = true;
 		
 	}
 	LOG_INFO("Entered trigger: {}", body->GetGameObject()->Name);
@@ -35,6 +37,7 @@ void CollectTrashBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Gamepla
 	
 	LOG_INFO("Left trigger: {}", body->GetGameObject()->Name);
 	activated = false;
+	ui->Get<GuiText>()->IsEnabled = false;
 }
 void CollectTrashBehaviour::Update(float deltatime)
 {
@@ -43,7 +46,7 @@ void CollectTrashBehaviour::Update(float deltatime)
 		if (glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E))
 		{
 			//get our scene, delete this line later
-			_scene = GetGameObject()->GetScene();
+			//_scene = GetGameObject()->GetScene();
 			//delete trash from scene
 			GameObject::Sptr trash = _scene->FindObjectByName(GetGameObject()->Name);
 			_scene->RemoveGameObject(trash);
@@ -52,6 +55,7 @@ void CollectTrashBehaviour::Update(float deltatime)
 			std::cout << "Current trash collected: " << _scene->trash << std::endl;
 
 			activated = false;
+			ui->Get<GuiText>()->IsEnabled = false;
 		}
 		/*Gameplay::IComponent::Sptr ptr = Panel.lock();
 		if (ptr != nullptr)
@@ -61,8 +65,10 @@ void CollectTrashBehaviour::Update(float deltatime)
 	}
 }
 
-void CollectTrashBehaviour::Awake() {
-	
+void CollectTrashBehaviour::Awake() 
+{
+	_scene = GetGameObject()->GetScene();
+	ui = _scene->FindObjectByName("Pickup Feedback");
 }
 
 void CollectTrashBehaviour::RenderImGui() { }

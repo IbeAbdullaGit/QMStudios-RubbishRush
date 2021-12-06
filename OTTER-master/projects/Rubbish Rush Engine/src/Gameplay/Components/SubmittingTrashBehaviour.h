@@ -10,6 +10,7 @@
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Scene.h"
 #include "Utils/ImGuiHelper.h"
+#include "GUI/GuiText.h"
 
 /// <summary>
 /// Provides an example behaviour that uses some of the trigger interface to change the material
@@ -42,5 +43,6 @@ protected:
 
 	RenderComponent::Sptr _renderer;
 	Scene* _scene;
+	GameObject::Sptr ui;
 	bool activated = false;
 };
