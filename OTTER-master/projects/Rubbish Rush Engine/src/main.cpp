@@ -1,4 +1,5 @@
-//Abdalla Mohamed - 100795120, Angelina Ratchkov � 100740576
+//QM STUDIOS - 2021/2022
+
 
 #include <Logging.h>
 #include <iostream>
@@ -90,6 +91,9 @@
 #include "Gameplay/Components/GUI/GuiText.h"
 #include "Gameplay/InputEngine.h"
 
+
+//TOGGLE IMGUI DEBUG MENU BY COMMENTING/UNCOMMENTING
+//#define DEBUGGING
 
 //#define LOG_GL_NOTIFICATIONS
 
@@ -195,6 +199,10 @@ bool initGLAD() {
 /// <param name="scene">Reference to scene pointer</param>
 /// <param name="path">Reference to path string storage</param>
 /// <returns>True if a new scene has been loaded</returns>
+
+#ifdef DEBUGGING
+
+
 bool DrawSaveLoadImGui(Scene::Sptr& scene, std::string& path) {
 	// Since we can change the internal capacity of an std::string,
 	// we can do cool things like this!
@@ -221,6 +229,7 @@ bool DrawSaveLoadImGui(Scene::Sptr& scene, std::string& path) {
 	}
 	return false;
 }
+#endif // DEBUG
 
 std::string TimeCountdown(float DisplayTime) { //Timer Function
 	float minutes = floorf(DisplayTime / 60);
@@ -2189,7 +2198,9 @@ int main() {
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
+		#ifdef DEBUGGING
 		ImGuiHelper::StartFrame();
+		#endif // DEBUG
 		if (!start)
 		{
 			if (glfwGetKey(scene->Window, GLFW_KEY_ENTER))
@@ -2725,6 +2736,7 @@ int main() {
 		// Draw our material properties window!
 		//DrawMaterialsWindow();
 		// Showcasing how to use the imGui library!
+#ifdef DEBUGGING
 		bool isDebugWindowOpen = ImGui::Begin("Debugging");
 		if (isDebugWindowOpen)
 		{
@@ -2732,7 +2744,7 @@ int main() {
 				// Draw our material properties window!
 				//DrawMaterialsWindow();
 				// Showcasing how to use the imGui library!
-				bool isDebugWindowOpen = ImGui::Begin("Debugging");
+				//bool isDebugWindowOpen = ImGui::Begin("Debugging");
 			if (isDebugWindowOpen)
 			{
 				if (ImGui::Button("Add brick"))
@@ -2796,12 +2808,12 @@ int main() {
 				LABEL_LEFT(ImGui::SliderFloat, "Playback Speed:    ", &playbackSpeed, 0.0f, 10.0f);
 				ImGui::Separator();
 			}
-
+#endif
 			// Clear the color and depth buffers
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// Update our application level uniforms every frame
-
+#ifdef DEBUGGING
 			// Draw some ImGui stuff for the lights
 			if (isDebugWindowOpen) {
 				for (int ix = 0; ix < scene->Lights.size(); ix++) {
@@ -2827,6 +2839,7 @@ int main() {
 				// Split lights from the objects in ImGui
 				ImGui::Separator();
 			}
+#endif
 			//movement update
 			//keyboard(trashyM->Get<RigidBody>());
 
@@ -2855,12 +2868,12 @@ int main() {
 			// Update our worlds physics!
 			scene->DoPhysics(dt);
 
-
+#ifdef DEBUGGING
 			// Draw object GUIs
 			if (isDebugWindowOpen) {
 				scene->DrawAllGameObjectGUIs();
 			}
-
+#endif
 			// The current material that is bound for rendering
 			Material::Sptr currentMat = nullptr;
 			Shader::Sptr shader = nullptr;
@@ -2966,19 +2979,22 @@ int main() {
 
 			//// Re-enable depth writing
 			glDepthMask(GL_TRUE);
-
+			#ifdef DEBUGGING
 			// End our ImGui window
 			ImGui::End();
-
+			#endif 
 			VertexArrayObject::Unbind();
 
 			lastFrame = thisFrame;
+		#ifdef DEBUGGING
 			ImGuiHelper::EndFrame();
+		#endif
 			glfwSwapBuffers(window);
 		}
-	}
+	#ifdef DEBUGGING
 			// Clean up the ImGui library
 			ImGuiHelper::Cleanup();
+	#endif 
 
 			// Clean up the resource manager
 			ResourceManager::Cleanup();
@@ -2986,6 +3002,6 @@ int main() {
 			// Clean up the toolkit logger so we don't leak memory
 			Logger::Uninitialize();
 			return 0;
-	}
+}
 	
 
