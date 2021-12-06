@@ -2838,6 +2838,8 @@ int main() {
 			// Use our cubemap to draw our skybox
 			scene->DrawSkybox();
 
+			glfwSwapInterval(1); //vsynch
+
 			////////UI UPDATING////////
 
 			//// Disable culling
