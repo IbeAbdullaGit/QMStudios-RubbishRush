@@ -2019,6 +2019,20 @@ int main() {
 
 			}
 			objectiveUI->AddChild(timeText);
+
+			GameObject::Sptr trashRemain = scene->CreateGameObject("Trash Remaining");
+			{
+				RectTransform::Sptr remainTransform = trashRemain->Add<RectTransform>();
+				remainTransform->SetMax({ 130,240 });
+				remainTransform->SetPosition({ 0,0 });
+				remainTransform->SetSize({ 0,0 });
+				
+				GuiText::Sptr text = trashRemain->Add<GuiText>();
+				text->SetText("Trash Remaining");
+				text->SetFont(junkDogFont);
+				text->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 1.f));
+				text->SetTextScale(3.0f);
+			}
 		}
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
@@ -2115,6 +2129,7 @@ int main() {
 	
 
 	GameObject::Sptr UIText = scene->FindObjectByName("Time Text");
+	GameObject::Sptr trashRemainder = scene->FindObjectByName("Trash Remaining");
 	
 	///// Game loop /////
 	while (!glfwWindowShouldClose(window))
@@ -2233,7 +2248,7 @@ int main() {
 			//put gui here
 			if (scene->score == 4)
 			{
-
+				//trashRemainder->Get<GuiText>()->SetText(3 - scene->score);
 				timeleveltDone = true;
 				Victory = true;
 			}
