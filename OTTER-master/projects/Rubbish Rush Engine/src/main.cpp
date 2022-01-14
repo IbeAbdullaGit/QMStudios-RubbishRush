@@ -2202,9 +2202,9 @@ int main() {
 	{
 		glfwPollEvents();
 		glfwSwapInterval(1); //vsynch
-		#ifdef DEBUGGING
+#ifdef DEBUGGING
 		ImGuiHelper::StartFrame();
-		#endif // DEBUG
+#endif // DEBUG
 		if (!start)
 		{
 			if (glfwGetKey(scene->Window, GLFW_KEY_ENTER))
@@ -2335,7 +2335,7 @@ int main() {
 
 				}
 			}
-			if (!isPaused) 
+			if (!isPaused)
 			{
 
 				if (timelevelt > 0 && !timeleveltDone) {
@@ -2343,29 +2343,29 @@ int main() {
 					UIText->Get<GuiText>()->SetText(TimeCountdown(timelevelt));
 					trashRemainder->Get<GuiText>()->SetText(std::to_string(4 - scene->score - scene->trash) + " Trash Remaining!");
 
-					if (4-scene->score - scene->trash == 0)
+					if (4 - scene->score - scene->trash == 0)
 					{
 						returnUI->Get<GuiText>()->IsEnabled = true;
 					}
 				}
-				else if(timelevelt <= 0 )
+				else if (timelevelt <= 0)
 				{
 					timeleveltDone = true;
 					lose = true;
 
 				}
 			}
-			else 
+			else
 			{
 
 			}
-			
+
 		}
 		else if (timeleveltDone && scene->IsPlaying && start)
 		{
 			if (lose)
 			{
-				
+
 				//lose = false;
 				//end menu
 				failMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
@@ -2565,7 +2565,7 @@ int main() {
 					scene->score = 0;
 					scene->trash = 0;
 					//create trash objects again
-					
+
 					//cup collection
 					{
 						GameObject::Sptr trashM = scene->CreateGameObject("Trash1");
@@ -2684,7 +2684,7 @@ int main() {
 					RectangleE->Get<RenderComponent>()->IsEnabled = true;
 					TrashyE->SetPostion(glm::vec3(0.5f, 1.49f, 3.3f));
 					RectangleE->SetPostion(glm::vec3(-1.36f, 1.22f, 7.0f));
-					
+
 
 				}
 				if (glfwGetKey(scene->Window, GLFW_KEY_ESCAPE)) //exit
@@ -2713,7 +2713,7 @@ int main() {
 			}
 			if (isPaused)
 			{
-				
+
 				//pause the timer*****
 				if (glfwGetKey(scene->Window, GLFW_KEY_ENTER)) //return to game
 				{
@@ -2749,25 +2749,25 @@ int main() {
 				//DrawMaterialsWindow();
 				// Showcasing how to use the imGui library!
 				//bool isDebugWindowOpen = ImGui::Begin("Debugging");
-			if (isDebugWindowOpen)
-			{
-				if (ImGui::Button("Add brick"))
+				if (isDebugWindowOpen)
 				{
+					if (ImGui::Button("Add brick"))
 					{
+						{
+
+						}
 
 					}
-
-				}
-				ImGui::Separator();
-				if (ImGui::Button("Add brick2"))
-				{
+					ImGui::Separator();
+					if (ImGui::Button("Add brick2"))
 					{
+						{
+
+						}
 
 					}
-
+					ImGui::Separator();
 				}
-				ImGui::Separator();
-			}
 			if (isDebugWindowOpen) {
 				// Draws a button to control whether or not the game is currently playing
 				static char buttonLabel[64];
@@ -2946,7 +2946,7 @@ int main() {
 			// Use our cubemap to draw our skybox
 			scene->DrawSkybox();
 
-			
+
 
 			////////UI UPDATING////////
 
@@ -2983,19 +2983,21 @@ int main() {
 
 			//// Re-enable depth writing
 			glDepthMask(GL_TRUE);
-			#ifdef DEBUGGING
+#ifdef DEBUGGING
 			// End our ImGui window
 			ImGui::End();
-			#endif 
+#endif 
 			VertexArrayObject::Unbind();
 
 			lastFrame = thisFrame;
-		#ifdef DEBUGGING
+#ifdef DEBUGGING
 			ImGuiHelper::EndFrame();
-		#endif
+#endif
 			glfwSwapBuffers(window);
 		}
+	
 	#ifdef DEBUGGING
+	}
 			// Clean up the ImGui library
 			ImGuiHelper::Cleanup();
 	#endif 
@@ -3007,5 +3009,6 @@ int main() {
 			Logger::Uninitialize();
 			return 0;
 }
+
 	
 
