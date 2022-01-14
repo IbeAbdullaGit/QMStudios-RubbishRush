@@ -43,10 +43,10 @@ void GuiBatcher::PushRect(const glm::vec2& min, const glm::vec2& max, const glm:
 	}
 
 	// Copy over UV coords
-	verts[0].UV = glm::vec2(uvMin.x, uvMin.y);
-	verts[1].UV = glm::vec2(uvMin.x, uvMax.y);
-	verts[2].UV = glm::vec2(uvMax.x, uvMax.y);
-	verts[3].UV = glm::vec2(uvMax.x, uvMin.y);
+	verts[0].UV = glm::vec2(uvMin.x, uvMax.y);
+	verts[1].UV = glm::vec2(uvMin.x, uvMin.y);
+	verts[2].UV = glm::vec2(uvMax.x, uvMin.y);
+	verts[3].UV = glm::vec2(uvMax.x, uvMax.y);
 
 	// Add vertices and indices to range
 	uint32_t ix = mesh.Builder.AddVertexRange(verts, 4);
@@ -77,19 +77,19 @@ void GuiBatcher::PushRect(const glm::vec2& min, const glm::vec2& max, const glm:
 		float uMaxYS = 1.0f - edgeOffset.y;
 
 		// Left column
-		PushRect(glm::vec2(min.x, min.y),  glm::vec2(eMinXS, eMinYS), color, tex, glm::vec2(0.0f, 0.0f),   glm::vec2(uMinXS, uMinYS));
+		PushRect(glm::vec2(min.x, min.y),  glm::vec2(eMinXS, eMinYS), color, tex, glm::vec2(0.0f, uMaxYS),   glm::vec2(uMinXS, 1.0f));
 		PushRect(glm::vec2(min.x, eMinYS), glm::vec2(eMinXS, eMaxYS), color, tex, glm::vec2(0.0f, uMinYS), glm::vec2(uMinXS, uMaxYS));
-		PushRect(glm::vec2(min.x, eMaxYS), glm::vec2(eMinXS, max.y),  color, tex, glm::vec2(0.0f, uMaxYS), glm::vec2(uMinXS, 1.0f));
+		PushRect(glm::vec2(min.x, eMaxYS), glm::vec2(eMinXS, max.y),  color, tex, glm::vec2(0.0f, 0.0f), glm::vec2(uMinXS, uMinYS));
 
 		// Center column
-		PushRect(glm::vec2(eMinXS, min.y),  glm::vec2(eMaxXS, eMinYS), color, tex, glm::vec2(uMinXS, 0.0f),   glm::vec2(uMaxXS, uMinYS));
+		PushRect(glm::vec2(eMinXS, min.y),  glm::vec2(eMaxXS, eMinYS), color, tex, glm::vec2(uMinXS, uMaxYS),   glm::vec2(uMaxXS, 1.0f));
 		PushRect(glm::vec2(eMinXS, eMinYS), glm::vec2(eMaxXS, eMaxYS), color, tex, glm::vec2(uMinXS, uMinYS), glm::vec2(uMaxXS, uMaxYS));
-		PushRect(glm::vec2(eMinXS, eMaxYS), glm::vec2(eMaxXS, max.y), color, tex,  glm::vec2(uMinXS, uMaxYS), glm::vec2(uMaxXS, 1.0f));
+		PushRect(glm::vec2(eMinXS, eMaxYS), glm::vec2(eMaxXS, max.y), color, tex,  glm::vec2(uMinXS, 0.0f), glm::vec2(uMaxXS, uMinYS));
 
 		// Right column
-		PushRect(glm::vec2(eMaxXS, min.y),  glm::vec2(max.x, eMinYS), color, tex, glm::vec2(uMaxXS, 0.0f),   glm::vec2(1.0f, uMinYS));
+		PushRect(glm::vec2(eMaxXS, min.y),  glm::vec2(max.x, eMinYS), color, tex, glm::vec2(uMaxXS, uMaxYS),   glm::vec2(1.0f, 1.0f));
 		PushRect(glm::vec2(eMaxXS, eMinYS), glm::vec2(max.x, eMaxYS), color, tex, glm::vec2(uMaxXS, uMinYS), glm::vec2(1.0f, uMaxYS));
-		PushRect(glm::vec2(eMaxXS, eMaxYS), glm::vec2(max.x, max.y),  color, tex, glm::vec2(uMaxXS, uMaxYS), glm::vec2(1.0f, 1.0f));
+		PushRect(glm::vec2(eMaxXS, eMaxYS), glm::vec2(max.x, max.y),  color, tex, glm::vec2(uMaxXS, 0.0f), glm::vec2(1.0f, uMinYS));
 	}
 }
 
@@ -303,7 +303,7 @@ void GuiBatcher::__StaticInit()
 
 		// Generate a simple white texture with a black border
 		if (__defaultUITexture == nullptr) {
-			Texture2DDescription desc;
+			Texture2DDescription desc = Texture2DDescription();
 			desc.Width = 16;
 			desc.Height = 16;
 			desc.MinificationFilter = MinFilter::Nearest;

@@ -93,7 +93,7 @@
 
 
 //TOGGLE IMGUI DEBUG MENU BY COMMENTING/UNCOMMENTING
-//#define DEBUGGING
+#define DEBUGGING
 
 //#define LOG_GL_NOTIFICATIONS
 
@@ -1886,114 +1886,6 @@ int main() {
 				renderer->SetMaterial(statueMaterial);
 			}
 		}
-		//start menu
-		Texture2D::Sptr startTex = ResourceManager::CreateAsset<Texture2D>("textures/start_Screen.png");
-
-		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
-		Material::Sptr startMaterial = ResourceManager::CreateAsset<Material>(basicShader); {
-			startMaterial->Name = "StartMenu";
-			startMaterial->Set("u_Material.Diffuse",startTex);
-			startMaterial->Set("u_Material.Shininess", 1.0f);
-		}
-
-		// Set up all our sample objects
-		GameObject::Sptr start = scene->CreateGameObject("Start");
-		{
-			start->SetPostion(glm::vec3(-1.44f, -0.11f, 2.91f));
-			start->SetRotation(glm::vec3(-138.0f, -180.0f, 0.0f));
-			start->SetScale(glm::vec3(0.21f, 0.19f, 0.42f));
-			// Make a big tiled mesh
-			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
-			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(20.0f), glm::vec2(1.0f)));
-			tiledMesh->GenerateMesh();
-
-
-			// Create and attach a RenderComponent to the object to draw our mesh
-			RenderComponent::Sptr renderer = start->Add<RenderComponent>();
-			renderer->SetMesh(tiledMesh);
-			renderer->SetMaterial(startMaterial);
-		}
-		//pause menu
-		Texture2D::Sptr pauseTex = ResourceManager::CreateAsset<Texture2D>("textures/pause.png");
-		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
-		Material::Sptr pauseMaterial = ResourceManager::CreateAsset<Material>(basicShader); {
-			pauseMaterial->Name = "PauseMenu";
-			pauseMaterial->Set("u_Material.Diffuse", pauseTex);
-			pauseMaterial->Set("u_Material.Shininess", 1.0f);
-		}
-
-		// Set up all our sample objects
-		GameObject::Sptr pause = scene->CreateGameObject("Pause");
-		{
-			pause->SetPostion(glm::vec3(-0.99f, -0.23f, 1.92f));
-			pause->SetRotation(glm::vec3(-138.0f, -180.0f, 0.0f));
-			pause->SetScale(glm::vec3(0.26f, 0.21f, 0.42f));
-			// Make a big tiled mesh
-			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
-			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(20.0f), glm::vec2(1.0f)));
-			tiledMesh->GenerateMesh();
-
-
-			// Create and attach a RenderComponent to the object to draw our mesh
-			RenderComponent::Sptr renderer = pause->Add<RenderComponent>();
-			renderer->SetMesh(tiledMesh);
-			renderer->SetMaterial(pauseMaterial);
-			renderer->IsEnabled = false;
-		}
-		//end menu
-		Texture2D::Sptr endTex = ResourceManager::CreateAsset<Texture2D>("textures/fail.png");
-		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
-		Material::Sptr endMaterial = ResourceManager::CreateAsset<Material>(basicShader); {
-			endMaterial->Name = "FailMenu";
-			endMaterial->Set("u_Material.Diffuse", endTex);
-			endMaterial->Set("u_Material.Shininess", 1.0f);
-		}
-
-		// Set up all our sample objects
-		GameObject::Sptr end = scene->CreateGameObject("Fail");
-		{
-			end->SetPostion(glm::vec3(-0.99f, -0.23f, 1.92f));
-			end->SetRotation(glm::vec3(-138.0f, -180.0f, 0.0f));
-			end->SetScale(glm::vec3(0.20f, 0.21f, 0.42f));
-			// Make a big tiled mesh
-			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
-			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(20.0f), glm::vec2(1.0f)));
-			tiledMesh->GenerateMesh();
-
-
-			// Create and attach a RenderComponent to the object to draw our mesh
-			RenderComponent::Sptr renderer = end->Add<RenderComponent>();
-			renderer->SetMesh(tiledMesh);
-			renderer->SetMaterial(endMaterial);
-			renderer->IsEnabled = false;
-		}
-		//victory menu
-		Texture2D::Sptr winTex = ResourceManager::CreateAsset<Texture2D>("textures/WIN.png");
-		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
-		Material::Sptr winMaterial = ResourceManager::CreateAsset<Material>(basicShader); {
-			winMaterial->Name = "WinMenu";
-			winMaterial->Set("u_Material.Diffuse", winTex);
-			winMaterial->Set("u_Material.Shininess", 1.0f);
-		}
-
-		// Set up all our sample objects
-		GameObject::Sptr win = scene->CreateGameObject("Win");
-		{
-			win->SetPostion(glm::vec3(-0.99f, -0.23f, 1.92f));
-			win->SetRotation(glm::vec3(-138.0f, -180.0f, 0.0f));
-			win ->SetScale(glm::vec3(0.20f, 0.21f, 0.42f));
-			// Make a big tiled mesh
-			MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<MeshResource>();
-			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(20.0f), glm::vec2(1.0f)));
-			tiledMesh->GenerateMesh();
-
-
-			// Create and attach a RenderComponent to the object to draw our mesh
-			RenderComponent::Sptr renderer = win->Add<RenderComponent>();
-			renderer->SetMesh(tiledMesh);
-			renderer->SetMaterial(winMaterial);
-			renderer->IsEnabled = false;
-		}
 
 		///////////////////////////// UI //////////////////////////////
 
@@ -2001,6 +1893,59 @@ int main() {
 		//Font: Junk Dog
 		Font::Sptr junkDogFont = ResourceManager::CreateAsset<Font>("fonts/JunkDog.otf", 35.f); //Font path, font size
 		junkDogFont->Bake();
+
+		GameObject::Sptr MenuUI = scene->CreateGameObject("Menu UI Canvas");
+		{
+			RectTransform::Sptr transform = MenuUI->Add<RectTransform>();
+
+			GameObject::Sptr start = scene->CreateGameObject("Start");
+			{
+				RectTransform::Sptr transform = start->Add<RectTransform>();
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 800, 800 });
+
+				GuiPanel::Sptr startPanel = start->Add<GuiPanel>();
+				startPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/start_Screen.png"));
+			}
+
+			GameObject::Sptr pause = scene->CreateGameObject("Pause");
+			{
+				RectTransform::Sptr transform = pause->Add<RectTransform>();
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 800, 800 });
+
+				GuiPanel::Sptr pausePanel = pause->Add<GuiPanel>();
+				pausePanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/pause.png"));
+				//pausePanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				pausePanel->IsEnabled = false;
+			}
+
+			GameObject::Sptr win = scene->CreateGameObject("Win");
+			{
+				RectTransform::Sptr transform = win->Add<RectTransform>();
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 800, 800 });
+
+				GuiPanel::Sptr winPanel = win->Add<GuiPanel>();
+				winPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/WIN.png"));
+				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				winPanel->IsEnabled = false;
+			}
+
+			GameObject::Sptr end = scene->CreateGameObject("Fail");
+			{
+				RectTransform::Sptr transform = end->Add<RectTransform>();
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 800, 800 });
+
+				GuiPanel::Sptr losePanel = end->Add<GuiPanel>();
+				losePanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/fail.png"));
+				//losePanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				losePanel->IsEnabled = false;
+			}
+
+			MenuUI->AddChild(start);
+		}
 
 
 		GameObject::Sptr objectiveUI = scene->CreateGameObject("Objective UI Canvas"); //UI for Time and Garbage Remaining
@@ -2014,6 +1959,7 @@ int main() {
 			GuiPanel::Sptr canPanel = objectiveUI->Add<GuiPanel>();
 			canPanel->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.f));
 			canPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-clock.png"));
+
 
 			GameObject::Sptr timeText = scene->CreateGameObject("Time Text");
 			{
@@ -2132,10 +2078,7 @@ int main() {
 	GameObject::Sptr binM = scene->FindObjectByName("Bin");
 	GameObject::Sptr RectangleE = scene->FindObjectByName("Rec");
 	GameObject::Sptr TrashyE = scene->FindObjectByName("TrashyE");
-	GameObject::Sptr startMenu = scene->FindObjectByName("Start");
-	GameObject::Sptr pauseMenu = scene->FindObjectByName("Pause");
-	GameObject::Sptr failMenu = scene->FindObjectByName("Fail");
-	GameObject::Sptr winMenu = scene->FindObjectByName("Win");
+	
 	//limit rotation
 	trashyM->Get<RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
 	trashyM->Get<RigidBody>()->SetLinearDamping(0.9f);
@@ -2184,6 +2127,10 @@ int main() {
 	Material::Sptr trashMaterial = scene->FindObjectByName("Trash1")->Get<RenderComponent>()->GetMaterial();
 	
 	//UI
+	GameObject::Sptr startMenu = scene->FindObjectByName("Start");
+	GameObject::Sptr pauseMenu = scene->FindObjectByName("Pause");
+	GameObject::Sptr failMenu = scene->FindObjectByName("Fail");
+	GameObject::Sptr winMenu = scene->FindObjectByName("Win");
 	GameObject::Sptr UIText = scene->FindObjectByName("Time Text");
 	GameObject::Sptr trashRemainder = scene->FindObjectByName("Trash Remaining");
 	GameObject::Sptr objective = scene->FindObjectByName("Objective UI Canvas");
@@ -2225,9 +2172,9 @@ int main() {
 			if (spressed)
 			{
 				start = true;
-				startMenu->Get<RenderComponent>()->IsEnabled = false;
+				startMenu->Get<GuiPanel>()->IsEnabled = false;
 				trashyM->Get<RigidBody>()->IsEnabled = true;
-				scene->RemoveGameObject(startMenu);
+				//startMenu->GetScene()->DeleteGameObject
 				playMenu = true;
 				spressed = false;
 
@@ -2368,9 +2315,8 @@ int main() {
 
 				//lose = false;
 				//end menu
-				failMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
 				trashyM->Get<RigidBody>()->IsEnabled = false;
-				failMenu->Get<RenderComponent>()->IsEnabled = true;
+				failMenu->Get<GuiPanel>()->IsEnabled = true;
 				UIText->Get<GuiText>()->IsEnabled = false;
 				trashRemainder->Get<GuiText>()->IsEnabled = false;
 				objective->Get<GuiPanel>()->IsEnabled = false;
@@ -2378,8 +2324,8 @@ int main() {
 				if (glfwGetKey(scene->Window, GLFW_KEY_SPACE)) //return to game
 				{
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
-					failMenu->Get<RenderComponent>()->IsEnabled = false; //dont show win menu
-					startMenu->Get<RenderComponent>()->IsEnabled = true;
+					failMenu->Get<GuiPanel>()->IsEnabled = false; //dont show win menu
+					startMenu->Get<GuiPanel>()->IsEnabled = true;
 
 					//reset variables
 					lose = false;
@@ -2540,9 +2486,9 @@ int main() {
 			if (Victory)
 			{
 				//Victory = false;
-				winMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
+				//winMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
 				trashyM->Get<RigidBody>()->IsEnabled = false;
-				winMenu->Get<RenderComponent>()->IsEnabled = true;
+				winMenu->Get<GuiPanel>()->IsEnabled = true;
 				UIText->Get<GuiText>()->IsEnabled = false;
 				trashRemainder->Get<GuiText>()->IsEnabled = false;
 				objective->Get<GuiPanel>()->IsEnabled = false;
@@ -2551,8 +2497,8 @@ int main() {
 				if (glfwGetKey(scene->Window, GLFW_KEY_SPACE)) //return to game
 				{
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
-					winMenu->Get<RenderComponent>()->IsEnabled = false; //dont show win menu
-					startMenu->Get<RenderComponent>()->IsEnabled = true;
+					winMenu->Get<GuiPanel>()->IsEnabled = false; //dont show win menu
+					startMenu->Get<GuiPanel>()->IsEnabled = true;
 					//reset variables
 					Victory = false;
 					start = false;
@@ -2703,12 +2649,12 @@ int main() {
 			if (glfwGetKey(scene->Window, GLFW_KEY_ESCAPE) && !isPaused)
 			{
 				isPaused = true;
-				pauseMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
+				//pauseMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
 				UIText->Get<GuiText>()->IsEnabled = false;
 				trashRemainder->Get<GuiText>()->IsEnabled = false;
 				objective->Get<GuiPanel>()->IsEnabled = false;
 				trashyM->Get<RigidBody>()->IsEnabled = false;
-				pauseMenu->Get<RenderComponent>()->IsEnabled = true;
+				pauseMenu->Get<GuiPanel>()->IsEnabled = true;
 
 			}
 			if (isPaused)
@@ -2718,7 +2664,7 @@ int main() {
 				if (glfwGetKey(scene->Window, GLFW_KEY_ENTER)) //return to game
 				{
 					trashyM->Get<RigidBody>()->IsEnabled = true;
-					pauseMenu->Get<RenderComponent>()->IsEnabled = false;
+					pauseMenu->Get<GuiPanel>()->IsEnabled = false;
 					isPaused = false;
 					UIText->Get<GuiText>()->IsEnabled = true;
 					trashRemainder->Get<GuiText>()->IsEnabled = true;
@@ -2745,29 +2691,29 @@ int main() {
 		if (isDebugWindowOpen)
 		{
 			if (ImGui::Button("Add brick"))
-				// Draw our material properties window!
+				//Draw our material properties window!
 				//DrawMaterialsWindow();
 				// Showcasing how to use the imGui library!
 				//bool isDebugWindowOpen = ImGui::Begin("Debugging");
-				if (isDebugWindowOpen)
+			if (isDebugWindowOpen)
+			{
+				if (ImGui::Button("Add brick"))
 				{
-					if (ImGui::Button("Add brick"))
 					{
-						{
-
-						}
 
 					}
-					ImGui::Separator();
-					if (ImGui::Button("Add brick2"))
-					{
-						{
 
-						}
-
-					}
-					ImGui::Separator();
 				}
+				ImGui::Separator();
+				if (ImGui::Button("Add brick2"))
+				{
+					{
+
+					}
+
+				}
+				ImGui::Separator();
+			}
 			if (isDebugWindowOpen) {
 				// Draws a button to control whether or not the game is currently playing
 				static char buttonLabel[64];
@@ -2818,7 +2764,7 @@ int main() {
 
 			// Update our application level uniforms every frame
 #ifdef DEBUGGING
-			// Draw some ImGui stuff for the lights
+	// Draw some ImGui stuff for the lights
 			if (isDebugWindowOpen) {
 				for (int ix = 0; ix < scene->Lights.size(); ix++) {
 					char buff[256];
@@ -2977,7 +2923,7 @@ int main() {
 			//// Disable alpha blending
 			//glDisable(GL_BLEND);
 			//// Disable scissor testing
-			glDisable(GL_SCISSOR_TEST);
+			//glDisable(GL_SCISSOR_TEST);
 
 			glEnable(GL_DEPTH_TEST);
 
@@ -2995,8 +2941,7 @@ int main() {
 #endif
 			glfwSwapBuffers(window);
 		}
-	
-	#ifdef DEBUGGING
+#ifdef DEBUGGING
 	}
 			// Clean up the ImGui library
 			ImGuiHelper::Cleanup();
@@ -3009,6 +2954,5 @@ int main() {
 			Logger::Uninitialize();
 			return 0;
 }
-
 	
 
