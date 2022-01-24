@@ -234,6 +234,7 @@ bool DrawSaveLoadImGui(Scene::Sptr& scene, std::string& path) {
 std::string TimeCountdown(float DisplayTime) { //Timer Function
 	float minutes = floorf(DisplayTime / 60);
 	float seconds = floorf(fmodf(DisplayTime, 60));
+	//Use string and stringstream so it can work with the GUI
 	std::string minString;
 
 	std::stringstream testm; //Minutes
@@ -241,10 +242,11 @@ std::string TimeCountdown(float DisplayTime) { //Timer Function
 	std::stringstream tests;
 	tests << seconds;
 	std::stringstream tests10;
-	tests10 << "0" << seconds;
+	tests10 << "0" << seconds; // Seconds
 
 	//std::cout << testm.str(); //print minutes
 
+	//if secolnds is lower than 10, uses tests10 so 9 - 0 has a 0 to their left else it will print out 59-10 normally
 	if (seconds < 10) {
 		minString = tests10.str();
 	}
@@ -390,6 +392,7 @@ int main() {
 	//glCullFace(GL_BACK);
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
+	//all conditions to change between in-game conditions and menus
 	bool loadScene = false;
 	bool isPressed = false;
 	bool timerDone = false;
@@ -397,6 +400,7 @@ int main() {
 	bool lose = false;
 	bool Victory = false;
 
+	//Initialization of Animations
 	std::vector <MeshResource::Sptr> walking;
 	std::vector <MeshResource::Sptr> idle;
 	std::vector <MeshResource::Sptr> jumping;
@@ -511,7 +515,7 @@ int main() {
 		scene->Lights[6].Color = glm::vec3(1.0f, 1.0f, 1.0f);
 		scene->Lights[6].Range = 10.0f;
 
-		scene->Lights[7].Position = glm::vec3(-2.060f, -0.94f, 4.600f);
+		scene->Lights[7].Position = glm::vec3(-2.060f, -0.94f, 4.60f);
 		scene->Lights[7].Color = glm::vec3(1.0f, 1.0f, 1.0f);
 		scene->Lights[7].Range = -0.600f;
 
@@ -784,7 +788,7 @@ int main() {
 				wall6Phys->AddCollider(wall6);
 			}
 		}
-		//placeholder trash object
+		//placeholder trash object  TAGS: PLACEHOLDER, this is how u create a new object for trash
 		//setup trash
 		MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<MeshResource>("cup.obj");
 		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/acup.jpg");
@@ -798,7 +802,7 @@ int main() {
 		}
 		//cup collection
 		{
-			GameObject::Sptr trashM = scene->CreateGameObject("Trash1");
+			GameObject::Sptr trashM = scene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
 			{
 				trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.0f));
 				trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
@@ -827,7 +831,7 @@ int main() {
 			
 
 			}
-			GameObject::Sptr trash2 = scene->CreateGameObject("Trash2");
+			GameObject::Sptr trash2 = scene->CreateGameObject("Trash2"); //Has Cup PLACEHOLDER
 			{
 				trash2->SetPostion(glm::vec3(6.36f, 2.64f, 0.0f));
 				trash2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
@@ -854,7 +858,7 @@ int main() {
 				CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
 
 			}
-			GameObject::Sptr trash3 = scene->CreateGameObject("Trash3");
+			GameObject::Sptr trash3 = scene->CreateGameObject("Trash3"); //has Cup PLACEHOLDER
 			{
 				trash3->SetPostion(glm::vec3(10.08f, -4.97f, 0.0f));
 				trash3->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
@@ -881,7 +885,7 @@ int main() {
 				CollectTrashBehaviour::Sptr behaviour2 = trash3->Add<CollectTrashBehaviour>();
 
 			}
-			GameObject::Sptr trash4 = scene->CreateGameObject("Trash4");
+			GameObject::Sptr trash4 = scene->CreateGameObject("Trash4"); //has cup PLACEHOLDER
 			{
 				trash4->SetPostion(glm::vec3(13.680, -1.67f, 0.0f));
 				trash4->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
@@ -2111,8 +2115,9 @@ int main() {
 	pointsR2.push_back(glm::vec3(90.0f, 0.0f, 90.0f));
 	pointsR2.push_back(glm::vec3(90.0f, 0.0f, 90.0f));
 
-	float timeLoop = 7.0f;
-	float timelevelt = 65.f;
+	//Variables for changing stuff in the game
+	float timeLoop = 7.0f; //The seconds between start time and the menu that plays in the beginning
+	float timelevelt = 65.f; //The time needed to collect all trash
 	bool playMenu = true;
 
 	bool start = false;
@@ -2171,13 +2176,14 @@ int main() {
 
 			if (spressed)
 			{
+				//allows the game to start when enter is pressed, trashy becomes unfrozen so the player can control them
 				start = true;
 				startMenu->Get<GuiPanel>()->IsEnabled = false;
 				trashyM->Get<RigidBody>()->IsEnabled = true;
 				//startMenu->GetScene()->DeleteGameObject
 				playMenu = true;
 				spressed = false;
-
+			
 			}
 
 		}
@@ -2190,6 +2196,7 @@ int main() {
 		//MENU ANIMATED UPDATED
 		if (scene->IsPlaying && !timerDone && playMenu && start)
 		{
+			//When the game starts a menu plays, this just ensure the menu plays in that amount of time
 			if (timeLoop > 0) {
 				timerDone = false;
 				timeLoop -= dt;
@@ -2267,6 +2274,7 @@ int main() {
 		else if (scene->IsPlaying && !playMenu && !timeleveltDone && start)
 		{
 			//put gui here
+			//if all trash is collected, the timer stops, and victory is set to true to show of the victory screen
 			if (scene->score == 4)
 			{
 				//trashRemainder->Get<GuiText>()->SetText(3 - scene->score);
@@ -2275,6 +2283,7 @@ int main() {
 			}
 			else
 			{
+				//just make sure the condition of the timer of the menu is completed and to ensure no complications happen
 				if (scene->trash == 0) {
 					timerDone = true;
 				}
@@ -2282,19 +2291,22 @@ int main() {
 
 				}
 			}
+			//If the player does not pause the game, the timer will keep reducing till 0
 			if (!isPaused)
 			{
-
+				//Will reduce as long as it is greater than 0 and is not completed, also shows off how much trash is remaining
 				if (timelevelt > 0 && !timeleveltDone) {
 					timelevelt -= dt;
 					UIText->Get<GuiText>()->SetText(TimeCountdown(timelevelt));
 					trashRemainder->Get<GuiText>()->SetText(std::to_string(4 - scene->score - scene->trash) + " Trash Remaining!");
 
+					//GUI disappears when all trash is collected
 					if (4 - scene->score - scene->trash == 0)
 					{
 						returnUI->Get<GuiText>()->IsEnabled = true;
 					}
 				}
+				//checks if timer reaches 0 if it does the lose screen will get activated
 				else if (timelevelt <= 0)
 				{
 					timeleveltDone = true;
@@ -2313,7 +2325,7 @@ int main() {
 			if (lose)
 			{
 
-				//lose = false;
+				
 				//end menu
 				trashyM->Get<RigidBody>()->IsEnabled = false;
 				failMenu->Get<GuiPanel>()->IsEnabled = true;
@@ -2324,7 +2336,7 @@ int main() {
 				if (glfwGetKey(scene->Window, GLFW_KEY_SPACE)) //return to game
 				{
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
-					failMenu->Get<GuiPanel>()->IsEnabled = false; //dont show win menu
+					failMenu->Get<GuiPanel>()->IsEnabled = false; //dont show lose menu
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
 
 					//reset variables
@@ -2485,7 +2497,6 @@ int main() {
 			}
 			if (Victory)
 			{
-				//Victory = false;
 				//winMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
 				trashyM->Get<RigidBody>()->IsEnabled = false;
 				winMenu->Get<GuiPanel>()->IsEnabled = true;
@@ -2639,7 +2650,7 @@ int main() {
 
 				}
 
-				//victory menu?
+				
 
 			}
 		}
