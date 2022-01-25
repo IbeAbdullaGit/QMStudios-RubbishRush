@@ -206,6 +206,9 @@ namespace Gameplay {
 		int NumObjects() const;
 		GameObject::Sptr GetObjectByIndex(int index) const;
 
+		int trash = 0;
+		int score = 0;
+
 	protected:
 		friend class HierarchyWindow;
 		friend class GameObject;

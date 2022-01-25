@@ -483,8 +483,6 @@ int main() {
 		// I hate this
 		/*scene->BaseShader = uboShader;*/
 
-
-
 		// Create some lights for our scene
 		scene->Lights.resize(8);
 		scene->Lights[0].Position = glm::vec3(11.77f, 0.21f, 3.0f);
