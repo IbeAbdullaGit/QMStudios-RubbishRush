@@ -132,7 +132,7 @@ void GlDebugMessage(GLenum source, GLenum type, GLuint id, GLenum severity, GLsi
 // Stores our GLFW window in a global variable for now
 GLFWwindow* window;
 // The current size of our window in pixels
-glm::ivec2 windowSize = glm::ivec2(800, 800);
+glm::ivec2 windowSize = glm::ivec2(1280, 720);
 // The title of our GLFW window
 std::string windowTitle = "RubbishRush";
 
@@ -1904,7 +1904,7 @@ int main() {
 			{
 				RectTransform::Sptr transform = start->Add<RectTransform>();
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 800, 800 });
+				transform->SetMax({ 1280, 720 });
 
 				GuiPanel::Sptr startPanel = start->Add<GuiPanel>();
 				startPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/start_Screen.png"));
@@ -1914,7 +1914,7 @@ int main() {
 			{
 				RectTransform::Sptr transform = pause->Add<RectTransform>();
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 800, 800 });
+				transform->SetMax({ 1280, 720 });
 
 				GuiPanel::Sptr pausePanel = pause->Add<GuiPanel>();
 				pausePanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/pause.png"));
@@ -1926,7 +1926,7 @@ int main() {
 			{
 				RectTransform::Sptr transform = win->Add<RectTransform>();
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 800, 800 });
+				transform->SetMax({ 1280, 720 });
 
 				GuiPanel::Sptr winPanel = win->Add<GuiPanel>();
 				winPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/WIN.png"));
@@ -1938,7 +1938,7 @@ int main() {
 			{
 				RectTransform::Sptr transform = end->Add<RectTransform>();
 				transform->SetMin({ 0, 0 });
-				transform->SetMax({ 800, 800 });
+				transform->SetMax({ 1280, 720 });
 
 				GuiPanel::Sptr losePanel = end->Add<GuiPanel>();
 				losePanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/fail.png"));
@@ -1955,7 +1955,7 @@ int main() {
 			RectTransform::Sptr transform = objectiveUI->Add<RectTransform>();
 			transform->SetMin({ 10, 10 });
 			transform->SetMax({ 200, 200 });
-			transform->SetPosition({ 400, 50 });
+			transform->SetPosition({ 640, 50 });
 			transform->SetSize({ 35,35 });
 
 			GuiPanel::Sptr canPanel = objectiveUI->Add<GuiPanel>();
@@ -1995,7 +1995,7 @@ int main() {
 		GameObject::Sptr feedbackUI = scene->CreateGameObject("Feedback UI");
 		{
 			RectTransform::Sptr feedbackTransform = feedbackUI->Add<RectTransform>();
-			feedbackTransform->SetPosition({ 450, 750 });
+			feedbackTransform->SetPosition({ 690, 750 });
 			feedbackTransform->SetSize({ 35,35 });
 
 			GuiPanel::Sptr feedbackPanel = feedbackUI->Add<GuiPanel>();
@@ -2027,7 +2027,7 @@ int main() {
 			GameObject::Sptr returnFeedback = scene->CreateGameObject("Return Feedback");
 			{
 				returnFeedback->Add<RectTransform>()
-					->SetMax({ 0, -150.f });
+					->SetMax({ 0.f,-80.f });
 
 				GuiText::Sptr text = returnFeedback->Add<GuiText>();
 				text->SetText("Return to the Dumpster!");
