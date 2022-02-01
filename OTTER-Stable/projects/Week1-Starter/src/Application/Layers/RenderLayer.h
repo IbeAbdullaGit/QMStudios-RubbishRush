@@ -1,6 +1,7 @@
 #pragma once
 #include "../ApplicationLayer.h"
-#include "Graphics/UniformBuffer.h"
+#include "Graphics/Framebuffer.h"
+#include "Graphics/Buffers/UniformBuffer.h"
 
 class RenderLayer final : public ApplicationLayer {
 public:
@@ -20,6 +21,8 @@ public:
 		glm::vec4 u_CameraPos;
 		// The time in seconds since the start of the application
 		float u_Time;
+		// The time in seconds since the previous frame
+		float u_DeltaTime;
 	};
 
 	// Structure for our instance-level uniforms, matches layout from
@@ -37,6 +40,11 @@ public:
 	RenderLayer();
 	virtual ~RenderLayer();
 
+	/// <summary>
+	/// Gets the primary framebuffer that is being rendered to
+	/// </summary>
+	const Framebuffer::Sptr& GetPrimaryFBO() const;
+
 	bool IsBlitEnabled() const;
 	void SetBlitEnabled(bool value);
 
@@ -46,10 +54,12 @@ public:
 	// Inherited from ApplicationLayer
 
 	virtual void OnAppLoad(const nlohmann::json& config) override;
-	virtual void OnRender() override;
+	virtual void OnRender(const Framebuffer::Sptr& prevLayer) override;
 	virtual void OnWindowResize(const glm::ivec2& oldSize, const glm::ivec2& newSize) override;
+	virtual Framebuffer::Sptr GetRenderOutput() override;
 
 protected:
+	Framebuffer::Sptr _primaryFBO;
 	bool              _blitFbo;
 	glm::vec4         _clearColor;
 

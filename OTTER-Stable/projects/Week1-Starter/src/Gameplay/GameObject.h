@@ -110,6 +110,12 @@ namespace Gameplay {
 			operator GameObject::Sptr() const;
 
 			/// <summary>
+		/// Implicitly converts the reference into a GUID
+		/// </summary>
+			operator Guid() const;
+
+
+			/// <summary>
 			/// Returns a strong pointer to the underlying gameobject, either returning
 			/// the pointer to the gameobject, or null if the reference is invalid
 			/// </summary>
@@ -132,6 +138,9 @@ namespace Gameplay {
 
 		// Human readable name for the object
 		std::string             Name;
+
+		// Hack to hide instances from the hierarchy (like when adding lots of instances)
+		bool HideInHierarchy = false;
 
 		// LERP function
 		template<typename T>

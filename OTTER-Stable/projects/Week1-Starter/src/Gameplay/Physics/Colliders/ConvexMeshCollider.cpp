@@ -90,7 +90,7 @@ namespace Gameplay::Physics {
 			if (vertBuff != nullptr) {
 				// Shorthand our buffers
 				IndexBuffer::Sptr indexBuff = vao->GetIndexBuffer();
-				VertexBuffer::Sptr vertexBuff = vertBuff->Buffer;
+				VertexBuffer::Sptr vertexBuff = vertBuff->GetBuffer();
 
 				// Create the bullet physics triangle mesh
 				_triMesh = new btTriangleMesh();

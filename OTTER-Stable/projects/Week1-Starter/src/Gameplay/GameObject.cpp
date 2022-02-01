@@ -709,4 +709,9 @@ namespace Gameplay {
 		return Resolve();
 	}
 
+	GameObject::WeakRef::operator Guid() const
+	{
+		return ResourceGUID;
+	}
+
 }

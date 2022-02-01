@@ -19,7 +19,7 @@ ImGuiDebugLayer::ImGuiDebugLayer() :
 
 ImGuiDebugLayer::~ImGuiDebugLayer() = default;
 
-void ImGuiDebugLayer::OnAppLoad(const nlohmann::json& config)
+void ImGuiDebugLayer::OnAppLoad(const nlohmann::json & config)
 {
 	Application& app = Application::Get();
 
@@ -38,7 +38,7 @@ void ImGuiDebugLayer::OnPreRender()
 
 }
 
-void ImGuiDebugLayer::OnRender()
+void ImGuiDebugLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 {
 	using namespace Gameplay;
 	Application& app = Application::Get();
@@ -68,7 +68,7 @@ void ImGuiDebugLayer::OnRender()
 
 		// Our primary dock window (which will be hidden)
 		ImGui::Begin("Docker Window", nullptr, window_flags);
-		
+
 		// Pop styling variables so they don't effect other resources
 		ImGui::PopStyleVar(3);
 		ImGui::PopStyleColor();
@@ -109,7 +109,7 @@ void ImGuiDebugLayer::OnRender()
 					ImGuiDir direction = window->SplitDirection;
 					float    dist = window->SplitDepth;
 					ImGuiID& parentDock = _FindOpenParentWindow(window, dock_main_id, &direction, &dist);
-					
+
 					// Split the parent node, store the ID in the window
 					ImGuiID dockId = ImGui::DockBuilderSplitNode(parentDock, direction, dist, nullptr, &parentDock);
 					window->DockId = dockId;
@@ -244,7 +244,17 @@ void ImGuiDebugLayer::_RenderGameWindow()
 
 	// Start the window, we can also let the app know whether it has focus by checking the ImGui window's focus
 	ImGui::Begin("Game View", nullptr, window_flags);
+	ImGui::PopStyleVar(3);
 	app.IsFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
+
+	if (ImGui::BeginPopupContextWindow()) {
+		BulletDebugMode physicsDrawMode = app.CurrentScene()->GetPhysicsDebugDrawMode();
+		if (BulletDebugDraw::DrawModeGui("Physics Debug Mode:", physicsDrawMode)) {
+			app.CurrentScene()->SetPhysicsDebugDrawMode(physicsDrawMode);
+		}
+
+		ImGui::EndPopup();
+	}
 
 	// Grab the current scene the application is displaying
 	Scene::Sptr scene = app.CurrentScene();
@@ -289,7 +299,7 @@ void ImGuiDebugLayer::_RenderGameWindow()
 	// Determine the relative position of the window
 	ImVec2 subPos = ImGui::GetWindowPos();
 	ImVec2 cursorPos = ImGui::GetCursorPos();
-	ImVec2 relPos ={ subPos.x - rootPos.x + cursorPos.x, subPos.y - rootPos.y + cursorPos.y };
+	ImVec2 relPos = { subPos.x - rootPos.x + cursorPos.x, subPos.y - rootPos.y + cursorPos.y };
 
 	// We use a local static to track changes in window size
 	static ImVec2 prevSize = ImVec2(0.0f, 0.0f);
@@ -303,16 +313,15 @@ void ImGuiDebugLayer::_RenderGameWindow()
 
 	// Tell the viewport where to render the game contents to
 	app.SetPrimaryViewport(glm::vec4(relPos.x, rootSize.y - relPos.y - size.y, size.x, size.y));
-	
+
 	// Finish window
 	ImGui::End();
 
 	// Pop all the styling changes
-	ImGui::PopStyleVar(3);
 	ImGui::PopStyleColor();
 }
 
-ImGuiID& ImGuiDebugLayer::_FindOpenParentWindow(const IEditorWindow::Sptr& window, ImGuiID& mainID, ImGuiDir* direction, float* dist)
+ImGuiID& ImGuiDebugLayer::_FindOpenParentWindow(const IEditorWindow::Sptr & window, ImGuiID & mainID, ImGuiDir * direction, float* dist)
 {
 	// Find the parent window 
 	auto it = std::find_if(_windows.begin(), _windows.end(), [&](const auto& win) { return win->Name == window->ParentName; });
@@ -332,7 +341,7 @@ ImGuiID& ImGuiDebugLayer::_FindOpenParentWindow(const IEditorWindow::Sptr& windo
 			// Recursively search for an open parent in the tree
 			return _FindOpenParentWindow(*it, mainID, direction, dist);
 		}
-	} 
+	}
 	// Parent does not exist, return the main docking node
 	else {
 		return mainID;

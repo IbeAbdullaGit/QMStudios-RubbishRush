@@ -5,8 +5,8 @@
 #include <memory>
 #include <EnumToString.h>
 
-#include "Graphics/VertexBuffer.h"
-#include "Graphics/IndexBuffer.h"
+#include "Graphics/Buffers/VertexBuffer.h"
+#include "Graphics/Buffers/IndexBuffer.h"
 #include "Graphics/GlEnums.h"
 #include "Graphics/IGraphicsResource.h"
 
@@ -65,8 +65,18 @@ public:
 
 	// Helper structure to store a buffer and the attributes
 	struct VertexBufferBinding {
+		const VertexBuffer::Sptr& GetBuffer() const { return Buffer; }
+		const std::vector<BufferAttribute>& GetAttributes() const { return Attributes; }
+		bool IsInstanced() const { return Instanced; }
+	public:
 		VertexBuffer::Sptr Buffer;
+
+	protected:
+		friend class VertexArrayObject;
+
+		//VertexBuffer::Sptr Buffer;
 		std::vector<BufferAttribute> Attributes;
+		bool Instanced;
 	};
 	
 public:
@@ -82,17 +92,27 @@ public:
 	uint32_t GetElementCount() const { return _elementCount; }
 
 	/// <summary>
+	/// Creates a copy of this VAO pointing to the same buffers, with the same attributes
+	/// </summary>
+	/// <returns>A duplicate VAO</returns>
+	Sptr Clone() const;
+
+	/// <summary>
 	/// Sets the index buffer for this VAO, note that for now, this will not delete the buffer when the VAO is deleted, more on that later
 	/// </summary>
 	/// <param name="ibo">The index buffer to bind to this VAO</param>
 	void SetIndexBuffer(const IndexBuffer::Sptr& ibo);
 	IndexBuffer::Sptr GetIndexBuffer() const { return _indexBuffer; }
+
 	/// <summary>
 	/// Adds a vertex buffer to this VAO, with the specified attributes
 	/// </summary>
 	/// <param name="buffer">The buffer to add (note, does not take ownership, you will still need to delete later)</param>
 	/// <param name="attributes">A list of vertex attributes that will be fed by this buffer</param>
-	void AddVertexBuffer(const VertexBuffer::Sptr& buffer, const std::vector<BufferAttribute>& attributes);
+	/// <param name="instanced">True if the buffer should contain one set of data per instance, false for per vertex</param>
+	VertexBufferBinding* AddVertexBuffer(const VertexBuffer::Sptr& buffer, const std::vector<BufferAttribute>& attributes, bool instanced = false);
+
+	void ReplaceVertexBuffer(VertexBufferBinding* binding, const VertexBuffer::Sptr& buffer);
 
 	/// <summary>
 	/// Gets the buffer binding that has an attribute with the given usage
@@ -100,13 +120,21 @@ public:
 	/// </summary>
 	/// <param name="usage">The attribute usage hint to search for</param>
 	/// <returns>A const pointer to the binding, or nullptr if none is found</returns>
-	const VertexBufferBinding* GetBufferBinding(AttribUsage usage);
+	VertexBufferBinding* GetBufferBinding(AttribUsage usage);
 
 	/// <summary>
 	/// Renders this VAO, using the specified draw mode
 	/// </summary>
 	/// <param name="mode">The draw mode for primitives in this VAO</param>
 	void Draw(DrawMode mode = DrawMode::TriangleList);
+
+	/// <summary>
+	/// Renders this VAO with the given instance count, using the specified draw mode. 
+	/// Internally this will call glDrawArraysInstanced or glDrawElementsInstanced
+	/// </summary>
+	/// <param name="instanceCount">The number of instances to render</param>
+	/// <param name="mode">The primitive mode for rendering the mesh</param>
+	void DrawInstanced(uint32_t instanceCount, DrawMode mode = DrawMode::TriangleList);
 
 	/// <summary>
 	/// Binds this VAO as the source of data for draw operations
@@ -130,7 +158,7 @@ protected:
 	// The index buffer bound to this VAO
 	IndexBuffer::Sptr _indexBuffer;
 	// The vertex buffers bound to this VAO
-	std::vector<VertexBufferBinding> _vertexBuffers;
+	std::vector<VertexBufferBinding*> _vertexBuffers;
 
 	// Stores a copy of one of the vertex declarations
 	// defined in VertexTypes.cpp

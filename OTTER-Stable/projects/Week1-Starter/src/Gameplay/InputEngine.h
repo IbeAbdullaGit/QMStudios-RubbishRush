@@ -2,8 +2,10 @@
 
 #include <GLM/glm.hpp>
 #include <string>
-#include "EnumToString.h"
+#include <EnumToString.h>
 #include "GLFW/glfw3.h"
+
+
 
 ENUM_FLAGS(ButtonState, int,
 	 Up       = 0b00,

@@ -108,10 +108,10 @@ inline std::vector<std::string> splitString(const std::string& str, char sep = '
 #define ENUM(E, T, ...) ENUM_(E, T, __VA_ARGS__)
 #define ENUM_FLAGS(E, T, ...) ENUM_(E, T, __VA_ARGS__); ENUM_OPS(E);
 
-/*
- * Declare an enum value with string support, using the int32_t base type
- * @param E The name for the enum
- */
+ /*
+  * Declare an enum value with string support, using the int32_t base type
+  * @param E The name for the enum
+  */
 #define DECLARE_ENUM(E, ...) ENUM_(E, int32_t, __VA_ARGS__)
 
 inline std::string GetVals(const std::string& text, int& base) {
@@ -135,7 +135,8 @@ inline std::string GetVals(const std::string& text, int& base) {
 			if (!(text[ix] == '0' && number.empty())) {
 				number.push_back(text[ix]);
 			}
-		} else if (base == 16) {
+		}
+		else if (base == 16) {
 			char l = std::tolower(text[ix]);
 			if (l >= 'a' && l <= 'e') {
 				number.push_back(l);

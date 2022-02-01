@@ -14,7 +14,7 @@ InterfaceLayer::InterfaceLayer() :
 InterfaceLayer::~InterfaceLayer()
 { }
 
-void InterfaceLayer::OnRender() {
+void InterfaceLayer::OnRender(const Framebuffer::Sptr& prevLayer) {
 	// Gets the application instance
 	Application& app = Application::Get();
 
@@ -46,7 +46,7 @@ void InterfaceLayer::OnRender() {
 	// Disable alpha blending
 	//glDisable(GL_BLEND);
 	// Disable scissor testing
-	//glDisable(GL_SCISSOR_TEST);
+	glDisable(GL_SCISSOR_TEST);
 	// Re-enable depth writing
 	glDepthMask(GL_TRUE);
 }

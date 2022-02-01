@@ -8,7 +8,7 @@
 
 #include "Physics/BulletDebugDraw.h"
 
-#include "Graphics/UniformBuffer.h"
+#include "Graphics/Buffers/UniformBuffer.h"
 
 struct GLFWwindow;
 
@@ -56,6 +56,8 @@ namespace Gameplay {
 		~Scene();
 
 		void SetPhysicsDebugDrawMode(BulletDebugMode mode);
+		BulletDebugMode GetPhysicsDebugDrawMode() const;
+
 
 		void SetSkyboxShader(const std::shared_ptr<ShaderProgram>& shader);
 		std::shared_ptr<ShaderProgram> GetSkyboxShader() const;

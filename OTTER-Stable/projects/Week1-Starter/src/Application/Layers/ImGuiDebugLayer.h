@@ -11,7 +11,7 @@ class ImGuiDebugLayer final : public ApplicationLayer {
 public:
 	MAKE_PTRS(ImGuiDebugLayer)
 
-	ImGuiDebugLayer();
+		ImGuiDebugLayer();
 	virtual ~ImGuiDebugLayer();
 
 	template <typename T, typename = typename std::enable_if<std::is_base_of<IEditorWindow, T>::value>::type>
@@ -44,7 +44,7 @@ public:
 	virtual void OnAppLoad(const nlohmann::json& config) override;
 	virtual void OnAppUnload() override;
 	virtual void OnPreRender() override;
-	virtual void OnRender() override;
+	virtual void OnRender(const Framebuffer::Sptr& prevLayer) override;
 	virtual void OnPostRender() override;
 
 protected:

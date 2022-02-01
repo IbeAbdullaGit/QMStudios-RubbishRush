@@ -18,6 +18,7 @@
 
 RenderLayer::RenderLayer() :
 	ApplicationLayer(),
+	_primaryFBO(nullptr),
 	_blitFbo(true),
 	_frameUniforms(nullptr),
 	_instanceUniforms(nullptr),
@@ -29,15 +30,16 @@ RenderLayer::RenderLayer() :
 
 RenderLayer::~RenderLayer() = default;
 
-void RenderLayer::OnRender()
+void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 {
 	using namespace Gameplay;
 
 	Application& app = Application::Get();
-	glm::uvec4 viewport = app.GetPrimaryViewport();
 
-	glViewport(viewport.x, viewport.y, viewport.z, viewport.w);
+	glViewport(0, 0, _primaryFBO->GetWidth(), _primaryFBO->GetHeight());
 
+	// We bind our framebuffer so we can render to it
+	_primaryFBO->Bind();
 
 	// Clear the color and depth buffers
 	glClearColor(_clearColor.x, _clearColor.y, _clearColor.z, _clearColor.w);
@@ -78,6 +80,7 @@ void RenderLayer::OnRender()
 	frameData.u_ViewProjection = camera->GetViewProjection();
 	frameData.u_CameraPos = glm::vec4(camera->GetGameObject()->GetPosition(), 1.0f);
 	frameData.u_Time = static_cast<float>(Timing::Current().TimeSinceSceneLoad());
+	frameData.u_DeltaTime = Timing::Current().DeltaTime();
 	_frameUniforms->Update();
 
 	Material::Sptr defaultMat = app.CurrentScene()->DefaultMaterial;
@@ -94,7 +97,8 @@ void RenderLayer::OnRender()
 		if (renderable->GetMaterial() == nullptr) {
 			if (defaultMat != nullptr) {
 				renderable->SetMaterial(defaultMat);
-			} else {
+			}
+			else {
 				return;
 			}
 		}
@@ -121,7 +125,7 @@ void RenderLayer::OnRender()
 
 		// Draw the object
 		renderable->GetMesh()->Draw();
-	});
+		});
 
 	// Use our cubemap to draw our skybox
 	app.CurrentScene()->DrawSkybox();
@@ -132,16 +136,19 @@ void RenderLayer::OnRender()
 	VertexArrayObject::Unbind();
 }
 
-void RenderLayer::OnWindowResize(const glm::ivec2& oldSize, const glm::ivec2& newSize)
+void RenderLayer::OnWindowResize(const glm::ivec2 & oldSize, const glm::ivec2 & newSize)
 {
 	if (newSize.x * newSize.y == 0) return;
+
+	// Set viewport and resize our primary FBO
+	_primaryFBO->Resize(newSize);
 
 	// Update the main camera's projection
 	Application& app = Application::Get();
 	app.CurrentScene()->MainCamera->ResizeWindow(newSize.x, newSize.y);
 }
 
-void RenderLayer::OnAppLoad(const nlohmann::json& config)
+void RenderLayer::OnAppLoad(const nlohmann::json & config)
 {
 	Application& app = Application::Get();
 
@@ -150,11 +157,28 @@ void RenderLayer::OnAppLoad(const nlohmann::json& config)
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
+	// Create a new descriptor for our FBO
+	FramebufferDescriptor fboDescriptor;
+	fboDescriptor.Width = app.GetWindowSize().x;
+	fboDescriptor.Height = app.GetWindowSize().y;
+	fboDescriptor.GenerateUnsampled = false;
+	fboDescriptor.SampleCount = 1;
+
+	// Add a depth and color attachment (same as default)
+	fboDescriptor.RenderTargets[RenderTargetAttachment::DepthStencil] = { true, RenderTargetType::DepthStencil };
+	fboDescriptor.RenderTargets[RenderTargetAttachment::Color0] = { true, RenderTargetType::ColorRgb8 };
+
+	// Create the primary FBO
+	_primaryFBO = std::make_shared<Framebuffer>(fboDescriptor);
+
 	// Create our common uniform buffers
 	_frameUniforms = std::make_shared<UniformBuffer<FrameLevelUniforms>>(BufferUsage::DynamicDraw);
 	_instanceUniforms = std::make_shared<UniformBuffer<InstanceLevelUniforms>>(BufferUsage::DynamicDraw);
 }
 
+const Framebuffer::Sptr& RenderLayer::GetPrimaryFBO() const {
+	return _primaryFBO;
+}
 
 bool RenderLayer::IsBlitEnabled() const {
 	return _blitFbo;
@@ -162,6 +186,10 @@ bool RenderLayer::IsBlitEnabled() const {
 
 void RenderLayer::SetBlitEnabled(bool value) {
 	_blitFbo = value;
+}
+
+Framebuffer::Sptr RenderLayer::GetRenderOutput() {
+	return _primaryFBO;
 }
 
 const glm::vec4& RenderLayer::GetClearColor() const {
