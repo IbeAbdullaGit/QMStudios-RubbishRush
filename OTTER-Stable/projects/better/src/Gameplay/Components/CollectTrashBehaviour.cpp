@@ -48,17 +48,22 @@ void CollectTrashBehaviour::Update(float deltatime)
 	{
 		if (glfwGetKey(app.GetWindow(), GLFW_KEY_E))
 		{
-			//get our scene, delete this line later
+			if (_scene->held < 2)
+			{
+				//get our scene, delete this line later
 			//_scene = GetGameObject()->GetScene();
 			//delete trash from scene
-			Gameplay::GameObject::Sptr trash = _scene->FindObjectByName(GetGameObject()->Name);
-			_scene->RemoveGameObject(trash);
-			//increment trash count?
-			_scene->trash += 1;
-			std::cout << "Current trash collected: " << _scene->trash << std::endl;
+				Gameplay::GameObject::Sptr trash = _scene->FindObjectByName(GetGameObject()->Name);
+				_scene->RemoveGameObject(trash);
+				//increment trash count?
+				_scene->trash += 1;
+				_scene->held += 1;
+				std::cout << "Current trash collected: " << _scene->trash << std::endl;
 
-			activated = false;
-			ui->Get<GuiText>()->IsEnabled = false;
+				activated = false;
+				ui->Get<GuiText>()->IsEnabled = false;
+			}
+			
 		}
 		/*Gameplay::IComponent::Sptr ptr = Panel.lock();
 		if (ptr != nullptr)

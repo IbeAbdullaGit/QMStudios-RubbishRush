@@ -209,6 +209,7 @@ namespace Gameplay {
 
 
 		int trash = 0;
+		int held = 0;
 		int score = 0;
 
 	protected:

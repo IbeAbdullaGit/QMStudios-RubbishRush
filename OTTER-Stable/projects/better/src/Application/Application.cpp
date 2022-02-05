@@ -283,34 +283,7 @@ void Application::_Run()
 		// Receive events like input and window position/size changes from GLFW
 		glfwPollEvents();
 
-		//FIND SOMEWHERE ELSE TO DO THIS
-
-		//save trash elements for when the victory is there
-	//fetch resources
-		Gameplay::GameObject::Sptr trashyM = _currentScene->FindObjectByName("Trashy");
-		Gameplay::GameObject::Sptr binM = _currentScene->FindObjectByName("Bin");
-		Gameplay::GameObject::Sptr RectangleE = _currentScene->FindObjectByName("Rec");
-		Gameplay::GameObject::Sptr TrashyE = _currentScene->FindObjectByName("TrashyE");
-		//limit rotation
-		trashyM->Get<Gameplay::Physics::RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
-		trashyM->Get<Gameplay::Physics::RigidBody>()->SetLinearDamping(0.9f);
-		//setup trash
-		Gameplay::MeshResource::Sptr trashMesh = _currentScene->FindObjectByName("Trash1")->Get<RenderComponent>()->GetMeshResource();
-
-		// Create our material
-		Gameplay::Material::Sptr trashMaterial = _currentScene->FindObjectByName("Trash1")->Get<RenderComponent>()->GetMaterial();
-
-		//UI
-		Gameplay::GameObject::Sptr startMenu = _currentScene->FindObjectByName("Start");
-		Gameplay::GameObject::Sptr pauseMenu = _currentScene->FindObjectByName("Pause");
-		Gameplay::GameObject::Sptr failMenu = _currentScene->FindObjectByName("Fail");
-		Gameplay::GameObject::Sptr winMenu = _currentScene->FindObjectByName("Win");
-		Gameplay::GameObject::Sptr UIText = _currentScene->FindObjectByName("Time Text");
-		Gameplay::GameObject::Sptr trashRemainder = _currentScene->FindObjectByName("Trash Remaining");
-		Gameplay::GameObject::Sptr objective = _currentScene->FindObjectByName("Objective UI Canvas");
-		Gameplay::GameObject::Sptr returnUI = _currentScene->FindObjectByName("Return Feedback");
-		Gameplay::GameObject::Sptr submitUI = _currentScene->FindObjectByName("Submit Feedback");
-
+		
 
 		// Handle closing the app via the close button
 		if (glfwWindowShouldClose(_window)) {
@@ -343,6 +316,39 @@ void Application::_Run()
 			_PreRender();
 			_RenderScene();
 			_PostRender();
+			//FIND SOMEWHERE ELSE TO DO THIS
+
+		//save trash elements for when the victory is there
+		//fetch resources
+			if (!activated)
+			{
+				trashyM = _currentScene->FindObjectByName("Trashy");
+				binM = _currentScene->FindObjectByName("Bin");
+				RectangleE = _currentScene->FindObjectByName("Rec");
+				TrashyE = _currentScene->FindObjectByName("TrashyE");
+				//limit rotation
+				trashyM->Get<Gameplay::Physics::RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
+				trashyM->Get<Gameplay::Physics::RigidBody>()->SetLinearDamping(0.9f);
+
+				trashMesh = _currentScene->FindObjectByName("Trash1")->Get<RenderComponent>()->GetMeshResource();
+
+
+				trashMaterial = _currentScene->FindObjectByName("Trash1")->Get<RenderComponent>()->GetMaterial();
+
+				//UI
+				startMenu = _currentScene->FindObjectByName("Start");
+				pauseMenu = _currentScene->FindObjectByName("Pause");
+				failMenu = _currentScene->FindObjectByName("Fail");
+				winMenu = _currentScene->FindObjectByName("Win");
+				UIText = _currentScene->FindObjectByName("Time Text");
+				trashRemainder = _currentScene->FindObjectByName("Trash Remaining");
+				objective = _currentScene->FindObjectByName("Objective UI Canvas");
+				returnUI = _currentScene->FindObjectByName("Return Feedback");
+				submitUI = _currentScene->FindObjectByName("Submit Feedback");
+
+				//only run this once
+				activated = true;
+			}
 			
 			if (!start)
 			{
@@ -482,11 +488,13 @@ void Application::_Run()
 						//Will reduce as long as it is greater than 0 and is not completed, also shows off how much trash is remaining
 						if (timelevelt > 0 && !timeleveltDone) {
 							timelevelt -= dt;
+
 							UIText->Get<GuiText>()->SetText(TimeCountdown(timelevelt));
+
 							trashRemainder->Get<GuiText>()->SetText(std::to_string(4 - _currentScene->score - _currentScene->trash) + " Trash Remaining!");
 
 							//GUI disappears when all trash is collected
-							if (4 - _currentScene->score - _currentScene->trash == 0)
+							if ((4 - _currentScene->score - _currentScene->trash == 0) || _currentScene->held >=2)
 							{
 								returnUI->Get<GuiText>()->IsEnabled = true;
 							}

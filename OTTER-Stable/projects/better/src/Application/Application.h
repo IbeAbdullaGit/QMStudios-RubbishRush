@@ -5,6 +5,7 @@
 #include "Utils/Macros.h"
 #include "Application/ApplicationLayer.h"
 #include "Gameplay/Scene.h"
+#include "Gameplay/MeshResource.h"
 
 struct GLFWwindow;
 
@@ -136,6 +137,25 @@ protected:
 	Gameplay::Scene::Sptr _currentScene;
 	// The scene to switch to at the start of the next frame
 	Gameplay::Scene::Sptr _targetScene;
+
+	Gameplay::GameObject::Sptr trashyM;
+	Gameplay::GameObject::Sptr binM;
+	Gameplay::GameObject::Sptr RectangleE;
+	Gameplay::GameObject::Sptr TrashyE;
+	Gameplay::MeshResource::Sptr trashMesh;
+	Gameplay::Material::Sptr trashMaterial;
+
+	Gameplay::GameObject::Sptr startMenu;
+	Gameplay::GameObject::Sptr pauseMenu;
+	Gameplay::GameObject::Sptr failMenu;
+	Gameplay::GameObject::Sptr winMenu;
+	Gameplay::GameObject::Sptr UIText;
+	Gameplay::GameObject::Sptr trashRemainder;
+	Gameplay::GameObject::Sptr objective;
+	Gameplay::GameObject::Sptr returnUI;
+	Gameplay::GameObject::Sptr submitUI;
+
+	bool activated = false;
 
 	// Stores all the layers of the application, in the order they should be invoked
 	std::vector<ApplicationLayer::Sptr> _layers;

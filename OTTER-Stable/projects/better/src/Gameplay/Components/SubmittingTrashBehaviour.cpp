@@ -60,14 +60,24 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 			//get our scene, delete this line later
 			//_scene = GetGameObject()->GetScene();
 			//do we have any trash
-			if (_scene->trash >= 1)
+			if (_scene->trash >= 1 && _scene->held >=1)
 			{
 				_scene->trash -= 1;
+
+				_scene->held -= 1;
 				//update UI
 
 				std::cout << "Submitted trash!\n";
 				//increase score
 				_scene->score += 1;
+
+				//disable the return ui if we have more inventory space
+				if (_scene->held < 2)
+				{
+					Gameplay::GameObject::Sptr returnUI = _scene->FindObjectByName("Return Feedback");
+					returnUI->Get<GuiText>()->IsEnabled = false;
+
+				}
 			}
 			else
 			{
@@ -86,6 +96,7 @@ void SubmittingTrashBehaviour::Awake()
 {
 	_scene = GetGameObject()->GetScene();
 	ui = _scene->FindObjectByName("Submit Feedback");
+
 	//ANIMATION STUFF////
 	
 	//open frames
