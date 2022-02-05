@@ -9,6 +9,7 @@
 #include "Physics/BulletDebugDraw.h"
 
 #include "Graphics/Buffers/UniformBuffer.h"
+#include "Graphics/Textures/Texture3D.h"
 
 struct GLFWwindow;
 
@@ -66,6 +67,10 @@ namespace Gameplay {
 
 		void SetSkyboxRotation(const glm::mat3& value);
 		const glm::mat3& GetSkyboxRotation() const;
+
+		void SetColorLUT(const Texture3D::Sptr& texture);
+		const Texture3D::Sptr& GetColorLUT() const;
+
 
 		/**
 		 * Gets whether the scene has already called Awake()
@@ -243,6 +248,9 @@ namespace Gameplay {
 		// Stores all the objects in our scene
 		std::vector<GameObject::Sptr>  _objects;
 		std::vector<std::weak_ptr<GameObject>>  _deletionQueue;
+
+		// our LUT for color correction
+		Texture3D::Sptr               _colorCorrection;
 
 		// Info for rendering our skybox will be stored in the scene itself
 		std::shared_ptr<ShaderProgram>       _skyboxShader;

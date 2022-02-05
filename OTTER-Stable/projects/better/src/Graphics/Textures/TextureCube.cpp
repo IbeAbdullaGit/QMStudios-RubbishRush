@@ -1,4 +1,4 @@
-#include "Graphics/TextureCube.h"
+#include "TextureCube.h"
 #include <filesystem>
 #include "stb_image.h"
 #include "Utils/JsonGlmHelpers.h"

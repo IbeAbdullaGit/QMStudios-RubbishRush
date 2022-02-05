@@ -9,7 +9,7 @@
 #include "Utils/Macros.h"
 #include "glad/glad.h"
 #include "Graphics/IGraphicsResource.h"
-#include "Graphics/Texture2D.h"
+#include "Graphics/Textures/Texture2D.h"
 #include "Graphics/GlEnums.h"
 
 /**

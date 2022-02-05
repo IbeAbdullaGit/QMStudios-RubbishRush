@@ -1,8 +1,8 @@
 #include "Gameplay/Material.h"
 #include "Utils/ResourceManager/ResourceManager.h"
 #include "Utils/JsonGlmHelpers.h"
-#include "Graphics/TextureCube.h"
-#include "Graphics/Texture2D.h"
+#include "Graphics/Textures/TextureCube.h"
+#include "Graphics/Textures/Texture2D.h"
 #include "Logging.h"
 #include "Utils/ImGuiHelper.h"
 

@@ -4,15 +4,11 @@
 /// <summary>
 /// Describes all parameters we can manipulate with our 2D Textures
 /// </summary>
-struct Texture2DDescription {
+struct Texture1DDescription {
 	/// <summary>
-	/// The number of texels in this image along the x axis
+	/// The number of texels in this image
 	/// </summary>
-	uint32_t       Width;
-	/// <summary>
-	/// The number of texels in this image along the y axis
-	/// </summary>
-	uint32_t       Height;
+	uint32_t       Size;
 	/// <summary>
 	/// The internal format that OpenGL should use when storing this texture
 	/// </summary>
@@ -20,11 +16,7 @@ struct Texture2DDescription {
 	/// <summary>
 	/// The wrap mode to use when a UV coordinate is outside the 0-1 range on the x axis
 	/// </summary>
-	WrapMode       HorizontalWrap;
-	/// <summary>
-	/// The wrap mode to use when a UV coordinate is outside the 0-1 range on the y axis
-	/// </summary>
-	WrapMode       VerticalWrap;
+	WrapMode       Wrap;
 	/// <summary>
 	/// The filter to use when multiple texels will map to a single pixel
 	/// </summary>
@@ -34,18 +26,9 @@ struct Texture2DDescription {
 	/// </summary>
 	MagFilter      MagnificationFilter;
 	/// <summary>
-	/// The level of anisotropic filtering to use when this texture is viewed at an oblique angle
-	/// </summary>
-	/// <see>https://en.wikipedia.org/wiki/Anisotropic_filtering</see>
-	float          MaxAnisotropic;
-	/// <summary>
 	/// True if this texture should generate mip maps (smaller copies of the image with filtering pre-applied)
 	/// </summary>
 	bool           GenerateMipMaps;
-	/// <summary>
-	/// Returns the number of samples if the texture is multisampled, default 1
-	/// </summary>
-	uint8_t        MultisampleCount;
 
 	/// <summary>
 	/// The path to the source file for the image, or an empty string if the file has been
@@ -60,31 +43,28 @@ struct Texture2DDescription {
 	/// </summary>
 	PixelFormat    FormatHint;
 
-	Texture2DDescription() :
-		Width(0), Height(0),
+	Texture1DDescription() :
+		Size(0),
 		Format(InternalFormat::Unknown),
-		HorizontalWrap(WrapMode::Repeat),
-		VerticalWrap(WrapMode::Repeat),
+		Wrap(WrapMode::Repeat),
 		MinificationFilter(MinFilter::NearestMipLinear),
 		MagnificationFilter(MagFilter::Linear),
-		MaxAnisotropic(-1.0f), // max aniso by default
 		GenerateMipMaps(true),
-		MultisampleCount(1),
 		Filename(""),
 		FormatHint(PixelFormat::RGBA)
 	{ }
 };
 
-class Texture2D : public ITexture {
+class Texture1D : public ITexture {
 public:
-	DEFINE_RESOURCE(Texture2D)
+	DEFINE_RESOURCE(Texture1D)
 
-	// Make sure we mark our destructor as virtual so base class is called
-	virtual ~Texture2D() = default;
+		// Make sure we mark our destructor as virtual so base class is called
+		virtual ~Texture1D() = default;
 
 public:
-	Texture2D(const std::string& filePath);
-	Texture2D(const Texture2DDescription& description);
+	Texture1D(const std::string& filePath);
+	Texture1D(const Texture1DDescription& description);
 
 	/// <summary>
 	/// Gets the internal format OpenGL is using for this texture
@@ -93,59 +73,49 @@ public:
 	/// <summary>
 	/// Gets the width of this texture in pixels
 	/// </summary>
-	uint32_t GetWidth() const { return _description.Width; }
-	/// <summary>
-	/// Gets the height of this texture in pixels
-	/// </summary>
-	uint32_t GetHeight() const { return _description.Height; }
+	uint32_t GetSize() const { return _description.Size; }
 	/// <summary>
 	/// Gets the sampler wrap mode along the x/s/u axis for this texture
 	/// </summary>
-	WrapMode GetWrapS() const { return _description.HorizontalWrap; }
-	/// <summary>
-	/// Gets the sampler wrap mode along the y/t/v axis for this texture
-	/// </summary>
-	WrapMode GetWrapT() const { return _description.VerticalWrap; }
+	WrapMode GetWrap() const { return _description.Wrap; }
 
 	/// <summary>
 	/// Gets the minification filter that the texture is using
 	/// </summary>
-	MinFilter GetMinFilter() const { return _description.MultisampleCount == 1 ? _description.MinificationFilter : MinFilter::Unknown; }
+	MinFilter GetMinFilter() const { return _description.MinificationFilter; }
 	void SetMinFilter(MinFilter value);
 	/// <summary>
 	/// Gets the magnification filter that the texture is using
 	/// </summary>
-	MagFilter GetMagFilter() const { return _description.MultisampleCount == 1 ? _description.MagnificationFilter : MagFilter::Unknown; }
+	MagFilter GetMagFilter() const { return _description.MagnificationFilter; }
 	void SetMagFilter(MagFilter value);
 
-	float GetAnisoLevel() const { return _description.MaxAnisotropic; }
-	void SetAnisoLevel(float value);
+	void SetWrap(WrapMode value);
 
 	/// <summary>
 	/// Loads a region of data into this texture
 	/// Bounds must be contained by the bounds of the texture
 	/// format and type must be convertible to the texture's internal format
 	/// </summary>
-	/// <param name="width">The width of the data frame, in pixels</param>
-	/// <param name="height">The height of the data frame, in pixels</param>
+	/// <param name="size">The size of the data frame, in pixels</param>
 	/// <param name="format">The pixel layout of the data</param>
 	/// <param name="type">The pixel base type of the data</param>
 	/// <param name="data">A pointer to the data to load into this texture</param>
-	/// <param name="offsetX">The x edge of the destination rectangle in the texture, left->right</param>
-	/// <param name="offsetY">The y edge of the destination rectangle in the texture, bottom->top</param>
-	void LoadData(uint32_t width, uint32_t height, PixelFormat format, PixelType type, void* data, uint32_t offsetX = 0, uint32_t offsetY = 0);
+	/// <param name="offset">The offset into the texture to load the data, in pixels</param>
+	void LoadData(uint32_t size, PixelFormat format, PixelType type, void* data, uint32_t offset = 0);
 
 	/// <summary>
 	/// Gets this texture's description, which contains basic information about the
 	/// texture's dimensions and creation parameters
 	/// </summary>
-	const Texture2DDescription& GetDescription() const { return _description; }
+	const Texture1DDescription& GetDescription() const { return _description; }
 
 	virtual nlohmann::json ToJson() const override;
-	static Texture2D::Sptr FromJson(const nlohmann::json& data);
+	static Texture1D::Sptr FromJson(const nlohmann::json& data);
 
 protected:
-	Texture2DDescription _description;
+	Texture1DDescription _description;
+	PixelType _pixelType;
 
 	/// <summary>
 	/// Loads this texture from the file specified in the description
@@ -158,5 +128,5 @@ protected:
 	void _SetTextureParams();
 
 public:
-	static Texture2D::Sptr LoadFromFile(const std::string& path, const Texture2DDescription& description = Texture2DDescription(), bool forceRgba = true);
+	static Texture1D::Sptr LoadFromFile(const std::string& path, const Texture1DDescription& description = Texture1DDescription(), bool forceRgba = true);
 };

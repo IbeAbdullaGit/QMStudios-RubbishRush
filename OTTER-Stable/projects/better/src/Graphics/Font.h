@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Utils/ResourceManager/IResource.h"
-#include "Graphics/Texture2D.h"
+#include "Graphics/Textures/Texture2D.h"
 
 #include <stb_truetype.h>
 

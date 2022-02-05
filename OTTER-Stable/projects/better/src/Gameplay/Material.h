@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "Graphics/ShaderProgram.h"
-#include "Graphics/ITexture.h"
+#include "Graphics/Textures/ITexture.h"
 
 namespace Gameplay {
 	/// <summary>

@@ -3,6 +3,7 @@
 #include <Logging.h>
 #include "GLM/glm.hpp"
 #include "Utils/JsonGlmHelpers.h"
+#include "Utils/Base64.h"
 
 /// <summary>
 /// Get the number of mipmap levels required for a texture of the given size
@@ -15,8 +16,7 @@ inline int CalcRequiredMipLevels(int width, int height) {
 }
 
 nlohmann::json Texture2D::ToJson() const {
-	return {
-		{ "filename", _description.Filename },
+	nlohmann::json result = {
 		{ "wrap_s",  ~_description.HorizontalWrap },
 		{ "wrap_t",  ~_description.VerticalWrap },
 		{ "filter_min",       ~_description.MinificationFilter },
@@ -24,6 +24,25 @@ nlohmann::json Texture2D::ToJson() const {
 		{ "anisotropic",       _description.MaxAnisotropic },
 		{ "generate_mipmaps",  _description.GenerateMipMaps },
 	};
+
+	if (!_description.Filename.empty()) {
+		result["filename"] = _description.Filename;
+	}
+	else if (_pixelType != PixelType::Unknown) {
+		result["size_x"] = _description.Width;
+		result["size_y"] = _description.Width;
+
+		result["format"] = ~_description.FormatHint;
+		result["pixel_type"] = ~_pixelType;
+		if (_description.Width * _description.Height > 0 && _description.FormatHint != PixelFormat::Unknown) {
+			size_t dataSize = GetTexelSize(_description.FormatHint, _pixelType) * _description.Width * _description.Height;
+			uint8_t* dataStore = new uint8_t[dataSize];
+			glGetTextureImage(_rendererId, 0, *_description.Format, *_pixelType, dataSize, dataStore);
+			result["data"] = Base64::Encode(dataStore, dataSize);
+		}
+	}
+
+	return result;
 }
 
 Texture2D::Sptr Texture2D::FromJson(const nlohmann::json& data)
@@ -36,11 +55,29 @@ Texture2D::Sptr Texture2D::FromJson(const nlohmann::json& data)
 	descr.MagnificationFilter = JsonParseEnum(MagFilter, data, "filter_mag", MagFilter::Linear);
 	descr.MaxAnisotropic      = JsonGet(data, "anisotropic", 0.0f);
 	descr.GenerateMipMaps     = JsonGet(data, "generate_mipmaps", false);
-	return std::make_shared<Texture2D>(descr);
+
+	Texture2D::Sptr result = std::make_shared<Texture2D>(descr);
+
+	// If we embedded data into the JSON, load it now
+	if (descr.Filename.empty() && data.contains("data") && data["data"].is_string()) {
+		PixelType type = JsonParseEnum(PixelType, data, "pixel_type", PixelType::Unknown);
+		try {
+			std::string rawData = Base64::Decode(data['data'].get<std::string>());
+			result->LoadData(descr.Width, descr.Height, descr.FormatHint, type, rawData.data());
+		}
+		catch (std::runtime_error()) {
+			LOG_WARN("JSON blob had data, but failed to load to texture");
+		}
+	}
+
+	return result;
 }
 
-Texture2D::Texture2D(const Texture2DDescription& description) : ITexture(TextureType::_2D) {
-	_description = description;
+Texture2D::Texture2D(const Texture2DDescription& description) : 
+	ITexture(TextureType::_2D),
+	_description(description),
+	_pixelType(PixelType::Unknown)
+{
 	_SetTextureParams();
 	if (!description.Filename.empty()) {
 		_LoadDataFromFile();
@@ -48,7 +85,9 @@ Texture2D::Texture2D(const Texture2DDescription& description) : ITexture(Texture
 }
 
 Texture2D::Texture2D(const std::string& filePath) : 
-	ITexture(TextureType::_2D) 
+	ITexture(TextureType::_2D),
+	_description(Texture2DDescription()),
+	_pixelType(PixelType::Unknown)
 {
 	_description.Filename = filePath;
 	_SetTextureParams();
@@ -89,6 +128,9 @@ void Texture2D::LoadData(uint32_t width, uint32_t height, PixelFormat format, Pi
 	// Ensure the rectangle we're setting is within the bounds of the image
 	LOG_ASSERT((width + offsetX) <= _description.Width, "Pixel bounds are outside of the X extents of the image!");
 	LOG_ASSERT((height + offsetY) <= _description.Height, "Pixel bounds are outside of the Y extents of the image!");
+
+	_description.FormatHint = format;
+	_pixelType = type;
 
 	// Align the data store to the size of a single component to ensure we don't get weirdness with images that aren't RGBA
 	// See https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glPixelStore.xhtml

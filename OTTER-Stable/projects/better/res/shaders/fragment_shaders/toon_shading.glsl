@@ -16,6 +16,8 @@ struct Material {
 // Create a uniform for the material
 uniform Material u_Material;
 
+uniform sampler1D s_ToonTerm;
+
 #include "../fragments/multiple_point_lights.glsl"
 #include "../fragments/frame_uniforms.glsl"
 
@@ -33,8 +35,10 @@ void main() {
 	// combine for the final result
 	vec3 result = lightAccumulation  * inColor * textureColor.rgb;
 
-    // Simple way to create cel shading effect
-    result = round(result * u_Material.Steps) / u_Material.Steps;
+    // Using a LUT to allow artists to tweak toon shading settings
+    result.r = texture(s_ToonTerm, result.r).r;
+    result.g = texture(s_ToonTerm, result.g).g;
+    result.b = texture(s_ToonTerm, result.b).b;
 
 	frag_color = vec4(result, textureColor.a);
 }

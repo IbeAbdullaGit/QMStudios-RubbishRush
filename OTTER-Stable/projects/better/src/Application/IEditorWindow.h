@@ -3,9 +3,16 @@
 #include "Utils/Macros.h"
 #include "imgui.h"
 #include <string>
+#include <EnumToString.h>
+
+ENUM_FLAGS(EditorWindowRequirements, uint32_t,
+	None = 0,
+	Window = 1,
+	Menubar = 2
+);
 
 /**
- * The editor window interface allows us to separate implementation for 
+ * The editor window interface allows us to separate implementation for
  * editor or debug windows
  */
 class IEditorWindow {
@@ -14,6 +21,7 @@ public:
 	NO_COPY(IEditorWindow);
 	NO_MOVE(IEditorWindow);
 
+	EditorWindowRequirements Requirements = EditorWindowRequirements::Window;
 	bool        Open = true;
 	ImGuiDir_   SplitDirection = ImGuiDir_::ImGuiDir_Left;
 	float       SplitDepth = 0.2f;
@@ -21,9 +29,10 @@ public:
 	std::string ParentName;
 	ImGuiID     DockId;
 
-	virtual ~IEditorWindow() =default;
+	virtual ~IEditorWindow() = default;
 
-	virtual void Render() = 0;
+	virtual void Render() { };
+	virtual void RenderMenuBar() { }
 
 protected:
 	IEditorWindow() = default;

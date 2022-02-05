@@ -12,7 +12,7 @@
 #include "Gameplay/MeshResource.h"
 
 #include "Graphics/DebugDraw.h"
-#include "Graphics/TextureCube.h"
+#include "Graphics/Textures/TextureCube.h"
 #include "Graphics/VertexArrayObject.h"
 #include "Application/Application.h"
 
@@ -87,6 +87,17 @@ namespace Gameplay {
 
 	const glm::mat3& Scene::GetSkyboxRotation() const {
 		return _skyboxRotation;
+	}
+
+	void Scene::SetColorLUT(const Texture3D::Sptr& texture)
+	{
+		_colorCorrection = texture;
+	}
+
+	const Texture3D::Sptr& Scene::GetColorLUT() const
+	{
+		// TODO: insert return statement here
+		return _colorCorrection;
 	}
 
 	GameObject::Sptr Scene::CreateGameObject(const std::string& name)

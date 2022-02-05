@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <typeindex>
 
-#include "Graphics/Texture2D.h"
+#include "Graphics/Textures/Texture2D.h"
 #include "Graphics/VertexArrayObject.h"
 #include "Graphics/ShaderProgram.h"
 #include "Gameplay/Material.h"

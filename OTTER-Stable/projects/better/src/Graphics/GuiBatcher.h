@@ -2,7 +2,7 @@
 
 #include <GLM/glm.hpp>
 
-#include "Graphics/Texture2D.h"
+#include "Graphics/Textures/Texture2D.h"
 #include "Graphics/ShaderProgram.h"
 #include "Graphics/VertexArrayObject.h"
 #include "Graphics/VertexTypes.h"

@@ -23,6 +23,8 @@ layout (std140, binding = 0) uniform b_FrameLevelUniforms {
     uniform float u_Time;    
     // The time in seconds since the last frame
     uniform float u_DeltaTime;
+    // Lets us store up to 32 bool flags in one value
+    uniform uint  u_Flags;
 };
 
 // Stores uniforms that change every object/instance
@@ -34,6 +36,12 @@ layout (std140, binding = 1) uniform b_InstanceLevelUniforms {
     // Normal Matrix for transforming normals
     uniform mat4 u_NormalMatrix;
 };
+
+#define FLAG_ENABLE_COLOR_CORRECTION (1 << 0)
+
+bool IsFlagSet(uint flag) {
+    return (u_Flags & flag) != 0;
+}
 //
 ////Keyframe 0 vertex position.
 //layout(location = 0) in vec3 inPos_0;

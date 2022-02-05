@@ -13,6 +13,7 @@
 #include <Logging.h>
 
 #include <GLM/glm.hpp>
+#include "StringUtils.h"
 
 GLFWwindow* ImGuiHelper::_window = nullptr;
 
@@ -87,7 +88,8 @@ void ImGuiHelper::Cleanup() {
 		ImGui::DestroyContext();
 
 		_window = nullptr;
-	} else {
+	}
+	else {
 		LOG_WARN("Called ImGuiHelper::Cleanup without initializing, seems sus");
 	}
 }
@@ -100,6 +102,16 @@ bool ImGuiHelper::WarningButton(const char* text, const ImVec2& size) {
 	bool result = ImGui::Button(text, size);
 	ImGui::PopStyleColor(3);
 	return result;
+}
+
+void ImGuiHelper::ResourceDragSource(const IResource* resource, const std::string& name)
+{
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID)) {
+		std::string typeName = StringTools::SanitizeClassName(typeid(*resource).name());
+		ImGui::SetDragDropPayload(typeName.c_str(), &resource->GetGUID(), sizeof(Guid));
+		ImGui::Text(name.c_str());
+		ImGui::EndDragDropSource();
+	}
 }
 
 void ImGuiHelper::HeaderCheckbox(ImGuiID headerId, bool* value)

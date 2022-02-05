@@ -35,7 +35,7 @@ layout (std140, binding = 2) uniform b_LightBlock {
 };
 
 // Uniform for our environment map / skybox, bound to slot 0 by default
-uniform layout(binding=0) samplerCube s_EnvironmentMap;
+uniform layout(binding=15) samplerCube s_EnvironmentMap;
 
 // Samples the environment map at a given direction. Will apply environment
 // rotation to the input

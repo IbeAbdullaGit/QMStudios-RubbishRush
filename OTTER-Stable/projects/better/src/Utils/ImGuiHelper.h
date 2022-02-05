@@ -1,6 +1,8 @@
 #pragma once
 // Include ImGui so it will be visible when we include this file
 #include <imgui.h>
+#include "ResourceManager/IResource.h"
+#include "ResourceManager/ResourceManager.h"
 
 // Will be included in the CPP to avoid header bloat
 struct GLFWwindow;
@@ -25,7 +27,26 @@ public:
 	/// <param name="text">The text on the button</param>
 	/// <param name="size">The optional size of the button</param>
 	/// <returns>True if the button was pressed, false if otherwise</returns>
-	static bool WarningButton(const char* text, const ImVec2& size = ImVec2(0,0));
+	static bool WarningButton(const char* text, const ImVec2& size = ImVec2(0, 0));
+
+	static void ResourceDragSource(const IResource* resource, const std::string& name);
+
+	template <typename T>
+	static bool ResourceDragTarget(std::shared_ptr<T>& resourceOut) {
+		std::string typeName = StringTools::SanitizeClassName(typeid(T).name());
+		bool result = false;
+
+		if (ImGui::BeginDragDropTarget()) {
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(typeName.c_str())) {
+				Guid guid = *(Guid*)payload->Data;
+				resourceOut = ResourceManager::Get<T>(guid);
+				result = true;
+			}
+			ImGui::EndDragDropTarget();
+		}
+
+		return result;
+	}
 
 	/// <summary>
 	/// Notifies ImGui that a new frame has begun
