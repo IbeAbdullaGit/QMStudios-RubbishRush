@@ -52,13 +52,14 @@ layout(location = 1) in vec3 inColor;
 layout(location = 2) in vec3 inNorm_0;
 //Keyframe 1 vertex normal.
 layout(location = 3) in vec2 inUV;
+layout(location = 4) in vec3 inTangent;
+layout(location = 5) in vec3 inBiTangent;
 
 layout(location = 6) in vec3 inPos_1;
 
 layout(location = 7) in vec3 inNorm_1;
 
-layout(location = 4) in vec3 inTangent;
-layout(location = 5) in vec3 inBiTangent;
+
 
 // Standard vertex shader outputs
 layout(location = 0) out vec3 outWorldPos;

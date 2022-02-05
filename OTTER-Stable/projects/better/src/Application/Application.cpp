@@ -267,17 +267,12 @@ void Application::_Run()
 	bool spressed = false;
 	bool isPaused = false;
 
-	//save trash elements for when the victory is there
-	
-	//_currentScene->CreateGameObject("Submit Feedback");
+		//_currentScene->CreateGameObject("Submit Feedback");
 
 	//returnUI->Get<GuiText>()->IsEnabled = false;
 	//objective->Get<GuiPanel>()->IsEnabled = false;
 	//UIText->Get<GuiText>()->IsEnabled = false;
 	//trashRemainder->Get<GuiText>()->IsEnabled = false;
-
-
-
 	// Infinite loop as long as the application is running
 	while (_isRunning) {
 		// Handle scene switching
@@ -288,6 +283,33 @@ void Application::_Run()
 		// Receive events like input and window position/size changes from GLFW
 		glfwPollEvents();
 
+		//FIND SOMEWHERE ELSE TO DO THIS
+
+		//save trash elements for when the victory is there
+	//fetch resources
+		Gameplay::GameObject::Sptr trashyM = _currentScene->FindObjectByName("Trashy");
+		Gameplay::GameObject::Sptr binM = _currentScene->FindObjectByName("Bin");
+		Gameplay::GameObject::Sptr RectangleE = _currentScene->FindObjectByName("Rec");
+		Gameplay::GameObject::Sptr TrashyE = _currentScene->FindObjectByName("TrashyE");
+		//limit rotation
+		trashyM->Get<Gameplay::Physics::RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
+		trashyM->Get<Gameplay::Physics::RigidBody>()->SetLinearDamping(0.9f);
+		//setup trash
+		Gameplay::MeshResource::Sptr trashMesh = _currentScene->FindObjectByName("Trash1")->Get<RenderComponent>()->GetMeshResource();
+
+		// Create our material
+		Gameplay::Material::Sptr trashMaterial = _currentScene->FindObjectByName("Trash1")->Get<RenderComponent>()->GetMaterial();
+
+		//UI
+		Gameplay::GameObject::Sptr startMenu = _currentScene->FindObjectByName("Start");
+		Gameplay::GameObject::Sptr pauseMenu = _currentScene->FindObjectByName("Pause");
+		Gameplay::GameObject::Sptr failMenu = _currentScene->FindObjectByName("Fail");
+		Gameplay::GameObject::Sptr winMenu = _currentScene->FindObjectByName("Win");
+		Gameplay::GameObject::Sptr UIText = _currentScene->FindObjectByName("Time Text");
+		Gameplay::GameObject::Sptr trashRemainder = _currentScene->FindObjectByName("Trash Remaining");
+		Gameplay::GameObject::Sptr objective = _currentScene->FindObjectByName("Objective UI Canvas");
+		Gameplay::GameObject::Sptr returnUI = _currentScene->FindObjectByName("Return Feedback");
+		Gameplay::GameObject::Sptr submitUI = _currentScene->FindObjectByName("Submit Feedback");
 
 
 		// Handle closing the app via the close button
@@ -321,30 +343,7 @@ void Application::_Run()
 			_PreRender();
 			_RenderScene();
 			_PostRender();
-			//fetch resources
-			Gameplay::GameObject::Sptr trashyM = _currentScene->FindObjectByName("Trashy");
-			Gameplay::GameObject::Sptr binM = _currentScene->FindObjectByName("Bin");
-			Gameplay::GameObject::Sptr RectangleE = _currentScene->FindObjectByName("Rec");
-			Gameplay::GameObject::Sptr TrashyE = _currentScene->FindObjectByName("TrashyE");
-			//limit rotation
-			trashyM->Get<Gameplay::Physics::RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
-			trashyM->Get<Gameplay::Physics::RigidBody>()->SetLinearDamping(0.9f);
-			//setup trash
-			Gameplay::MeshResource::Sptr trashMesh = _currentScene->FindObjectByName("Trash1")->Get<RenderComponent>()->GetMeshResource();
-
-			// Create our material
-			Gameplay::Material::Sptr trashMaterial = _currentScene->FindObjectByName("Trash1")->Get<RenderComponent>()->GetMaterial();
-
-			//UI
-			Gameplay::GameObject::Sptr startMenu = _currentScene->FindObjectByName("Start");
-			Gameplay::GameObject::Sptr pauseMenu = _currentScene->FindObjectByName("Pause");
-			Gameplay::GameObject::Sptr failMenu = _currentScene->FindObjectByName("Fail");
-			Gameplay::GameObject::Sptr winMenu = _currentScene->FindObjectByName("Win");
-			Gameplay::GameObject::Sptr UIText = _currentScene->FindObjectByName("Time Text");
-			Gameplay::GameObject::Sptr trashRemainder = _currentScene->FindObjectByName("Trash Remaining");
-			Gameplay::GameObject::Sptr objective = _currentScene->FindObjectByName("Objective UI Canvas");
-			Gameplay::GameObject::Sptr returnUI = _currentScene->FindObjectByName("Return Feedback");
-			Gameplay::GameObject::Sptr submitUI = _currentScene->FindObjectByName("Submit Feedback");
+			
 			if (!start)
 			{
 
@@ -679,7 +678,11 @@ void Application::_Run()
 
 
 						}
+						if (glfwGetKey(GetWindow(), GLFW_KEY_ESCAPE)) //exit
+						{
+							exit(0);
 
+						}
 					}
 					if (Victory)
 					{
