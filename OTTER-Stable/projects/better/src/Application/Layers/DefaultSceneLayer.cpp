@@ -1122,8 +1122,8 @@ void DefaultSceneLayer::_CreateScene()
 			}
 		}
 		//tv box object
-		Gameplay::MeshResource::Sptr tvboxMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tvbox2.obj");
-		Texture2D::Sptr tvboxTex = ResourceManager::CreateAsset<Texture2D>("textures/tvbox.png");
+		Gameplay::MeshResource::Sptr tvboxMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tvbox4.obj");
+		Texture2D::Sptr tvboxTex = ResourceManager::CreateAsset<Texture2D>("textures/test.jpg");
 		//Create Material
 		Gameplay::Material::Sptr tvboxMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
 		{
