@@ -3,6 +3,8 @@
 #include "Utils/ImGuiHelper.h"
 #include "../Windows/HierarchyWindow.h"
 #include "../Windows/InspectorWindow.h"
+#include "../Windows/MaterialsWindow.h"
+#include "../Windows/TextureWindow.h"
 #include "imgui_internal.h"
 #include "Gameplay/Scene.h"
 #include "../Timing.h"
@@ -26,6 +28,8 @@ void ImGuiDebugLayer::OnAppLoad(const nlohmann::json& config)
 	// Register our windows
 	RegisterWindow<HierarchyWindow>();
 	RegisterWindow<InspectorWindow>();
+	RegisterWindow<MaterialsWindow>();
+	RegisterWindow<TextureWindow>();
 }
 
 void ImGuiDebugLayer::OnAppUnload()
