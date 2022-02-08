@@ -6,8 +6,10 @@ uniform layout (binding=0) samplerCube s_Environment;
 
 out vec4 frag_color;
 
+#include "../fragments/color_correction.glsl"
+
 void main() {
     vec3 norm = normalize(inNormal);
 
-    frag_color = vec4(texture(s_Environment, norm).rgb, 1.0);
+    frag_color = vec4(ColorCorrect(texture(s_Environment, norm).rgb), 1.0);
 }

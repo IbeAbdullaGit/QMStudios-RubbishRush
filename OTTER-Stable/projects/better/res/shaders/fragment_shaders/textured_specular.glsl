@@ -31,6 +31,7 @@ uniform Material u_Material;
 ////////////////////////////////////////////////////////////////
 
 #include "../fragments/frame_uniforms.glsl"
+#include "../fragments/color_correction.glsl"
 
 // https://learnopengl.com/Advanced-Lighting/Advanced-Lighting
 void main() {
@@ -52,5 +53,5 @@ void main() {
 	// combine for the final result
 	vec3 result = lightAccumulation  * inColor * textureColor.rgb;
 
-	frag_color = vec4(mix(result, reflected, specPower), textureColor.a);
+	frag_color = vec4(ColorCorrect(mix(result, reflected, specPower)), textureColor.a);
 }

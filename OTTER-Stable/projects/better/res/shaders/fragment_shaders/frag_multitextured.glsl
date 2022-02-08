@@ -2,7 +2,7 @@
 
 #include "../fragments/fs_common_inputs.glsl"
 
-layout(location = 5) in vec2 inTextureWeights;
+layout(location = 7) in vec2 inTextureWeights;
 
 // We output a single color to the color buffer
 layout(location = 0) out vec4 frag_color;
@@ -33,6 +33,7 @@ uniform Material u_Material;
 ////////////////////////////////////////////////////////////////
 
 #include "../fragments/multiple_point_lights.glsl"
+#include "../fragments/color_correction.glsl"
 
 const float LOG_MAX = 2.40823996531;
 
@@ -57,5 +58,5 @@ void main() {
 	// combine for the final result
 	vec3 result = lightAccumulation  * inColor * textureColor.rgb;
 
-	frag_color = vec4(result, textureColor.a);
+	frag_color = vec4(ColorCorrect(result), textureColor.a);
 }

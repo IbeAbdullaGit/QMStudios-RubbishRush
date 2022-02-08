@@ -525,6 +525,7 @@ void Application::_Run()
 						UIText->Get<GuiText>()->IsEnabled = false;
 						trashRemainder->Get<GuiText>()->IsEnabled = false;
 						objective->Get<GuiPanel>()->IsEnabled = false;
+						returnUI->Get<GuiText>()->IsEnabled = false;
 						//pause the timer*****
 						if (glfwGetKey(GetWindow(), GLFW_KEY_SPACE)) //return to game
 						{
@@ -543,6 +544,7 @@ void Application::_Run()
 							trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f)); //reset position to start
 							_currentScene->score = 0;
 							_currentScene->trash = 0;
+							_currentScene->held = 0;
 							//create trash objects again
 							//delete any remaining trash objects
 							Gameplay::GameObject::Sptr trash1 = _currentScene->FindObjectByName("Trash1");
@@ -718,6 +720,7 @@ void Application::_Run()
 							trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f)); //reset position to start
 							_currentScene->score = 0;
 							_currentScene->trash = 0;
+							_currentScene->held = 0;
 							//create trash objects again
 
 							//cup collection
