@@ -11,7 +11,7 @@ class ImGuiDebugLayer final : public ApplicationLayer {
 public:
 	MAKE_PTRS(ImGuiDebugLayer)
 
-	ImGuiDebugLayer();
+		ImGuiDebugLayer();
 	virtual ~ImGuiDebugLayer();
 
 	template <typename T, typename = typename std::enable_if<std::is_base_of<IEditorWindow, T>::value>::type>

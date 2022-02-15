@@ -99,11 +99,7 @@ void DefaultSceneLayer::_CreateScene()
 	Application& app = Application::Get();
 	//all conditions to change between in-game conditions and menus
 	bool loadScene = false;
-	bool isPressed = false;
-	bool timerDone = false;
-	bool timeleveltDone = false;
-	bool lose = false;
-	bool Victory = false;
+
 
 	//Initialization of Animations
 	std::vector <Gameplay::MeshResource::Sptr> walking;
@@ -182,16 +178,7 @@ void DefaultSceneLayer::_CreateScene()
 
 
 		// Load in the meshes
-		Gameplay::MeshResource::Sptr monkeyMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Monkey.obj");
-
-		// Load in some textures
-		Texture2D::Sptr    boxTexture = ResourceManager::CreateAsset<Texture2D>("textures/box-diffuse.png");
-		Texture2D::Sptr    boxSpec = ResourceManager::CreateAsset<Texture2D>("textures/box-specular.png");
-		Texture2D::Sptr    monkeyTex = ResourceManager::CreateAsset<Texture2D>("textures/monkey-uvMap.png");
-		Texture2D::Sptr    leafTex = ResourceManager::CreateAsset<Texture2D>("textures/leaves.png");
-		leafTex->SetMinFilter(MinFilter::Nearest);
-		leafTex->SetMagFilter(MagFilter::Nearest);
-
+		
 
 		// Here we'll load in the cubemap, as well as a special shader to handle drawing the skybox
 		TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/ocean/ocean.jpg");
@@ -202,6 +189,11 @@ void DefaultSceneLayer::_CreateScene()
 
 		// Create an empty scene
 		Gameplay::Scene::Sptr scene = std::make_shared<Gameplay::Scene>();
+
+		// Loading in a color lookup table
+		Texture3D::Sptr lut = ResourceManager::CreateAsset<Texture3D>("luts/sepia.CUBE");  //MY CUSTOM
+		// Configure the color correction LUT
+		scene->SetColorLUT(lut);
 
 		// Setting up our enviroment map
 		//scene->SetSkyboxTexture(testCubemap);
