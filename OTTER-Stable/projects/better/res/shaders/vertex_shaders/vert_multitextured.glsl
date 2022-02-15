@@ -5,7 +5,7 @@
 
 #include "../fragments/math_constants.glsl"
 
-layout(location = 5) out vec2 outTexWeights;
+layout(location = 7) out vec2 outTexWeights;
 
 uniform float u_Scale;
 

@@ -1347,7 +1347,7 @@ void DefaultSceneLayer::_CreateScene()
 		{
 			recE->SetPostion(glm::vec3(-1.36f, 1.22f, 7.0f));
 			recE->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-			recE->SetScale(glm::vec3(1.0f, 5.64f, 3.46f));
+			recE->SetScale(glm::vec3(1.0f, 5.8f, 4.8f));
 			// Add a render component
 			RenderComponent::Sptr renderer = recE->Add<RenderComponent>();
 
@@ -1699,6 +1699,7 @@ void DefaultSceneLayer::_CreateScene()
 			GuiPanel::Sptr canPanel = objectiveUI->Add<GuiPanel>();
 			canPanel->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.f));
 			canPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-clock.png"));
+			//canPanel->IsEnabled = false;
 
 
 			Gameplay::GameObject::Sptr timeText = scene->CreateGameObject("Time Text");
@@ -1711,6 +1712,7 @@ void DefaultSceneLayer::_CreateScene()
 				text->SetFont(junkDogFont);
 				text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
 				text->SetTextScale(3.0f);
+				text->IsEnabled = false;
 
 			}
 			objectiveUI->AddChild(timeText);

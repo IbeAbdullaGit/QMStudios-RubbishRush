@@ -233,13 +233,13 @@ void Application::_Run()
 	//limit pos of the bin??
 
 	//create points we need for lerping
-	std::vector<glm::vec3> pointsPos;
+	std::vector<glm::vec3> pointsPos; //rec
 	pointsPos.push_back(glm::vec3(-1.36f, 1.22f, 7.1f));
 	pointsPos.push_back(glm::vec3(-1.36f, 1.22f, 3.27f));
 
-	std::vector<glm::vec3> pointsPos2;
+	std::vector<glm::vec3> pointsPos2; //trashy
+	pointsPos2.push_back(glm::vec3(1.5f, 1.49f, 3.29f));
 	pointsPos2.push_back(glm::vec3(0.5f, 1.49f, 3.29f));
-	pointsPos2.push_back(glm::vec3(0.0f, 1.49f, 3.29f));
 	pointsPos2.push_back(glm::vec3(-0.5f, 1.49f, 3.29f));
 	pointsPos2.push_back(glm::vec3(-1.0f, 1.49f, 3.29f));
 	pointsPos2.push_back(glm::vec3(-1.18f, 1.49f, 3.29f));
@@ -367,6 +367,7 @@ void Application::_Run()
 				//FREEZE TRASHY
 				trashyM->Get<Gameplay::Physics::RigidBody>()->IsEnabled = false;
 				submitUI->Get<GuiText>()->IsEnabled = false;
+				
 
 				if (spressed)
 				{
@@ -421,7 +422,7 @@ void Application::_Run()
 				}
 				else if (_currentScene->IsPlaying && timerDone && playMenu && start)
 				{
-					if (TrashyE->GetPosition().x < 0.5f)
+					if (TrashyE->GetPosition().x < 1.5f)
 					{
 						TrashyE->UpdateCAT(pointsPos2, dt);
 						TrashyE->UpdateScale(pointsS2, pointsR2, dt);

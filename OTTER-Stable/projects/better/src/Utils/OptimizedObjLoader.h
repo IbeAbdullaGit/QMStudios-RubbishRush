@@ -12,6 +12,7 @@
 #include "Graphics/VertexTypes.h"
 
 #include "Utils/MeshBuilder.h"
+#include "MeshFactory.h"
 
 /// <summary>
 /// An optimized OBJ loader that can convert an OBJ file to a binary representation
