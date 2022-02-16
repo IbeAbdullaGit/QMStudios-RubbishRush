@@ -15,7 +15,7 @@ public:
 
 	// Inherited from ApplicationLayer
 
-	virtual void OnSceneLoad() override;
+	virtual void OnAppLoad(const nlohmann::json& config) override;
 
 protected:
 	void _CreateScene();

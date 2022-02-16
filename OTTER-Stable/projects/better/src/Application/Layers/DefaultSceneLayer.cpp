@@ -82,12 +82,12 @@ DefaultSceneLayer::DefaultSceneLayer() :
 	ApplicationLayer()
 {
 	Name = "Default Scene";
-	Overrides = AppLayerFunctions::OnSceneLoad;
+	Overrides = AppLayerFunctions::OnAppLoad;
 }
 
 DefaultSceneLayer::~DefaultSceneLayer() = default;
 
-void DefaultSceneLayer::OnSceneLoad() {
+void DefaultSceneLayer::OnAppLoad(const nlohmann::json& config) {
 	_CreateScene();
 }
 
