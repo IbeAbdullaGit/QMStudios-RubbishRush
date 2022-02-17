@@ -35,6 +35,8 @@ public:
 	static CollectTrashBehaviour::Sptr FromJson(const nlohmann::json& blob);
 	MAKE_TYPENAME(CollectTrashBehaviour);
 
+	int inventory;
+
 protected:
 
 	RenderComponent::Sptr _renderer;

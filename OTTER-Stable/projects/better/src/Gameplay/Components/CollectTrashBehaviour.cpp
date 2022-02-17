@@ -48,7 +48,7 @@ void CollectTrashBehaviour::Update(float deltatime)
 	{
 		if (glfwGetKey(app.GetWindow(), GLFW_KEY_E))
 		{
-			if (_scene->held < 2)
+			if (_scene->held < inventory)
 			{
 				//get our scene, delete this line later
 			//_scene = GetGameObject()->GetScene();
@@ -77,6 +77,7 @@ void CollectTrashBehaviour::Awake()
 {
 	_scene = GetGameObject()->GetScene();
 	ui = _scene->FindObjectByName("Pickup Feedback");
+	inventory = 2; //DEFAULT SIZE
 }
 
 void CollectTrashBehaviour::RenderImGui() { }

@@ -39,6 +39,8 @@ public:
 	std::vector<Gameplay::MeshResource::Sptr> closed;
 	void getIdle(std::vector<Gameplay::MeshResource::Sptr> frames);
 
+	int inventory;
+
 protected:
 
 	RenderComponent::Sptr _renderer;

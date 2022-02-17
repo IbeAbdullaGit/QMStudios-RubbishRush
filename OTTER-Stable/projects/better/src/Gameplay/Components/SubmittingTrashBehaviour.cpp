@@ -72,7 +72,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 				_scene->score += 1;
 
 				//disable the return ui if we have more inventory space
-				if (_scene->held < 2)
+				if (_scene->held < inventory)
 				{
 					Gameplay::GameObject::Sptr returnUI = _scene->FindObjectByName("Return Feedback");
 					returnUI->Get<GuiText>()->IsEnabled = false;
@@ -94,6 +94,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 
 void SubmittingTrashBehaviour::Awake() 
 {
+	inventory = 2; //DEFAULT SIZE
 	_scene = GetGameObject()->GetScene();
 	ui = _scene->FindObjectByName("Submit Feedback");
 

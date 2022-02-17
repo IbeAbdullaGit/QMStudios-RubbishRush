@@ -157,6 +157,8 @@ protected:
 
 	bool activated = false;
 
+	int inventory = 2; //DEFAULT INVENTORY COUNT
+
 	// Stores all the layers of the application, in the order they should be invoked
 	std::vector<ApplicationLayer::Sptr> _layers;
 

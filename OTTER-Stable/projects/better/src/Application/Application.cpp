@@ -495,7 +495,7 @@ void Application::_Run()
 							trashRemainder->Get<GuiText>()->SetText(std::to_string(4 - _currentScene->score - _currentScene->trash) + " Trash Remaining!");
 
 							//GUI disappears when all trash is collected
-							if ((4 - _currentScene->score - _currentScene->trash == 0) || _currentScene->held >=2)
+							if ((4 - _currentScene->score - _currentScene->trash == 0) || _currentScene->held >=inventory)
 							{
 								returnUI->Get<GuiText>()->IsEnabled = true;
 							}
