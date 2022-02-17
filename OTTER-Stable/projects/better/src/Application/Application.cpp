@@ -65,6 +65,7 @@
 #include "Layers/RenderLayer.h"
 #include "Layers/InterfaceLayer.h"
 #include "Layers/DefaultSceneLayer.h"
+#include "Layers/TutorialSceneLayer.h"
 #include "Layers/LogicUpdateLayer.h"
 #include "Layers/ImGuiDebugLayer.h"
 #include "Layers/InstancedRenderingTestLayer.h"
@@ -188,6 +189,7 @@ void Application::_Run()
 	// TODO: Register layers
 	_layers.push_back(std::make_shared<GLAppLayer>());
 	_layers.push_back(std::make_shared<DefaultSceneLayer>());
+	//_layers.push_back(std::make_shared<TutorialSceneLayer>());
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
 	_layers.push_back(std::make_shared<RenderLayer>());
 	//_layers.push_back(std::make_shared<ParticleLayer>());
