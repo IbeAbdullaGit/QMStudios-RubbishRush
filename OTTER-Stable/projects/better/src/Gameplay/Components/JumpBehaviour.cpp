@@ -1,3 +1,4 @@
+#pragma once
 #include "Gameplay/Components/JumpBehaviour.h"
 #include <GLFW/glfw3.h>
 #include "Gameplay/GameObject.h"
@@ -5,6 +6,7 @@
 #include "Utils/ImGuiHelper.h"
 #include "Gameplay/InputEngine.h"
 #include "Application/Application.h"
+#include "Gameplay/Components/GroundBehaviour.h"
 
 void JumpBehaviour::Awake()
 {
@@ -23,13 +25,27 @@ nlohmann::json JumpBehaviour::ToJson() const {
 		{ "impulse", _impulse }
 	};
 }
+void JumpBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>& body)
+{
+	//if the triggering body has the ground tag, aka is the floor
+	if (body->GetGameObject()->Get<GroundBehaviour>())
+	{
+		activated = true;
+	}
+}
+
+void JumpBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& body)
+{
+	activated = false; //when u leave the floor, should disable jump
+}
 
 JumpBehaviour::JumpBehaviour() :
 	IComponent(),
-	_impulse(1.0f)
+	_impulse(2.0f)
 { }
 
 JumpBehaviour::~JumpBehaviour() = default;
+
 
 JumpBehaviour::Sptr JumpBehaviour::FromJson(const nlohmann::json& blob) {
 	JumpBehaviour::Sptr result = std::make_shared<JumpBehaviour>();
@@ -38,14 +54,17 @@ JumpBehaviour::Sptr JumpBehaviour::FromJson(const nlohmann::json& blob) {
 }
 
 void JumpBehaviour::Update(float deltaTime) {
-	Application& app = Application::Get();
+	
+	if (activated)
+	{
+		Application& app = Application::Get();
 
-
-	if (glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE)) {
-		_body->ApplyImpulse(glm::vec3(0.0f, 0.0f, _impulse));
-		Gameplay::IComponent::Sptr ptr = Panel.lock();
-		if (ptr != nullptr) {
-			ptr->IsEnabled = !ptr->IsEnabled;
+		if (glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE)) {
+			_body->ApplyImpulse(glm::vec3(0.0f, 0.0f, _impulse));
+			Gameplay::IComponent::Sptr ptr = Panel.lock();
+			if (ptr != nullptr) {
+				ptr->IsEnabled = !ptr->IsEnabled;
+			}
 		}
 	}
 }

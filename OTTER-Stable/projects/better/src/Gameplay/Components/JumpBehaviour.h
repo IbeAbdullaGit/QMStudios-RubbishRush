@@ -14,7 +14,8 @@ public:
 
 	JumpBehaviour();
 	virtual ~JumpBehaviour();
-
+	virtual void OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) override;
+	virtual void OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) override;
 	virtual void Awake() override;
 	virtual void Update(float deltaTime) override;
 
@@ -26,7 +27,8 @@ public:
 
 protected:
 	float _impulse;
-
+	bool activated = false;
 	bool _isPressed = false;
 	Gameplay::Physics::RigidBody::Sptr _body;
+	
 };
