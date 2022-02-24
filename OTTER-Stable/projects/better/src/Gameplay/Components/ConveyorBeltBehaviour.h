@@ -29,9 +29,12 @@ public:
 	MAKE_TYPENAME(ConveyorBeltBehaviour);
 
 protected:
-	bool _playerInTrigger;
+	bool _playerInTrigger = false;
 	float currentScroll = 1.0f;
 	//adjust these how we want
 	float speed = 2.0f;
-	float visualSpeedScalar = 1.0f;
+	float visualSpeedScalar = 1.0f; 
+	glm::vec3 direction;
+	//default is our body
+	std::shared_ptr<Gameplay::Physics::RigidBody> body2 = nullptr;
 };

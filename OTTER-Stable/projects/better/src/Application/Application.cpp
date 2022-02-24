@@ -55,6 +55,7 @@
 #include "Gameplay/Components/MorphAnimator.h"
 #include "Gameplay/Components/MorphMeshRenderer.h"
 #include "Gameplay/Components/GroundBehaviour.h"
+#include "Gameplay/Components/ConveyorBeltBehaviour.h"
 
 // GUI
 #include "Gameplay/Components/GUI/RectTransform.h"
@@ -303,6 +304,7 @@ void Application::_RegisterClasses()
 	Gameplay::ComponentManager::RegisterType<MorphAnimator>();
 	Gameplay::ComponentManager::RegisterType<MorphMeshRenderer>();
 	Gameplay::ComponentManager::RegisterType<GroundBehaviour>();
+	Gameplay::ComponentManager::RegisterType<ConveyorBeltBehaviour>();
 }
 
 void Application::_Load() {

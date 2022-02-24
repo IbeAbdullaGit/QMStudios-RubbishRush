@@ -788,6 +788,12 @@ void DefaultSceneLayer::_CreateScene()
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/screendoor_transparency.glsl" }
 		});
 
+		//for moving the conveyor belt?
+		ShaderProgram::Sptr conveyorShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic_moving.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
+		});
+
 		// This shader handles our cel shading example
 		ShaderProgram::Sptr toonShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
@@ -2015,7 +2021,7 @@ void DefaultSceneLayer::_CreateScene()
 		}
 		Gameplay::GameObject::Sptr trashyE = scene->CreateGameObject("TrashyE");
 		{
-			trashyE->SetPostion(glm::vec3(0.5f, 1.49f, 3.3f));
+			trashyE->SetPostion(glm::vec3(0.8f, 1.49f, 3.3f));
 			trashyE->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
 			trashyE->SetScale(glm::vec3(1.0f, 1.46f, 1.090f));
 			// Add a render component
@@ -2080,21 +2086,33 @@ void DefaultSceneLayer::_CreateScene()
 			//Conveyor
 			Gameplay::MeshResource::Sptr conveyorMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("conveyor.obj");
 			Texture2D::Sptr conveyorTex = ResourceManager::CreateAsset<Texture2D>("textures/conayortex.png");
-			Gameplay::Material::Sptr conveyorMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+			Gameplay::Material::Sptr conveyorMaterial = ResourceManager::CreateAsset<Gameplay::Material>(conveyorShader);
 			{
 				conveyorMaterial->Name = "Conveyor";
 				conveyorMaterial->Set("u_Material.Diffuse", conveyorTex);
 				conveyorMaterial->Set("u_Material.Shininess", 0.2f);
+				
 			}
 			Gameplay::GameObject::Sptr conveyor = scene->CreateGameObject("Conveyor");
 			{
-				conveyor->SetPostion(glm::vec3(-2.13f, -4.49f, 0.0f));
+				conveyor->SetPostion(glm::vec3(-2.13f, 0.01f, 0.0f));
 				conveyor->SetRotation(glm::vec3(90.0f, 0.0f, -75.0f));
 				conveyor->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
 
 				RenderComponent::Sptr renderer = conveyor->Add<RenderComponent>();
 				renderer->SetMesh(conveyorMesh);
 				renderer->SetMaterial(conveyorMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = conveyor->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.28f, 0.151f, 1.52f));
+				physics->AddCollider(box);
+				Gameplay::Physics::TriggerVolume::Sptr volume = conveyor->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetScale(glm::vec3(0.28f, 0.041f, 1.52f));
+				box2->SetPosition(glm::vec3(0.0f, 0.13f, 0.0f));
+				volume->AddCollider(box2);
+				ConveyorBeltBehaviour::Sptr behaviour2 = conveyor->Add<ConveyorBeltBehaviour>();
 			}
 			//Cup
 			Gameplay::GameObject::Sptr cupModel = scene->CreateGameObject("cup Modelling");

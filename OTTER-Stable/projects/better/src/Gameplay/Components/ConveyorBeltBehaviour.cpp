@@ -16,10 +16,14 @@ void ConveyorBeltBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Gamepla
 	LOG_INFO("Body has entered our trigger volume: {}", body->GetGameObject()->Name);
 	_playerInTrigger = true;
 	//may need to change the math for this
-	glm::vec3 direction = glm::normalize(glm::mat3_cast(GetGameObject()->GetRotation()) * glm::vec3(0, 1, 0)) * -1.0f;
+	glm::mat3 globalRot = glm::mat3_cast(GetGameObject()->GetRotation());
+	direction = glm::normalize(glm::vec3(globalRot[2][0], globalRot[2][1], globalRot[2][2]));
+	direction *= -1.0f;
 	direction *= speed;
+
 	//add force to objects that collide
 	body->ApplyImpulse(direction);
+	body2 = body;
 	//body->GetGameObject()->Get<RigidBody>()->ApplyImpulse(direction);
 	
 	
@@ -35,8 +39,12 @@ void ConveyorBeltBehaviour::Update(float deltatime)
 {
 	currentScroll = currentScroll + deltatime * speed * visualSpeedScalar;
 	//texture offset using set function, create a new shader for this?
-	//GetGameObject()->Get<RenderComponent>()->GetMaterial()->
+	GetGameObject()->Get<RenderComponent>()->GetMaterial()->Set("u_Scale", currentScroll);
 	//GetComponent<Renderer>().material.mainTextureOffset = new Vector2(0, currentScroll);
+	if (_playerInTrigger)
+	{
+		body2->ApplyImpulse(direction);
+	}
 
 }
 void ConveyorBeltBehaviour::RenderImGui() { }

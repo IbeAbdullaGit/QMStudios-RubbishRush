@@ -28,7 +28,7 @@ nlohmann::json JumpBehaviour::ToJson() const {
 void JumpBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>& body)
 {
 	//if the triggering body has the ground tag, aka is the floor
-	if (body->GetGameObject()->Get<GroundBehaviour>())
+	if (body->GetGameObject()->Has<GroundBehaviour>())
 	{
 		activated = true;
 	}
@@ -36,7 +36,11 @@ void JumpBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physi
 
 void JumpBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& body)
 {
-	activated = false; //when u leave the floor, should disable jump
+	//activated = false; //when u leave the floor, should disable jump
+	if (body->GetGameObject()->Has<GroundBehaviour>())
+	{
+		activated = false;
+	}
 }
 
 JumpBehaviour::JumpBehaviour() :
