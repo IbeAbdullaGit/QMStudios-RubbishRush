@@ -56,6 +56,7 @@
 #include "Gameplay/Components/FollowBehaviour.h"
 #include "Gameplay/Components/MorphAnimator.h"
 #include "Gameplay/Components/MorphMeshRenderer.h"
+#include "Gameplay/Components/GroundBehaviour.h"
 
 
 // Physics
@@ -82,13 +83,82 @@ TutorialSceneLayer::TutorialSceneLayer() :
 	ApplicationLayer()
 {
 	Name = "Tutorial Scene";
-	Overrides = AppLayerFunctions::OnAppLoad;
+	Overrides = AppLayerFunctions::OnAppLoad | AppLayerFunctions::OnUpdate;
 }
 
 TutorialSceneLayer::~TutorialSceneLayer() = default;
 
 void TutorialSceneLayer::OnAppLoad(const nlohmann::json& config) {
 	_CreateScene();
+}
+
+double tutlastFrame = glfwGetTime();
+void TutorialSceneLayer::OnUpdate()
+{
+	Application& app = Application::Get();
+	_tutcurrentScene = app.CurrentScene();
+
+	// Figure out the current time, and the time since the last frame
+	double thisFrame = glfwGetTime();
+	float dt = static_cast<float>(thisFrame - tutlastFrame);
+
+	if (!activated)
+	{
+		trashyM = _tutcurrentScene->FindObjectByName("Trashy");
+	}
+
+
+	if (_tutcurrentScene != nullptr) {
+		//MENU ANIMATED UPDATED
+		if (_tutcurrentScene->IsPlaying && !done)
+		{
+			if (_tutcurrentScene->score == 1)
+			{
+				done = true;
+			}
+		}
+		else if (_tutcurrentScene->IsPlaying && done) {
+
+			Gameplay::GameObject::Sptr trashM = _tutcurrentScene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
+			{
+				trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.0f));
+				trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
+				trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+				// Add a render component
+				RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
+				renderer->SetMesh(trashMesh);
+				renderer->SetMaterial(trashMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = trashM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);
+				Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
+
+
+
+			}
+		}
+	}
+// Grab shorthands to the camera and shader from the _currentScene
+Gameplay::Camera::Sptr camera = _tutcurrentScene->MainCamera;
+
+camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
+camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
+	
+	// Store timing for next loop
+	tutlastFrame = thisFrame;
+
 }
 
 void TutorialSceneLayer::_CreateScene()
@@ -276,8 +346,8 @@ void TutorialSceneLayer::_CreateScene()
 		}
 		Gameplay::GameObject::Sptr trashyM = scene->CreateGameObject("Trashy"); //SEARCHBAR TAGS: PLAYERENTITY, PLAYER, TRASHYENTITY, TRASHYOBJECT
 		{
-			trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f));
-			trashyM->SetRotation(glm::vec3(90.0f, 0.0f, 270.0f));
+			trashyM->SetPostion(glm::vec3(6.318f, -0.788f, 0.106f));
+			trashyM->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
 			trashyM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
 			RenderComponent::Sptr renderer = trashyM->Add<RenderComponent>();
@@ -384,7 +454,305 @@ void TutorialSceneLayer::_CreateScene()
 			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
 			box->SetScale(glm::vec3(50.0f, -0.12f, 50.0f));
 			physics->AddCollider(box);
+			Gameplay::Physics::TriggerVolume::Sptr volume = plane->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+			box2->SetScale(glm::vec3(50.0f, -0.12f, 50.0f));
+			volume->AddCollider(box2);
+			//give to our floor tiles to tag them
+			GroundBehaviour::Sptr behaviour = plane->Add<GroundBehaviour>();
+
 		}
+
+		//placeholder trash object  TAGS: PLACEHOLDER, this is how u create a new object for trash
+		//setup trash
+		Gameplay::MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("cup.obj");
+		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/acup.jpg");
+		// Create our material
+		Gameplay::Material::Sptr trashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		{
+			trashMaterial->Name = "Trash";
+			trashMaterial->Set("u_Material.Diffuse", trashTex);
+			trashMaterial->Set("u_Material.Shininess", 0.3f);
+
+		}
+
+
+		{
+			Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
+			{
+				trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.0f));
+				trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
+				trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+				// Add a render component
+				RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
+				renderer->SetMesh(trashMesh);
+				renderer->SetMaterial(trashMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = trashM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);
+				Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
+			}
+
+			Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
+			{
+				trash2->SetPostion(glm::vec3(-5.75f, 2.27f, 0.0f));
+				trash2->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
+				trash2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+				// Add a render component
+				RenderComponent::Sptr renderer = trash2->Add<RenderComponent>();
+				renderer->SetMesh(trashMesh);
+				renderer->SetMaterial(trashMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = trash2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);
+				Gameplay::Physics::TriggerVolume::Sptr volume = trash2->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
+			}
+
+		}
+
+
+		//layout
+		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tutorial level.obj");
+		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/layout.jpg");
+		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		{
+			layoutMaterial->Name = "Layout";
+			layoutMaterial->Set("u_Material.Diffuse", layoutTex);
+			layoutMaterial->Set("u_Material.Shininess", 0.0f);
+		}
+		Gameplay::GameObject::Sptr layout = scene->CreateGameObject("Layout");
+		{
+			layout->SetPostion(glm::vec3(6.33, -10.32f, 0.0f));
+			layout->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+			layout->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+
+			RenderComponent::Sptr renderer = layout->Add<RenderComponent>();
+			renderer->SetMesh(layoutMesh);
+			renderer->SetMaterial(layoutMaterial);
+		}
+		// Tutorial walls walls
+		{
+			//Walls
+			Gameplay::GameObject::Sptr layoutwall1 = scene->CreateGameObject("Layout Wall Front");
+			{
+				layoutwall1->SetPostion(glm::vec3(7.00f, -13.750, 0.84f));
+				layoutwall1->SetScale(glm::vec3(3.04f, 0.27f, 1.17f));
+				Gameplay::Physics::RigidBody::Sptr wall1Phys = layoutwall1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wall1 = Gameplay::Physics::BoxCollider::Create();
+				//wall1->SetPosition(glm::vec3(11.85f, 3.23f, 1.05f));
+				wall1->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wall1->SetScale(glm::vec3(3.04f, 0.27f, 1.17f));
+				wall1->SetExtents(glm::vec3(2.2f, 2.0f, 2.0f));
+				wall1Phys->AddCollider(wall1);
+			}
+
+			Gameplay::GameObject::Sptr layoutwall2 = scene->CreateGameObject("Layout Wall Back");
+			{
+				layoutwall2->SetPostion(glm::vec3(6.410f, 2.380f, 0.84f));
+				layoutwall2->SetScale(glm::vec3(1.04f, 0.27f, 1.17f));
+				Gameplay::Physics::RigidBody::Sptr wall2Phys = layoutwall2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wall2 = Gameplay::Physics::BoxCollider::Create();
+				//wall1->SetPosition(glm::vec3(11.85f, 3.23f, 1.05f));
+				wall2->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wall2->SetScale(glm::vec3(2.460f, 0.27f, 1.17f));
+				wall2->SetExtents(glm::vec3(2.3f, 2.0f, 2.0f));
+				wall2Phys->AddCollider(wall2);
+			}
+
+			//Right Bottom
+			Gameplay::GameObject::Sptr layoutwall3 = scene->CreateGameObject("Layout Wall Right Bottom");
+			{
+				layoutwall3->SetPostion(glm::vec3(0.64f, -0.79f, 1.0f));
+				layoutwall3->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				Gameplay::Physics::RigidBody::Sptr wall3Phys = layoutwall3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wall3 = Gameplay::Physics::BoxCollider::Create();
+				wall3->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wall3->SetScale(glm::vec3(0.15f, 3.020f, 2.37f));
+				wall3->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				wall3Phys->AddCollider(wall3);
+			}
+
+			//Left Bottom
+			Gameplay::GameObject::Sptr layoutwall4 = scene->CreateGameObject("Layout Wall Left Bottom");
+			{
+				layoutwall4->SetPostion(glm::vec3(11.950f, -0.79f, 1.0f));
+				layoutwall4->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				Gameplay::Physics::RigidBody::Sptr wall4Phys = layoutwall4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wall4 = Gameplay::Physics::BoxCollider::Create();
+				wall4->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wall4->SetScale(glm::vec3(0.15f, 3.020f, 2.37f));
+				wall4->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				wall4Phys->AddCollider(wall4);
+			}
+			
+			//Center Left
+			Gameplay::GameObject::Sptr layoutwall5 = scene->CreateGameObject("Layout Wall Center Left");
+			{
+				layoutwall5->SetPostion(glm::vec3(10.450f, -5.650f, 1.0f));
+				layoutwall5->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				Gameplay::Physics::RigidBody::Sptr wall5Phys = layoutwall5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wall5 = Gameplay::Physics::BoxCollider::Create();
+				wall5->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wall5->SetScale(glm::vec3(2.620, 1.78f, 2.02f));
+				wall5->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				wall5Phys->AddCollider(wall5);
+			}
+			//Center Right
+			Gameplay::GameObject::Sptr layoutwall6 = scene->CreateGameObject("Layout Wall Center Right");
+			{
+				layoutwall6->SetPostion(glm::vec3(2.060f, -5.650f, 1.0f));
+				layoutwall6->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				Gameplay::Physics::RigidBody::Sptr wall6Phys = layoutwall6->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wall6 = Gameplay::Physics::BoxCollider::Create();
+				wall6->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wall6->SetScale(glm::vec3(2.670, 1.78f, 2.02f));
+				wall6->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				wall6Phys->AddCollider(wall6);
+			}
+
+			Gameplay::GameObject::Sptr layoutwall7 = scene->CreateGameObject("Layout Wall Top Right");
+			{
+				layoutwall7->SetPostion(glm::vec3(1.71f, -11.12f, 1.0f));
+				layoutwall7->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				Gameplay::Physics::RigidBody::Sptr wall7Phys = layoutwall7->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wall7 = Gameplay::Physics::BoxCollider::Create();
+				wall7->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wall7->SetScale(glm::vec3(0.310, 3.50f, 2.02f));
+				wall7->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				wall7Phys->AddCollider(wall7);
+			}
+			Gameplay::GameObject::Sptr layoutwall8 = scene->CreateGameObject("Layout Wall Top Left");
+			{
+				layoutwall8->SetPostion(glm::vec3(11.1f, -11.12f, 1.0f));
+				layoutwall8->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				Gameplay::Physics::RigidBody::Sptr wall8Phys = layoutwall8->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wall8 = Gameplay::Physics::BoxCollider::Create();
+				wall8->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wall8->SetScale(glm::vec3(0.310, 3.50f, 2.02f));
+				wall8->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				wall8Phys->AddCollider(wall8);
+			}
+
+		}
+
+		//bin model
+		Gameplay::MeshResource::Sptr binMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("BigBenClosed_000001.obj");
+		Texture2D::Sptr binTex = ResourceManager::CreateAsset<Texture2D>("textures/bigben.png");
+		// Create our material
+		Gameplay::Material::Sptr binMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		{
+			binMaterial->Name = "Bin";
+			binMaterial->Set("u_Material.Diffuse", binTex);
+			binMaterial->Set("u_Material.Shininess", 1.0f);
+
+		}
+		Gameplay::GameObject::Sptr binM = scene->CreateGameObject("Bin");
+		{
+			binM->SetPostion(glm::vec3(6.410f, -11.510f, 0.106f));
+			binM->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+			binM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+			// Add a render component
+			RenderComponent::Sptr renderer = binM->Add<RenderComponent>();
+			renderer->SetMesh(binMesh);
+			renderer->SetMaterial(binMaterial);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = binM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create(glm::vec3(2.0f, 2.23f, 4.25f));
+			box->SetPosition(glm::vec3(0.0f, 0.4f, 0.0f));
+			box->SetScale(glm::vec3(0.25f, 0.22f, 0.2f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//heavy
+			//physics->SetMass(10.0f);
+
+			Gameplay::Physics::TriggerVolume::Sptr volume = binM->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create(glm::vec3(2.0f, 2.23f, 4.25f));
+			box2->SetPosition(glm::vec3(0.0f, 0.4f, 0.0f));
+			box2->SetScale(glm::vec3(0.25f, 0.22f, 0.2f));
+			volume->AddCollider(box2);
+			SubmittingTrashBehaviour::Sptr behaviour2 = binM->Add<SubmittingTrashBehaviour>();
+
+			//ANIMATION STUFF////
+			MorphMeshRenderer::Sptr morph1 = binM->Add<MorphMeshRenderer>();
+			morph1->SetMorphMeshRenderer(binMesh, binMaterial);
+			MorphAnimator::Sptr morph2 = binM->Add<MorphAnimator>();
+
+			//idle frames
+			//std::vector <MeshResource::Sptr> frames2;
+			Gameplay::MeshResource::Sptr binMesh8 = ResourceManager::CreateAsset<Gameplay::MeshResource>("BigBenClosed_000001.obj");
+			std::vector<Gameplay::MeshResource::Sptr> closed;
+			closed.push_back(binMesh8);
+			behaviour2->getIdle(closed); //send idle frames to behaviour
+
+			morph2->SetInitial();
+			morph2->SetFrameTime(0.2f);
+			morph2->SetFrames(closed);
+
+		}	
+		Font::Sptr junkDogFont = ResourceManager::CreateAsset<Font>("fonts/JunkDog.otf", 35.f); //Font path, font size
+		junkDogFont->Bake();
+
+		Gameplay::GameObject::Sptr feedbackUI = scene->CreateGameObject("Feedback UI");
+		{
+			RectTransform::Sptr feedbackTransform = feedbackUI->Add<RectTransform>();
+			feedbackTransform->SetPosition({ 690, 750 });
+			feedbackTransform->SetSize({ 35,35 });
+
+			GuiPanel::Sptr feedbackPanel = feedbackUI->Add<GuiPanel>();
+			feedbackPanel->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 0.f));
+
+			//Temporary for Feedback, lets make this prettier later
+			Gameplay::GameObject::Sptr pickupFeedback = scene->CreateGameObject("Pickup Feedback");
+			{
+				pickupFeedback->Add<RectTransform>();
+
+				GuiText::Sptr text = pickupFeedback->Add<GuiText>();
+				text->SetText("Press E to Pickup Trash!");
+				text->SetFont(junkDogFont);
+				text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+				text->IsEnabled = false;
+			}
+
+		}
+
+
+		Gameplay::GameObject::Sptr submitFeedback = scene->CreateGameObject("Submit Feedback");
+		{
+			submitFeedback->Add<RectTransform>();
+
+			GuiText::Sptr text = submitFeedback->Add<GuiText>();
+			text->SetText("Press E to Dump the Trash!");
+			text->SetFont(junkDogFont);
+			text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+			text->IsEnabled = false;
+		}
+
+
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);
 
