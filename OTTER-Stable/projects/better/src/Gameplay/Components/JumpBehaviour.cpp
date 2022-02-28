@@ -40,6 +40,7 @@ void JumpBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physi
 	if (body->GetGameObject()->Has<GroundBehaviour>())
 	{
 		activated = false;
+		_impulse = 2.0f;
 	}
 }
 
@@ -63,7 +64,7 @@ void JumpBehaviour::Update(float deltaTime) {
 	{
 		Application& app = Application::Get();
 
-		if (glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE)) {
+		if (glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE)&& GLFW_PRESS) {
 			_body->ApplyImpulse(glm::vec3(0.0f, 0.0f, _impulse));
 			Gameplay::IComponent::Sptr ptr = Panel.lock();
 			if (ptr != nullptr) {

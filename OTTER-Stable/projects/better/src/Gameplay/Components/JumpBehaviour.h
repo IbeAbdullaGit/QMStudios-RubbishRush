@@ -27,7 +27,7 @@ public:
 
 protected:
 	float _impulse;
-	bool activated = true;
+	bool activated = false;
 	bool _isPressed = false;
 	Gameplay::Physics::RigidBody::Sptr _body;
 	
