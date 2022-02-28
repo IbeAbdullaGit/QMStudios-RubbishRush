@@ -158,6 +158,10 @@ void DefaultSceneLayer::OnUpdate()
 		objective = _currentScene->FindObjectByName("Objective UI Canvas");
 		returnUI = _currentScene->FindObjectByName("Return Feedback");
 		submitUI = _currentScene->FindObjectByName("Submit Feedback");
+		//starting variables
+		_currentScene->score = 0;
+		_currentScene->trash = 4;
+		_currentScene->held = 0;
 
 		//only run this once
 		activated = true;

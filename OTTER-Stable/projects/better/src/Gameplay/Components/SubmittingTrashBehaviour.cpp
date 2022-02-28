@@ -54,7 +54,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 	if (activated)
 	{
 		
-		if (glfwGetKey(app.GetWindow(), GLFW_KEY_E))
+		if (glfwGetKey(app.GetWindow(), GLFW_KEY_E) && GLFW_PRESS)
 		{
 			
 			//get our scene, delete this line later

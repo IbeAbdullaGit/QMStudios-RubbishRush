@@ -105,6 +105,11 @@ void TutorialSceneLayer::OnUpdate()
 	if (!activated)
 	{
 		trashyM = _tutcurrentScene->FindObjectByName("Trashy");
+		activated = true;
+		//starting variables
+		_tutcurrentScene->score = 0;
+		_tutcurrentScene->trash = 1;
+		_tutcurrentScene->held = 0;
 	}
 
 
