@@ -1,6 +1,10 @@
 #pragma once
 #include "Application/ApplicationLayer.h"
 #include "json.hpp"
+#include <GLM/glm.hpp>
+#include "Utils/Macros.h"
+#include "Gameplay/Scene.h"
+#include "Gameplay/MeshResource.h"
 
 /**
  * This example layer handles creating a default test scene, which we will use
@@ -16,7 +20,17 @@ public:
 	// Inherited from ApplicationLayer
 
 	virtual void OnAppLoad(const nlohmann::json& config) override;
+	void OnUpdate() override;
 
 protected:
 	void _CreateScene();
+	Gameplay::Scene::Sptr _tutcurrentScene;
+	Gameplay::MeshResource::Sptr trashMesh;
+	Gameplay::Material::Sptr trashMaterial;
+
+	Gameplay::GameObject::Sptr trashyM;
+	
+	bool activated = false;
+	bool done = false;
+	bool nobreak = false;
 };
