@@ -41,16 +41,16 @@ void SimpleCameraControl::Update(float deltaTime)
 		_prevMousePos = currentMousePos;
 
 		glm::vec3 input = glm::vec3(0.0f);
-		if (InputEngine::IsKeyDown(GLFW_KEY_W)) {
+		if (InputEngine::IsKeyDown(GLFW_KEY_UP)) {
 			input.z -= _moveSpeeds.x;
 		}
-		if (InputEngine::IsKeyDown(GLFW_KEY_S)) {
+		if (InputEngine::IsKeyDown(GLFW_KEY_DOWN)) {
 			input.z += _moveSpeeds.x;
 		}
-		if (InputEngine::IsKeyDown(GLFW_KEY_A)) {
+		if (InputEngine::IsKeyDown(GLFW_KEY_LEFT)) {
 			input.x -= _moveSpeeds.y;
 		}
-		if (InputEngine::IsKeyDown(GLFW_KEY_D)) {
+		if (InputEngine::IsKeyDown(GLFW_KEY_RIGHT)) {
 			input.x += _moveSpeeds.y;
 		}
 		if (InputEngine::IsKeyDown(GLFW_KEY_LEFT_CONTROL)) {

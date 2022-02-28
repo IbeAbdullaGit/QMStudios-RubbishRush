@@ -890,7 +890,7 @@ void DefaultSceneLayer::_CreateScene()
 		sphere->GenerateMesh();
 
 		// Set up the scene's camera
-		Gameplay::GameObject::Sptr camera = scene->CreateGameObject("Main Camera");
+		Gameplay::GameObject::Sptr camera = scene->MainCamera->GetGameObject()->SelfRef();
 		{
 			camera->SetPostion(glm::vec3(-1.42f, 4.69f, 5.73f));
 			//camera->SetPostion(glm::vec3(-1.42f, 18.67f, 17.420));
@@ -898,11 +898,7 @@ void DefaultSceneLayer::_CreateScene()
 			camera->SetRotation(glm::vec3(59.0f, 0.0f, 177.0f));
 			camera->SetScale(glm::vec3(1.0f, 1.0f, 3.1f));
 
-			Gameplay::Camera::Sptr cam = camera->Add<Gameplay::Camera>();
-			//cam->SetOrthoEnabled(true);
-			//cam->SetOrthoVerticalScale(10.0f);
-			// Make sure that the camera is set as the scene's main camera!
-			scene->MainCamera = cam;
+			camera->Add<SimpleCameraControl>();
 
 		}
 

@@ -20,6 +20,7 @@ public:
 
 	// Inherited from IComponent
 
+	virtual void Awake() override;
 	virtual void OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) override;
 	virtual void OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) override;
 	virtual void Update(float deltaTime) override;
