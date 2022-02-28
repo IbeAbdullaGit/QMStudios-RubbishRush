@@ -320,7 +320,7 @@ void TutorialSceneLayer::_CreateScene()
 		sphere->GenerateMesh();
 
 		// Set up the scene's camera
-		Gameplay::GameObject::Sptr camera = scene->CreateGameObject("Main Camera");
+		Gameplay::GameObject::Sptr camera = scene->MainCamera->GetGameObject()->SelfRef();
 		{
 			camera->SetPostion(glm::vec3(-1.42f, 4.69f, 5.73f));
 			//camera->SetPostion(glm::vec3(-1.42f, 18.67f, 17.420));
@@ -328,12 +328,12 @@ void TutorialSceneLayer::_CreateScene()
 			camera->SetRotation(glm::vec3(59.0f, 0.0f, 177.0f));
 			camera->SetScale(glm::vec3(1.0f, 1.0f, 3.1f));
 
-			Gameplay::Camera::Sptr cam = camera->Add<Gameplay::Camera>();
+			//Gameplay::Camera::Sptr cam = camera->Add<Gameplay::Camera>();
 			//cam->SetOrthoEnabled(true);
 			//cam->SetOrthoVerticalScale(10.0f);
 			// Make sure that the camera is set as the scene's main camera!
-			scene->MainCamera = cam;
-
+			//scene->MainCamera = cam;
+			camera->Add<SimpleCameraControl>();
 		}
 
 		// Set up all our sample objects
@@ -486,7 +486,7 @@ void TutorialSceneLayer::_CreateScene()
 		{
 			Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
 			{
-				trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.0f));
+				trashM->SetPostion(glm::vec3(8.80f, -8.53f, 0.0f));
 				trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
 				trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 				// Add a render component
@@ -513,7 +513,7 @@ void TutorialSceneLayer::_CreateScene()
 
 			Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
 			{
-				trash2->SetPostion(glm::vec3(-5.75f, 2.27f, 0.0f));
+				trash2->SetPostion(glm::vec3(4.140f, -8.530f, 0.0f));
 				trash2->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
 				trash2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 				// Add a render component
@@ -543,7 +543,7 @@ void TutorialSceneLayer::_CreateScene()
 
 		//layout
 		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tutorial level.obj");
-		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/layout.jpg");
+		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/tutorial tex.jpg");
 		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
 		{
 			layoutMaterial->Name = "Layout";
