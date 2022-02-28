@@ -543,7 +543,7 @@ void TutorialSceneLayer::_CreateScene()
 
 		//layout
 		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tutorial level.obj");
-		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/layout.jpg");
+		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/tutorial tex.jpg");
 		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
 		{
 			layoutMaterial->Name = "Layout";
