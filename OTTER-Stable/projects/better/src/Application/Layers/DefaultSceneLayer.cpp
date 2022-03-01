@@ -92,6 +92,8 @@ DefaultSceneLayer::~DefaultSceneLayer() = default;
 
 void DefaultSceneLayer::OnAppLoad(const nlohmann::json& config) {
 	_CreateScene();
+	
+
 }
 std::string TimeCountdown(float DisplayTime) { //Timer Function
 	float minutes = floorf(DisplayTime / 60);
@@ -127,7 +129,7 @@ void DefaultSceneLayer::OnUpdate()
 {
 	Application& app = Application::Get();
 	_currentScene = app.CurrentScene();
-
+	
 	// Figure out the current time, and the time since the last frame
 	double thisFrame = glfwGetTime();
 	float dt = static_cast<float>(thisFrame - lastFrame);
@@ -2455,8 +2457,9 @@ void DefaultSceneLayer::_CreateScene()
 		ResourceManager::SaveManifest("scene-manifest.json");
 		// Save the scene to a JSON file
 		scene->Save("scene.json");
-
+		
 		// Send the scene to the application
 		app.LoadScene(scene);
+		scene->IsPlaying = true;
 	}
 }

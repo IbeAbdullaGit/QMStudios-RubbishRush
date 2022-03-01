@@ -70,6 +70,8 @@ void JumpBehaviour::Update(float deltaTime) {
 			if (ptr != nullptr) {
 				ptr->IsEnabled = !ptr->IsEnabled;
 			}
+
+			activated = false; //single jump
 		}
 	}
 }

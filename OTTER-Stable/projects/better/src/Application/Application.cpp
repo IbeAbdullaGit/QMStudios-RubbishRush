@@ -164,7 +164,7 @@ void Application::_Run()
 	// TODO: Register layers
 	_layers.push_back(std::make_shared<GLAppLayer>());
 	//_layers.push_back(std::make_shared<DefaultSceneLayer>());
-	_layers.push_back(std::make_shared<TutorialSceneLayer>());
+	
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
 	_layers.push_back(std::make_shared<RenderLayer>());
 	//_layers.push_back(std::make_shared<ParticleLayer>());
@@ -175,6 +175,7 @@ void Application::_Run()
 	if (_isEditor) {
 		_layers.push_back(std::make_shared<ImGuiDebugLayer>());
 	}
+	_layers.push_back(std::make_shared<TutorialSceneLayer>());
 
 	// Either load the settings, or use the defaults
 	_ConfigureSettings();
@@ -239,12 +240,35 @@ void Application::_Run()
 		
 		// Core update loop
 		if (_currentScene != nullptr) {
+			
 			_Update();
 			_LateUpdate();
 			_PreRender();
 			_RenderScene();
 			_PostRender();
 
+			//testing switch scene
+			if (!change_scene)
+			{
+				if (glfwGetKey(GetWindow(), GLFW_KEY_N) && GLFW_PRESS)
+				{
+					//remove current layer
+					_layers.pop_back(); //MUST BE THE LAST ONE ADDED
+					//add new layer
+					_layers.push_back(std::make_shared<DefaultSceneLayer>());
+					_ConfigureSettings();
+
+					//load in the new scene, at the back of the stack
+					_layers.back()->OnAppLoad(_appSettings);
+
+					std::cout << "Switched\n";
+					//must do so that we don't get multiple activations
+					change_scene = true;
+
+					//now add "loading screen"
+
+				}
+			}
 		}
 
 		// Store timing for next loop

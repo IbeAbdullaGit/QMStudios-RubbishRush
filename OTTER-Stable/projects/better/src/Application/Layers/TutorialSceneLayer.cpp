@@ -83,10 +83,36 @@ TutorialSceneLayer::TutorialSceneLayer() :
 	ApplicationLayer()
 {
 	Name = "Tutorial Scene";
-	Overrides = AppLayerFunctions::OnAppLoad | AppLayerFunctions::OnUpdate;
+	Overrides = AppLayerFunctions::OnAppLoad | AppLayerFunctions::OnUpdate | AppLayerFunctions::OnSceneUnload;
 }
 
 TutorialSceneLayer::~TutorialSceneLayer() = default;
+
+void TutorialSceneLayer::OnSceneUnload()
+{
+	//we no longer want to run the update function
+	doUpdate = false;
+	//delete all objects in the scene
+	//might not be necessary?
+	_tutcurrentScene->RemoveGameObject(trashyM);
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Plane"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Trash1"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Trash2"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Front"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Back"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Right Bottom"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Left Bottom"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Center Left"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Center Right"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Top Right"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Top Left"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Bin"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Feedback UI"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Pickup Feedback"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Submit Feedback"));
+
+}
 
 void TutorialSceneLayer::OnAppLoad(const nlohmann::json& config) {
 	_CreateScene();
@@ -95,74 +121,77 @@ void TutorialSceneLayer::OnAppLoad(const nlohmann::json& config) {
 double tutlastFrame = glfwGetTime();
 void TutorialSceneLayer::OnUpdate()
 {
-	Application& app = Application::Get();
-	_tutcurrentScene = app.CurrentScene();
-
-	// Figure out the current time, and the time since the last frame
-	double thisFrame = glfwGetTime();
-	float dt = static_cast<float>(thisFrame - tutlastFrame);
-
-	if (!activated)
+	if (doUpdate)
 	{
-		trashyM = _tutcurrentScene->FindObjectByName("Trashy");
-		activated = true;
-		//starting variables
-		_tutcurrentScene->score = 0;
-		_tutcurrentScene->trash = 1;
-		_tutcurrentScene->held = 0;
-	}
+		Application& app = Application::Get();
+		_tutcurrentScene = app.CurrentScene();
 
+		// Figure out the current time, and the time since the last frame
+		double thisFrame = glfwGetTime();
+		float dt = static_cast<float>(thisFrame - tutlastFrame);
 
-	if (_tutcurrentScene != nullptr) {
-		//MENU ANIMATED UPDATED
-		if (_tutcurrentScene->IsPlaying && !done)
+		if (!activated)
 		{
-			if (_tutcurrentScene->score == 1)
+			trashyM = _tutcurrentScene->FindObjectByName("Trashy");
+			activated = true;
+			//starting variables
+			_tutcurrentScene->score = 0;
+			_tutcurrentScene->trash = 1;
+			_tutcurrentScene->held = 0;
+		}
+
+
+		if (_tutcurrentScene != nullptr) {
+			//MENU ANIMATED UPDATED
+			if (_tutcurrentScene->IsPlaying && !done)
 			{
-				done = true;
+				if (_tutcurrentScene->score == 1)
+				{
+					done = true;
+				}
+			}
+			else if (_tutcurrentScene->IsPlaying && done) {
+
+				Gameplay::GameObject::Sptr trashM = _tutcurrentScene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
+				{
+					trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.0f));
+					trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
+					trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+					// Add a render component
+					RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
+					renderer->SetMesh(trashMesh);
+					renderer->SetMaterial(trashMaterial);
+					// Add a dynamic rigid body to this monkey
+					Gameplay::Physics::RigidBody::Sptr physics = trashM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+					Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+					box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+					box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+					//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+					//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+					//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+					physics->AddCollider(box);
+					//physics->SetMass(0.0f);
+					Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
+					Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+					box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+					box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+					volume->AddCollider(box2);
+					CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
+
+
+
+				}
 			}
 		}
-		else if (_tutcurrentScene->IsPlaying && done) {
+		// Grab shorthands to the camera and shader from the _currentScene
+		Gameplay::Camera::Sptr camera = _tutcurrentScene->MainCamera;
 
-			Gameplay::GameObject::Sptr trashM = _tutcurrentScene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
-			{
-				trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.0f));
-				trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
-				trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-				// Add a render component
-				RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
-				renderer->SetMesh(trashMesh);
-				renderer->SetMaterial(trashMaterial);
-				// Add a dynamic rigid body to this monkey
-				Gameplay::Physics::RigidBody::Sptr physics = trashM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
-				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
-				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
-				physics->AddCollider(box);
-				//physics->SetMass(0.0f);
-				Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
-				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
-				volume->AddCollider(box2);
-				CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
+		camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
+		camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
 
-
-
-			}
-		}
+		// Store timing for next loop
+		tutlastFrame = thisFrame;
 	}
-// Grab shorthands to the camera and shader from the _currentScene
-Gameplay::Camera::Sptr camera = _tutcurrentScene->MainCamera;
-
-camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
-camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
-	
-	// Store timing for next loop
-	tutlastFrame = thisFrame;
 
 }
 
@@ -402,6 +431,13 @@ void TutorialSceneLayer::_CreateScene()
 			Gameplay::MeshResource::Sptr trashyMesh10 = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashyIdle/trashyidle_000020.obj");
 			Gameplay::MeshResource::Sptr trashyMesh12 = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashyIdle/trashyidle_000030.obj");
 			Gameplay::MeshResource::Sptr trashyMesh9 = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashyIdle/trashyidle_000040.obj");
+			//jump frames
+			Gameplay::MeshResource::Sptr trashyJump1 = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashyJump/trashy jump_000001.obj");
+			Gameplay::MeshResource::Sptr trashyJump2 = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashyJump/trashy jump_000005.obj");
+			Gameplay::MeshResource::Sptr trashyJump3 = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashyJump/trashy jump_000010.obj");
+			Gameplay::MeshResource::Sptr trashyJump4 = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashyJump/trashy jump_000013.obj");
+			Gameplay::MeshResource::Sptr trashyJump5 = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashyJump/trashy jump_000016.obj");
+			Gameplay::MeshResource::Sptr trashyJump6 = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashyJump/trashy jump_000022.obj");
 
 			idle.push_back(trashyMesh8);
 			idle.push_back(trashyMesh11);
@@ -426,6 +462,16 @@ void TutorialSceneLayer::_CreateScene()
 			//for changing animations
 			morph2->SetIdle(idle);
 			morph2->SetWalking(walking);
+
+			//jump frames
+			jumping.push_back(trashyJump1);
+			jumping.push_back(trashyJump2);
+			jumping.push_back(trashyJump3);
+			jumping.push_back(trashyJump4);
+			jumping.push_back(trashyJump5);
+			jumping.push_back(trashyJump6);
+
+			morph2->SetJumping(jumping);
 		}
 
 		Texture2D::Sptr planeTex = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
@@ -762,9 +808,9 @@ void TutorialSceneLayer::_CreateScene()
 		GuiBatcher::SetDefaultBorderRadius(8);
 
 		// Save the asset manifest for all the resources we just loaded
-		ResourceManager::SaveManifest("scene-manifest.json");
+		ResourceManager::SaveManifest("scene2-manifest.json");
 		// Save the scene to a JSON file
-		scene->Save("scene.json");
+		scene->Save("scene2.json");
 
 		// Send the scene to the application
 		app.LoadScene(scene);
