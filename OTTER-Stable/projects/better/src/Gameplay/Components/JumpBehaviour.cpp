@@ -36,11 +36,13 @@ void JumpBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physi
 
 void JumpBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& body)
 {
-	//activated = false; //when u leave the floor, should disable jump
-	if (body->GetGameObject()->Has<GroundBehaviour>())
-	{
-		activated = false;
-		_impulse = 2.0f;
+	if (body != nullptr)
+	{//activated = false; //when u leave the floor, should disable jump
+		if (body->GetGameObject()->Has<GroundBehaviour>())
+		{
+			activated = false;
+			_impulse = 2.0f;
+		}
 	}
 }
 

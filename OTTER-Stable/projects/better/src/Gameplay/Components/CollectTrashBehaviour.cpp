@@ -58,7 +58,7 @@ void CollectTrashBehaviour::Update(float deltatime)
 				//increment trash count?
 				_scene->trash += 1;
 				_scene->held += 1;
-				std::cout << "Current trash collected: " << _scene->trash << std::endl;
+				std::cout << "Current trash collected: " << _scene->held << std::endl;
 
 				activated = false;
 				ui->Get<GuiText>()->IsEnabled = false;
