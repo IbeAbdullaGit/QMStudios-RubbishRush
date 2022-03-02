@@ -164,7 +164,7 @@ void Application::_Run()
 	// TODO: Register layers
 	_layers.push_back(std::make_shared<GLAppLayer>());
 	//_layers.push_back(std::make_shared<DefaultSceneLayer>());
-	
+	_layers.push_back(std::make_shared<TutorialSceneLayer>());
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
 	_layers.push_back(std::make_shared<RenderLayer>());
 	//_layers.push_back(std::make_shared<ParticleLayer>());

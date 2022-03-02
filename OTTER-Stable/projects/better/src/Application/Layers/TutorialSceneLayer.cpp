@@ -152,35 +152,35 @@ void TutorialSceneLayer::OnUpdate()
 			}
 			else if (_tutcurrentScene->IsPlaying && done) {
 
-				Gameplay::GameObject::Sptr trashM = _tutcurrentScene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
-				{
-					trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.0f));
-					trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
-					trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-					// Add a render component
-					RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
-					renderer->SetMesh(trashMesh);
-					renderer->SetMaterial(trashMaterial);
-					// Add a dynamic rigid body to this monkey
-					Gameplay::Physics::RigidBody::Sptr physics = trashM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-					Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-					box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-					box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
-					//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-					//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
-					//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
-					physics->AddCollider(box);
-					//physics->SetMass(0.0f);
-					Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
-					Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-					box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-					box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
-					volume->AddCollider(box2);
-					CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
+				//Gameplay::GameObject::Sptr trashM = _tutcurrentScene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
+				//{
+				//	trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.0f));
+				//	trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
+				//	trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+				//	// Add a render component
+				//	RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
+				//	renderer->SetMesh(trashMesh);
+				//	renderer->SetMaterial(trashMaterial);
+				//	// Add a dynamic rigid body to this monkey
+				//	Gameplay::Physics::RigidBody::Sptr physics = trashM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				//	Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				//	box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				//	box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				//	//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//	//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//	//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				//	physics->AddCollider(box);
+				//	//physics->SetMass(0.0f);
+				//	Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
+				//	Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				//	box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				//	box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				//	volume->AddCollider(box2);
+				//	CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
 
 
 
-				}
+				//}
 			}
 		}
 		// Grab shorthands to the camera and shader from the _currentScene
@@ -309,35 +309,12 @@ void TutorialSceneLayer::_CreateScene()
 		scene->Lights.resize(8);
 		scene->Lights[0].Position = glm::vec3(11.77f, 0.21f, 3.0f);
 		scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[0].Range = 10.0f;
+		scene->Lights[0].Range = 5.0f;
 
 		scene->Lights[1].Position = glm::vec3(7.9f, -4.89f, 3.0f);
 		scene->Lights[1].Color = glm::vec3(1.0f, 1.0f, 1.1f);
-		scene->Lights[1].Range = 10.0f;
+		scene->Lights[1].Range = 2.5f;
 
-		scene->Lights[2].Position = glm::vec3(2.58f, -6.29f, 3.0f);
-		scene->Lights[2].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[2].Range = 10.0f;
-
-		scene->Lights[3].Position = glm::vec3(3.83f, 3.13f, 3.0f);
-		scene->Lights[3].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[3].Range = 10.0f;
-
-		scene->Lights[4].Position = glm::vec3(-0.150f, 5.470f, 3.0f);
-		scene->Lights[4].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[4].Range = 189.500f;
-
-		scene->Lights[5].Position = glm::vec3(-14.41f, 0.56f, 3.0f);
-		scene->Lights[5].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[5].Range = 10.0f;
-
-		scene->Lights[6].Position = glm::vec3(-8.17f, 0.87f, 3.0f);
-		scene->Lights[6].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[6].Range = 10.0f;
-
-		scene->Lights[7].Position = glm::vec3(-2.060f, -0.94f, 4.60f);
-		scene->Lights[7].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[7].Range = -0.600f;
 
 		// We'll create a mesh that is a simple plane that we can resize later
 		Gameplay::MeshResource::Sptr planeMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>();
@@ -491,6 +468,8 @@ void TutorialSceneLayer::_CreateScene()
 
 		Texture2D::Sptr planeTex = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
 
+		 
+
 		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
 		Gameplay::Material::Sptr planeMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader); {
 			planeMaterial->Name = "Plane";
@@ -543,6 +522,32 @@ void TutorialSceneLayer::_CreateScene()
 
 		}
 
+		Texture2D::Sptr TutTex1 = ResourceManager::CreateAsset<Texture2D>("textures/Tut1tex.png");
+
+		 
+
+		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
+		Gameplay::Material::Sptr TutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader); {
+			TutMaterial->Name = "Plane";
+			TutMaterial->Set("u_Material.Diffuse", TutTex1);
+			TutMaterial->Set("u_Material.Shininess", 1.0f);
+		}
+	
+		Gameplay::GameObject::Sptr TutM = scene->CreateGameObject("TutImage1");
+		{
+
+			TutM->SetPostion(glm::vec3(6.5f, -2.f, 3.0f));
+			TutM->SetRotation(glm::vec3(180.f, -180.0, -90.0f));
+
+			Gameplay::MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>();
+			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(3.0f), glm::vec2(3.0f)));
+			tiledMesh->GenerateMesh();
+
+			RenderComponent::Sptr renderer = TutM->Add<RenderComponent>();
+			renderer->SetMesh(tiledMesh);
+			renderer->SetMaterial(TutMaterial);
+
+		}
 
 		{
 			Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
@@ -804,21 +809,37 @@ void TutorialSceneLayer::_CreateScene()
 				text->IsEnabled = false;
 			}
 
+
+
+
+			Gameplay::GameObject::Sptr submitFeedback = scene->CreateGameObject("Submit Feedback");
+			{
+				submitFeedback->Add<RectTransform>();
+
+				GuiText::Sptr text = submitFeedback->Add<GuiText>();
+				text->SetText("Press E to Dump the Trash!");
+				text->SetFont(junkDogFont);
+				text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+				text->IsEnabled = false;
+			}
+
+			Gameplay::GameObject::Sptr returnFeedback = scene->CreateGameObject("Return Feedback");
+			{
+				returnFeedback->Add<RectTransform>()
+					->SetMax({ 0, -80.f });
+
+				GuiText::Sptr text = returnFeedback->Add<GuiText>();
+				text->SetText("Return to the Dumpster!");
+				text->SetFont(junkDogFont);
+				text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+				text->IsEnabled = false;
+			}
+			//returnFeedback->Get<GuiText>()->IsEnabled = false;
+			feedbackUI->AddChild(pickupFeedback);
+			feedbackUI->AddChild(submitFeedback);
+			feedbackUI->AddChild(returnFeedback);
+
 		}
-
-
-		Gameplay::GameObject::Sptr submitFeedback = scene->CreateGameObject("Submit Feedback");
-		{
-			submitFeedback->Add<RectTransform>();
-
-			GuiText::Sptr text = submitFeedback->Add<GuiText>();
-			text->SetText("Press E to Dump the Trash!");
-			text->SetFont(junkDogFont);
-			text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-			text->IsEnabled = false;
-		}
-
-
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);
 
