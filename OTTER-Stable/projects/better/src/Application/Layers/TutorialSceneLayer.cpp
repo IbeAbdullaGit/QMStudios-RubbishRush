@@ -112,6 +112,8 @@ void TutorialSceneLayer::OnSceneUnload()
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Pickup Feedback"));
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Submit Feedback"));
 
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Load"));
+
 }
 
 void TutorialSceneLayer::OnAppLoad(const nlohmann::json& config) {
@@ -123,6 +125,12 @@ void TutorialSceneLayer::OnUpdate()
 {
 	if (doUpdate)
 	{
+		//put this at the top to create a delay affect, creates time for the loading screen to render
+		if (done)
+		{
+			_tutcurrentScene->should_switch = true; //maybe add some delay here
+		}
+
 		Application& app = Application::Get();
 		_tutcurrentScene = app.CurrentScene();
 
@@ -148,6 +156,17 @@ void TutorialSceneLayer::OnUpdate()
 				if (_tutcurrentScene->score == 1)
 				{
 					done = true;
+					
+					//make loading screen
+					Gameplay::GameObject::Sptr loading = _tutcurrentScene->CreateGameObject("Load");
+					{
+						RectTransform::Sptr transform = loading->Add<RectTransform>();
+						transform->SetMin({ 0, 0 });
+						transform->SetMax({ 1280, 720 });
+
+						GuiPanel::Sptr loadPanel = loading->Add<GuiPanel>();
+						loadPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/load.png"));
+					}
 				}
 			}
 			else if (_tutcurrentScene->IsPlaying && done) {

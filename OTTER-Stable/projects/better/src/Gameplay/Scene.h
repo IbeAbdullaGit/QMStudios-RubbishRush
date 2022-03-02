@@ -217,6 +217,8 @@ namespace Gameplay {
 		int held = 0;
 		int score = 0;
 
+		bool should_switch = false;
+
 	protected:
 		friend class HierarchyWindow;
 		friend class GameObject;

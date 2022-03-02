@@ -250,7 +250,7 @@ void Application::_Run()
 			//testing switch scene
 			if (!change_scene)
 			{
-				if (glfwGetKey(GetWindow(), GLFW_KEY_N) && GLFW_PRESS)
+				if (glfwGetKey(GetWindow(), GLFW_KEY_N) && GLFW_PRESS || _currentScene->should_switch)
 				{
 					//remove current layer
 					_layers.pop_back(); //MUST BE THE LAST ONE ADDED
@@ -258,8 +258,10 @@ void Application::_Run()
 					_layers.push_back(std::make_shared<DefaultSceneLayer>());
 					_ConfigureSettings();
 
+					
 					//load in the new scene, at the back of the stack
 					_layers.back()->OnAppLoad(_appSettings);
+
 
 					std::cout << "Switched\n";
 					//must do so that we don't get multiple activations
