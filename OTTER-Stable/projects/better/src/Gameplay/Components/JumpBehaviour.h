@@ -25,6 +25,8 @@ public:
 	virtual nlohmann::json ToJson() const override;
 	static JumpBehaviour::Sptr FromJson(const nlohmann::json& blob);
 
+	bool in_air = false;
+
 protected:
 	float _impulse;
 	bool activated = false;

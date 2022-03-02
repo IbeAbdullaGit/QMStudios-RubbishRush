@@ -77,4 +77,6 @@ protected:
 	bool m_forwards;
 	size_t m_segmentIndex;
 
+	bool play_once = false;
+
 };

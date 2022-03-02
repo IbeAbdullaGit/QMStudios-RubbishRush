@@ -11,6 +11,7 @@
 #include "Gameplay/InputEngine.h"
 #include "Application/Application.h"
 #include "PlayerMovementBehavior.h"
+#include "JumpBehaviour.h"
 
 
 MorphAnimator::AnimData::AnimData()
@@ -56,19 +57,33 @@ void MorphAnimator::Update(float deltaTime)
 	//change frames
 	//TRASHY ANIMATIONS
 	//check if it has the right component
-	if (GetComponent<PlayerMovementBehavior>())
+	if (GetComponent<PlayerMovementBehavior>() && GetComponent<JumpBehaviour>())
 	{
-		if (GetComponent<PlayerMovementBehavior>()->is_moving)
+		//if we're not jumping, allow the jump anim to play
+		if (!GetComponent<JumpBehaviour>()->in_air)
 		{
-			//SetFrames(walking);
+			play_once = false;
 		}
-		else if (glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE) && GLFW_PRESS) //if jump key is pressed
+		if (GetComponent<JumpBehaviour>()->in_air && !play_once) //if jump key is pressed
 		{
 			SetFrames(jump);
+			SetFrameTime(0.1f);
+			//we only want to set the frames once, this variable allows the frames to only be set once while in the air
+			play_once = true;
+		}
+		else if (GetComponent<JumpBehaviour>()->in_air) //we're in the air but have already played the jump anim
+		{
+			//skip
+		}
+		else if (GetComponent<PlayerMovementBehavior>()->is_moving) //normal walking
+		{
+			SetFrames(walking);
+			SetFrameTime(0.2f);
 		}
 		else //nothing pressed
 		{
-			//SetFrames(idle);
+			SetFrames(idle);
+			SetFrameTime(0.2f);
 		}
 	}
 	

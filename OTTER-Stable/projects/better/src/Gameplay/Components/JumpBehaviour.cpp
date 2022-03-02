@@ -31,6 +31,7 @@ void JumpBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physi
 	if (body->GetGameObject()->Has<GroundBehaviour>())
 	{
 		activated = true;
+		in_air = false;
 	}
 }
 
@@ -41,14 +42,15 @@ void JumpBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physi
 		if (body->GetGameObject()->Has<GroundBehaviour>())
 		{
 			activated = false;
-			_impulse = 2.0f;
+			_impulse = 3.0f;
+			in_air = true;
 		}
 	}
 }
 
 JumpBehaviour::JumpBehaviour() :
 	IComponent(),
-	_impulse(2.0f)
+	_impulse(3.0f)
 { }
 
 JumpBehaviour::~JumpBehaviour() = default;
