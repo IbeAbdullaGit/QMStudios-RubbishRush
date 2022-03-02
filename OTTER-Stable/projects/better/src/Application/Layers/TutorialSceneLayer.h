@@ -19,6 +19,7 @@ public:
 
 	// Inherited from ApplicationLayer
 
+	void OnSceneUnload() override;
 	virtual void OnAppLoad(const nlohmann::json& config) override;
 	void OnUpdate() override;
 
@@ -33,4 +34,6 @@ protected:
 	bool activated = false;
 	bool done = false;
 	bool nobreak = false;
+
+	bool doUpdate = true;
 };

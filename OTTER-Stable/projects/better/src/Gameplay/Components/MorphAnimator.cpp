@@ -8,6 +8,8 @@
 #include "Gameplay/Scene.h"
 #include "Utils/ImGuiHelper.h"
 #include "Gameplay/Components//MorphMeshRenderer.h"
+#include "Gameplay/InputEngine.h"
+#include "Application/Application.h"
 #include "PlayerMovementBehavior.h"
 
 
@@ -50,6 +52,7 @@ void MorphAnimator::RenderImGui()
 
 void MorphAnimator::Update(float deltaTime)
 {
+	Application& app = Application::Get();
 	//change frames
 	//TRASHY ANIMATIONS
 	//check if it has the right component
@@ -57,13 +60,19 @@ void MorphAnimator::Update(float deltaTime)
 	{
 		if (GetComponent<PlayerMovementBehavior>()->is_moving)
 		{
-			SetFrames(walking);
+			//SetFrames(walking);
 		}
-		else
+		else if (glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE) && GLFW_PRESS) //if jump key is pressed
 		{
-			SetFrames(idle);
+			SetFrames(jump);
+		}
+		else //nothing pressed
+		{
+			//SetFrames(idle);
 		}
 	}
+	
+	
 
 	// TODO: Complete this function
 		//lerp? between frames
@@ -136,6 +145,15 @@ void MorphAnimator::SetWalking(std::vector<Gameplay::MeshResource::Sptr>& f)
 	{
 		//m_data->frames.push_back(f[i]->Mesh);
 		walking.push_back(f[i]);
+	}
+}
+
+void MorphAnimator::SetJumping(std::vector<Gameplay::MeshResource::Sptr>& f)
+{
+	for (int i = 0; i < f.size(); i++)
+	{
+		//m_data->frames.push_back(f[i]->Mesh);
+		jump.push_back(f[i]);
 	}
 }
 

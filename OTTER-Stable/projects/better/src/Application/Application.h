@@ -143,6 +143,8 @@ protected:
 	int inventory = 2; //DEFAULT INVENTORY COUNT
 	int max_trash = 4; //DEFAULT FOR NOW
 
+	bool change_scene = false;
+
 	// Stores all the layers of the application, in the order they should be invoked
 	std::vector<ApplicationLayer::Sptr> _layers;
 

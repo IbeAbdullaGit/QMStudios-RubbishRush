@@ -42,7 +42,7 @@ public:
 	void SetIdle(std::vector<Gameplay::MeshResource::Sptr>& f);
 
 	void SetWalking(std::vector<Gameplay::MeshResource::Sptr>& f);
-
+	void SetJumping(std::vector<Gameplay::MeshResource::Sptr>& f);
 
 	virtual nlohmann::json ToJson() const override;
 	static MorphAnimator::Sptr FromJson(const nlohmann::json& blob);
@@ -71,6 +71,7 @@ protected:
 	//Initialization of Animations
 	std::vector <Gameplay::MeshResource::Sptr> walking;
 	std::vector <Gameplay::MeshResource::Sptr> idle;
+	std::vector <Gameplay::MeshResource::Sptr> jump;
 
 	float m_timer;
 	bool m_forwards;
