@@ -30,10 +30,20 @@ protected:
 	Gameplay::Material::Sptr trashMaterial;
 
 	Gameplay::GameObject::Sptr trashyM;
+
+	Gameplay::GameObject::Sptr dumpUI;
+	Gameplay::GameObject::Sptr jumpUI;
+	Gameplay::GameObject::Sptr walkUI;
+	Gameplay::GameObject::Sptr pickupUI;
 	
+	bool hasMoved = false;
+	bool hasCollected = false;
+
 	bool activated = false;
 	bool done = false;
 	bool nobreak = false;
 
+
 	bool doUpdate = true;
+
 };

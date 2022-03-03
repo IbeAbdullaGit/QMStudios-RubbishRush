@@ -1,5 +1,4 @@
 #include "Application/Application.h"
-
 #include <Windows.h>
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -56,7 +55,7 @@
 #include "Gameplay/Components/MorphMeshRenderer.h"
 #include "Gameplay/Components/GroundBehaviour.h"
 #include "Gameplay/Components/ConveyorBeltBehaviour.h"
-
+#include "Gameplay/Components/AudioEngine.h"
 // GUI
 #include "Gameplay/Components/GUI/RectTransform.h"
 #include "Gameplay/Components/GUI/GuiPanel.h"
@@ -72,6 +71,8 @@
 #include "Layers/ImGuiDebugLayer.h"
 #include "Layers/InstancedRenderingTestLayer.h"
 #include "Layers/ParticleLayer.h"
+
+
 
 Application* Application::_singleton = nullptr;
 std::string Application::_applicationName = "Rubbish Rush";
@@ -161,6 +162,10 @@ void Application::SaveSettings()
 
 void Application::_Run()
 {
+	//AUDIO EXAMPLE
+	/*AudioEngine audioEngine;
+	audioEngine.init();
+	audioEngine.loadSound("test", "Bag_of_trash.wav", true);*/
 	// TODO: Register layers
 	_layers.push_back(std::make_shared<GLAppLayer>());
 	//_layers.push_back(std::make_shared<DefaultSceneLayer>());
@@ -204,9 +209,14 @@ void Application::_Run()
 
 	// Infinite loop as long as the application is running
 	while (_isRunning) {
+		//AUDIO
+		
+		/*audioEngine.update();
+		Sleep(32);*/
 		// Handle scene switching
 		if (_targetScene != nullptr) {
 			_HandleSceneChange();
+			
 		}
 
 		// Receive events like input and window position/size changes from GLFW

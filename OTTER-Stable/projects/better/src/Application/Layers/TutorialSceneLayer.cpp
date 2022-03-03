@@ -1,4 +1,5 @@
 #include "TutorialSceneLayer.h"
+#include <iostream>
 
 // GLM math library
 #include <GLM/glm.hpp>
@@ -30,6 +31,7 @@
 #include "Utils/JsonGlmHelpers.h"
 #include "Utils/StringUtils.h"
 #include "Utils/GlmDefines.h"
+#include "Application/Timing.h"
 
 // Gameplay
 #include "Gameplay/Material.h"
@@ -126,7 +128,7 @@ void TutorialSceneLayer::OnUpdate()
 	if (doUpdate)
 	{
 		//put this at the top to create a delay affect, creates time for the loading screen to render
-		if (done)
+		if (done) //LOAD NEXT SCENE
 		{
 			_tutcurrentScene->should_switch = true; //maybe add some delay here
 		}
@@ -140,6 +142,12 @@ void TutorialSceneLayer::OnUpdate()
 
 		if (!activated)
 		{
+			walkUI = _tutcurrentScene->FindObjectByName("Walk Tutorial UI");
+			jumpUI = _tutcurrentScene->FindObjectByName("Jump Tutorial UI");
+			pickupUI = _tutcurrentScene->FindObjectByName("Pickup Trash Tutorial UI");
+			dumpUI = _tutcurrentScene->FindObjectByName("Dump Tutorial UI");
+
+
 			trashyM = _tutcurrentScene->FindObjectByName("Trashy");
 			activated = true;
 			//starting variables
@@ -153,10 +161,12 @@ void TutorialSceneLayer::OnUpdate()
 			//MENU ANIMATED UPDATED
 			if (_tutcurrentScene->IsPlaying && !done)
 			{
-				if (_tutcurrentScene->score == 1)
+				if (_tutcurrentScene->score == 2) 
 				{
-					done = true;
+					done = true; //LOAD NEXT SCENE
 					
+					dumpUI->Get<GuiPanel>()->IsEnabled = false;
+
 					//make loading screen
 					Gameplay::GameObject::Sptr loading = _tutcurrentScene->CreateGameObject("Load");
 					{
@@ -201,7 +211,41 @@ void TutorialSceneLayer::OnUpdate()
 
 				//}
 			}
+
+
+			//Player Movement Tutorial
+			if ((glfwGetKey(app.GetWindow(), GLFW_KEY_W) || glfwGetKey(app.GetWindow(), GLFW_KEY_A) || glfwGetKey(app.GetWindow(), GLFW_KEY_S) || glfwGetKey(app.GetWindow(), GLFW_KEY_D)) && hasMoved == false) {
+				hasMoved = true;
+			}
+
+			if (Timing::Current().Timing::TimeSinceSceneLoad() > 7.5f && hasMoved == false) { //If the player has not moved for a set amount of seconds, show the tutorial UI for movement
+				walkUI->Get<GuiPanel>()->IsEnabled = true;
+			}
+			else {
+				walkUI->Get<GuiPanel>()->IsEnabled = false;
+			}
+
+
+
+
+			if (trashyM->GetPosition().y < -5.0f   &&   _tutcurrentScene->held <= 1   &&   hasCollected == false) { //Pick up Trash tutorial stuff
+				
+				pickupUI->Get<GuiPanel>()->IsEnabled = true;
+			}
+			else {
+				pickupUI->Get<GuiPanel>()->IsEnabled = false;
+				if (_tutcurrentScene->held > 1) {
+					hasCollected = true;
+				}
+			}
+
+
+			if (hasCollected == true) {//If the player has picked up the trash, then display the UI to teach them how to dump the trash
+				dumpUI->Get<GuiPanel>()->IsEnabled = true;
+			}
+
 		}
+
 		// Grab shorthands to the camera and shader from the _currentScene
 		Gameplay::Camera::Sptr camera = _tutcurrentScene->MainCamera;
 
@@ -317,6 +361,8 @@ void TutorialSceneLayer::_CreateScene()
 		Texture3D::Sptr lut = ResourceManager::CreateAsset<Texture3D>("luts/sepia.CUBE");  //MY CUSTOM
 		// Configure the color correction LUT
 		scene->SetColorLUT(lut);
+		
+		
 
 		// Setting up our enviroment map
 		//scene->SetSkyboxTexture(testCubemap);
@@ -377,7 +423,7 @@ void TutorialSceneLayer::_CreateScene()
 		Gameplay::GameObject::Sptr trashyM = scene->CreateGameObject("Trashy"); //SEARCHBAR TAGS: PLAYERENTITY, PLAYER, TRASHYENTITY, TRASHYOBJECT
 		{
 			trashyM->SetPostion(glm::vec3(6.318f, -0.788f, 0.106f));
-			trashyM->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+			trashyM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 			trashyM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
 			RenderComponent::Sptr renderer = trashyM->Add<RenderComponent>();
@@ -541,32 +587,32 @@ void TutorialSceneLayer::_CreateScene()
 
 		}
 
-		Texture2D::Sptr TutTex1 = ResourceManager::CreateAsset<Texture2D>("textures/Tut1tex.png");
+		//Texture2D::Sptr TutTex1 = ResourceManager::CreateAsset<Texture2D>("textures/Tut1tex.png");
 
-		 
+		// 
 
-		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
-		Gameplay::Material::Sptr TutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader); {
-			TutMaterial->Name = "Plane";
-			TutMaterial->Set("u_Material.Diffuse", TutTex1);
-			TutMaterial->Set("u_Material.Shininess", 1.0f);
-		}
+		////MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
+		//Gameplay::Material::Sptr TutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader); {
+		//	TutMaterial->Name = "Plane";
+		//	TutMaterial->Set("u_Material.Diffuse", TutTex1);
+		//	TutMaterial->Set("u_Material.Shininess", 1.0f);
+		//}
 	
-		Gameplay::GameObject::Sptr TutM = scene->CreateGameObject("TutImage1");
-		{
+		//Gameplay::GameObject::Sptr TutM = scene->CreateGameObject("TutImage1");
+		//{
 
-			TutM->SetPostion(glm::vec3(6.5f, -2.f, 3.0f));
-			TutM->SetRotation(glm::vec3(180.f, -180.0, -90.0f));
+		//	TutM->SetPostion(glm::vec3(6.5f, -2.f, 3.0f));
+		//	TutM->SetRotation(glm::vec3(180.f, -180.0, -90.0f));
 
-			Gameplay::MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>();
-			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(3.0f), glm::vec2(3.0f)));
-			tiledMesh->GenerateMesh();
+		//	Gameplay::MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>();
+		//	tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(3.0f), glm::vec2(3.0f)));
+		//	tiledMesh->GenerateMesh();
 
-			RenderComponent::Sptr renderer = TutM->Add<RenderComponent>();
-			renderer->SetMesh(tiledMesh);
-			renderer->SetMaterial(TutMaterial);
+		//	RenderComponent::Sptr renderer = TutM->Add<RenderComponent>();
+		//	renderer->SetMesh(tiledMesh);
+		//	renderer->SetMaterial(TutMaterial);
 
-		}
+		//}
 
 		{
 			Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
@@ -804,6 +850,11 @@ void TutorialSceneLayer::_CreateScene()
 			morph2->SetFrames(closed);
 
 		}	
+
+
+
+		//----------------------UI STUFF---------------------------------------------
+
 		Font::Sptr junkDogFont = ResourceManager::CreateAsset<Font>("fonts/JunkDog.otf", 35.f); //Font path, font size
 		junkDogFont->Bake();
 
@@ -859,6 +910,71 @@ void TutorialSceneLayer::_CreateScene()
 			feedbackUI->AddChild(returnFeedback);
 
 		}
+
+		Gameplay::GameObject::Sptr tutorialUICanvas = scene->CreateGameObject("Tutorial Canvas");
+		{
+			RectTransform::Sptr tutorialTransform = tutorialUICanvas->Add<RectTransform>();
+			tutorialTransform->SetMax({ 1280, 720 });
+			tutorialTransform->SetPosition({ 690, 750 });
+
+			GuiPanel::Sptr tutorialPanel = tutorialUICanvas->Add<GuiPanel>();
+			tutorialPanel->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 0.f));
+
+			Gameplay::GameObject::Sptr walkTutorial = scene->CreateGameObject("Walk Tutorial UI");
+			{
+				RectTransform::Sptr transform = walkTutorial->Add<RectTransform>();
+				transform->SetMax({ 360, 202.5 });
+
+				GuiPanel::Sptr walkPanel = walkTutorial->Add<GuiPanel>();
+				walkPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/Tut3tex.png"));
+				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				walkPanel->IsEnabled = false;
+
+			}
+
+			Gameplay::GameObject::Sptr jumpTutorial = scene->CreateGameObject("Jump Tutorial UI");
+			{
+				RectTransform::Sptr transform = jumpTutorial->Add<RectTransform>();
+				transform->SetMax({ 360, 202.5 });
+
+				GuiPanel::Sptr jumpPanel = jumpTutorial->Add<GuiPanel>();
+				jumpPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/Tut4tex.png"));
+				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				jumpPanel->IsEnabled = false;
+
+			}
+
+			Gameplay::GameObject::Sptr pickupTutorial = scene->CreateGameObject("Pickup Trash Tutorial UI");
+			{
+				RectTransform::Sptr transform = pickupTutorial->Add<RectTransform>();
+				transform->SetMax({ 360, 202.5 });
+
+				GuiPanel::Sptr pickupPanel = pickupTutorial->Add<GuiPanel>();
+				pickupPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/Tut1tex.png"));
+				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				pickupPanel->IsEnabled = false;
+
+			}
+
+			Gameplay::GameObject::Sptr dumpTutorial = scene->CreateGameObject("Dump Tutorial UI");
+			{
+				RectTransform::Sptr transform = dumpTutorial->Add<RectTransform>();
+				transform->SetMax({ 360, 202.5 });
+
+				GuiPanel::Sptr dumpPanel = dumpTutorial->Add<GuiPanel>();
+				dumpPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/Tut2tex.png"));
+				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				dumpPanel->IsEnabled = false;
+
+			}
+
+			tutorialUICanvas->AddChild(walkTutorial);
+			tutorialUICanvas->AddChild(jumpTutorial);
+			tutorialUICanvas->AddChild(pickupTutorial);
+			tutorialUICanvas->AddChild(dumpTutorial);
+		}
+
+
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);
 
