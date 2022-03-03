@@ -186,7 +186,7 @@ void DefaultSceneLayer::OnUpdate()
 		//FREEZE TRASHY
 		trashyM->Get<Gameplay::Physics::RigidBody>()->IsEnabled = false;
 		submitUI->Get<GuiText>()->IsEnabled = false;
-
+		objective->Get<GuiPanel>()->IsEnabled = false;
 
 		if (spressed)
 		{
