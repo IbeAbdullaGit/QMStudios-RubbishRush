@@ -46,4 +46,7 @@ protected:
 
 	bool doUpdate = true;
 
+	int inventory = 1; //DEFAULT INVENTORY COUNT
+	int max_trash = 2; //DEFAULT FOR NOW
+
 };

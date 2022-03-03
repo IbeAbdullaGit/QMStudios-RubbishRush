@@ -1571,7 +1571,7 @@ void DefaultSceneLayer::_CreateScene()
 				volume->AddCollider(box2);
 				SpillBehaviour::Sptr behaviour = spillM->Add<SpillBehaviour>();
 				//give to our floor tiles to tag them
-				GroundBehaviour::Sptr behaviour2 = spillM->Add<GroundBehaviour>();
+				//GroundBehaviour::Sptr behaviour2 = spillM->Add<GroundBehaviour>();
 
 			}
 			Gameplay::GameObject::Sptr spill2 = scene->CreateGameObject("Spill2");
@@ -1600,7 +1600,7 @@ void DefaultSceneLayer::_CreateScene()
 				volume->AddCollider(box2);
 				SpillBehaviour::Sptr behaviour = spill2->Add<SpillBehaviour>();
 				//give to our floor tiles to tag them
-				GroundBehaviour::Sptr behaviour2 = spill2->Add<GroundBehaviour>();
+				//GroundBehaviour::Sptr behaviour2 = spill2->Add<GroundBehaviour>();
 			}
 			Gameplay::GameObject::Sptr spill3 = scene->CreateGameObject("Spill3");
 			{
@@ -1628,7 +1628,7 @@ void DefaultSceneLayer::_CreateScene()
 				volume->AddCollider(box2);
 				SpillBehaviour::Sptr behaviour = spill3->Add<SpillBehaviour>();
 				//give to our floor tiles to tag them
-				GroundBehaviour::Sptr behaviour2 = spill3->Add<GroundBehaviour>();
+				//GroundBehaviour::Sptr behaviour2 = spill3->Add<GroundBehaviour>();
 			}
 			Gameplay::GameObject::Sptr spill4 = scene->CreateGameObject("Spill4");
 			{
@@ -1656,7 +1656,7 @@ void DefaultSceneLayer::_CreateScene()
 				volume->AddCollider(box2);
 				SpillBehaviour::Sptr behaviour = spill4->Add<SpillBehaviour>();
 				//give to our floor tiles to tag them
-				GroundBehaviour::Sptr behaviour2 = spill4->Add<GroundBehaviour>();
+				//GroundBehaviour::Sptr behaviour2 = spill4->Add<GroundBehaviour>();
 			}
 		}
 		//bin model

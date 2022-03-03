@@ -70,6 +70,8 @@ void MorphAnimator::Update(float deltaTime)
 			SetFrameTime(0.1f);
 			//we only want to set the frames once, this variable allows the frames to only be set once while in the air
 			play_once = true;
+
+			std::cout << "Jump now\n";
 		}
 		else if (GetComponent<JumpBehaviour>()->in_air) //we're in the air but have already played the jump anim
 		{
@@ -79,11 +81,13 @@ void MorphAnimator::Update(float deltaTime)
 		{
 			SetFrames(walking);
 			SetFrameTime(0.2f);
+			std::cout << "Walk now\n";
 		}
 		else //nothing pressed
 		{
 			SetFrames(idle);
 			SetFrameTime(0.2f);
+			std::cout << "Idle now\n";
 		}
 	}
 	

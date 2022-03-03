@@ -176,6 +176,9 @@ void Application::_Run()
 	//_layers.push_back(std::make_shared<InstancedRenderingTestLayer>());
 	_layers.push_back(std::make_shared<InterfaceLayer>());
 
+	//for playtesting
+	_isEditor = false;
+
 	// If we're in editor mode, we add all the editor layers
 	if (_isEditor) {
 		_layers.push_back(std::make_shared<ImGuiDebugLayer>());

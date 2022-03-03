@@ -152,7 +152,7 @@ void TutorialSceneLayer::OnUpdate()
 			activated = true;
 			//starting variables
 			
-			_tutcurrentScene->trash = 1;
+			//_tutcurrentScene->trash = 1;
 			
 		}
 
@@ -161,7 +161,7 @@ void TutorialSceneLayer::OnUpdate()
 			//MENU ANIMATED UPDATED
 			if (_tutcurrentScene->IsPlaying && !done)
 			{
-				if (_tutcurrentScene->score == 2) 
+				if (_tutcurrentScene->score == max_trash) 
 				{
 					done = true; //LOAD NEXT SCENE
 					
