@@ -143,9 +143,9 @@ void TutorialSceneLayer::OnUpdate()
 			trashyM = _tutcurrentScene->FindObjectByName("Trashy");
 			activated = true;
 			//starting variables
-			_tutcurrentScene->score = 0;
+			
 			_tutcurrentScene->trash = 1;
-			_tutcurrentScene->held = 0;
+			
 		}
 
 
@@ -870,5 +870,8 @@ void TutorialSceneLayer::_CreateScene()
 		// Send the scene to the application
 		app.LoadScene(scene);
 
+		scene->trash = 0;
+		scene->score = 0;
+		scene->held = 0;
 	}
 }

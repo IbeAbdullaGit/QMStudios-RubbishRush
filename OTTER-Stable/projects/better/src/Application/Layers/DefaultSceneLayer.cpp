@@ -160,10 +160,7 @@ void DefaultSceneLayer::OnUpdate()
 		objective = _currentScene->FindObjectByName("Objective UI Canvas");
 		returnUI = _currentScene->FindObjectByName("Return Feedback");
 		submitUI = _currentScene->FindObjectByName("Submit Feedback");
-		//starting variables
-		_currentScene->score = 0;
-		_currentScene->trash = 4;
-		_currentScene->held = 0;
+		
 
 		//only run this once
 		activated = true;
@@ -2493,5 +2490,10 @@ void DefaultSceneLayer::_CreateScene()
 		// Send the scene to the application
 		app.LoadScene(scene);
 		scene->IsPlaying = true;
+
+		////starting variables
+		scene->score = 0;
+		scene->trash = 0;
+		scene->held = 0;
 	}
 }
