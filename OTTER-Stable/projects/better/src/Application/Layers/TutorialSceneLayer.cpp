@@ -161,7 +161,7 @@ void TutorialSceneLayer::OnUpdate()
 			//MENU ANIMATED UPDATED
 			if (_tutcurrentScene->IsPlaying && !done)
 			{
-				if (_tutcurrentScene->score == 1) 
+				if (_tutcurrentScene->score == 2) 
 				{
 					done = true; //LOAD NEXT SCENE
 					
@@ -228,18 +228,19 @@ void TutorialSceneLayer::OnUpdate()
 
 
 
-			if (trashyM->GetPosition().y < -5.0f && _tutcurrentScene->held == 0 && hasCollected == false) { //Pick up Trash tutorial stuff
+			if (trashyM->GetPosition().y < -5.0f   &&   _tutcurrentScene->held <= 1   &&   hasCollected == false) { //Pick up Trash tutorial stuff
+				
 				pickupUI->Get<GuiPanel>()->IsEnabled = true;
 			}
 			else {
 				pickupUI->Get<GuiPanel>()->IsEnabled = false;
-				if (_tutcurrentScene->held > 0) {
+				if (_tutcurrentScene->held > 1) {
 					hasCollected = true;
 				}
 			}
 
 
-			if (hasCollected == true) {
+			if (hasCollected == true) {//If the player has picked up the trash, then display the UI to teach them how to dump the trash
 				dumpUI->Get<GuiPanel>()->IsEnabled = true;
 			}
 
@@ -422,7 +423,7 @@ void TutorialSceneLayer::_CreateScene()
 		Gameplay::GameObject::Sptr trashyM = scene->CreateGameObject("Trashy"); //SEARCHBAR TAGS: PLAYERENTITY, PLAYER, TRASHYENTITY, TRASHYOBJECT
 		{
 			trashyM->SetPostion(glm::vec3(6.318f, -0.788f, 0.106f));
-			trashyM->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+			trashyM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 			trashyM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
 			RenderComponent::Sptr renderer = trashyM->Add<RenderComponent>();
@@ -586,32 +587,32 @@ void TutorialSceneLayer::_CreateScene()
 
 		}
 
-		Texture2D::Sptr TutTex1 = ResourceManager::CreateAsset<Texture2D>("textures/Tut1tex.png");
+		//Texture2D::Sptr TutTex1 = ResourceManager::CreateAsset<Texture2D>("textures/Tut1tex.png");
 
-		 
+		// 
 
-		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
-		Gameplay::Material::Sptr TutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader); {
-			TutMaterial->Name = "Plane";
-			TutMaterial->Set("u_Material.Diffuse", TutTex1);
-			TutMaterial->Set("u_Material.Shininess", 1.0f);
-		}
+		////MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
+		//Gameplay::Material::Sptr TutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader); {
+		//	TutMaterial->Name = "Plane";
+		//	TutMaterial->Set("u_Material.Diffuse", TutTex1);
+		//	TutMaterial->Set("u_Material.Shininess", 1.0f);
+		//}
 	
-		Gameplay::GameObject::Sptr TutM = scene->CreateGameObject("TutImage1");
-		{
+		//Gameplay::GameObject::Sptr TutM = scene->CreateGameObject("TutImage1");
+		//{
 
-			TutM->SetPostion(glm::vec3(6.5f, -2.f, 3.0f));
-			TutM->SetRotation(glm::vec3(180.f, -180.0, -90.0f));
+		//	TutM->SetPostion(glm::vec3(6.5f, -2.f, 3.0f));
+		//	TutM->SetRotation(glm::vec3(180.f, -180.0, -90.0f));
 
-			Gameplay::MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>();
-			tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(3.0f), glm::vec2(3.0f)));
-			tiledMesh->GenerateMesh();
+		//	Gameplay::MeshResource::Sptr tiledMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>();
+		//	tiledMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(3.0f), glm::vec2(3.0f)));
+		//	tiledMesh->GenerateMesh();
 
-			RenderComponent::Sptr renderer = TutM->Add<RenderComponent>();
-			renderer->SetMesh(tiledMesh);
-			renderer->SetMaterial(TutMaterial);
+		//	RenderComponent::Sptr renderer = TutM->Add<RenderComponent>();
+		//	renderer->SetMesh(tiledMesh);
+		//	renderer->SetMaterial(TutMaterial);
 
-		}
+		//}
 
 		{
 			Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
