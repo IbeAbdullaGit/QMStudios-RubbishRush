@@ -925,7 +925,7 @@ void DefaultSceneLayer::_CreateScene()
 		Gameplay::GameObject::Sptr trashyM = scene->CreateGameObject("Trashy"); //SEARCHBAR TAGS: PLAYERENTITY, PLAYER, TRASHYENTITY, TRASHYOBJECT
 		{
 			trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f));
-			trashyM->SetRotation(glm::vec3(90.0f, 0.0f, 270.0f));
+			trashyM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 			trashyM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
 			RenderComponent::Sptr renderer = trashyM->Add<RenderComponent>();
@@ -2130,7 +2130,7 @@ void DefaultSceneLayer::_CreateScene()
 			}
 			Gameplay::GameObject::Sptr conveyor = scene->CreateGameObject("Conveyor");
 			{
-				conveyor->SetPostion(glm::vec3(-2.13f, 0.01f, 0.0f));
+				conveyor->SetPostion(glm::vec3(-5.0f, 0.01f, 0.0f));
 				conveyor->SetRotation(glm::vec3(90.0f, 0.0f, -75.0f));
 				conveyor->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
 
