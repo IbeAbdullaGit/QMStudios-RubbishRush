@@ -37,6 +37,7 @@ protected:
 	Gameplay::GameObject::Sptr pickupUI;
 	
 	bool hasMoved = false;
+	bool hasCollected = false;
 
 	bool activated = false;
 	bool done = false;

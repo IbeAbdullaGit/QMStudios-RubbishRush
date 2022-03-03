@@ -165,6 +165,8 @@ void TutorialSceneLayer::OnUpdate()
 				{
 					done = true; //LOAD NEXT SCENE
 					
+					dumpUI->Get<GuiPanel>()->IsEnabled = false;
+
 					//make loading screen
 					Gameplay::GameObject::Sptr loading = _tutcurrentScene->CreateGameObject("Load");
 					{
@@ -210,8 +212,8 @@ void TutorialSceneLayer::OnUpdate()
 				//}
 			}
 
-			std::cout << Timing::Current().Timing::TimeSinceSceneLoad() << std::endl;
 
+			//Player Movement Tutorial
 			if ((glfwGetKey(app.GetWindow(), GLFW_KEY_W) || glfwGetKey(app.GetWindow(), GLFW_KEY_A) || glfwGetKey(app.GetWindow(), GLFW_KEY_S) || glfwGetKey(app.GetWindow(), GLFW_KEY_D)) && hasMoved == false) {
 				hasMoved = true;
 			}
@@ -223,6 +225,23 @@ void TutorialSceneLayer::OnUpdate()
 				walkUI->Get<GuiPanel>()->IsEnabled = false;
 			}
 
+
+
+
+			if (trashyM->GetPosition().y < -5.0f && _tutcurrentScene->held == 0 && hasCollected == false) { //Pick up Trash tutorial stuff
+				pickupUI->Get<GuiPanel>()->IsEnabled = true;
+			}
+			else {
+				pickupUI->Get<GuiPanel>()->IsEnabled = false;
+				if (_tutcurrentScene->held > 0) {
+					hasCollected = true;
+				}
+			}
+
+
+			if (hasCollected == true) {
+				dumpUI->Get<GuiPanel>()->IsEnabled = true;
+			}
 
 		}
 
