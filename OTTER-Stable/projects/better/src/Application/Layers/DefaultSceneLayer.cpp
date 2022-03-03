@@ -137,6 +137,7 @@ void DefaultSceneLayer::OnUpdate()
 	//fetch resources
 	if (!activated)
 	{
+		
 		trashyM = _currentScene->FindObjectByName("Trashy");
 		binM = _currentScene->FindObjectByName("Bin");
 		RectangleE = _currentScene->FindObjectByName("Rec");
