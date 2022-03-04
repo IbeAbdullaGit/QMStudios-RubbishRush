@@ -344,7 +344,7 @@ void DefaultSceneLayer::OnUpdate()
 				objective->Get<GuiPanel>()->IsEnabled = false;
 				returnUI->Get<GuiText>()->IsEnabled = false;
 				//pause the timer*****
-				if (glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE)) //return to game
+				if (glfwGetKey(app.GetWindow(), GLFW_KEY_ENTER)) //return to game
 				{
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
 					failMenu->Get<GuiPanel>()->IsEnabled = false; //dont show lose menu
