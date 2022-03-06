@@ -48,7 +48,7 @@ void CollectTrashBehaviour::Update(float deltatime)
 	{
 		if (glfwGetKey(app.GetWindow(), GLFW_KEY_E))
 		{
-			if (_scene->held <= inventory)
+			if (_scene->held < inventory)
 			{
 				//get our scene, delete this line later
 			//_scene = GetGameObject()->GetScene();

@@ -22,6 +22,8 @@ layout (std140, binding = 1) uniform b_InstanceLevelUniforms {
     uniform mat4 u_ModelViewProjection;
     // Just the model transform, we'll do worldspace lighting
     uniform mat4 u_Model;
+    // Just the model * view, for converting to view space
+    uniform mat4 u_ModelView;
     // Normal Matrix for transforming normals
     uniform mat4 u_NormalMatrix;
 };

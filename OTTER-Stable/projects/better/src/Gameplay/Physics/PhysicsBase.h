@@ -87,7 +87,7 @@ namespace Gameplay {
 
 			virtual void Awake() = 0;
 		protected:
-			Scene*        _scene;
+			Scene* _scene;
 
 			// Stores the bullet shape associated with the physics object
 			btCompoundShape* _shape;

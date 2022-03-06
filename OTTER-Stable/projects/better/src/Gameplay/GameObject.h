@@ -212,6 +212,8 @@ namespace Gameplay {
 		/// </summary>
 		const glm::vec3& GetPosition() const;
 
+		glm::vec3 GetWorldPosition() const;
+
 		/// <summary>
 		/// Sets the rotation of this object to a quaternion value
 		/// </summary>

@@ -23,20 +23,19 @@ void main() {
 	gl_Position = u_ModelViewProjection * vec4(displacedPos, 1.0);
 
 	// Pass vertex pos in world space to frag shader
-	outWorldPos = (u_Model * vec4(displacedPos, 1.0)).xyz;
+	outViewPos = (u_ModelView * vec4(displacedPos, 1.0)).xyz;
 
     // We use a TBN matrix for tangent space normal mapping
-    vec3 T = normalize(vec3(mat3(u_NormalMatrix) * inTangent));
-    vec3 B = normalize(vec3(mat3(u_NormalMatrix) * inBiTangent));
-    vec3 N = normalize(vec3(mat3(u_NormalMatrix) * inNormal));
+    vec3 T = normalize((u_View * vec4(mat3(u_NormalMatrix) * inTangent, 0)).xyz);
+    vec3 B = normalize((u_View * vec4(mat3(u_NormalMatrix) * inBiTangent, 0)).xyz);
+    vec3 N = normalize((u_View * vec4(mat3(u_NormalMatrix) * inNormal, 0)).xyz);
     mat3 TBN = mat3(T, B, N);
 
     // We can pass the TBN matrix to the fragment shader to save computation
     outTBN = TBN;
 
     // Read our tangent from the map, and convert from the [0,1] range to [-1,1] range
-    vec3 normal = texture(s_NormalMap, inUV).rgb;
-    normal = normal * 2.0 - 1.0;
+    vec3 normal = inNormal;
     
     // Here we apply the TBN matrix to transform the normal from tangent space to world space
     normal = normalize(TBN * normal);

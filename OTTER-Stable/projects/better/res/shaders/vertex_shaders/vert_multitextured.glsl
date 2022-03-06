@@ -3,31 +3,35 @@
 // Include our common vertex shader attributes and uniforms
 #include "../fragments/vs_common.glsl"
 
+layout(location = 6) in vec4 inTextureWeights;
+
 #include "../fragments/math_constants.glsl"
 
-layout(location = 7) out vec2 outTexWeights;
-
-uniform float u_Scale;
+layout(location = 7) out vec4 outTextureWeights;
 
 void main() {
 
 	gl_Position = u_ModelViewProjection * vec4(inPosition, 1.0);
 
 	// Pass vertex pos in world space to frag shader
-	outWorldPos = (u_Model * vec4(inPosition, 1.0)).xyz;
+	outViewPos = (u_ModelView * vec4(inPosition, 1.0)).xyz;
 	// Normals
-	outNormal = mat3(u_NormalMatrix) * inNormal;
+	outNormal = (u_View * vec4(mat3(u_NormalMatrix) * inNormal, 1)).xyz;
 	// Pass our UV coords to the fragment shader
 	outUV = inUV;
 	///////////
 	outColor = inColor;
+	
+    // We use a TBN matrix for tangent space normal mapping
+    vec3 T = normalize((u_View * vec4(mat3(u_NormalMatrix) * inTangent, 0)).xyz);
+    vec3 B = normalize((u_View * vec4(mat3(u_NormalMatrix) * inBiTangent, 0)).xyz);
+    vec3 N = normalize((u_View * vec4(mat3(u_NormalMatrix) * inNormal, 0)).xyz);
+    mat3 TBN = mat3(T, B, N);
 
-    // We have some calculation to determine the texture weights
-    // In this case, we are going to use cos and sin to generate texture
-    // weights based on the z coord of the model in world coords
-    outTexWeights = vec2(
-        (sin(outWorldPos.z / u_Scale + M_PI) + 1) / 2,
-        (sin(outWorldPos.z / u_Scale) + 1) / 2
-    );
+	// We now rotate our tangent space matrices to be view-dependant 
+	outTBN = TBN;
+
+	float overrideWeight = clamp(dot(inTextureWeights, vec4(1)), 0, 1);
+	outTextureWeights = mix(inTextureWeights, vec4(0.25), overrideWeight);
 }
 

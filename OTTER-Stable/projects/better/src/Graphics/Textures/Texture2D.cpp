@@ -50,11 +50,11 @@ Texture2D::Sptr Texture2D::FromJson(const nlohmann::json& data)
 	Texture2DDescription descr = Texture2DDescription();
 	descr.Filename = data["filename"];
 	descr.HorizontalWrap = JsonParseEnum(WrapMode, data, "wrap_s", WrapMode::ClampToEdge);
-	descr.VerticalWrap   = JsonParseEnum(WrapMode, data, "wrap_t", WrapMode::ClampToEdge);
-	descr.MinificationFilter  = JsonParseEnum(MinFilter, data, "filter_min", MinFilter::NearestMipNearest);
+	descr.VerticalWrap = JsonParseEnum(WrapMode, data, "wrap_t", WrapMode::ClampToEdge);
+	descr.MinificationFilter = JsonParseEnum(MinFilter, data, "filter_min", MinFilter::NearestMipNearest);
 	descr.MagnificationFilter = JsonParseEnum(MagFilter, data, "filter_mag", MagFilter::Linear);
-	descr.MaxAnisotropic      = JsonGet(data, "anisotropic", 0.0f);
-	descr.GenerateMipMaps     = JsonGet(data, "generate_mipmaps", false);
+	descr.MaxAnisotropic = JsonGet(data, "anisotropic", 0.0f);
+	descr.GenerateMipMaps = JsonGet(data, "generate_mipmaps", false);
 
 	Texture2D::Sptr result = std::make_shared<Texture2D>(descr);
 
@@ -73,7 +73,7 @@ Texture2D::Sptr Texture2D::FromJson(const nlohmann::json& data)
 	return result;
 }
 
-Texture2D::Texture2D(const Texture2DDescription& description) : 
+Texture2D::Texture2D(const Texture2DDescription& description) :
 	ITexture(TextureType::_2D),
 	_description(description),
 	_pixelType(PixelType::Unknown)
@@ -84,7 +84,7 @@ Texture2D::Texture2D(const Texture2DDescription& description) :
 	}
 }
 
-Texture2D::Texture2D(const std::string& filePath) : 
+Texture2D::Texture2D(const std::string& filePath) :
 	ITexture(TextureType::_2D),
 	_description(Texture2DDescription()),
 	_pixelType(PixelType::Unknown)
@@ -108,7 +108,8 @@ void Texture2D::SetMagFilter(MagFilter value) {
 	if (_description.MultisampleCount == 1) {
 		_description.MagnificationFilter = value;
 		glTextureParameteri(_rendererId, GL_TEXTURE_MAG_FILTER, *_description.MagnificationFilter);
-	} else {
+	}
+	else {
 		LOG_WARN("Attempted to set magnification filter on a multisampled texture, ignoring");
 	}
 }
@@ -161,7 +162,7 @@ void Texture2D::_LoadDataFromFile() {
 		// If we could not load any data, warn and return null
 		if (data == nullptr) {
 			LOG_WARN("STBI Failed to load image from \"{}\"", _description.Filename);
-			return ;
+			return;
 		}
 
 		// We should estimate a good format for our data
@@ -195,7 +196,7 @@ void Texture2D::_LoadDataFromFile() {
 		// We now have data in the image, we can clear the STBI data
 		stbi_image_free(data);
 	}
-	
+
 	SetDebugName(_description.Filename);
 }
 

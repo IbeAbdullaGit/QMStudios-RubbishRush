@@ -9,7 +9,7 @@ layout(location = 4) in vec3 inTangent;
 layout(location = 5) in vec3 inBiTangent;
 
 // Standard vertex shader outputs
-layout(location = 0) out vec3 outWorldPos;
+layout(location = 0) out vec3 outViewPos;
 layout(location = 1) out vec3 outColor;
 layout(location = 2) out vec3 outNormal;
 layout(location = 3) out vec2 outUV;

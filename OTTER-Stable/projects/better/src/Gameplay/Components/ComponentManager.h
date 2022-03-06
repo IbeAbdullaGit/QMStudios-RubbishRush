@@ -3,6 +3,7 @@
 #include "IComponent.h"
 #include <typeindex>
 #include <optional>
+#include <Logging.h>
 
 namespace Gameplay {
 	/// <summary>

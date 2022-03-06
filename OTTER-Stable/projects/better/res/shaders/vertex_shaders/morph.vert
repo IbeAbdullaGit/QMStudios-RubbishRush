@@ -36,7 +36,7 @@ void main()
     //(The final LERPed vert is, as always, transformed
     //by the model matrix.)
     vec3 new_pos = (mix(inPosition, inPos_1, t));
-    outWorldPos = (u_Model * vec4(new_pos, 1.0)).xyz;
+    outViewPos = (u_Model * vec4(new_pos, 1.0)).xyz;
 
     //World-space normal - LERP the normals!
     //(And transform by the normal matrix.)
@@ -44,7 +44,7 @@ void main()
     
     //Output position - our viewprojection matrix
     //multiplied by world-space position.
-    gl_Position = u_ViewProjection * vec4(outWorldPos, 1.0);
+    gl_Position = u_ViewProjection * vec4(outViewPos, 1.0);
 
     // We use a TBN matrix for tangent space normal mapping
     vec3 T = normalize(vec3(mat3(u_NormalMatrix) * inTangent));

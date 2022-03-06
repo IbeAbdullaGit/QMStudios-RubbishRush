@@ -47,6 +47,8 @@
 #include "Gameplay/Components/MaterialSwapBehaviour.h"
 #include "Gameplay/Components/TriggerVolumeEnterBehaviour.h"
 #include "Gameplay/Components/SimpleCameraControl.h"
+#include "Gameplay/Components/Light.h"
+
 //ours
 #include "Gameplay/Components/DeleteObjectBehaviour.h"
 #include "Gameplay/Components/CollectTrashBehaviour.h"
@@ -281,69 +283,96 @@ void TutorialSceneLayer::_CreateScene()
 	}
 	else {
 		// This time we'll have 2 different shaders, and share data between both of them using the UBO
-		// This shader will handle reflective materials 
-		ShaderProgram::Sptr reflectiveShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_environment_reflective.glsl" }
-		});
+		//// This shader will handle reflective materials 
+		//ShaderProgram::Sptr reflectiveShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_environment_reflective.glsl" }
+		//});
 
-		// This shader handles our basic materials without reflections (cause they expensive)
-		ShaderProgram::Sptr basicShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
-		});
+		//// This shader handles our basic materials without reflections (cause they expensive)
+		//ShaderProgram::Sptr basicShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
+		//});
 		// This shader handles our basic materials without reflections (cause they expensive)
 		ShaderProgram::Sptr rackShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_texturedRACK.glsl" }
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forwardRACK.glsl" }
 		});
-
+		
 		// ANIMATION SHADER??
 		ShaderProgram::Sptr animShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/morph.vert" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
 
-		// This shader handles our basic materials without reflections (cause they expensive)
-		ShaderProgram::Sptr specShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/textured_specular.glsl" }
-		});
+		//// This shader handles our basic materials without reflections (cause they expensive)
+		//ShaderProgram::Sptr specShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/textured_specular.glsl" }
+		//});
 
 		// This shader handles our foliage vertex shader example
 		ShaderProgram::Sptr foliageShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/foliage.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/screendoor_transparency.glsl" }
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
-
-		// This shader handles our cel shading example
-		ShaderProgram::Sptr toonShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/toon_shading.glsl" }
-		});
-
-
 		///////////////////// NEW SHADERS ////////////////////////////////////////////
 
 		// This shader handles our displacement mapping example
 		ShaderProgram::Sptr displacementShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/displacement_mapping.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
+		displacementShader->SetDebugName("Displacement Mapping");
 
-		// This shader handles our displacement mapping example
-		ShaderProgram::Sptr tangentSpaceMapping = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
-		});
+
+		//// This shader handles our displacement mapping example
+		//ShaderProgram::Sptr tangentSpaceMapping = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
+		//});
 
 		// This shader handles our multitexturing example
 		ShaderProgram::Sptr multiTextureShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/vert_multitextured.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_multitextured.glsl" }
 		});
+		// This shader handles our cel shading example
+		ShaderProgram::Sptr celShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/displacement_mapping.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/cel_shader.glsl" }
+		});
+		celShader->SetDebugName("Cel Shader");
 
+		// Basic gbuffer generation with no vertex manipulation
+		ShaderProgram::Sptr deferredForward = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
+		});
+		deferredForward->SetDebugName("Deferred - GBuffer Generation");
+#pragma region Basic Texture Creation
+		Texture2DDescription singlePixelDescriptor;
+		singlePixelDescriptor.Width = singlePixelDescriptor.Height = 1;
+		singlePixelDescriptor.Format = InternalFormat::RGB8;
 
+		float normalMapDefaultData[3] = { 0.5f, 0.5f, 1.0f };
+		Texture2D::Sptr normalMapDefault = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
+		normalMapDefault->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, normalMapDefaultData);
+
+		float solidBlack[3] = { 0.5f, 0.5f, 0.5f };
+		Texture2D::Sptr solidBlackTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
+		solidBlackTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidBlack);
+
+		float solidGrey[3] = { 0.0f, 0.0f, 0.0f };
+		Texture2D::Sptr solidGreyTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
+		solidGreyTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidGrey);
+
+		float solidWhite[3] = { 1.0f, 1.0f, 1.0f };
+		Texture2D::Sptr solidWhiteTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
+		solidWhiteTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidWhite);
+
+#pragma endregion 
 		// Load in the meshes
 
 
@@ -371,16 +400,27 @@ void TutorialSceneLayer::_CreateScene()
 		//scene->SetSkyboxRotation(glm::rotate(MAT4_IDENTITY, glm::half_pi<float>(), glm::vec3(1.0f, 0.0f, 0.0f)));
 
 		// Create some lights for our scene
-		scene->Lights.resize(8);
-		scene->Lights[0].Position = glm::vec3(11.77f, 0.21f, 3.0f);
-		scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[0].Range = 5.0f;
+		Gameplay::GameObject::Sptr lightParent = scene->CreateGameObject("Lights");
+		{
+			Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
+			light->SetPostion(glm::vec3(11.77f, 0.21f, 3.0f));
+			lightParent->AddChild(light);
 
-		scene->Lights[1].Position = glm::vec3(7.9f, -4.89f, 3.0f);
-		scene->Lights[1].Color = glm::vec3(1.0f, 1.0f, 1.1f);
-		scene->Lights[1].Range = 2.5f;
+			Light::Sptr lightComponent = light->Add<Light>();
+			lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+			lightComponent->SetRadius(5.0f);
+			lightComponent->SetIntensity(1.0f);
+		}
+		{
+			Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
+			light->SetPostion(glm::vec3(7.9f, -4.89f, 3.0f));
+			lightParent->AddChild(light);
 
-
+			Light::Sptr lightComponent = light->Add<Light>();
+			lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.1f));
+			lightComponent->SetRadius(2.5f);
+			lightComponent->SetIntensity(1.0f);
+		}
 		// We'll create a mesh that is a simple plane that we can resize later
 		Gameplay::MeshResource::Sptr planeMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>();
 		planeMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(1.0f)));
@@ -415,8 +455,9 @@ void TutorialSceneLayer::_CreateScene()
 		Gameplay::Material::Sptr trashyMaterial = ResourceManager::CreateAsset<Gameplay::Material>(animShader);
 		{
 			trashyMaterial->Name = "Trashy";
-			trashyMaterial->Set("u_Material.Diffuse", trashyTex);
+			trashyMaterial->Set("u_Material.AlbedoMap", trashyTex);
 			trashyMaterial->Set("u_Material.Shininess", 1.0f);
+			trashyMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 
 		}
@@ -536,10 +577,11 @@ void TutorialSceneLayer::_CreateScene()
 		 
 
 		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
-		Gameplay::Material::Sptr planeMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader); {
+		Gameplay::Material::Sptr planeMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward); {
 			planeMaterial->Name = "Plane";
-			planeMaterial->Set("u_Material.Diffuse", planeTex);
+			planeMaterial->Set("u_Material.AlbedoMap", planeTex);
 			planeMaterial->Set("u_Material.Shininess", 1.0f);
+			planeMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
 		// Set up all our sample objects
@@ -579,11 +621,12 @@ void TutorialSceneLayer::_CreateScene()
 		Gameplay::MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("cup.obj");
 		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/acup.jpg");
 		// Create our material
-		Gameplay::Material::Sptr trashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr trashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			trashMaterial->Name = "Trash";
-			trashMaterial->Set("u_Material.Diffuse", trashTex);
+			trashMaterial->Set("u_Material.AlbedoMap", trashTex);
 			trashMaterial->Set("u_Material.Shininess", 0.3f);
+			trashMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
 
@@ -594,7 +637,7 @@ void TutorialSceneLayer::_CreateScene()
 		////MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
 		//Gameplay::Material::Sptr TutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader); {
 		//	TutMaterial->Name = "Plane";
-		//	TutMaterial->Set("u_Material.Diffuse", TutTex1);
+		//	TutMaterial->Set("u_Material.AlbedoMap", TutTex1);
 		//	TutMaterial->Set("u_Material.Shininess", 1.0f);
 		//}
 	
@@ -675,11 +718,13 @@ void TutorialSceneLayer::_CreateScene()
 		//layout
 		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tutorial level.obj");
 		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/tutorial tex.jpg");
-		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			layoutMaterial->Name = "Layout";
-			layoutMaterial->Set("u_Material.Diffuse", layoutTex);
+			layoutMaterial->Set("u_Material.AlbedoMap", layoutTex);
 			layoutMaterial->Set("u_Material.Shininess", 0.0f);
+			layoutMaterial->Set("u_Material.NormalMap", normalMapDefault);
+
 		}
 		Gameplay::GameObject::Sptr layout = scene->CreateGameObject("Layout");
 		{
@@ -800,11 +845,12 @@ void TutorialSceneLayer::_CreateScene()
 		Gameplay::MeshResource::Sptr binMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("BigBenClosed_000001.obj");
 		Texture2D::Sptr binTex = ResourceManager::CreateAsset<Texture2D>("textures/bigben.png");
 		// Create our material
-		Gameplay::Material::Sptr binMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr binMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			binMaterial->Name = "Bin";
-			binMaterial->Set("u_Material.Diffuse", binTex);
+			binMaterial->Set("u_Material.AlbedoMap", binTex);
 			binMaterial->Set("u_Material.Shininess", 1.0f);
+			binMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
 		Gameplay::GameObject::Sptr binM = scene->CreateGameObject("Bin");

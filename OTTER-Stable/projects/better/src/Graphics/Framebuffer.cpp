@@ -3,39 +3,19 @@
 #include "Graphics/RenderBuffer.h"
 #include "Utils/JsonGlmHelpers.h"
 
-int Framebuffer::__MAX_SAMPLES = -1;
 
 Framebuffer::Framebuffer(const FramebufferDescriptor& description) :
 	IGraphicsResource(),
 	_description(FramebufferDescriptor()),
 	_isValid(false),
-	_unsampledFramebuffer(nullptr),
 	_targets(__TargetMap()),
 	_drawBuffers(std::vector<RenderTargetAttachment>())
 {
 	_description = description;
 	LOG_ASSERT(_description.Width * _description.Height > 0, "Width and height must both be > 0");
 
-	// Grab the max sample count if we haven't already yet
-	if (__MAX_SAMPLES == -1) {
-		glGetIntegerv(GL_MAX_SAMPLES, &__MAX_SAMPLES);
-	}
-	// Clamp the multisampling to the given range
-	_description.SampleCount = glm::clamp((int)_description.SampleCount, 1, __MAX_SAMPLES);
-
 	// Generate the framebuffer
 	glCreateFramebuffers(1, &_rendererId);
-
-	// If this framebuffer is multisampled, and we want an unsampled version, we'll make a lil reference to one
-	if (_description.SampleCount > 1 && _description.GenerateUnsampled) {
-		// Create a copy of the descriptor, but set it's sample count to 1
-		FramebufferDescriptor subDescriptor = description;
-		subDescriptor.SampleCount = 1;
-		subDescriptor.GenerateUnsampled = false;
-
-		// Create and store a framebuffer that will be unsampled
-		_unsampledFramebuffer = std::make_shared<Framebuffer>(subDescriptor);
-	}
 
 	// Create and attach all render targets
 	for (const auto& kvp : _description.RenderTargets) {
@@ -60,29 +40,17 @@ glm::ivec2 Framebuffer::GetSize() const {
 	return glm::ivec2(_description.Width, _description.Height);
 }
 
-Texture2D::Sptr Framebuffer::GetTextureAttachment(RenderTargetAttachment attachment, bool multisampled) const {
-	// If we are multisampled, and requested a non-multisampled texture, grab from the unsampled framebuffer
-	if (_description.SampleCount > 1 && !multisampled) {
-		if (_unsampledFramebuffer != nullptr) {
-			return _unsampledFramebuffer->GetTextureAttachment(attachment);
-		}
-		else {
-			return nullptr;
-		}
-	} 
-	// Framebuffer is not multisampled, or we want to get a multisampled texture
-	else {
-		// Find the attachment
-		const auto& it = _targets.find(attachment);
+Texture2D::Sptr Framebuffer::GetTextureAttachment(RenderTargetAttachment attachment) const {
+	// Find the attachment
+	const auto& it = _targets.find(attachment);
 
-		// If it exists, and is not a renderbuffer, cast to texture and return
-		if (it != _targets.end() && !it->second.IsRenderBuffer) {
-			return std::dynamic_pointer_cast<Texture2D>(it->second.Resource);
-		}
-		// Otherwise not found or is a renderbuffer, return nullptr
-		else {
-			return nullptr;
-		}
+	// If it exists, and is not a renderbuffer, cast to texture and return
+	if (it != _targets.end() && !it->second.IsRenderBuffer) {
+		return std::dynamic_pointer_cast<Texture2D>(it->second.Resource);
+	}
+	// Otherwise not found or is a renderbuffer, return nullptr
+	else {
+		return nullptr;
 	}
 }
 
@@ -134,7 +102,6 @@ void Framebuffer::_AddAttachment(RenderTargetAttachment attachment, const Render
 		// Per-framebuffer parameters
 		descriptor.Width            = _description.Width;
 		descriptor.Height           = _description.Height;
-		descriptor.MultisampleCount = _description.SampleCount;
 
 		// Per-attachment parameters
 		descriptor.Format = target.Format;
@@ -149,7 +116,6 @@ void Framebuffer::_AddAttachment(RenderTargetAttachment attachment, const Render
 		// Per-framebuffer parameters
 		descriptor.Width            = _description.Width;
 		descriptor.Height           = _description.Height;
-		descriptor.MultisampleCount = _description.SampleCount;
 
 		// Per-attachment parameters
 		descriptor.Format = (InternalFormat)target.Format;
@@ -166,21 +132,10 @@ void Framebuffer::_AddAttachment(RenderTargetAttachment attachment, const Render
 
 		// Attach texture to the framebuffer
 		glNamedFramebufferTexture(_rendererId, *attachment, image->GetHandle(), 0);
-
-		// If this is a multisampled framebuffer and we want an unsampled version
-		// we'll need to create another texture
-		if (_description.SampleCount > 1 && _description.GenerateUnsampled) {
-			_unsampledFramebuffer->_AddAttachment(attachment, target);
-		}
 	}
 }
 
 bool Framebuffer::Validate() {
-	// If this framebuffer is multisampled and we need an unsampled buffer, validate it as well
-	if (_description.SampleCount > 1 && _description.GenerateUnsampled) {
-		_unsampledFramebuffer->Validate();
-	}
-
 	// Get the framebuffer status, if it is not complete, log some errors
 	GLenum result = glCheckNamedFramebufferStatus(_rendererId, GL_FRAMEBUFFER);
 	if (result != GL_FRAMEBUFFER_COMPLETE) {
@@ -224,39 +179,14 @@ bool Framebuffer::BindAttachment(RenderTargetAttachment attachment, int slot) co
 
 void Framebuffer::Bind(FramebufferBinding bindMode /*= FramebufferBinding::Draw*/) const {
 	_currentBinding = bindMode;
+	// Make sure that we're drawing to all the color buffers
+	glNamedFramebufferDrawBuffers(_rendererId, _drawBuffers.size(), reinterpret_cast<const GLenum*>(_drawBuffers.data()));
 	glBindFramebuffer(*bindMode, _rendererId);
 }
 
 void Framebuffer::Unbind() {
 	// Only handle if we've been bound
 	if (_currentBinding != FramebufferBinding::None) {
-		// If this framebuffer is multisampled, and we want unsampled, we need to do a bunch of blits
-		if (_description.SampleCount > 1 && _description.GenerateUnsampled) {
-			// Bind this buffer as the read, and the unsampled as the write
-			glBindFramebuffer(GL_READ_FRAMEBUFFER, _rendererId);
-			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, _unsampledFramebuffer->GetHandle());
-
-			// Figure out bounds of the framebuffer
-			glm::ivec4 bounds ={ 0, 0, _description.Width, _description.Height };
-
-			// Blit depth and stencil
-			Blit(bounds, bounds, BufferFlags::Depth | BufferFlags::Stencil);
-
-			// Iterate over all color attachments
-			for (auto& kvp : _targets) {
-				if (IsColorAttachment(kvp.first)) {
-					// Update the read and draw, then blit the color
-					glReadBuffer(*kvp.first);
-					glDrawBuffer(*kvp.first);
-					Blit(bounds, bounds, BufferFlags::Color);
-				}
-			}
-
-			// Unbind both buffers
-			glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-		}
-
 		// Unbind the framebuffer and clear our binding
 		glBindFramebuffer(*_currentBinding, 0);
 		_currentBinding = FramebufferBinding::None;
@@ -281,7 +211,8 @@ void Framebuffer::Blit(const Sptr& source, const Sptr& dest, BufferFlags flags /
 	glm::ivec4 dstBounds;
 	if (dest != nullptr) {
 		dstBounds ={ 0, 0, dest->GetWidth(), dest->GetHeight() };
-	} else {
+	} 
+	else {
 		int dimensions[4] ={ 0 };
 		glGetIntegerv(GL_VIEWPORT, dimensions);
 		dstBounds ={ dimensions[0], dimensions[1], dimensions[2], dimensions[3] };
@@ -333,8 +264,6 @@ nlohmann::json Framebuffer::ToJson() const {
 	nlohmann::json result ={
 		{ "width", _description.Width },
 		{ "height", _description.Height },
-		{ "multi-sample", _description.SampleCount },
-		{ "generate-unsampled", _description.GenerateUnsampled },
 		{ "attachments", nlohmann::json() }
 	};
 
@@ -356,8 +285,6 @@ Framebuffer::Sptr Framebuffer::FromJson(const nlohmann::json& blob) {
 	FramebufferDescriptor result = FramebufferDescriptor();
 	result.Width  = JsonGet(blob, "width", 0);
 	result.Height = JsonGet(blob, "height", 0);
-	result.SampleCount = JsonGet(blob, "multi-sample", 1);
-	result.GenerateUnsampled = JsonGet(blob, "generate-unsampled", false);
 
 	if (blob.contains("attachments") && blob["attachments"].is_object()) {
 		// Iterate over all objects

@@ -250,6 +250,10 @@ namespace Gameplay {
 		return _position;
 	}
 
+	glm::vec3 GameObject::GetWorldPosition() const {
+		return this->GetTransform()[3];
+	}
+
 	void GameObject::SetRotation(const glm::quat& value) {
 		_rotation = value;
 		_isLocalTransformDirty = true;

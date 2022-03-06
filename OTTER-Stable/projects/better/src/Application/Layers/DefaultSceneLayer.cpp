@@ -47,6 +47,7 @@
 #include "Gameplay/Components/MaterialSwapBehaviour.h"
 #include "Gameplay/Components/TriggerVolumeEnterBehaviour.h"
 #include "Gameplay/Components/SimpleCameraControl.h"
+#include "Gameplay/Components/Light.h"
 //ours
 #include "Gameplay/Components/DeleteObjectBehaviour.h"
 #include "Gameplay/Components/CollectTrashBehaviour.h"
@@ -758,73 +759,103 @@ void DefaultSceneLayer::_CreateScene()
 	else {
 		// This time we'll have 2 different shaders, and share data between both of them using the UBO
 		// This shader will handle reflective materials 
-		ShaderProgram::Sptr reflectiveShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		/*ShaderProgram::Sptr reflectiveShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_environment_reflective.glsl" }
-		});
+		});*/
 
-		// This shader handles our basic materials without reflections (cause they expensive)
-		ShaderProgram::Sptr basicShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
-		});
+		//// This shader handles our basic materials without reflections (cause they expensive)
+		//ShaderProgram::Sptr deferredForward = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
+		//});
 		// This shader handles our basic materials without reflections (cause they expensive)
 		ShaderProgram::Sptr rackShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_texturedRACK.glsl" }
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forwardRACK.glsl" }
 		});
 
 		// ANIMATION SHADER??
 		ShaderProgram::Sptr animShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/morph.vert" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
 
-		// This shader handles our basic materials without reflections (cause they expensive)
-		ShaderProgram::Sptr specShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/textured_specular.glsl" }
-		});
+		//// This shader handles our basic materials without reflections (cause they expensive)
+		//ShaderProgram::Sptr specShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/textured_specular.glsl" }
+		//});
 
 		// This shader handles our foliage vertex shader example
 		ShaderProgram::Sptr foliageShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/foliage.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/screendoor_transparency.glsl" }
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
 
 		//for moving the conveyor belt?
 		ShaderProgram::Sptr conveyorShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic_moving.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
-
-		// This shader handles our cel shading example
-		ShaderProgram::Sptr toonShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/toon_shading.glsl" }
-		});
-
 
 		///////////////////// NEW SHADERS ////////////////////////////////////////////
 
-		// This shader handles our displacement mapping example
+			// This shader handles our displacement mapping example
 		ShaderProgram::Sptr displacementShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/displacement_mapping.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
+		displacementShader->SetDebugName("Displacement Mapping");
 
-		// This shader handles our displacement mapping example
-		ShaderProgram::Sptr tangentSpaceMapping = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
-		});
+
+		//// This shader handles our displacement mapping example
+		//ShaderProgram::Sptr tangentSpaceMapping = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
+		//});
 
 		// This shader handles our multitexturing example
 		ShaderProgram::Sptr multiTextureShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/vert_multitextured.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_multitextured.glsl" }
 		});
+		// This shader handles our cel shading example
+		ShaderProgram::Sptr celShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/displacement_mapping.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/cel_shader.glsl" }
+		});
+		celShader->SetDebugName("Cel Shader");
 
+		// Basic gbuffer generation with no vertex manipulation
+		ShaderProgram::Sptr deferredForward = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
+		});
+		deferredForward->SetDebugName("Deferred - GBuffer Generation");
+
+#pragma region Basic Texture Creation
+		Texture2DDescription singlePixelDescriptor;
+		singlePixelDescriptor.Width = singlePixelDescriptor.Height = 1;
+		singlePixelDescriptor.Format = InternalFormat::RGB8;
+
+		float normalMapDefaultData[3] = { 0.5f, 0.5f, 1.0f };
+		Texture2D::Sptr normalMapDefault = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
+		normalMapDefault->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, normalMapDefaultData);
+
+		float solidBlack[3] = { 0.5f, 0.5f, 0.5f };
+		Texture2D::Sptr solidBlackTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
+		solidBlackTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidBlack);
+
+		float solidGrey[3] = { 0.0f, 0.0f, 0.0f };
+		Texture2D::Sptr solidGreyTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
+		solidGreyTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidGrey);
+
+		float solidWhite[3] = { 1.0f, 1.0f, 1.0f };
+		Texture2D::Sptr solidWhiteTex = ResourceManager::CreateAsset<Texture2D>(singlePixelDescriptor);
+		solidWhiteTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidWhite);
+
+#pragma endregion 
 
 		// Load in the meshes
 		
@@ -851,38 +882,91 @@ void DefaultSceneLayer::_CreateScene()
 		//scene->SetSkyboxRotation(glm::rotate(MAT4_IDENTITY, glm::half_pi<float>(), glm::vec3(1.0f, 0.0f, 0.0f)));
 
 		// Create some lights for our scene
-		scene->Lights.resize(8);
-		scene->Lights[0].Position = glm::vec3(11.77f, 0.21f, 3.0f);
-		scene->Lights[0].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[0].Range = 10.0f;
+		Gameplay::GameObject::Sptr lightParent = scene->CreateGameObject("Lights");
+		//light collection
+		//set this up for every light
+		{
+			{
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
+				light->SetPostion(glm::vec3(11.77f, 0.21f, 3.0f));
+				lightParent->AddChild(light);
 
-		scene->Lights[1].Position = glm::vec3(7.9f, -4.89f, 3.0f);
-		scene->Lights[1].Color = glm::vec3(1.0f, 1.0f, 1.1f);
-		scene->Lights[1].Range = 10.0f;
+				Light::Sptr lightComponent = light->Add<Light>();
+				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+				lightComponent->SetRadius(10.0f);
+				lightComponent->SetIntensity(1.0f);
+			}
+			{
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
+				light->SetPostion(glm::vec3(7.9f, -4.89f, 3.0f));
+				lightParent->AddChild(light);
 
-		scene->Lights[2].Position = glm::vec3(2.58f, -6.29f, 3.0f);
-		scene->Lights[2].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[2].Range = 10.0f;
+				Light::Sptr lightComponent = light->Add<Light>();
+				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.1f));
+				lightComponent->SetRadius(10.0f);
+				lightComponent->SetIntensity(1.0f);
+			}
+			{
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
+				light->SetPostion(glm::vec3(2.58f, -6.29f, 3.0f));
+				lightParent->AddChild(light);
 
-		scene->Lights[3].Position = glm::vec3(3.83f, 3.13f, 3.0f);
-		scene->Lights[3].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[3].Range = 10.0f;
+				Light::Sptr lightComponent = light->Add<Light>();
+				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+				lightComponent->SetRadius(10.0f);
+				lightComponent->SetIntensity(1.0f);
+			}
+			{
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
+				light->SetPostion(glm::vec3(3.83f, 3.13f, 3.0f));
+				lightParent->AddChild(light);
 
-		scene->Lights[4].Position = glm::vec3(-0.150f, 5.470f, 3.0f);
-		scene->Lights[4].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[4].Range = 189.500f;
+				Light::Sptr lightComponent = light->Add<Light>();
+				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+				lightComponent->SetRadius(10.0f);
+				lightComponent->SetIntensity(1.0f);
+			}
+			{
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
+				light->SetPostion(glm::vec3(-0.150f, 5.470f, 3.0f));
+				lightParent->AddChild(light);
 
-		scene->Lights[5].Position = glm::vec3(-14.41f, 0.56f, 3.0f);
-		scene->Lights[5].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[5].Range = 10.0f;
+				Light::Sptr lightComponent = light->Add<Light>();
+				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+				lightComponent->SetRadius(189.500f);
+				lightComponent->SetIntensity(1.0f);
+			}
+			{
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
+				light->SetPostion(glm::vec3(-14.41f, 0.56f, 3.0f));
+				lightParent->AddChild(light);
 
-		scene->Lights[6].Position = glm::vec3(-8.17f, 0.87f, 3.0f);
-		scene->Lights[6].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[6].Range = 10.0f;
+				Light::Sptr lightComponent = light->Add<Light>();
+				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+				lightComponent->SetRadius(10.0f);
+				lightComponent->SetIntensity(1.0f);
+			}
+			{
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
+				light->SetPostion(glm::vec3(-8.17f, 0.87f, 3.0f));
+				lightParent->AddChild(light);
 
-		scene->Lights[7].Position = glm::vec3(-2.060f, -0.94f, 4.60f);
-		scene->Lights[7].Color = glm::vec3(1.0f, 1.0f, 1.0f);
-		scene->Lights[7].Range = -0.600f;
+				Light::Sptr lightComponent = light->Add<Light>();
+				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+				lightComponent->SetRadius(10.0f);
+				lightComponent->SetIntensity(1.0f);
+			}
+			{
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
+				light->SetPostion(glm::vec3(-2.060f, -0.94f, 4.60f));
+				lightParent->AddChild(light);
+
+				Light::Sptr lightComponent = light->Add<Light>();
+				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+				lightComponent->SetRadius(-0.600f);
+				lightComponent->SetIntensity(1.0f);
+			}
+		}
 
 		// We'll create a mesh that is a simple plane that we can resize later
 		Gameplay::MeshResource::Sptr planeMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>();
@@ -914,8 +998,9 @@ void DefaultSceneLayer::_CreateScene()
 		Gameplay::Material::Sptr trashyMaterial = ResourceManager::CreateAsset<Gameplay::Material>(animShader);
 		{
 			trashyMaterial->Name = "Trashy";
-			trashyMaterial->Set("u_Material.Diffuse", trashyTex);
+			trashyMaterial->Set("u_Material.AlbedoMap", trashyTex);
 			trashyMaterial->Set("u_Material.Shininess", 1.0f);
+			trashyMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 
 		}
@@ -1036,10 +1121,11 @@ void DefaultSceneLayer::_CreateScene()
 		Texture2D::Sptr planeTex = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
 
 		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
-		Gameplay::Material::Sptr planeMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader); {
+		Gameplay::Material::Sptr planeMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward); {
 			planeMaterial->Name = "Plane";
-			planeMaterial->Set("u_Material.Diffuse", planeTex);
+			planeMaterial->Set("u_Material.AlbedoMap", planeTex);
 			planeMaterial->Set("u_Material.Shininess", 1.0f);
+			planeMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
 		// Set up all our sample objects
@@ -1076,11 +1162,12 @@ void DefaultSceneLayer::_CreateScene()
 
 		Gameplay::MeshResource::Sptr enterMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("InvisPlane.obj");
 		Texture2D::Sptr enterTex = ResourceManager::CreateAsset<Texture2D>("textures/ENTER.png");
-		Gameplay::Material::Sptr enterMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr enterMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			enterMaterial->Name = "Enter";
-			enterMaterial->Set("u_Material.Diffuse", enterTex);
+			enterMaterial->Set("u_Material.AlbedoMap", enterTex);
 			enterMaterial->Set("u_Material.Shininess", 0.0f);
+			enterMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 		Gameplay::GameObject::Sptr enter = scene->CreateGameObject("Enter");
 		{
@@ -1095,11 +1182,12 @@ void DefaultSceneLayer::_CreateScene()
 		//layout
 		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("layoutclean.obj");
 		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/layout.jpg");
-		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			layoutMaterial->Name = "Layout";
-			layoutMaterial->Set("u_Material.Diffuse", layoutTex);
+			layoutMaterial->Set("u_Material.AlbedoMap", layoutTex);
 			layoutMaterial->Set("u_Material.Shininess", 0.0f);
+			layoutMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 		Gameplay::GameObject::Sptr layout = scene->CreateGameObject("Layout");
 		{
@@ -1208,11 +1296,12 @@ void DefaultSceneLayer::_CreateScene()
 		Gameplay::MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("cup.obj");
 		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/acup.jpg");
 		// Create our material
-		Gameplay::Material::Sptr trashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr trashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			trashMaterial->Name = "Trash";
-			trashMaterial->Set("u_Material.Diffuse", trashTex);
+			trashMaterial->Set("u_Material.AlbedoMap", trashTex);
 			trashMaterial->Set("u_Material.Shininess", 0.3f);
+			trashMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
 		//cup collection
@@ -1331,11 +1420,12 @@ void DefaultSceneLayer::_CreateScene()
 		//set up robo toy
 		Gameplay::MeshResource::Sptr roboMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Robo/RoboWalk_000001.obj");
 		Texture2D::Sptr roboTex = ResourceManager::CreateAsset<Texture2D>("textures/robo.png");
-		Gameplay::Material::Sptr roboMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr roboMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			roboMaterial->Name = "Robo";
-			roboMaterial->Set("u_Material.Diffuse", roboTex);
+			roboMaterial->Set("u_Material.AlbedoMap", roboTex);
 			roboMaterial->Set("u_Material.Shininess", 0.5f);
+			roboMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 		Gameplay::GameObject::Sptr robo = scene->CreateGameObject("Robo");
 		{
@@ -1377,11 +1467,12 @@ void DefaultSceneLayer::_CreateScene()
 		//set up book
 		Gameplay::MeshResource::Sptr bookMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Book/AnimBook_000001.obj");
 		Texture2D::Sptr bookTex = ResourceManager::CreateAsset<Texture2D>("textures/Book.png");
-		Gameplay::Material::Sptr bookMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr bookMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			bookMaterial->Name = "Book";
-			bookMaterial->Set("u_Material.Diffuse", bookTex);
+			bookMaterial->Set("u_Material.AlbedoMap", bookTex);
 			bookMaterial->Set("u_Material.Shininess", 0.0f);
+			bookMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 		Gameplay::GameObject::Sptr book = scene->CreateGameObject("Book");
 		{
@@ -1420,11 +1511,12 @@ void DefaultSceneLayer::_CreateScene()
 		Gameplay::MeshResource::Sptr toyMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("toy.obj");
 		Texture2D::Sptr toyTex = ResourceManager::CreateAsset<Texture2D>("textures/toy.jpg");
 		// Create our material
-		Gameplay::Material::Sptr toyMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr toyMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			toyMaterial->Name = "Toy";
-			toyMaterial->Set("u_Material.Diffuse", toyTex);
+			toyMaterial->Set("u_Material.AlbedoMap", toyTex);
 			toyMaterial->Set("u_Material.Shininess", 0.0f);
+			toyMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
 		// rolling toy collection
@@ -1539,8 +1631,9 @@ void DefaultSceneLayer::_CreateScene()
 		Gameplay::Material::Sptr spillMaterial = ResourceManager::CreateAsset<Gameplay::Material>(rackShader);
 		{
 			spillMaterial->Name = "Spill";
-			spillMaterial->Set("u_Material.Diffuse", spillTex);
+			spillMaterial->Set("u_Material.AlbedoMap", spillTex);
 			spillMaterial->Set("u_Material.Shininess", 1.0f);
+			spillMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
 		//spill collection
@@ -1663,11 +1756,12 @@ void DefaultSceneLayer::_CreateScene()
 		Gameplay::MeshResource::Sptr binMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("BigBenClosed_000001.obj");
 		Texture2D::Sptr binTex = ResourceManager::CreateAsset<Texture2D>("textures/bigben.png");
 		// Create our material
-		Gameplay::Material::Sptr binMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr binMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			binMaterial->Name = "Bin";
-			binMaterial->Set("u_Material.Diffuse", binTex);
+			binMaterial->Set("u_Material.AlbedoMap", binTex);
 			binMaterial->Set("u_Material.Shininess", 1.0f);
+			binMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
 		Gameplay::GameObject::Sptr binM = scene->CreateGameObject("Bin");
@@ -1717,11 +1811,12 @@ void DefaultSceneLayer::_CreateScene()
 		Gameplay::MeshResource::Sptr shelfMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("shelf.obj");
 		Texture2D::Sptr shelfTex = ResourceManager::CreateAsset <Texture2D>("textures/shelf.png");
 		//Create Material
-		Gameplay::Material::Sptr shelfMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr shelfMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			shelfMaterial->Name = "Shelf";
-			shelfMaterial->Set("u_Material.Diffuse", shelfTex);
+			shelfMaterial->Set("u_Material.AlbedoMap", shelfTex);
 			shelfMaterial->Set("u_Material.Shininess", 0.2f);
+			shelfMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 		//shelf collection
 		{
@@ -1810,11 +1905,12 @@ void DefaultSceneLayer::_CreateScene()
 		Gameplay::MeshResource::Sptr tvboxMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tvbox4.obj");
 		Texture2D::Sptr tvboxTex = ResourceManager::CreateAsset<Texture2D>("textures/test.jpg");
 		//Create Material
-		Gameplay::Material::Sptr tvboxMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr tvboxMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			tvboxMaterial->Name = "TvBox";
-			tvboxMaterial->Set("u_Material.Diffuse", tvboxTex);
+			tvboxMaterial->Set("u_Material.AlbedoMap", tvboxTex);
 			tvboxMaterial->Set("u_Material.Shininess", 0.0f);
+			tvboxMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 		//tv box collection
 		{
@@ -1937,11 +2033,12 @@ void DefaultSceneLayer::_CreateScene()
 		Gameplay::MeshResource::Sptr tvMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("TV.obj");
 		Texture2D::Sptr tvTex = ResourceManager::CreateAsset<Texture2D>("textures/tvtex.jpg");
 		//Create Material
-		Gameplay::Material::Sptr tvMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr tvMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			tvMaterial->Name = "Tv";
-			tvMaterial->Set("u_Material.Diffuse", tvTex);
+			tvMaterial->Set("u_Material.AlbedoMap", tvTex);
 			tvMaterial->Set("u_Material.Shininess", 0.75f);
+			tvMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 		//tv collection
 		{
@@ -1996,11 +2093,12 @@ void DefaultSceneLayer::_CreateScene()
 		Gameplay::MeshResource::Sptr cashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("cashcounter.obj");
 		Texture2D::Sptr cashTex = ResourceManager::CreateAsset<Texture2D>("textures/cash.png");
 		//create Material
-		Gameplay::Material::Sptr cashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr cashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			cashMaterial->Name = "Cash";
-			cashMaterial->Set("u_Material.Diffuse", cashTex);
+			cashMaterial->Set("u_Material.AlbedoMap", cashTex);
 			cashMaterial->Set("u_Material.Shininess", 0.75f);
+			cashMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 		//cash counter
 		Gameplay::GameObject::Sptr cashcounter = scene->CreateGameObject("CashCounter");
@@ -2021,11 +2119,12 @@ void DefaultSceneLayer::_CreateScene()
 		Gameplay::MeshResource::Sptr recMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("RecOBJ.obj");
 		Texture2D::Sptr recTex = ResourceManager::CreateAsset<Texture2D>("textures/Rec1.png");
 		// Create our material
-		Gameplay::Material::Sptr recMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr recMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			recMaterial->Name = "Rec";
-			recMaterial->Set("u_Material.Diffuse", recTex);
+			recMaterial->Set("u_Material.AlbedoMap", recTex);
 			recMaterial->Set("u_Material.Shininess", 1.0f);
+			recMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
 		Gameplay::GameObject::Sptr recE = scene->CreateGameObject("Rec");
@@ -2044,11 +2143,12 @@ void DefaultSceneLayer::_CreateScene()
 		Gameplay::MeshResource::Sptr trashyEMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashy2OBJ.obj");
 		Texture2D::Sptr trashyETex = ResourceManager::CreateAsset<Texture2D>("textures/Trashy2.png");
 		// Create our material
-		Gameplay::Material::Sptr trashyEMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+		Gameplay::Material::Sptr trashyEMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			trashyEMaterial->Name = "trashyE";
-			trashyEMaterial->Set("u_Material.Diffuse", trashyETex);
+			trashyEMaterial->Set("u_Material.AlbedoMap", trashyETex);
 			trashyEMaterial->Set("u_Material.Shininess", 1.0f);
+			trashyEMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
 		Gameplay::GameObject::Sptr trashyE = scene->CreateGameObject("TrashyE");
@@ -2068,11 +2168,12 @@ void DefaultSceneLayer::_CreateScene()
 			//Bench
 			Gameplay::MeshResource::Sptr benchMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("bench.obj");
 			Texture2D::Sptr benchTex = ResourceManager::CreateAsset<Texture2D>("textures/bench.jpg");
-			Gameplay::Material::Sptr benchMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+			Gameplay::Material::Sptr benchMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 			{
 				benchMaterial->Name = "Bench";
-				benchMaterial->Set("u_Material.Diffuse", benchTex);
+				benchMaterial->Set("u_Material.AlbedoMap", benchTex);
 				benchMaterial->Set("u_Material.Shininess", 0.0f);
+				benchMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			}
 			Gameplay::GameObject::Sptr bench = scene->CreateGameObject("Bench");
 			{
@@ -2099,11 +2200,12 @@ void DefaultSceneLayer::_CreateScene()
 			//Computer
 			Gameplay::MeshResource::Sptr computerMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Computer.obj");
 			Texture2D::Sptr computerTex = ResourceManager::CreateAsset<Texture2D>("textures/desktoptex.png");
-			Gameplay::Material::Sptr computerMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+			Gameplay::Material::Sptr computerMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 			{
 				computerMaterial->Name = "Computer";
-				computerMaterial->Set("u_Material.Diffuse", computerTex);
+				computerMaterial->Set("u_Material.AlbedoMap", computerTex);
 				computerMaterial->Set("u_Material.Shininess", 0.3f);
+				computerMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			}
 			Gameplay::GameObject::Sptr computer = scene->CreateGameObject("Desktop");
 			{
@@ -2121,8 +2223,9 @@ void DefaultSceneLayer::_CreateScene()
 			Gameplay::Material::Sptr conveyorMaterial = ResourceManager::CreateAsset<Gameplay::Material>(conveyorShader);
 			{
 				conveyorMaterial->Name = "Conveyor";
-				conveyorMaterial->Set("u_Material.Diffuse", conveyorTex);
+				conveyorMaterial->Set("u_Material.AlbedoMap", conveyorTex);
 				conveyorMaterial->Set("u_Material.Shininess", 0.2f);
+				conveyorMaterial->Set("u_Material.NormalMap", normalMapDefault);
 				
 			}
 			Gameplay::GameObject::Sptr conveyor = scene->CreateGameObject("Conveyor");
@@ -2160,11 +2263,12 @@ void DefaultSceneLayer::_CreateScene()
 			//Mirror
 			Gameplay::MeshResource::Sptr mirrorMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Mirror.obj");
 			Texture2D::Sptr mirrorTex = ResourceManager::CreateAsset<Texture2D>("textures/mirror.jpg");
-			Gameplay::Material::Sptr mirrorMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+			Gameplay::Material::Sptr mirrorMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 			{
 				mirrorMaterial->Name = "Mirror";
-				mirrorMaterial->Set("u_Material.Diffuse", mirrorTex);
+				mirrorMaterial->Set("u_Material.AlbedoMap", mirrorTex);
 				mirrorMaterial->Set("u_Material.Shininess", 0.6f);
+				mirrorMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			}
 			Gameplay::GameObject::Sptr mirror = scene->CreateGameObject("Mirror");
 			{
@@ -2179,11 +2283,12 @@ void DefaultSceneLayer::_CreateScene()
 			//Plant
 			Gameplay::MeshResource::Sptr plantMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("plant.obj");
 			Texture2D::Sptr plantTex = ResourceManager::CreateAsset<Texture2D>("textures/planttex.png");
-			Gameplay::Material::Sptr plantMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+			Gameplay::Material::Sptr plantMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 			{
 				plantMaterial->Name = "Plant";
-				plantMaterial->Set("u_Material.Diffuse", plantTex);
+				plantMaterial->Set("u_Material.AlbedoMap", plantTex);
 				plantMaterial->Set("u_Material.Shininess", 0.0f);
+				plantMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			}
 			Gameplay::GameObject::Sptr plant = scene->CreateGameObject("Plant");
 			{
@@ -2201,8 +2306,9 @@ void DefaultSceneLayer::_CreateScene()
 			Gameplay::Material::Sptr rackMaterial = ResourceManager::CreateAsset<Gameplay::Material>(rackShader); //CHANGE THIS SHADER
 			{
 				rackMaterial->Name = "Rack";
-				rackMaterial->Set("u_Material.Diffuse", rackTex);
+				rackMaterial->Set("u_Material.AlbedoMap", rackTex);
 				rackMaterial->Set("u_Material.Shininess", 0.2f);
+				rackMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			}
 			Gameplay::GameObject::Sptr rack = scene->CreateGameObject("Rack");
 			{
@@ -2228,11 +2334,12 @@ void DefaultSceneLayer::_CreateScene()
 			//Shower
 			Gameplay::MeshResource::Sptr showerMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("shower.obj");
 			Texture2D::Sptr showerTex = ResourceManager::CreateAsset<Texture2D>("textures/shower.png");
-			Gameplay::Material::Sptr showerMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+			Gameplay::Material::Sptr showerMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 			{
 				showerMaterial->Name = "Shower";
-				showerMaterial->Set("u_Material.Diffuse", showerTex);
+				showerMaterial->Set("u_Material.AlbedoMap", showerTex);
 				showerMaterial->Set("u_Material.Shininess", 0.5f);
+				showerMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			}
 			Gameplay::GameObject::Sptr shower = scene->CreateGameObject("Shower");
 			{
@@ -2247,11 +2354,12 @@ void DefaultSceneLayer::_CreateScene()
 			//Sink
 			Gameplay::MeshResource::Sptr sinkMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Sink.obj");
 			Texture2D::Sptr sinkTex = ResourceManager::CreateAsset<Texture2D>("textures/sinktex.png");
-			Gameplay::Material::Sptr sinkMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+			Gameplay::Material::Sptr sinkMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 			{
 				sinkMaterial->Name = "Sink";
-				sinkMaterial->Set("u_Material.Diffuse", sinkTex);
+				sinkMaterial->Set("u_Material.AlbedoMap", sinkTex);
 				sinkMaterial->Set("u_Material.Shininess", 0.5f);
+				sinkMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			}
 			Gameplay::GameObject::Sptr sink = scene->CreateGameObject("Sink");
 			{
@@ -2266,11 +2374,12 @@ void DefaultSceneLayer::_CreateScene()
 			//Tub
 			Gameplay::MeshResource::Sptr tubMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tub.obj");
 			Texture2D::Sptr tubTex = ResourceManager::CreateAsset<Texture2D>("textures/tub.png");
-			Gameplay::Material::Sptr tubMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+			Gameplay::Material::Sptr tubMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 			{
 				tubMaterial->Name = "Tub";
-				tubMaterial->Set("u_Material.Diffuse", tubTex);
+				tubMaterial->Set("u_Material.AlbedoMap", tubTex);
 				tubMaterial->Set("u_Material.Shininess", 0.5f);
+				tubMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			}
 			Gameplay::GameObject::Sptr tub = scene->CreateGameObject("Tub");
 			{
@@ -2308,11 +2417,12 @@ void DefaultSceneLayer::_CreateScene()
 			Gameplay::MeshResource::Sptr statueMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("wolfstatue.obj");
 			Texture2D::Sptr statueTex = ResourceManager::CreateAsset <Texture2D>("textures/statue.jpg");
 			//Create Material
-			Gameplay::Material::Sptr statueMaterial = ResourceManager::CreateAsset<Gameplay::Material>(basicShader);
+			Gameplay::Material::Sptr statueMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 			{
 				statueMaterial->Name = "Statue";
-				statueMaterial->Set("u_Material.Diffuse", statueTex);
+				statueMaterial->Set("u_Material.AlbedoMap", statueTex);
 				statueMaterial->Set("u_Material.Shininess", 1.0f);
+				statueMaterial->Set("u_Material.NormalMap", normalMapDefault);
 			}
 			Gameplay::GameObject::Sptr wolfstatue = scene->CreateGameObject("Wolf Statue");
 			{
