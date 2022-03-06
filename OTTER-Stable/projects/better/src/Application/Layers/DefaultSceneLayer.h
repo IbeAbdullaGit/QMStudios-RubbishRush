@@ -79,4 +79,6 @@ protected:
 	bool activated = false;
 	int inventory = 2; //DEFAULT INVENTORY COUNT
 	int max_trash = 4; //DEFAULT FOR NOW
+
+	bool press_once = false;
 };

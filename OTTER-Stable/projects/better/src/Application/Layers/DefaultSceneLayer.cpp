@@ -344,9 +344,13 @@ void DefaultSceneLayer::OnUpdate()
 				trashRemainder->Get<GuiText>()->IsEnabled = false;
 				objective->Get<GuiPanel>()->IsEnabled = false;
 				returnUI->Get<GuiText>()->IsEnabled = false;
+				//need this so program doesnt detect multiple presses
+				press_once = false;
 				//pause the timer*****
-				if (glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE)) //return to game
+				if (glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE) && !press_once) //return to game
 				{
+					//need this so program doesnt detect multiple presses
+					press_once = true;
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
 					failMenu->Get<GuiPanel>()->IsEnabled = false; //dont show lose menu
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
@@ -521,9 +525,13 @@ void DefaultSceneLayer::OnUpdate()
 				trashRemainder->Get<GuiText>()->IsEnabled = false;
 				objective->Get<GuiPanel>()->IsEnabled = false;
 				returnUI->Get<GuiText>()->IsEnabled = false;
+				//need this so program doesnt detect multiple presses
+				press_once = false;
 				//pause the timer*****
-				if (glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE)) //return to game
+				if (glfwGetKey(app.GetWindow(), GLFW_KEY_ENTER) && !press_once) //return to game
 				{
+					//need this so program doesnt detect multiple presses
+					press_once = true;
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
 					winMenu->Get<GuiPanel>()->IsEnabled = false; //dont show win menu
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
