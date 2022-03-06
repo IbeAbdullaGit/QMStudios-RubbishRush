@@ -347,11 +347,8 @@ void DefaultSceneLayer::OnUpdate()
 				//need this so program doesnt detect multiple presses
 				press_once = false;
 				//pause the timer*****
-<<<<<<< HEAD
-				if (glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE) && !press_once) //return to game
-=======
-				if (glfwGetKey(app.GetWindow(), GLFW_KEY_ENTER)) //return to game
->>>>>>> main
+
+				if (glfwGetKey(app.GetWindow(), GLFW_KEY_ENTER) && !press_once) //return to game
 				{
 					//need this so program doesnt detect multiple presses
 					press_once = true;
@@ -532,11 +529,8 @@ void DefaultSceneLayer::OnUpdate()
 				//need this so program doesnt detect multiple presses
 				press_once = false;
 				//pause the timer*****
-<<<<<<< HEAD
+
 				if (glfwGetKey(app.GetWindow(), GLFW_KEY_ENTER) && !press_once) //return to game
-=======
-				if (glfwGetKey(app.GetWindow(), GLFW_KEY_ENTER)) //return to game
->>>>>>> main
 				{
 					//need this so program doesnt detect multiple presses
 					press_once = true;
