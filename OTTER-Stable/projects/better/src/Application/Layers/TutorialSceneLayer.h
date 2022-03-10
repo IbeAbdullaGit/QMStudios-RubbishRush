@@ -38,6 +38,7 @@ protected:
 	
 	bool hasMoved = false;
 	bool hasCollected = false;
+	bool hasJumped = false;
 
 	bool activated = false;
 	bool done = false;

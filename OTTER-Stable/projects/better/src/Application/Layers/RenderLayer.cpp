@@ -118,7 +118,9 @@ void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 	ShaderProgram::Sptr shader = nullptr;
 
 	Material::Sptr defaultMat = app.CurrentScene()->DefaultMaterial;
-
+	
+	//glClearColor(_clearColor.x, _clearColor.y, _clearColor.z, _clearColor.w);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// Make sure depth testing and culling are re-enabled
 	glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_CULL_FACE);
@@ -379,8 +381,8 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
 
 	// Create a new descriptor for our FBO
 	FramebufferDescriptor fboDescriptor;

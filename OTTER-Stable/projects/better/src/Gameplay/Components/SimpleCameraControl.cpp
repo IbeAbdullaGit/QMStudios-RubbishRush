@@ -22,9 +22,16 @@ SimpleCameraControl::~SimpleCameraControl() = default;
 
 void SimpleCameraControl::Update(float deltaTime)
 {
+	moving = false;
+
 	if (InputEngine::GetMouseState(GLFW_MOUSE_BUTTON_LEFT) == ButtonState::Pressed) {
 		_prevMousePos = InputEngine::GetMousePos();
 		LOG_INFO("doot");
+		moving = true;
+	}
+	else
+	{
+		moving = false;
 	}
 
 	if (InputEngine::IsMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
@@ -39,6 +46,8 @@ void SimpleCameraControl::Update(float deltaTime)
 		GetGameObject()->SetRotation(currentRot);
 
 		_prevMousePos = currentMousePos;
+
+		moving = true;
 
 		glm::vec3 input = glm::vec3(0.0f);
 		if (InputEngine::IsKeyDown(GLFW_KEY_UP)) {

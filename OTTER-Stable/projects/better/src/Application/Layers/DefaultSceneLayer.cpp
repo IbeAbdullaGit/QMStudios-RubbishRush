@@ -394,9 +394,9 @@ void DefaultSceneLayer::OnUpdate()
 					{
 						Gameplay::GameObject::Sptr trashM = _currentScene->CreateGameObject("Trash1");
 						{
-							trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.0f));
-							trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
-							trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+							trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.06f));
+							trashM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+							trashM->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
 							// Add a render component
 							RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
 							renderer->SetMesh(trashMesh);
@@ -414,7 +414,7 @@ void DefaultSceneLayer::OnUpdate()
 							Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
 							Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 							box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-							box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
 							volume->AddCollider(box2);
 							CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
 
@@ -423,9 +423,9 @@ void DefaultSceneLayer::OnUpdate()
 						}
 						Gameplay::GameObject::Sptr trash2 = _currentScene->CreateGameObject("Trash2");
 						{
-							trash2->SetPostion(glm::vec3(6.36f, 2.64f, 0.0f));
+							trash2->SetPostion(glm::vec3(6.36f, 2.64f, 0.06f));
 							trash2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-							trash2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+							trash2->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
 							// Add a render component
 							RenderComponent::Sptr renderer = trash2->Add<RenderComponent>();
 							renderer->SetMesh(trashMesh);
@@ -443,16 +443,16 @@ void DefaultSceneLayer::OnUpdate()
 							Gameplay::Physics::TriggerVolume::Sptr volume = trash2->Add<Gameplay::Physics::TriggerVolume>();
 							Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 							box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-							box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
 							volume->AddCollider(box2);
 							CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
 
 						}
 						Gameplay::GameObject::Sptr trash3 = _currentScene->CreateGameObject("Trash3");
 						{
-							trash3->SetPostion(glm::vec3(10.08f, -4.97f, 0.0f));
+							trash3->SetPostion(glm::vec3(10.08f, -4.97f, 0.06f));
 							trash3->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
-							trash3->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+							trash3->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
 							// Add a render component
 							RenderComponent::Sptr renderer = trash3->Add<RenderComponent>();
 							renderer->SetMesh(trashMesh);
@@ -470,16 +470,16 @@ void DefaultSceneLayer::OnUpdate()
 							Gameplay::Physics::TriggerVolume::Sptr volume = trash3->Add<Gameplay::Physics::TriggerVolume>();
 							Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 							box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-							box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
 							volume->AddCollider(box2);
 							CollectTrashBehaviour::Sptr behaviour2 = trash3->Add<CollectTrashBehaviour>();
 
 						}
 						Gameplay::GameObject::Sptr trash4 = _currentScene->CreateGameObject("Trash4");
 						{
-							trash4->SetPostion(glm::vec3(13.680, -1.67f, 0.0f));
+							trash4->SetPostion(glm::vec3(13.680, -1.67f, 0.06f));
 							trash4->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
-							trash4->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+							trash4->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
 							// Add a render component
 							RenderComponent::Sptr renderer = trash4->Add<RenderComponent>();
 							renderer->SetMesh(trashMesh);
@@ -497,7 +497,7 @@ void DefaultSceneLayer::OnUpdate()
 							Gameplay::Physics::TriggerVolume::Sptr volume = trash4->Add<Gameplay::Physics::TriggerVolume>();
 							Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 							box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-							box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
 							volume->AddCollider(box2);
 							CollectTrashBehaviour::Sptr behaviour2 = trash4->Add<CollectTrashBehaviour>();
 
@@ -555,9 +555,9 @@ void DefaultSceneLayer::OnUpdate()
 					{
 						Gameplay::GameObject::Sptr trashM = _currentScene->CreateGameObject("Trash1");
 						{
-							trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.0f));
+							trashM->SetPostion(glm::vec3(8.80f, -8.53f, 0.0f));
 							trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
-							trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+							trashM->SetScale(glm::vec3(0.6f, 0.6f, 0.6f));
 							// Add a render component
 							RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
 							renderer->SetMesh(trashMesh);
@@ -575,7 +575,7 @@ void DefaultSceneLayer::OnUpdate()
 							Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
 							Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 							box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-							box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							box2->SetScale(glm::vec3(1.0f, 0.15f, 0.20f));
 							volume->AddCollider(box2);
 							CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
 
@@ -584,9 +584,9 @@ void DefaultSceneLayer::OnUpdate()
 						}
 						Gameplay::GameObject::Sptr trash2 = _currentScene->CreateGameObject("Trash2");
 						{
-							trash2->SetPostion(glm::vec3(6.36f, 2.64f, 0.0f));
-							trash2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-							trash2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+							trash2->SetPostion(glm::vec3(8.80f, -8.53f, 0.0f));
+							trash2->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
+							trash2->SetScale(glm::vec3(0.6f, 0.6f, 0.6f));
 							// Add a render component
 							RenderComponent::Sptr renderer = trash2->Add<RenderComponent>();
 							renderer->SetMesh(trashMesh);
@@ -604,16 +604,16 @@ void DefaultSceneLayer::OnUpdate()
 							Gameplay::Physics::TriggerVolume::Sptr volume = trash2->Add<Gameplay::Physics::TriggerVolume>();
 							Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 							box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-							box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							box2->SetScale(glm::vec3(1.0f, 0.15f, 0.20f));
 							volume->AddCollider(box2);
 							CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
 
 						}
 						Gameplay::GameObject::Sptr trash3 = _currentScene->CreateGameObject("Trash3");
 						{
-							trash3->SetPostion(glm::vec3(10.08f, -4.97f, 0.0f));
-							trash3->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
-							trash3->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+							trash3->SetPostion(glm::vec3(8.80f, -8.53f, 0.0f));
+							trash3->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
+							trash3->SetScale(glm::vec3(0.6f, 0.6f, 0.6f));
 							// Add a render component
 							RenderComponent::Sptr renderer = trash3->Add<RenderComponent>();
 							renderer->SetMesh(trashMesh);
@@ -631,16 +631,16 @@ void DefaultSceneLayer::OnUpdate()
 							Gameplay::Physics::TriggerVolume::Sptr volume = trash3->Add<Gameplay::Physics::TriggerVolume>();
 							Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 							box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-							box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							box2->SetScale(glm::vec3(1.0f, 0.15f, 0.20f));
 							volume->AddCollider(box2);
 							CollectTrashBehaviour::Sptr behaviour2 = trash3->Add<CollectTrashBehaviour>();
 
 						}
 						Gameplay::GameObject::Sptr trash4 = _currentScene->CreateGameObject("Trash4");
 						{
-							trash4->SetPostion(glm::vec3(13.680, -1.67f, 0.0f));
-							trash4->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
-							trash4->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+							trash4->SetPostion(glm::vec3(8.80f, -8.53f, 0.0f));
+							trash4->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
+							trash4->SetScale(glm::vec3(0.6f, 0.6f, 0.6f));
 							// Add a render component
 							RenderComponent::Sptr renderer = trash4->Add<RenderComponent>();
 							renderer->SetMesh(trashMesh);
@@ -658,7 +658,7 @@ void DefaultSceneLayer::OnUpdate()
 							Gameplay::Physics::TriggerVolume::Sptr volume = trash4->Add<Gameplay::Physics::TriggerVolume>();
 							Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 							box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-							box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							box2->SetScale(glm::vec3(1.0f, 0.15f, 0.20f));
 							volume->AddCollider(box2);
 							CollectTrashBehaviour::Sptr behaviour2 = trash4->Add<CollectTrashBehaviour>();
 
@@ -717,8 +717,12 @@ void DefaultSceneLayer::OnUpdate()
 	// Grab shorthands to the camera and shader from the _currentScene
 		Gameplay::Camera::Sptr camera = _currentScene->MainCamera;
 
-		camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
-		camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
+		//EDIT THIS TO ALLOW CAMERA CONTROL
+		if (!camera->GetComponent<SimpleCameraControl>()->moving)
+		{
+			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
+			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
+		}
 	}
 	// Store timing for next loop
 	lastFrame = thisFrame;
@@ -1318,9 +1322,9 @@ void DefaultSceneLayer::_CreateScene()
 		{
 			Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
 			{
-				trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.0f));
-				trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
-				trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+				trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.06f));
+				trashM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				trashM->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
 				// Add a render component
 				RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
 				renderer->SetMesh(trashMesh);
@@ -1338,7 +1342,7 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
 				volume->AddCollider(box2);
 				CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
 
@@ -1347,9 +1351,9 @@ void DefaultSceneLayer::_CreateScene()
 			}
 			Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2"); //Has Cup PLACEHOLDER
 			{
-				trash2->SetPostion(glm::vec3(6.36f, 2.64f, 0.0f));
+				trash2->SetPostion(glm::vec3(6.36f, 2.64f, 0.06f));
 				trash2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				trash2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+				trash2->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
 				// Add a render component
 				RenderComponent::Sptr renderer = trash2->Add<RenderComponent>();
 				renderer->SetMesh(trashMesh);
@@ -1367,16 +1371,16 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::TriggerVolume::Sptr volume = trash2->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
 				volume->AddCollider(box2);
 				CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
 
 			}
 			Gameplay::GameObject::Sptr trash3 = scene->CreateGameObject("Trash3"); //has Cup PLACEHOLDER
 			{
-				trash3->SetPostion(glm::vec3(10.08f, -4.97f, 0.0f));
+				trash3->SetPostion(glm::vec3(10.08f, -4.97f, 0.06f));
 				trash3->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
-				trash3->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+				trash3->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
 				// Add a render component
 				RenderComponent::Sptr renderer = trash3->Add<RenderComponent>();
 				renderer->SetMesh(trashMesh);
@@ -1394,16 +1398,16 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::TriggerVolume::Sptr volume = trash3->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
 				volume->AddCollider(box2);
 				CollectTrashBehaviour::Sptr behaviour2 = trash3->Add<CollectTrashBehaviour>();
 
 			}
 			Gameplay::GameObject::Sptr trash4 = scene->CreateGameObject("Trash4"); //has cup PLACEHOLDER
 			{
-				trash4->SetPostion(glm::vec3(13.680, -1.67f, 0.0f));
+				trash4->SetPostion(glm::vec3(13.680, -1.67f, 0.06f));
 				trash4->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
-				trash4->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+				trash4->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
 				// Add a render component
 				RenderComponent::Sptr renderer = trash4->Add<RenderComponent>();
 				renderer->SetMesh(trashMesh);
@@ -1421,7 +1425,7 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::TriggerVolume::Sptr volume = trash4->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
 				volume->AddCollider(box2);
 				CollectTrashBehaviour::Sptr behaviour2 = trash4->Add<CollectTrashBehaviour>();
 

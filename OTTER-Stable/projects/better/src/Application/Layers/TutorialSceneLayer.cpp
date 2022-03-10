@@ -151,6 +151,8 @@ void TutorialSceneLayer::OnUpdate()
 
 
 			trashyM = _tutcurrentScene->FindObjectByName("Trashy");
+			trashyM->Get<Gameplay::Physics::RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
+			trashyM->Get<Gameplay::Physics::RigidBody>()->SetLinearDamping(0.9f);
 			activated = true;
 			//starting variables
 			
@@ -168,6 +170,8 @@ void TutorialSceneLayer::OnUpdate()
 					done = true; //LOAD NEXT SCENE
 					
 					dumpUI->Get<GuiPanel>()->IsEnabled = false;
+					//dumpUI->Get<RenderComponent>()->IsEnabled = false;
+					//pickupUI->Get<GuiPanel>()->IsEnabled = false;
 
 					//make loading screen
 					Gameplay::GameObject::Sptr loading = _tutcurrentScene->CreateGameObject("Load");
@@ -219,13 +223,25 @@ void TutorialSceneLayer::OnUpdate()
 			if ((glfwGetKey(app.GetWindow(), GLFW_KEY_W) || glfwGetKey(app.GetWindow(), GLFW_KEY_A) || glfwGetKey(app.GetWindow(), GLFW_KEY_S) || glfwGetKey(app.GetWindow(), GLFW_KEY_D)) && hasMoved == false) {
 				hasMoved = true;
 			}
+			////Player Movement Tutorial
+			//if ((glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE))&& hasJumped == false) {
+			//	hasJumped = true;
+			//}
 
 			if (Timing::Current().Timing::TimeSinceSceneLoad() > 7.5f && hasMoved == false) { //If the player has not moved for a set amount of seconds, show the tutorial UI for movement
 				walkUI->Get<GuiPanel>()->IsEnabled = true;
+				
 			}
 			else {
 				walkUI->Get<GuiPanel>()->IsEnabled = false;
 			}
+			//if (Timing::Current().Timing::TimeSinceSceneLoad() > 7.5f && hasJumped == false) { //If the player has not moved for a set amount of seconds, show the tutorial UI for movement
+			//	jumpUI->Get<GuiPanel>()->IsEnabled = true;
+
+			//}
+			//else {
+			//	jumpUI->Get<GuiPanel>()->IsEnabled = false;
+			//}
 
 
 
@@ -251,8 +267,11 @@ void TutorialSceneLayer::OnUpdate()
 		// Grab shorthands to the camera and shader from the _currentScene
 		Gameplay::Camera::Sptr camera = _tutcurrentScene->MainCamera;
 
-		camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
-		camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
+		//if (!camera->GetComponent<SimpleCameraControl>()->moving)
+		{
+			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
+			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
+		}
 
 		// Store timing for next loop
 		tutlastFrame = thisFrame;
@@ -388,11 +407,10 @@ void TutorialSceneLayer::_CreateScene()
 
 		// Loading in a color lookup table
 		Texture3D::Sptr lut = ResourceManager::CreateAsset<Texture3D>("luts/sepia.CUBE");  //MY CUSTOM
-		// Configure the color correction LUT
+		
 		scene->SetColorLUT(lut);
 		
-		
-
+	
 		// Setting up our enviroment map
 		//scene->SetSkyboxTexture(testCubemap);
 		//scene->SetSkyboxShader(skyboxShader);
@@ -660,9 +678,9 @@ void TutorialSceneLayer::_CreateScene()
 		{
 			Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
 			{
-				trashM->SetPostion(glm::vec3(8.80f, -8.53f, 0.0f));
+				trashM->SetPostion(glm::vec3(8.80f, -8.53f, 0.06f));
 				trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
-				trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+				trashM->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
 				// Add a render component
 				RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
 				renderer->SetMesh(trashMesh);
@@ -680,16 +698,16 @@ void TutorialSceneLayer::_CreateScene()
 				Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
 				volume->AddCollider(box2);
 				CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
 			}
 
 			Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
 			{
-				trash2->SetPostion(glm::vec3(4.140f, -8.530f, 0.0f));
+				trash2->SetPostion(glm::vec3(4.140f, -8.530f, 0.06f));
 				trash2->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
-				trash2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+				trash2->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
 				// Add a render component
 				RenderComponent::Sptr renderer = trash2->Add<RenderComponent>();
 				renderer->SetMesh(trashMesh);
@@ -707,7 +725,7 @@ void TutorialSceneLayer::_CreateScene()
 				Gameplay::Physics::TriggerVolume::Sptr volume = trash2->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
 				volume->AddCollider(box2);
 				CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
 			}
