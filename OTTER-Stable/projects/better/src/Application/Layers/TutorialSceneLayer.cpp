@@ -630,6 +630,18 @@ void TutorialSceneLayer::_CreateScene()
 
 		}
 
+		Gameplay::MeshResource::Sptr bagtrashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Trashbag.obj");
+		Texture2D::Sptr bagtrashTex = ResourceManager::CreateAsset<Texture2D>("textures/TrashBagTex.jpg");
+		
+		Gameplay::Material::Sptr bagtrashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			bagtrashMaterial->Name = "Bag Trash";
+			bagtrashMaterial->Set("u_Material.AlbedoMap", bagtrashTex);
+			bagtrashMaterial->Set("u_Material.Shininess", 0.3f);
+			bagtrashMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		}
+		
+
 		//Texture2D::Sptr TutTex1 = ResourceManager::CreateAsset<Texture2D>("textures/Tut1tex.png");
 
 		// 
@@ -685,7 +697,7 @@ void TutorialSceneLayer::_CreateScene()
 				CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
 			}
 
-			Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
+			/*Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
 			{
 				trash2->SetPostion(glm::vec3(4.140f, -8.530f, 0.0f));
 				trash2->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
@@ -709,6 +721,31 @@ void TutorialSceneLayer::_CreateScene()
 				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
 				box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
 				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
+			}*/
+
+			Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2");
+			{
+				trash2->SetPostion(glm::vec3(4.140f, -8.530f, 0.0f));
+				trash2->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
+				trash2->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+				
+				RenderComponent::Sptr renderer = trash2->Add<RenderComponent>();
+				renderer->SetMesh(bagtrashMesh);
+				renderer->SetMaterial(bagtrashMaterial);
+				
+				Gameplay::Physics::RigidBody::Sptr physics = trash2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+				physics->AddCollider(box);
+
+				Gameplay::Physics::TriggerVolume::Sptr volume = trash2->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box2->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+				volume->AddCollider(box2);
+
 				CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
 			}
 
