@@ -566,7 +566,7 @@ void DefaultSceneLayer::OnUpdate()
 							Gameplay::Physics::RigidBody::Sptr physics = trashM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 							Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 							box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-							box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
 							//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 							//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 							//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
@@ -595,7 +595,7 @@ void DefaultSceneLayer::OnUpdate()
 							Gameplay::Physics::RigidBody::Sptr physics = trash2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 							Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 							box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-							box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
 							//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 							//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 							//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
@@ -622,7 +622,7 @@ void DefaultSceneLayer::OnUpdate()
 							Gameplay::Physics::RigidBody::Sptr physics = trash3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 							Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 							box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-							box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
 							//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 							//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 							//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
@@ -649,7 +649,7 @@ void DefaultSceneLayer::OnUpdate()
 							Gameplay::Physics::RigidBody::Sptr physics = trash4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 							Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 							box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-							box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+							box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
 							//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 							//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 							//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
@@ -1333,7 +1333,7 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::RigidBody::Sptr physics = trashM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
 				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
@@ -1362,7 +1362,7 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::RigidBody::Sptr physics = trash2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
 				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
@@ -1389,7 +1389,7 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::RigidBody::Sptr physics = trash3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
 				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
@@ -1416,7 +1416,7 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::RigidBody::Sptr physics = trash4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
+				box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
 				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
