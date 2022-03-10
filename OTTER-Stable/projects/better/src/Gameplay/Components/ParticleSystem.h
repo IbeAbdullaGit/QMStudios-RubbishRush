@@ -18,6 +18,11 @@ public:
 
 	void AddEmitter(const glm::vec3& position, const glm::vec3& direction, float emitRate = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
 
+	void UpdatePosition(const glm::vec3& position);
+	void UpdateDirection(const glm::vec3& direction);
+
+	void DeleteEmitter();
+
 	// Inherited from IComponent
 
 	virtual void RenderImGui() override;

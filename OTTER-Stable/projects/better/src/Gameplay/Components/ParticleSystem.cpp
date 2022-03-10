@@ -3,6 +3,7 @@
 #include "Application/Timing.h"
 #include "Application/Application.h"
 #include "Utils/ImGuiHelper.h"
+#include "Gameplay/Components/PlayerMovementBehavior.h"
 
 ParticleSystem::ParticleSystem() :
 	IComponent(),
@@ -187,6 +188,33 @@ void ParticleSystem::AddEmitter(const glm::vec3& position, const glm::vec3& dire
 	_emitters.push_back(emitter); 
 }
 
+void ParticleSystem::UpdatePosition(const glm::vec3& position)
+{
+	//update the first emitter in the list, or all of them?
+	for (int i = 0; i < _emitters.size(); i++)
+	{
+		auto& emitter = _emitters[i];
+		emitter.Position = position;
+		//_emitters[i].Position = position;
+	}
+}
+
+void ParticleSystem::UpdateDirection(const glm::vec3& direction)
+{
+	for (int i = 0; i < _emitters.size(); i++)
+	{
+		auto& emitter = _emitters[i];
+		emitter.Velocity = direction;
+		//_emitters[i].Velocity = direction;
+	}
+}
+
+void ParticleSystem::DeleteEmitter()
+{
+	//remove the last added emitter
+	_emitters.pop_back();
+}
+
 void ParticleSystem::RenderImGui()
 {
 	LABEL_LEFT(ImGui::LabelText, "Particle Count", "%u", _numParticles);
@@ -197,7 +225,7 @@ void ParticleSystem::RenderImGui()
 	ImGui::Text("Emitters:");
 
 	// We can't add or edit emitters once the system has started
-	if (!app.CurrentScene()->IsPlaying) {
+	if (!app.CurrentScene()->IsPlaying  || !app.CurrentScene()->FindObjectByName("Trashy")->Get<PlayerMovementBehavior>()->is_moving) {
 		for (int ix = 0; ix < _emitters.size(); ix++) {
 			auto& emitter = _emitters[ix];
 

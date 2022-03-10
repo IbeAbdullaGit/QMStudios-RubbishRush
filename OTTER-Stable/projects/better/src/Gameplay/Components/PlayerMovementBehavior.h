@@ -1,6 +1,8 @@
 #pragma once
 #include "Gameplay/Components/IComponent.h"
 #include "Gameplay/Physics/RigidBody.h"
+#include "Gameplay/Components/ParticleSystem.h"
+#include "Gameplay/GameObject.h"
 
 /// <summary>
 /// Component That Controls the First Player
@@ -32,8 +34,13 @@ protected:
 	bool in_spill = false;
 	
 	Gameplay::Physics::RigidBody::Sptr _body;
+	Gameplay::GameObject::Sptr particles = nullptr;
+	ParticleSystem::Sptr particleManager = nullptr;
 
 	glm::quat currentRotation;
 	glm::quat targetRotation;
 	float speed = 5.0f;
+
+	glm::vec3 direction;
+
 };

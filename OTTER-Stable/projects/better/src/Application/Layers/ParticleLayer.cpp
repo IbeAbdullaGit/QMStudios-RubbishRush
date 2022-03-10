@@ -29,9 +29,12 @@ void ParticleLayer::OnUpdate()
 
 void ParticleLayer::OnRender(const Framebuffer::Sptr& prevLayer)
 {
-	Application::Get().CurrentScene()->Components().Each<ParticleSystem>([](const ParticleSystem::Sptr& system) {
-		if (system->IsEnabled) {
-			system->Render();
-		}
-	});
+	Application& app = Application::Get();
+	if (app.CurrentScene()->IsPlaying) {
+		app.CurrentScene()->Components().Each<ParticleSystem>([](const ParticleSystem::Sptr& system) {
+			if (system->IsEnabled) {
+				system->Render();
+			}
+			});
+	}
 }

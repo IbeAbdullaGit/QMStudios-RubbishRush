@@ -173,7 +173,7 @@ void Application::_Run()
 	_layers.push_back(std::make_shared<TutorialSceneLayer>());
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
 	_layers.push_back(std::make_shared<RenderLayer>());
-	//_layers.push_back(std::make_shared<ParticleLayer>());
+	_layers.push_back(std::make_shared<ParticleLayer>());
 	//_layers.push_back(std::make_shared<InstancedRenderingTestLayer>());
 	_layers.push_back(std::make_shared<InterfaceLayer>());
 

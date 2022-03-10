@@ -162,6 +162,15 @@ void TutorialSceneLayer::OnUpdate()
 
 
 		if (_tutcurrentScene != nullptr) {
+			//PARTICLE UPDATE WHEN TRASHY IS MOVING
+			/*if (_tutcurrentScene->IsPlaying && trashyM->Get<PlayerMovementBehavior>()->is_moving) 
+			{
+				_tutcurrentScene->Components().Each<ParticleSystem>([](const ParticleSystem::Sptr& system) {
+				if (system->IsEnabled) {
+					system->Update();
+				}
+				});
+			}*/
 			//MENU ANIMATED UPDATED
 			if (_tutcurrentScene->IsPlaying && !done)
 			{
@@ -754,14 +763,14 @@ void TutorialSceneLayer::_CreateScene()
 				
 				Gameplay::Physics::RigidBody::Sptr physics = trash2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetPosition(glm::vec3(0.00f, 0.42f, 0.0f));
-				box->SetScale(glm::vec3(0.77f, 0.72f, 0.6f));
+				box->SetPosition(glm::vec3(0.00f, 0.22f, 0.0f));
+				box->SetScale(glm::vec3(0.44f, 0.3f, 0.13f));
 				physics->AddCollider(box);
 
 				Gameplay::Physics::TriggerVolume::Sptr volume = trash2->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				box2->SetPosition(glm::vec3(0.00f, 0.42f, 0.0f));
-				box2->SetScale(glm::vec3(0.77f, 0.72f, 0.36f));
+				box2->SetPosition(glm::vec3(0.00f, 0.22f, 0.0f));
+				box2->SetScale(glm::vec3(0.48f, 0.45f, 0.19f));
 				volume->AddCollider(box2);
 
 				CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
@@ -1074,10 +1083,25 @@ void TutorialSceneLayer::_CreateScene()
 			tutorialUICanvas->AddChild(pickupTutorial);
 			tutorialUICanvas->AddChild(dumpTutorial);
 		}
+		//PARTICLES
+		Gameplay::GameObject::Sptr particles = scene->CreateGameObject("Particles");
+		{
+			particles->SetPostion(glm::vec3(6.318f, -0.788f, 0.106f));
+			ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
+			particleManager->AddEmitter(glm::vec3(6.318f, -0.788f, 0.106f), glm::vec3(0.0f, 5.0f, 1.0f), 5.0f, glm::vec4(1.0f, 0.8f, 0.3f, 1.0f));
+			//particleManager->IsEnabled = false;
+
+			//make it move with trashy???
+			trashyM->AddChild(particles);
+			
+		}
+		//trashyM->AddChild(particles); //makes it move with him?
 
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);
+
+		
 
 		// Save the asset manifest for all the resources we just loaded
 		ResourceManager::SaveManifest("scene2-manifest.json");

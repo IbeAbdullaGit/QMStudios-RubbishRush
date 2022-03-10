@@ -12,6 +12,12 @@ void PlayerMovementBehavior::Awake()
 	if (_body == nullptr) {
 		IsEnabled = false;
 	}
+	Application& app = Application::Get();
+	if (app.CurrentScene()->FindObjectByName("Particles"))
+	{
+		particles = app.CurrentScene()->FindObjectByName("Particles");
+		particleManager = particles->Get<ParticleSystem>();
+	}
 	/*_body->SetLinearDamping(0.9f);
 	_body->SetAngularDamping(1.f);*/
 }
@@ -102,25 +108,51 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 	if (glfwGetKey(app.GetWindow(), GLFW_KEY_W) && GLFW_PRESS) {
 		currentRotation = GetGameObject()->GetRotation();
 		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 180.0f)));
+		direction = glm::vec3(0.0f, 5.0f, 0.0f);
 		
 	}
 	if (glfwGetKey(app.GetWindow(), GLFW_KEY_A) && GLFW_PRESS) {
 		currentRotation = GetGameObject()->GetRotation();
 		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 270.0f)));
+		direction = glm::vec3(5.0f, 0.0f, 0.0f);
 	}
 
 	if (glfwGetKey(app.GetWindow(), GLFW_KEY_S) && GLFW_PRESS) {
 		currentRotation = GetGameObject()->GetRotation();
 		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 0.0f)));
+		direction = glm::vec3(0.0f, -5.0f, 0.0f);
 		
 	}
 	if (glfwGetKey(app.GetWindow(), GLFW_KEY_D) && GLFW_PRESS) {
 		currentRotation = GetGameObject()->GetRotation();
 		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 90.0f)));
+		direction = glm::vec3(-5.0f, 0.0f, 0.0f);
 	}
 
 	currentRotation = glm::mix(currentRotation, targetRotation, speed * deltaTime);
 	GetGameObject()->SetRotation(currentRotation);
+
+	//update particles at feet
+	//if (is_moving)
+	//{
+	//	particleManager->IsEnabled = true;
+	//	
+	//	
+	//}
+	//else
+	//{
+	//	particleManager->IsEnabled = false;
+	//	//delete the old emitter
+	//	//particleManager->DeleteEmitter();
+
+	//	particles->SetPostion(GetGameObject()->GetPosition());
+	//	//glm::mat3 globalRot = glm::mat3_cast(GetGameObject()->GetRotation());
+	//	//glm::vec3 direction = glm::normalize(glm::vec3(globalRot[2][0], globalRot[2][1], globalRot[2][2]));
+	//	//add a new emitter - we do this because emitters can't be updated normally, so we have to make new ones
+	//	//particleManager->AddEmitter(GetGameObject()->GetPosition(), direction, 5.0f, glm::vec4(1.0f, 0.8f, 0.3f, 1.0f));
+	//	particleManager->UpdatePosition(GetGameObject()->GetPosition());
+	//	particleManager->UpdateDirection(direction);
+	//}
 	
 }
 
