@@ -1194,7 +1194,7 @@ void DefaultSceneLayer::_CreateScene()
 			renderer->SetMaterial(enterMaterial);
 		}
 		//layout
-		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("layoutclean.obj");
+		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("malllayout.obj");
 		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/layout.jpg");
 		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -1205,9 +1205,9 @@ void DefaultSceneLayer::_CreateScene()
 		}
 		Gameplay::GameObject::Sptr layout = scene->CreateGameObject("Layout");
 		{
-			layout->SetPostion(glm::vec3(6.33, -1.44f, 0.0f));
-			layout->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
-			layout->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+			layout->SetPostion(glm::vec3(0.0f, 0.0f, 0.0f));
+			layout->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+			layout->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 
 			RenderComponent::Sptr renderer = layout->Add<RenderComponent>();
 			renderer->SetMesh(layoutMesh);
@@ -1218,47 +1218,47 @@ void DefaultSceneLayer::_CreateScene()
 			//Walls
 			Gameplay::GameObject::Sptr layoutwall1 = scene->CreateGameObject("Layout Wall Front");
 			{
-				layoutwall1->SetPostion(glm::vec3(8.35f, 3.76f, 0.84f));
-				layoutwall1->SetScale(glm::vec3(3.04f, 0.27f, 1.17f));
+				layoutwall1->SetPostion(glm::vec3(-0.58f, 14.17f, 0.0f));
+				layoutwall1->SetScale(glm::vec3(20.5f, 0.34f, 1.64f));
 				Gameplay::Physics::RigidBody::Sptr wall1Phys = layoutwall1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall1 = Gameplay::Physics::BoxCollider::Create();
 				//wall1->SetPosition(glm::vec3(11.85f, 3.23f, 1.05f));
 				wall1->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall1->SetScale(glm::vec3(3.04f, 0.27f, 1.17f));
-				wall1->SetExtents(glm::vec3(2.2f, 2.0f, 2.0f));
+				wall1->SetScale(glm::vec3(20.5f, 0.34f, 1.64f));
+				wall1->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall1Phys->AddCollider(wall1);
 			}
 
 			Gameplay::GameObject::Sptr layoutwall2 = scene->CreateGameObject("Layout Wall Back");
 			{
-				layoutwall2->SetPostion(glm::vec3(8.35f, -6.69f, 0.84f));
-				layoutwall2->SetScale(glm::vec3(3.04f, 0.27f, 1.17f));
+				layoutwall2->SetPostion(glm::vec3(0.0f, -13.13f, 0.0f));
+				layoutwall2->SetScale(glm::vec3(21.78f, 0.27f, 1.17f));
 				Gameplay::Physics::RigidBody::Sptr wall2Phys = layoutwall2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall2 = Gameplay::Physics::BoxCollider::Create();
 				//wall1->SetPosition(glm::vec3(11.85f, 3.23f, 1.05f));
 				wall2->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall2->SetScale(glm::vec3(3.04f, 0.27f, 1.17f));
-				wall2->SetExtents(glm::vec3(2.2f, 2.0f, 2.0f));
+				wall2->SetScale(glm::vec3(21.78f, 0.27f, 1.17f));
+				wall2->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall2Phys->AddCollider(wall2);
 			}
 
 			//Right Bottom
 			Gameplay::GameObject::Sptr layoutwall3 = scene->CreateGameObject("Layout Wall Right Bottom");
 			{
-				layoutwall3->SetPostion(glm::vec3(1.49f, 1.51f, 0.0f));
-				layoutwall3->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				layoutwall3->SetPostion(glm::vec3(-21.22f, 0.0f, 0.0f));
+				layoutwall3->SetScale(glm::vec3(0.3f, 15.1f, 2.37f));
 				Gameplay::Physics::RigidBody::Sptr wall3Phys = layoutwall3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall3 = Gameplay::Physics::BoxCollider::Create();
 				wall3->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall3->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				wall3->SetScale(glm::vec3(0.3f, 15.1f, 2.37f));
 				wall3->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall3Phys->AddCollider(wall3);
 			}
 
-			//Right Top
+			/*//Right Top
 			Gameplay::GameObject::Sptr layoutwall4 = scene->CreateGameObject("Layout Wall Right Top");
 			{
-				layoutwall4->SetPostion(glm::vec3(1.49f, -4.51f, 0.93f));
+				layoutwall4->SetPostion(glm::vec3(0.0f, 0.0f, 0.0f));
 				layoutwall4->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
 				Gameplay::Physics::RigidBody::Sptr wall4Phys = layoutwall4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall4 = Gameplay::Physics::BoxCollider::Create();
@@ -1266,28 +1266,28 @@ void DefaultSceneLayer::_CreateScene()
 				wall4->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
 				wall4->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall4Phys->AddCollider(wall4);
-			}
+			}*/
 
 			//Left Wall Corner Top
 			Gameplay::GameObject::Sptr layoutwall5 = scene->CreateGameObject("Layout Wall Left Corner");
 			{
-				layoutwall5->SetPostion(glm::vec3(11.26f, -4.3f, 1.14f));
-				layoutwall5->SetScale(glm::vec3(0.19f, 1.54f, 2.4f));
+				layoutwall5->SetPostion(glm::vec3(17.55f, 11.97f, 0.0f));
+				layoutwall5->SetScale(glm::vec3(0.19f, 2.26f, 2.4f));
 				Gameplay::Physics::RigidBody::Sptr wall5Phys = layoutwall5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall5 = Gameplay::Physics::BoxCollider::Create();
 				wall5->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall5->SetScale(glm::vec3(0.19f, 1.54f, 2.4f));
+				wall5->SetScale(glm::vec3(0.19f, 2.26f, 2.4f));
 				wall5->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall5Phys->AddCollider(wall5);
 			}
 			Gameplay::GameObject::Sptr layoutwall5b = scene->CreateGameObject("Layout Wall Left Corner");
 			{
-				layoutwall5b->SetPostion(glm::vec3(12.7f, -2.79, 1.1f));
-				layoutwall5b->SetScale(glm::vec3(1.68f, 0.18f, 2.44f));
+				layoutwall5b->SetPostion(glm::vec3(19.43f, 9.57f, 0.0f));
+				layoutwall5b->SetScale(glm::vec3(2.08f, 0.18f, 2.44f));
 				Gameplay::Physics::RigidBody::Sptr wall5Physb = layoutwall5b->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall5b = Gameplay::Physics::BoxCollider::Create();
 				wall5b->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall5b->SetScale(glm::vec3(1.68f, 0.18f, 2.44f));
+				wall5b->SetScale(glm::vec3(2.08f, 0.18f, 2.44f));
 				wall5b->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall5Physb->AddCollider(wall5b);
 			}
@@ -1295,12 +1295,12 @@ void DefaultSceneLayer::_CreateScene()
 			//Left Wall
 			Gameplay::GameObject::Sptr layoutwall6 = scene->CreateGameObject("Layout Wall Left");
 			{
-				layoutwall6->SetPostion(glm::vec3(14.53f, 0.36f, 1.22f));
-				layoutwall6->SetScale(glm::vec3(0.32f, 3.16f, 2.28f));
+				layoutwall6->SetPostion(glm::vec3(21.38f, -0.89f, 0.0f));
+				layoutwall6->SetScale(glm::vec3(0.32f, 13.69f, 2.28f));
 				Gameplay::Physics::RigidBody::Sptr wall6Phys = layoutwall6->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall6 = Gameplay::Physics::BoxCollider::Create();
 				wall6->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall6->SetScale(glm::vec3(0.32f, 3.16f, 2.28f));
+				wall6->SetScale(glm::vec3(0.32f, 13.69f, 2.28f));
 				wall6->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall6Phys->AddCollider(wall6);
 			}
@@ -2177,7 +2177,7 @@ void DefaultSceneLayer::_CreateScene()
 			//Gameplay::Physics::RigidBody::Sptr physics = trashyE->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 
 		}
-		//Modelling Static objects
+		/*//Modelling Static objects
 		{
 			//Bench
 			Gameplay::MeshResource::Sptr benchMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("bench.obj");
@@ -2448,7 +2448,7 @@ void DefaultSceneLayer::_CreateScene()
 				renderer->SetMesh(statueMesh);
 				renderer->SetMaterial(statueMaterial);
 			}
-		}
+		}*/
 
 		/////////////////////////// UI //////////////////////////////
 		//Font: Junk Dog
