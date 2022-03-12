@@ -631,10 +631,10 @@ void TutorialSceneLayer::_CreateScene()
 			tiledMesh->GenerateMesh();
 
 
-			// Create and attach a RenderComponent to the object to draw our mesh
-			RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
-			renderer->SetMesh(planeMesh);
-			renderer->SetMaterial(planeMaterial);
+			//// Create and attach a RenderComponent to the object to draw our mesh
+			//RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
+			//renderer->SetMesh(planeMesh);
+			//renderer->SetMaterial(planeMaterial);
 
 			// Attach a plane collider that extends infinitely along the X/Y axis
 			Gameplay::Physics::RigidBody::Sptr physics = plane->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
