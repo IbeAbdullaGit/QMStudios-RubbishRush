@@ -37,6 +37,8 @@ public:
 
 	int inventory;
 
+	std::string type = "Normal";
+
 protected:
 
 	RenderComponent::Sptr _renderer;

@@ -215,6 +215,8 @@ namespace Gameplay {
 
 		int trash = 0;
 		int held = 0;
+		int held_recycle = 0;
+		int held_normal = 0;
 		int score = 0;
 
 		bool should_switch = false;

@@ -40,6 +40,8 @@ public:
 	void getIdle(std::vector<Gameplay::MeshResource::Sptr> frames);
 
 	int inventory;
+	std::string type = "Normal";
+	
 
 protected:
 

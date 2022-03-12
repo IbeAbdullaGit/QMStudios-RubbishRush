@@ -5,6 +5,7 @@
 #include <GLM/glm.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
 #include <GLM/gtc/type_ptr.hpp>
+#include <GLM/gtc/random.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <GLM/gtx/common.hpp> // for fmod (floating modulus)
 
@@ -333,7 +334,7 @@ void TutorialSceneLayer::_CreateScene()
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/morph.vert" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
-
+		
 		//// This shader handles our basic materials without reflections (cause they expensive)
 		//ShaderProgram::Sptr specShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
@@ -440,7 +441,7 @@ void TutorialSceneLayer::_CreateScene()
 		}
 		{
 			Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
-			light->SetPostion(glm::vec3(7.9f, -4.89f, 3.0f));
+			light->SetPostion(glm::vec3(7.9f, -4.89f, 0.0f));
 			lightParent->AddChild(light);
 
 			Light::Sptr lightComponent = light->Add<Light>();
@@ -448,6 +449,16 @@ void TutorialSceneLayer::_CreateScene()
 			lightComponent->SetRadius(2.5f);
 			lightComponent->SetIntensity(1.0f);
 		}
+	/*	for (int ix = 0; ix < 50; ix++) {
+			Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
+			light->SetPostion(glm::vec3(glm::diskRand(25.0f), 1.0f));
+			lightParent->AddChild(light);
+
+			Light::Sptr lightComponent = light->Add<Light>();
+			lightComponent->SetColor(glm::linearRand(glm::vec3(0.0f), glm::vec3(1.0f)));
+			lightComponent->SetRadius(glm::linearRand(0.1f, 10.0f));
+			lightComponent->SetIntensity(glm::linearRand(1.0f, 2.0f));
+		}*/
 		// We'll create a mesh that is a simple plane that we can resize later
 		Gameplay::MeshResource::Sptr planeMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>();
 		planeMesh->AddParam(MeshBuilderParam::CreatePlane(ZERO, UNIT_Z, UNIT_X, glm::vec2(1.0f)));
@@ -483,11 +494,11 @@ void TutorialSceneLayer::_CreateScene()
 		{
 			trashyMaterial->Name = "Trashy";
 			trashyMaterial->Set("u_Material.AlbedoMap", trashyTex);
+			//testMaterial->Set("u_Material.Specular", boxSpec);
 			trashyMaterial->Set("u_Material.Shininess", 1.0f);
 			trashyMaterial->Set("u_Material.NormalMap", normalMapDefault);
-
-
 		}
+		
 		Gameplay::GameObject::Sptr trashyM = scene->CreateGameObject("Trashy"); //SEARCHBAR TAGS: PLAYERENTITY, PLAYER, TRASHYENTITY, TRASHYOBJECT
 		{
 			trashyM->SetPostion(glm::vec3(6.318f, -0.788f, 0.106f));
@@ -600,14 +611,11 @@ void TutorialSceneLayer::_CreateScene()
 		}
 
 		Texture2D::Sptr planeTex = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
-
-		 
-
 		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
 		Gameplay::Material::Sptr planeMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward); {
 			planeMaterial->Name = "Plane";
 			planeMaterial->Set("u_Material.AlbedoMap", planeTex);
-			planeMaterial->Set("u_Material.Shininess", 1.0f);
+			planeMaterial->Set("u_Material.Shininess", 0.1f);
 			planeMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
@@ -623,9 +631,9 @@ void TutorialSceneLayer::_CreateScene()
 
 
 			// Create and attach a RenderComponent to the object to draw our mesh
-			/*RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
-			renderer->SetMesh(layoutMesh);
-			renderer->SetMaterial(planeMaterial);*/
+			RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
+			renderer->SetMesh(tiledMesh);
+			renderer->SetMaterial(planeMaterial);
 
 			// Attach a plane collider that extends infinitely along the X/Y axis
 			Gameplay::Physics::RigidBody::Sptr physics = plane->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
@@ -1083,18 +1091,18 @@ void TutorialSceneLayer::_CreateScene()
 			tutorialUICanvas->AddChild(pickupTutorial);
 			tutorialUICanvas->AddChild(dumpTutorial);
 		}
-		//PARTICLES
-		Gameplay::GameObject::Sptr particles = scene->CreateGameObject("Particles");
-		{
-			particles->SetPostion(glm::vec3(6.318f, -0.788f, 0.106f));
-			ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
-			particleManager->AddEmitter(glm::vec3(6.318f, -0.788f, 0.106f), glm::vec3(0.0f, 5.0f, 1.0f), 5.0f, glm::vec4(1.0f, 0.8f, 0.3f, 1.0f));
-			//particleManager->IsEnabled = false;
+		////PARTICLES
+		//Gameplay::GameObject::Sptr particles = scene->CreateGameObject("Particles");
+		//{
+		//	particles->SetPostion(glm::vec3(6.318f, -0.788f, 0.106f));
+		//	ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
+		//	particleManager->AddEmitter(glm::vec3(6.318f, -0.788f, 0.106f), glm::vec3(0.0f, 5.0f, 1.0f), 5.0f, glm::vec4(1.0f, 0.8f, 0.3f, 1.0f));
+		//	//particleManager->IsEnabled = false;
 
-			//make it move with trashy???
-			trashyM->AddChild(particles);
-			
-		}
+		//	//make it move with trashy???
+		//	trashyM->AddChild(particles);
+		//	
+		//}
 		//trashyM->AddChild(particles); //makes it move with him?
 
 

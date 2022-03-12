@@ -60,10 +60,17 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 			//get our scene, delete this line later
 			//_scene = GetGameObject()->GetScene();
 			//do we have any trash
-			if (_scene->trash >= 1 && _scene->held >=1)
+			if (_scene->held >=1)
 			{
-				_scene->trash -= 1;
-
+				//if we're a normal trash bin, should have normal trash
+				if (type == "Normal" && _scene->held_normal >= 1)
+				{
+					_scene->held_normal -= 1;
+				}
+				else if (type == "Recycle" && _scene->held_recycle >= 1)
+				{
+					_scene->held_recycle -= 1;
+				}
 				_scene->held -= 1;
 				//update UI
 

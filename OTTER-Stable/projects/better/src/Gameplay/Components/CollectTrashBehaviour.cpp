@@ -55,13 +55,22 @@ void CollectTrashBehaviour::Update(float deltatime)
 			//delete trash from scene
 				Gameplay::GameObject::Sptr trash = _scene->FindObjectByName(GetGameObject()->Name);
 				_scene->RemoveGameObject(trash);
-				//increment trash count?
-				_scene->trash += 1;
+				//total held
 				_scene->held += 1;
 				std::cout << "Current trash collected: " << _scene->held << std::endl;
 
 				activated = false;
 				ui->Get<GuiText>()->IsEnabled = false;
+
+				//differentiate between type of trash
+				if (type == "Normal")
+				{
+					_scene->held_normal += 1;
+				}
+				else
+				{
+					_scene->held_recycle += 1;
+				}
 			}
 			
 		}

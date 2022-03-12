@@ -34,13 +34,15 @@ protected:
 	bool in_spill = false;
 	
 	Gameplay::Physics::RigidBody::Sptr _body;
-	Gameplay::GameObject::Sptr particles = nullptr;
-	ParticleSystem::Sptr particleManager = nullptr;
+	
+	std::vector<Gameplay::GameObject::Sptr> particles_store;
+	bool created = false;
 
 	glm::quat currentRotation;
 	glm::quat targetRotation;
 	float speed = 5.0f;
 
 	glm::vec3 direction;
+	int count = 0;
 
 };

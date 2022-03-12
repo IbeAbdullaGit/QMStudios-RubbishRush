@@ -293,7 +293,7 @@ void DefaultSceneLayer::OnUpdate()
 			else
 			{
 				//just make sure the condition of the timer of the menu is completed and to ensure no complications happen
-				if (_currentScene->trash == 0) {
+				if (_currentScene->held == 0) {
 					timerDone = true;
 				}
 				else {
@@ -309,10 +309,10 @@ void DefaultSceneLayer::OnUpdate()
 
 					UIText->Get<GuiText>()->SetText(TimeCountdown(timelevelt));
 
-					trashRemainder->Get<GuiText>()->SetText(std::to_string(max_trash - _currentScene->score - _currentScene->trash) + " Trash Remaining!");
+					trashRemainder->Get<GuiText>()->SetText(std::to_string(max_trash - _currentScene->score - _currentScene->held) + " Trash Remaining!");
 
 					//GUI disappears when all trash is collected
-					if ((max_trash - _currentScene->score - _currentScene->trash == 0) || _currentScene->held >= inventory)
+					if ((max_trash - _currentScene->score - _currentScene->held == 0) || _currentScene->held >= inventory)
 					{
 						returnUI->Get<GuiText>()->IsEnabled = true;
 					}
@@ -368,6 +368,8 @@ void DefaultSceneLayer::OnUpdate()
 					_currentScene->score = 0;
 					_currentScene->trash = 0;
 					_currentScene->held = 0;
+					_currentScene->held_normal = 0;
+					_currentScene->held_recycle = 0;
 					//create trash objects again
 					//delete any remaining trash objects
 					Gameplay::GameObject::Sptr trash1 = _currentScene->FindObjectByName("Trash1");
@@ -549,6 +551,8 @@ void DefaultSceneLayer::OnUpdate()
 					_currentScene->score = 0;
 					_currentScene->trash = 0;
 					_currentScene->held = 0;
+					_currentScene->held_normal = 0;
+					_currentScene->held_recycle = 0;
 					//create trash objects again
 
 					//cup collection

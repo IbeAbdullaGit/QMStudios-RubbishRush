@@ -12,12 +12,7 @@ void PlayerMovementBehavior::Awake()
 	if (_body == nullptr) {
 		IsEnabled = false;
 	}
-	Application& app = Application::Get();
-	if (app.CurrentScene()->FindObjectByName("Particles"))
-	{
-		particles = app.CurrentScene()->FindObjectByName("Particles");
-		particleManager = particles->Get<ParticleSystem>();
-	}
+	
 	/*_body->SetLinearDamping(0.9f);
 	_body->SetAngularDamping(1.f);*/
 }
@@ -132,26 +127,49 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 	currentRotation = glm::mix(currentRotation, targetRotation, speed * deltaTime);
 	GetGameObject()->SetRotation(currentRotation);
 
-	//update particles at feet
+	////test creating particles
+	//if (glfwGetKey(app.GetWindow(), GLFW_KEY_1) && GLFW_PRESS)
+	//{
+	//	count += 1;
+	//	Gameplay::GameObject::Sptr particles = app.CurrentScene()->CreateGameObject("Particles"+ std::to_string(count));
+	//	ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
+	//	particleManager->AddEmitter(GetGameObject()->GetPosition(), direction, 5.0f, glm::vec4(1.0f, 0.8f, 0.3f, 1.0f));
+	//	//particles_store.push_back(particles);
+	//}
+	////test creating particles
+	//if (glfwGetKey(app.GetWindow(), GLFW_KEY_2) && GLFW_PRESS)
+	//{
+	//	Gameplay::GameObject::Sptr particles = app.CurrentScene()->FindObjectByName("Particles" + std::to_string(count));
+	//	app.CurrentScene()->RemoveGameObject(particles);
+	//}
+
+	////update particles at feet
 	//if (is_moving)
 	//{
-	//	particleManager->IsEnabled = true;
-	//	
-	//	
+	//	if (!created)
+	//	{//keep creating particles as we move?
+	//	// 
+	//	//particleManager->IsEnabled = true;
+	//		Gameplay::GameObject::Sptr particles = app.CurrentScene()->CreateGameObject("Particles 2");
+	//		ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
+	//		particleManager->AddEmitter(GetGameObject()->GetPosition(), direction, 5.0f, glm::vec4(1.0f, 0.8f, 0.3f, 1.0f));
+	//		particles_store.push_back(particles);
+
+	//		created = true;
+	//	}
 	//}
 	//else
 	//{
-	//	particleManager->IsEnabled = false;
-	//	//delete the old emitter
-	//	//particleManager->DeleteEmitter();
+	//	//particleManager->IsEnabled = false;
+	//	//delete all the particles we created
+	//	for (int i = 0; i < particles_store.size(); i++)
+	//	{
+	//		app.CurrentScene()->RemoveGameObject(particles_store[i]);
+	//	}
 
-	//	particles->SetPostion(GetGameObject()->GetPosition());
-	//	//glm::mat3 globalRot = glm::mat3_cast(GetGameObject()->GetRotation());
-	//	//glm::vec3 direction = glm::normalize(glm::vec3(globalRot[2][0], globalRot[2][1], globalRot[2][2]));
-	//	//add a new emitter - we do this because emitters can't be updated normally, so we have to make new ones
-	//	//particleManager->AddEmitter(GetGameObject()->GetPosition(), direction, 5.0f, glm::vec4(1.0f, 0.8f, 0.3f, 1.0f));
-	//	particleManager->UpdatePosition(GetGameObject()->GetPosition());
-	//	particleManager->UpdateDirection(direction);
+	//	particles_store.clear();
+	//	created = false;
+	//	
 	//}
 	
 }
