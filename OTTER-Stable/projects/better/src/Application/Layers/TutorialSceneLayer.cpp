@@ -380,6 +380,7 @@ void TutorialSceneLayer::_CreateScene()
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
 		deferredForward->SetDebugName("Deferred - GBuffer Generation");
+
 #pragma region Basic Texture Creation
 		Texture2DDescription singlePixelDescriptor;
 		singlePixelDescriptor.Width = singlePixelDescriptor.Height = 1;
@@ -495,7 +496,7 @@ void TutorialSceneLayer::_CreateScene()
 			trashyMaterial->Name = "Trashy";
 			trashyMaterial->Set("u_Material.AlbedoMap", trashyTex);
 			//testMaterial->Set("u_Material.Specular", boxSpec);
-			trashyMaterial->Set("u_Material.Shininess", 1.0f);
+			trashyMaterial->Set("u_Material.Shininess", 0.5f);
 			trashyMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 		
@@ -632,7 +633,7 @@ void TutorialSceneLayer::_CreateScene()
 
 			// Create and attach a RenderComponent to the object to draw our mesh
 			RenderComponent::Sptr renderer = plane->Add<RenderComponent>();
-			renderer->SetMesh(tiledMesh);
+			renderer->SetMesh(planeMesh);
 			renderer->SetMaterial(planeMaterial);
 
 			// Attach a plane collider that extends infinitely along the X/Y axis
@@ -794,7 +795,7 @@ void TutorialSceneLayer::_CreateScene()
 		{
 			layoutMaterial->Name = "Layout";
 			layoutMaterial->Set("u_Material.AlbedoMap", layoutTex);
-			layoutMaterial->Set("u_Material.Shininess", 0.0f);
+			layoutMaterial->Set("u_Material.Shininess", 0.1f);
 			layoutMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
@@ -921,7 +922,7 @@ void TutorialSceneLayer::_CreateScene()
 		{
 			binMaterial->Name = "Bin";
 			binMaterial->Set("u_Material.AlbedoMap", binTex);
-			binMaterial->Set("u_Material.Shininess", 1.0f);
+			binMaterial->Set("u_Material.Shininess", 0.5f);
 			binMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
