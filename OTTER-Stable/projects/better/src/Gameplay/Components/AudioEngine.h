@@ -18,7 +18,7 @@ public:
 	void studioshutdown();
 
 	void loadSound(const std::string& soundName, const std::string& filename, bool b3d, bool bLooping = false, bool bStream = false);
-	void loadBank(const std::string& filename);
+	FMOD_RESULT loadBank(const char* filename , FMOD::Studio::Bank** bank = NULL);
 	void unloadSound(const std::string& soundName);
 	void unloadBank();
 	void playSoundByName(const std::string& soundName);

@@ -72,11 +72,12 @@ void AudioEngine::loadSound(const std::string& soundName, const std::string& fil
 	}
 }
 
-void AudioEngine::loadBank(const std::string& filename)
+FMOD_RESULT AudioEngine::loadBank(const char* filename, FMOD::Studio::Bank** bank = NULL)
 {
-
-	ErrorCheck(pStudioSystem->loadBankFile()
+	return pStudioSystem->loadBankFile(filename, FMOD_STUDIO_LOAD_BANK_NORMAL, bank);
 }
+
+
 
 void AudioEngine::unloadSound(const std::string& soundName)
 {
@@ -90,6 +91,7 @@ void AudioEngine::unloadSound(const std::string& soundName)
 
 void AudioEngine::unloadBank()
 {
+
 }
 
 void AudioEngine::playSoundByName(const std::string& soundName)
