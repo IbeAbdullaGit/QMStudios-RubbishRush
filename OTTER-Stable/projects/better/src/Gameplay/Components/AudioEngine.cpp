@@ -1,6 +1,7 @@
 #include "AudioEngine.h"
 #include "fmod_errors.h"
 #include "fmod_studio_common.h"
+#include "fmod_studio.hpp"
 #include <iostream>
 int AudioEngine::ErrorCheck(FMOD_RESULT result)
 {
@@ -72,10 +73,15 @@ void AudioEngine::loadSound(const std::string& soundName, const std::string& fil
 	}
 }
 
-FMOD_RESULT AudioEngine::loadBank(const char* filename, FMOD::Studio::Bank** bank = NULL)
+void AudioEngine::loadBank(const char* filename, FMOD::Studio::Bank** bank)
 {
-	return pStudioSystem->loadBankFile(filename, FMOD_STUDIO_LOAD_BANK_NORMAL, bank);
+	ErrorCheck(pStudioSystem->loadBankFile(filename, FMOD_STUDIO_LOAD_BANK_NORMAL, bank));
 }
+
+//FMOD_RESULT AudioEngine::s(const char* filename, FMOD::Studio::Bank** bank = NULL)
+//{
+//	return pStudioSystem->loadBankFile(filename, FMOD_STUDIO_LOAD_BANK_NORMAL, bank);
+//}
 
 
 
@@ -89,10 +95,22 @@ void AudioEngine::unloadSound(const std::string& soundName)
 	}
 }
 
-void AudioEngine::unloadBank()
+void AudioEngine::getEventS(const char* pathname,FMOD::Studio::EventDescription* eventd, FMOD::Studio::EventInstance** eventInst)
 {
+	ErrorCheck(pStudioSystem->getEvent(pathname, &eventd));
 
+
+	ErrorCheck(eventd->createInstance(eventInst));
 }
+
+void AudioEngine::playEvent(FMOD::Studio::EventInstance* eventInst)
+{
+	ErrorCheck(eventInst->start());
+}
+
+
+
+
 
 void AudioEngine::playSoundByName(const std::string& soundName)
 {
