@@ -358,7 +358,7 @@ void Application::_Load() {
 
 	// Pass the window to the input engine and let it initialize itself
 	InputEngine::Init(_window);
-	
+
 	// Initialize our ImGui helper
 	ImGuiHelper::Init(_window);
 
@@ -383,7 +383,7 @@ void Application::_LateUpdate() {
 
 void Application::_PreRender()
 {
-	glm::ivec2 size ={ 0, 0 };
+	glm::ivec2 size = { 0, 0 };
 	glfwGetWindowSize(_window, &size.x, &size.y);
 	glViewport(0, 0, size.x, size.y);
 	glScissor(0, 0, size.x, size.y);
@@ -448,7 +448,7 @@ void Application::_HandleSceneChange() {
 	}
 
 	_currentScene = _targetScene;
-	
+
 	// Let the layers know that we've loaded in a new scene
 	for (const auto& layer : _layers) {
 		if (layer->Enabled && *(layer->Overrides & AppLayerFunctions::OnSceneLoad)) {
@@ -502,7 +502,7 @@ void Application::_ConfigureSettings() {
 
 nlohmann::json Application::_GetDefaultAppSettings()
 {
-	nlohmann::json result ={};
+	nlohmann::json result = {};
 
 	for (const auto& layer : _layers) {
 		if (!layer->Name.empty()) {
@@ -514,7 +514,7 @@ nlohmann::json Application::_GetDefaultAppSettings()
 		}
 	}
 
-	result["window_width"]  = DEFAULT_WINDOW_WIDTH;
+	result["window_width"] = DEFAULT_WINDOW_WIDTH;
 	result["window_height"] = DEFAULT_WINDOW_HEIGHT;
 	return result;
 }
