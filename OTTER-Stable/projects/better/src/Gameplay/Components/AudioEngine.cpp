@@ -1,5 +1,6 @@
 #include "AudioEngine.h"
 #include "fmod_errors.h"
+#include "fmod_studio_common.h"
 #include <iostream>
 int AudioEngine::ErrorCheck(FMOD_RESULT result)
 {
@@ -21,15 +22,31 @@ void AudioEngine::init()
 	ErrorCheck(pSystem->init(32, FMOD_INIT_NORMAL, nullptr));
 }
 
+void AudioEngine::studioinit()
+{
+	ErrorCheck(FMOD::Studio::System::create(&pStudioSystem));
+	ErrorCheck(pStudioSystem->initialize(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
+}
+
 void AudioEngine::update()
 {
 	ErrorCheck(pSystem->update());
+}
+
+void AudioEngine::studioupdate()
+{
+	ErrorCheck(pStudioSystem->update());
 }
 
 void AudioEngine::shutdown()
 {
 	ErrorCheck(pSystem->close());
 	ErrorCheck(pSystem->release());
+}
+
+void AudioEngine::studioshutdown()
+{
+ErrorCheck(pStudioSystem->release());
 }
 
 void AudioEngine::loadSound(const std::string& soundName, const std::string& filename, bool b3d, bool bLooping, bool bStream)
@@ -55,6 +72,12 @@ void AudioEngine::loadSound(const std::string& soundName, const std::string& fil
 	}
 }
 
+void AudioEngine::loadBank(const std::string& filename)
+{
+
+	ErrorCheck(pStudioSystem->loadBankFile()
+}
+
 void AudioEngine::unloadSound(const std::string& soundName)
 {
 	auto foundElement = sounds.find(soundName);
@@ -63,6 +86,10 @@ void AudioEngine::unloadSound(const std::string& soundName)
 		ErrorCheck(foundElement->second->release());
 		sounds.erase(foundElement);
 	}
+}
+
+void AudioEngine::unloadBank()
+{
 }
 
 void AudioEngine::playSoundByName(const std::string& soundName)
