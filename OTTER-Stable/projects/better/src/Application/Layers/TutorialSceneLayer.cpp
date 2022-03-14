@@ -655,7 +655,7 @@ void TutorialSceneLayer::_CreateScene()
 		//placeholder trash object  TAGS: PLACEHOLDER, this is how u create a new object for trash
 		//setup trash
 		Gameplay::MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("cup.obj");
-		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/acup.jpg");
+		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/cup.jpg");
 		// Create our material
 		Gameplay::Material::Sptr trashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{

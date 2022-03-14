@@ -1312,7 +1312,7 @@ void DefaultSceneLayer::_CreateScene()
 		//placeholder trash object  TAGS: PLACEHOLDER, this is how u create a new object for trash
 		//setup trash
 		Gameplay::MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("cup.obj");
-		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/acup.jpg");
+		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/cup.jpg");
 		// Create our material
 		Gameplay::Material::Sptr trashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -1642,6 +1642,40 @@ void DefaultSceneLayer::_CreateScene()
 
 			}
 		}
+
+		//Conveyor
+		Gameplay::MeshResource::Sptr conveyorMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("conveyor.obj");
+		Texture2D::Sptr conveyorTex = ResourceManager::CreateAsset<Texture2D>("textures/conveyor.jpg");
+		Gameplay::Material::Sptr conveyorMaterial = ResourceManager::CreateAsset<Gameplay::Material>(conveyorShader);
+		{
+			conveyorMaterial->Name = "Conveyor";
+			conveyorMaterial->Set("u_Material.AlbedoMap", conveyorTex);
+			conveyorMaterial->Set("u_Material.Shininess", 0.2f);
+			conveyorMaterial->Set("u_Material.NormalMap", normalMapDefault);
+
+		}
+		Gameplay::GameObject::Sptr conveyor = scene->CreateGameObject("Conveyor");
+		{
+			conveyor->SetPostion(glm::vec3(-5.0f, 0.01f, 0.0f));
+			conveyor->SetRotation(glm::vec3(90.0f, 0.0f, -75.0f));
+			conveyor->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
+
+			RenderComponent::Sptr renderer = conveyor->Add<RenderComponent>();
+			renderer->SetMesh(conveyorMesh);
+			renderer->SetMaterial(conveyorMaterial);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = conveyor->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			box->SetScale(glm::vec3(0.28f, 0.151f, 1.52f));
+			physics->AddCollider(box);
+			Gameplay::Physics::TriggerVolume::Sptr volume = conveyor->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			box2->SetScale(glm::vec3(0.28f, 0.041f, 1.52f));
+			box2->SetPosition(glm::vec3(0.0f, 0.13f, 0.0f));
+			volume->AddCollider(box2);
+			ConveyorBeltBehaviour::Sptr behaviour2 = conveyor->Add<ConveyorBeltBehaviour>();
+		}
+
 		//spill object
 		Gameplay::MeshResource::Sptr spillMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("spill.obj");
 		Texture2D::Sptr spillTex = ResourceManager::CreateAsset<Texture2D>("textures/goo.png");
@@ -2217,7 +2251,7 @@ void DefaultSceneLayer::_CreateScene()
 			}
 			//Computer
 			Gameplay::MeshResource::Sptr computerMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Computer.obj");
-			Texture2D::Sptr computerTex = ResourceManager::CreateAsset<Texture2D>("textures/desktoptex.png");
+			Texture2D::Sptr computerTex = ResourceManager::CreateAsset<Texture2D>("textures/desktoptex.jpg");
 			Gameplay::Material::Sptr computerMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 			{
 				computerMaterial->Name = "Computer";

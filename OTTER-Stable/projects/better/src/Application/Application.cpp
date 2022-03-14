@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <fmod_studio.hpp>
 
 #include "Logging.h"
 #include "Gameplay/InputEngine.h"
@@ -163,7 +164,20 @@ void Application::SaveSettings()
 
 void Application::_Run()
 {
-	//AUDIO EXAMPLE
+
+	//AUDIO EXAMPLE STUDIO
+	/*AudioEngine audioEngineS;
+	audioEngineS.studioinit();
+	FMOD::Studio::Bank* MasterBank;
+	FMOD::Studio::Bank* StringBank;
+	audioEngineS.loadBank("Master.bank", &MasterBank);
+	audioEngineS.loadBank("Master.strings.bank", &StringBank);
+	FMOD::Studio::EventDescription* Footsteps;
+	FMOD::Studio::EventInstance* FootstepsInst;
+	audioEngineS.getEventS("event:/More_footsteps", Footsteps, &FootstepsInst);*/
+
+
+	//AUDIO EXAMPLE CORE
 	/*AudioEngine audioEngine;
 	audioEngine.init();
 	audioEngine.loadSound("test", "Bag_of_trash.wav", true);*/
@@ -212,10 +226,19 @@ void Application::_Run()
 
 	// Infinite loop as long as the application is running
 	while (_isRunning) {
-		//AUDIO
+
+		//AUDIO EXAMPLE STUDIO
+		/*audioEngineS.studioupdate();
+		audioEngineS.playEvent(FootstepsInst);*/
+
+
+		//AUDIO EXAMPLE CORE
 		
 		/*audioEngine.update();
 		Sleep(32);*/
+
+
+
 		// Handle scene switching
 		if (_targetScene != nullptr) {
 			_HandleSceneChange();

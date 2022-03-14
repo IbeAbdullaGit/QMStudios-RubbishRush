@@ -50,7 +50,7 @@ void JumpBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physi
 
 JumpBehaviour::JumpBehaviour() :
 	IComponent(),
-	_impulse(3.0f)
+	_impulse(6.0f)
 { }
 
 JumpBehaviour::~JumpBehaviour() = default;

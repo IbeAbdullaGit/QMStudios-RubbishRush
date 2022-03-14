@@ -1,5 +1,7 @@
 #include "AudioEngine.h"
 #include "fmod_errors.h"
+#include "fmod_studio_common.h"
+#include "fmod_studio.hpp"
 #include <iostream>
 int AudioEngine::ErrorCheck(FMOD_RESULT result)
 {
@@ -21,15 +23,31 @@ void AudioEngine::init()
 	ErrorCheck(pSystem->init(32, FMOD_INIT_NORMAL, nullptr));
 }
 
+void AudioEngine::studioinit()
+{
+	ErrorCheck(FMOD::Studio::System::create(&pStudioSystem));
+	ErrorCheck(pStudioSystem->initialize(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
+}
+
 void AudioEngine::update()
 {
 	ErrorCheck(pSystem->update());
+}
+
+void AudioEngine::studioupdate()
+{
+	ErrorCheck(pStudioSystem->update());
 }
 
 void AudioEngine::shutdown()
 {
 	ErrorCheck(pSystem->close());
 	ErrorCheck(pSystem->release());
+}
+
+void AudioEngine::studioshutdown()
+{
+ErrorCheck(pStudioSystem->release());
 }
 
 void AudioEngine::loadSound(const std::string& soundName, const std::string& filename, bool b3d, bool bLooping, bool bStream)
@@ -55,6 +73,18 @@ void AudioEngine::loadSound(const std::string& soundName, const std::string& fil
 	}
 }
 
+void AudioEngine::loadBank(const char* filename, FMOD::Studio::Bank** bank)
+{
+	ErrorCheck(pStudioSystem->loadBankFile(filename, FMOD_STUDIO_LOAD_BANK_NORMAL, bank));
+}
+
+//FMOD_RESULT AudioEngine::s(const char* filename, FMOD::Studio::Bank** bank = NULL)
+//{
+//	return pStudioSystem->loadBankFile(filename, FMOD_STUDIO_LOAD_BANK_NORMAL, bank);
+//}
+
+
+
 void AudioEngine::unloadSound(const std::string& soundName)
 {
 	auto foundElement = sounds.find(soundName);
@@ -64,6 +94,23 @@ void AudioEngine::unloadSound(const std::string& soundName)
 		sounds.erase(foundElement);
 	}
 }
+
+void AudioEngine::getEventS(const char* pathname,FMOD::Studio::EventDescription* eventd, FMOD::Studio::EventInstance** eventInst)
+{
+	ErrorCheck(pStudioSystem->getEvent(pathname, &eventd));
+
+
+	ErrorCheck(eventd->createInstance(eventInst));
+}
+
+void AudioEngine::playEvent(FMOD::Studio::EventInstance* eventInst)
+{
+	ErrorCheck(eventInst->start());
+}
+
+
+
+
 
 void AudioEngine::playSoundByName(const std::string& soundName)
 {
