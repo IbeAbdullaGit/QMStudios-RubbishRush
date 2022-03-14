@@ -178,10 +178,28 @@ void TutorialSceneLayer::OnUpdate()
 			}*/
 			//MENU ANIMATED UPDATED
 			if (_tutcurrentScene->IsPlaying && !done &&!musicstart) {
-				test.SetEventPosition("event:/Music", FMOD_VECTOR{ 0.0f,0.0f,10.f });
-				test.PlayEvent("event:/Music");
+				
+				test.PlayEvent("event:/Music");	
+				
 				musicstart = true;
 			}
+
+			if (_tutcurrentScene->playrecyclesound) {
+				test.PlayEvent("event:/Plastic trash crush");
+				_tutcurrentScene->playrecyclesound = false;
+			}
+
+			if (_tutcurrentScene->playtrashsound) {
+				test.PlayEvent("event:/Can Crush");
+				_tutcurrentScene->playtrashsound = false;
+			}
+
+			if (_tutcurrentScene->playmulti) {
+				test.PlayEvent("event:/Trash multi");
+				test.SetEventParameter("event:/Trash multi", "parameter:/Pitch", glm::linearRand(0.f, 1.f));
+				_tutcurrentScene->playmulti = false;
+			}
+
 			if (_tutcurrentScene->IsPlaying && !done)
 			{
 				if (_tutcurrentScene->score == max_trash) 
@@ -191,7 +209,7 @@ void TutorialSceneLayer::OnUpdate()
 					dumpUI->Get<GuiPanel>()->IsEnabled = false;
 					//dumpUI->Get<RenderComponent>()->IsEnabled = false;
 					//pickupUI->Get<GuiPanel>()->IsEnabled = false;
-
+					test.StopEvent("event:/Music");
 					//make loading screen
 					Gameplay::GameObject::Sptr loading = _tutcurrentScene->CreateGameObject("Load");
 					{
@@ -242,6 +260,21 @@ void TutorialSceneLayer::OnUpdate()
 			if ((glfwGetKey(app.GetWindow(), GLFW_KEY_W) || glfwGetKey(app.GetWindow(), GLFW_KEY_A) || glfwGetKey(app.GetWindow(), GLFW_KEY_S) || glfwGetKey(app.GetWindow(), GLFW_KEY_D)) && hasMoved == false) {
 				hasMoved = true;
 			}
+
+			if (_tutcurrentScene->walk) {
+				test.PlayEvent("event:/Footsteps");
+				test.SetEventParameter("event:/Footsteps", "parameter:/Pitch", glm::linearRand(0.f, 4.f));
+			}
+
+			if (_tutcurrentScene->walk == false) {
+				test.StopEvent("event:/Footsteps");
+			}
+
+			/*if ((glfwGetKey(app.GetWindow(), GLFW_KEY_W) || glfwGetKey(app.GetWindow(), GLFW_KEY_A) || glfwGetKey(app.GetWindow(), GLFW_KEY_S) || glfwGetKey(app.GetWindow(), GLFW_KEY_D) && glfwGetKey(app.GetWindow(),GLFW_PRESS))) {
+				test.PlayEvent("event:/Footsteps");
+				test.SetEventParameter("event:/Footsteps", "parameter:/Pitch", 1.0f);
+			}*/
+			
 			////Player Movement Tutorial
 			//if ((glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE))&& hasJumped == false) {
 			//	hasJumped = true;
@@ -305,6 +338,14 @@ void TutorialSceneLayer::_CreateScene()
 	studio.LoadBank("Sound.bank");
 	studio.LoadBank("Music.bank");
 	test.LoadEvent("event:/Music");
+	test.LoadEvent("event:/Footsteps");
+	test.LoadEvent("event:/Can Crush");
+	test.LoadEvent("event:/Plastic trash crush");
+	test.LoadEvent("event:/Trash multi");
+	test.SetEventPosition("event:/Music", FMOD_VECTOR{ 0.0f,0.0f,10.f });
+	test.SetEventPosition("event:/Footsteps", FMOD_VECTOR{ 0.0f,0.0f,2.f });
+	test.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });
+	test.SetEventPosition("event:/Plastic trash crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });
 	
 
 	//using namespace Gameplay;
@@ -747,6 +788,7 @@ void TutorialSceneLayer::_CreateScene()
 				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
 				volume->AddCollider(box2);
 				CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
+				behaviour2->type = "Recycle";
 			}
 
 			/*Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material

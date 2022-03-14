@@ -10,6 +10,7 @@
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Scene.h"
 #include "Utils/ImGuiHelper.h"
+#include "ToneFire.h"
 
 /// <summary>
 /// Provides an example behaviour that uses some of the trigger interface to change the material
@@ -45,4 +46,6 @@ protected:
 	Gameplay::Scene* _scene;
 	Gameplay::GameObject::Sptr ui;
 	bool activated = false;
+	ToneFire::FMODStudio studio;
+	ToneFire::StudioSound test;
 };

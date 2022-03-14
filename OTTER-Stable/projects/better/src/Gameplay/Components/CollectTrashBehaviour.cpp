@@ -66,10 +66,12 @@ void CollectTrashBehaviour::Update(float deltatime)
 				if (type == "Normal")
 				{
 					_scene->held_normal += 1;
+					_scene->playtrashsound = true;
 				}
 				else
 				{
 					_scene->held_recycle += 1;
+					_scene->playrecyclesound = true;
 				}
 			}
 			

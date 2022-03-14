@@ -76,7 +76,7 @@ protected:
 	float m_timer;
 	bool m_forwards;
 	size_t m_segmentIndex;
-
+	Gameplay::Scene* _scene;
 	bool play_once = false;
 
 };
