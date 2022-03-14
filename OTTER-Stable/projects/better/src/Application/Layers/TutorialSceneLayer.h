@@ -5,6 +5,7 @@
 #include "Utils/Macros.h"
 #include "Gameplay/Scene.h"
 #include "Gameplay/MeshResource.h"
+#include "ToneFire.h"
 
 /**
  * This example layer handles creating a default test scene, which we will use
@@ -36,10 +37,12 @@ protected:
 	Gameplay::GameObject::Sptr walkUI;
 	Gameplay::GameObject::Sptr pickupUI;
 	
+	ToneFire::FMODStudio studio;
+	ToneFire::StudioSound test;
 	bool hasMoved = false;
 	bool hasCollected = false;
 	bool hasJumped = false;
-
+	bool musicstart = false;
 	bool activated = false;
 	bool done = false;
 	bool nobreak = false;

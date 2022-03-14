@@ -23,10 +23,10 @@ public:
 	void getEventS(const char* pathname, FMOD::Studio::EventDescription * eventd = NULL, FMOD::Studio::EventInstance** eventInst = NULL);
 	void playEvent(FMOD::Studio::EventInstance* eventInst);
 	void playSoundByName(const std::string& soundName);
-
+	FMOD::Studio::System* pStudioSystem;
 private:
 	FMOD::System* pSystem;
-	FMOD::Studio::System* pStudioSystem;
+	
 	std::unordered_map<std::string, FMOD::Sound*> sounds;
 };
 

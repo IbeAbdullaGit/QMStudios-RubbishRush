@@ -49,7 +49,7 @@
 #include "Gameplay/Components/TriggerVolumeEnterBehaviour.h"
 #include "Gameplay/Components/SimpleCameraControl.h"
 #include "Gameplay/Components/Light.h"
-
+#include "ToneFire.h"
 //ours
 #include "Gameplay/Components/DeleteObjectBehaviour.h"
 #include "Gameplay/Components/CollectTrashBehaviour.h"
@@ -123,11 +123,15 @@ void TutorialSceneLayer::OnSceneUnload()
 
 void TutorialSceneLayer::OnAppLoad(const nlohmann::json& config) {
 	_CreateScene();
+	
 }
 
 double tutlastFrame = glfwGetTime();
 void TutorialSceneLayer::OnUpdate()
 {
+	
+	
+	studio.Update();
 	if (doUpdate)
 	{
 		//put this at the top to create a delay affect, creates time for the loading screen to render
@@ -149,7 +153,7 @@ void TutorialSceneLayer::OnUpdate()
 			jumpUI = _tutcurrentScene->FindObjectByName("Jump Tutorial UI");
 			pickupUI = _tutcurrentScene->FindObjectByName("Pickup Trash Tutorial UI");
 			dumpUI = _tutcurrentScene->FindObjectByName("Dump Tutorial UI");
-
+			
 
 			trashyM = _tutcurrentScene->FindObjectByName("Trashy");
 			trashyM->Get<Gameplay::Physics::RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -173,6 +177,11 @@ void TutorialSceneLayer::OnUpdate()
 				});
 			}*/
 			//MENU ANIMATED UPDATED
+			if (_tutcurrentScene->IsPlaying && !done &&!musicstart) {
+				test.SetEventPosition("event:/Music", FMOD_VECTOR{ 0.0f,0.0f,10.f });
+				test.PlayEvent("event:/Music");
+				musicstart = true;
+			}
 			if (_tutcurrentScene->IsPlaying && !done)
 			{
 				if (_tutcurrentScene->score == max_trash) 
@@ -291,6 +300,13 @@ void TutorialSceneLayer::OnUpdate()
 
 void TutorialSceneLayer::_CreateScene()
 {
+	studio.LoadBank("Master.bank");
+	studio.LoadBank("Master.strings.bank");
+	studio.LoadBank("Sound.bank");
+	studio.LoadBank("Music.bank");
+	test.LoadEvent("event:/Music");
+	
+
 	//using namespace Gameplay;
 	//using namespace Gameplay::Physics;
 
