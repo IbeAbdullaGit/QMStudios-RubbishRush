@@ -211,7 +211,7 @@ void TutorialSceneLayer::OnUpdate()
 				}
 				if (hallwayLoaded)
 				{
-					if (trashyM->GetPosition().x <= -8.0f && spillCrossed == false) {
+					if (trashyM->GetPosition().x <= -8.0f && trashyM->GetPosition().y < -5.0f && spillCrossed == false) {
 						spillCrossed = true;
 						spillUI->Get<GuiPanel>()->IsEnabled = false;
 					}
