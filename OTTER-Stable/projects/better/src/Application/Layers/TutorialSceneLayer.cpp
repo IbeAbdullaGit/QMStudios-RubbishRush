@@ -211,11 +211,20 @@ void TutorialSceneLayer::OnUpdate()
 				}
 				if (hallwayLoaded)
 				{
-					//Player Movement Tutorial
+					if (trashyM->GetPosition().x <= -8.0f && spillCrossed == false) {
+						spillCrossed = true;
+						spillUI->Get<GuiPanel>()->IsEnabled = false;
+					}
+					
+					if (trashyM->GetPosition().x <= -3.0f && trashyM->GetPosition().y < -5.0f && spillCrossed == false) {
+						spillUI->Get<GuiPanel>()->IsEnabled = true;
+					}
+					
+					//Player Jump Tutorial
 					if ((glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE)) && hasJumped == false) {
 						hasJumped = true;
 					}
-					if (trashyM->GetPosition().x <=-3.0f && hasJumped == false) { //how far along player is
+					if (trashyM->GetPosition().x <=-9.0f && hasJumped == false) { //how far along player is
 						jumpUI->Get<GuiPanel>()->IsEnabled = true;
 
 					}
