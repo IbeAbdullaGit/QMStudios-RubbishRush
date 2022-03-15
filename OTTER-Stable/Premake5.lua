@@ -104,6 +104,7 @@ Dependencies = {
 	"imagehlp.lib",
 	"dependencies/gzip/zlib.lib",
 	"tinyGLTF",
+	"dependencies/fmod/lib/Tone Fire.lib",
 }
 
 DependenciesDebug = {
