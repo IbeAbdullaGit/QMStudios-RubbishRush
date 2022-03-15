@@ -510,17 +510,17 @@ void TutorialSceneLayer::_CreateScene()
 		}
 		{
 			Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
-			light->SetPostion(glm::vec3(7.9f, -4.89f, 0.0f));
+			light->SetPostion(glm::vec3(10.98f, -8.26f, 3.59f));
 			lightParent->AddChild(light);
 
 			Light::Sptr lightComponent = light->Add<Light>();
 			lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.1f));
-			lightComponent->SetRadius(5.5f);
+			lightComponent->SetRadius(6.5f);
 			lightComponent->SetIntensity(1.0f);
 		}
 		{
 			Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
-			light->SetPostion(glm::vec3(7.9f, -4.89f, 0.0f));
+			light->SetPostion(glm::vec3(9.86f, 7.16f, 0.88f));
 			lightParent->AddChild(light);
 
 			Light::Sptr lightComponent = light->Add<Light>();
