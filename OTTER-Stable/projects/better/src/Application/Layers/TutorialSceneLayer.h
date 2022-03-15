@@ -31,7 +31,9 @@ protected:
 	Gameplay::MeshResource::Sptr trashMesh;
 	Gameplay::MeshResource::Sptr benchMesh;
 	Gameplay::MeshResource::Sptr spillMesh;
+	Gameplay::MeshResource::Sptr bagtrashMesh;
 	Gameplay::Material::Sptr trashMaterial;
+	Gameplay::Material::Sptr bagtrashMaterial;
 	Gameplay::Material::Sptr hallwayMat;
 	Gameplay::Material::Sptr benchMaterial;
 	Gameplay::Material::Sptr spillMaterial;
@@ -52,11 +54,12 @@ protected:
 	bool activated = false;
 	bool done = false;
 	bool nobreak = false;
-
+	bool hallwayLoaded = false;
 
 	bool doUpdate = true;
+	
 
-	int inventory = 1; //DEFAULT INVENTORY COUNT
-	int max_trash = 2; //DEFAULT FOR NOW
+	int inventory = 2; //DEFAULT INVENTORY COUNT
+	int max_trash = 3; //DEFAULT FOR NOW
 
 };

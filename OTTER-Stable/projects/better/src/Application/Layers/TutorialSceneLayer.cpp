@@ -180,7 +180,6 @@ void TutorialSceneLayer::OnUpdate()
 			if (_tutcurrentScene->IsPlaying && !done &&!musicstart) {
 				
 				test.PlayEvent("event:/Music");	
-				_CreateHallway(); //TEMP
 				musicstart = true;
 			}
 
@@ -202,11 +201,18 @@ void TutorialSceneLayer::OnUpdate()
 
 			if (_tutcurrentScene->IsPlaying && !done)
 			{
+				if (_tutcurrentScene->score == 2 && hallwayLoaded == false) {
+					hallwayLoaded = true;
+					_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Top Right Barrier"));
+					dumpUI->Get<GuiPanel>()->IsEnabled = false;
+					
+					_CreateHallway(); //Create the second part of the level
+				}
+
 				if (_tutcurrentScene->score == max_trash) 
 				{
 					done = true; //LOAD NEXT SCENE
 					
-					dumpUI->Get<GuiPanel>()->IsEnabled = false;
 					//dumpUI->Get<RenderComponent>()->IsEnabled = false;
 					//pickupUI->Get<GuiPanel>()->IsEnabled = false;
 					test.StopEvent("event:/Music");
@@ -298,9 +304,12 @@ void TutorialSceneLayer::OnUpdate()
 
 
 
-			if (trashyM->GetPosition().y < -5.0f   &&   _tutcurrentScene->held <= 1   &&   hasCollected == false) { //Pick up Trash tutorial stuff
+			if (trashyM->GetPosition().y < -5.0f   &&  _tutcurrentScene->held <= 1 && hasCollected == false) { //Pick up Trash tutorial stuff
 				
-				pickupUI->Get<GuiPanel>()->IsEnabled = true;
+				if(!hallwayLoaded){
+					pickupUI->Get<GuiPanel>()->IsEnabled = true;
+				}
+				
 			}
 			else {
 				pickupUI->Get<GuiPanel>()->IsEnabled = false;
@@ -311,7 +320,9 @@ void TutorialSceneLayer::OnUpdate()
 
 
 			if (hasCollected == true) {//If the player has picked up the trash, then display the UI to teach them how to dump the trash
-				dumpUI->Get<GuiPanel>()->IsEnabled = true;
+				if (!hallwayLoaded) {
+					dumpUI->Get<GuiPanel>()->IsEnabled = true;
+				}
 			}
 
 		}
@@ -723,10 +734,10 @@ void TutorialSceneLayer::_CreateScene()
 
 		}
 
-		Gameplay::MeshResource::Sptr bagtrashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Trashbag.obj");
+		bagtrashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Trashbag.obj");
 		Texture2D::Sptr bagtrashTex = ResourceManager::CreateAsset<Texture2D>("textures/TrashBagTex.jpg");
 		
-		Gameplay::Material::Sptr bagtrashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		bagtrashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			bagtrashMaterial->Name = "Bag Trash";
 			bagtrashMaterial->Set("u_Material.AlbedoMap", bagtrashTex);
@@ -963,12 +974,12 @@ void TutorialSceneLayer::_CreateScene()
 
 			Gameplay::GameObject::Sptr layoutwall7 = scene->CreateGameObject("Layout Wall Top Right");
 			{
-				layoutwall7->SetPostion(glm::vec3(1.71f, -11.12f, 1.0f));
+				layoutwall7->SetPostion(glm::vec3(-3.69, -15.28, 1.0f));
 				layoutwall7->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
 				Gameplay::Physics::RigidBody::Sptr wall7Phys = layoutwall7->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall7 = Gameplay::Physics::BoxCollider::Create();
 				wall7->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall7->SetScale(glm::vec3(0.310, 3.50f, 2.02f));
+				wall7->SetScale(glm::vec3(5.500f, 4.00f, 2.02f));
 				wall7->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall7Phys->AddCollider(wall7);
 			}
@@ -982,6 +993,54 @@ void TutorialSceneLayer::_CreateScene()
 				wall8->SetScale(glm::vec3(0.310, 3.50f, 2.02f));
 				wall8->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall8Phys->AddCollider(wall8);
+			}
+
+			Gameplay::GameObject::Sptr layoutwall9 = scene->CreateGameObject("Layout Wall Top Right 2");
+			{
+				layoutwall9->SetPostion(glm::vec3(-5.39, -7.f, 1.0f));
+				layoutwall9->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				Gameplay::Physics::RigidBody::Sptr wall9Phys = layoutwall9->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wall9 = Gameplay::Physics::BoxCollider::Create();
+				wall9->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wall9->SetScale(glm::vec3(7.200f, 1.50f, 2.02f));
+				wall9->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				wall9Phys->AddCollider(wall9);
+			}
+
+			Gameplay::GameObject::Sptr layoutwallbarrier = scene->CreateGameObject("Layout Wall Top Right Barrier");
+			{
+				layoutwallbarrier->SetPostion(glm::vec3(2.13f, -9.88f, 1.0f));
+				layoutwallbarrier->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				Gameplay::Physics::RigidBody::Sptr wallBPhys = layoutwallbarrier->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wallB = Gameplay::Physics::BoxCollider::Create();
+				wallB->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wallB->SetScale(glm::vec3(0.310, 1.50f, 2.02f));
+				wallB->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				wallBPhys->AddCollider(wallB);
+			}
+
+			Gameplay::GameObject::Sptr layoutwall10 = scene->CreateGameObject("Layout Wall Hall Right");
+			{
+				layoutwall10->SetPostion(glm::vec3(-12.99f, -13.f, 1.0f));
+				layoutwall10->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				Gameplay::Physics::RigidBody::Sptr wall10Phys = layoutwall10->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wall10 = Gameplay::Physics::BoxCollider::Create();
+				wall10->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wall10->SetScale(glm::vec3(0.310, 6.00f, 2.02f));
+				wall10->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				wall10Phys->AddCollider(wall10);
+			}
+
+			Gameplay::GameObject::Sptr layoutwall11 = scene->CreateGameObject("Layout Wall Hall Top");
+			{
+				layoutwall11->SetPostion(glm::vec3(-5.39, -19.490, 1.0f));
+				layoutwall11->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				Gameplay::Physics::RigidBody::Sptr wall11Phys = layoutwall11->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wall11 = Gameplay::Physics::BoxCollider::Create();
+				wall11->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wall11->SetScale(glm::vec3(7.200f, 1.50f, 2.02f));
+				wall11->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				wall11Phys->AddCollider(wall11);
 			}
 
 		}
@@ -1182,10 +1241,23 @@ void TutorialSceneLayer::_CreateScene()
 
 			}
 
+			Gameplay::GameObject::Sptr spillTutorial = scene->CreateGameObject("Spill Tutorial UI");
+			{
+				RectTransform::Sptr transform = spillTutorial->Add<RectTransform>();
+				transform->SetMax({ 360, 202.5 });
+
+				GuiPanel::Sptr spillPanel = spillTutorial->Add<GuiPanel>();
+				spillPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/Tut5tex.png"));
+				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				spillPanel->IsEnabled = false;
+
+			}
+
 			tutorialUICanvas->AddChild(walkTutorial);
 			tutorialUICanvas->AddChild(jumpTutorial);
 			tutorialUICanvas->AddChild(pickupTutorial);
 			tutorialUICanvas->AddChild(dumpTutorial);
+			tutorialUICanvas->AddChild(spillTutorial);
 		}
 		////PARTICLES
 		//Gameplay::GameObject::Sptr particles = scene->CreateGameObject("Particles");
@@ -1351,6 +1423,30 @@ void TutorialSceneLayer::_CreateHallway() {
 		physics->AddCollider(boxCollider);
 	}
 
+	Gameplay::GameObject::Sptr trash3 = _tutcurrentScene->CreateGameObject("Trash3");
+	{
+		trash3->SetPostion(glm::vec3(-10.85f, -15.0f, 0.0f));
+		trash3->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+		trash3->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
 
+		RenderComponent::Sptr renderer = trash3->Add<RenderComponent>();
+		renderer->SetMesh(bagtrashMesh);
+		renderer->SetMaterial(bagtrashMaterial);
+
+		Gameplay::Physics::RigidBody::Sptr physics = trash3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+		Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+		box->SetPosition(glm::vec3(0.00f, 0.16f, -0.08f));
+		box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
+		physics->AddCollider(box);
+
+		Gameplay::Physics::TriggerVolume::Sptr volume = trash3->Add<Gameplay::Physics::TriggerVolume>();
+		Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+		box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
+		box2->SetRotation(glm::vec3(0.0f, -3.0f, 0.0f));
+		box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
+		volume->AddCollider(box2);
+
+		CollectTrashBehaviour::Sptr behaviour3 = trash3->Add<CollectTrashBehaviour>();
+	}
 
 }
