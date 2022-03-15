@@ -75,7 +75,7 @@ void AudioEngine::loadSound(const std::string& soundName, const std::string& fil
 
 void AudioEngine::loadBank(const char* filename, FMOD::Studio::Bank** bank)
 {
-	ErrorCheck(pStudioSystem->loadBankFile(filename, FMOD_STUDIO_LOAD_BANK_NORMAL, bank));
+	ErrorCheck(pStudioSystem->loadBankFile(filename, FMOD_STUDIO_LOAD_BANK_NONBLOCKING, bank));
 }
 
 //FMOD_RESULT AudioEngine::s(const char* filename, FMOD::Studio::Bank** bank = NULL)
@@ -102,6 +102,8 @@ void AudioEngine::getEventS(const char* pathname,FMOD::Studio::EventDescription*
 
 	ErrorCheck(eventd->createInstance(eventInst));
 }
+
+
 
 void AudioEngine::playEvent(FMOD::Studio::EventInstance* eventInst)
 {

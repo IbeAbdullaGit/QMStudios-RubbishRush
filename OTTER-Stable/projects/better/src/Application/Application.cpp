@@ -12,7 +12,7 @@
 #include "Utils/FileHelpers.h"
 #include "Utils/ResourceManager/ResourceManager.h"
 #include "Utils/ImGuiHelper.h"
-
+#include "ToneFire.h"
 // Graphics
 #include "Graphics/Buffers/IndexBuffer.h"
 #include "Graphics/Buffers/VertexBuffer.h"
@@ -58,6 +58,7 @@
 #include "Gameplay/Components/GroundBehaviour.h"
 #include "Gameplay/Components/ConveyorBeltBehaviour.h"
 #include "Gameplay/Components/AudioEngine.h"
+#include "Gameplay/Components/common.h"
 // GUI
 #include "Gameplay/Components/GUI/RectTransform.h"
 #include "Gameplay/Components/GUI/GuiPanel.h"
@@ -170,12 +171,30 @@ void Application::_Run()
 	audioEngineS.studioinit();
 	FMOD::Studio::Bank* MasterBank;
 	FMOD::Studio::Bank* StringBank;
-	audioEngineS.loadBank("Master.bank", &MasterBank);
-	audioEngineS.loadBank("Master.strings.bank", &StringBank);
-	FMOD::Studio::EventDescription* Footsteps;
-	FMOD::Studio::EventInstance* FootstepsInst;
+	FMOD::Studio::Bank* Sounds;
+	audioEngineS.loadBank(Common_MediaPath("Master.bank"), &MasterBank);
+    audioEngineS.loadBank(Common_MediaPath("Master.strings.bank"), &StringBank);
+	audioEngineS.loadBank(Common_MediaPath("Sounds.bank"), &Sounds);
+	FMOD::Studio::EventDescription* Footsteps = NULL;
+	FMOD::Studio::EventInstance* FootstepsInst = NULL;
 	audioEngineS.getEventS("event:/More_footsteps", Footsteps, &FootstepsInst);*/
+    //.pStudioSystem->getEventByID("5839c9de - 7ae5 - 42c2 - a7ef - 374a1b37060a");
 
+
+	//ToneFire Studio Audio Example
+	/*ToneFire::FMODStudio studio;
+
+	studio.LoadBank("Master.bank");
+	studio.LoadBank("Master.strings.bank");
+	studio.LoadBank("Sound.bank");
+	studio.LoadBank("Music.bank");
+	studio.LoadBank("SFX.bank");
+	ToneFire::StudioSound test;
+	test.LoadEvent("event:/Footsteps");
+	test.LoadEvent("event:/Music");
+	test.SetEventPosition("event:/Music", FMOD_VECTOR{ 0.0f,0.0f,15.0f });
+	test.PlayEvent("event:/Music");*/
+	
 
 	//AUDIO EXAMPLE CORE
 	/*AudioEngine audioEngine;
@@ -230,7 +249,11 @@ void Application::_Run()
 		//AUDIO EXAMPLE STUDIO
 		/*audioEngineS.studioupdate();
 		audioEngineS.playEvent(FootstepsInst);*/
-
+		
+		
+		//ToneFire Studio Audio Example(This one line yes)
+		//studio.Update();
+		
 
 		//AUDIO EXAMPLE CORE
 		

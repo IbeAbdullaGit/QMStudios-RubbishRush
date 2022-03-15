@@ -218,8 +218,11 @@ namespace Gameplay {
 		int held_recycle = 0;
 		int held_normal = 0;
 		int score = 0;
-
+		bool playrecyclesound = false;
+		bool playtrashsound = false;
+		bool playmulti = false;
 		bool should_switch = false;
+		bool walk = false;
 
 	protected:
 		friend class HierarchyWindow;

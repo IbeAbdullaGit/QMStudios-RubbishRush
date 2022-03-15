@@ -3,6 +3,7 @@
 #include "Gameplay/Physics/RigidBody.h"
 #include "Gameplay/Components/ParticleSystem.h"
 #include "Gameplay/GameObject.h"
+#include "Gameplay/Scene.h"
 
 /// <summary>
 /// Component That Controls the First Player
@@ -41,7 +42,7 @@ protected:
 	glm::quat currentRotation;
 	glm::quat targetRotation;
 	float speed = 5.0f;
-
+	Gameplay::Scene* _scene;
 	glm::vec3 direction;
 	int count = 0;
 

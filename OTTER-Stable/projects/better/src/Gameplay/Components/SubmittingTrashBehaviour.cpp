@@ -77,7 +77,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 				std::cout << "Submitted trash!\n";
 				//increase score
 				_scene->score += 1;
-
+			
 				//disable the return ui if we have more inventory space
 				if (_scene->held < inventory)
 				{
@@ -91,6 +91,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 				std::cout << "No trash to submit!\n";
 			}
 			ui->Get<GuiText>()->IsEnabled = false;
+			_scene->playmulti = true;
 		}
 
 		

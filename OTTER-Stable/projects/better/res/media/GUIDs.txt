@@ -1,0 +1,11 @@
+{5458b0bf-c05e-43dd-bc5d-02b797dfa9cd} bank:/Master
+{cc45906b-b125-0f9f-3a14-8849662caf55} bank:/Master.strings
+{c8005268-26c8-4ad4-97de-73aafc6ade2b} bus:/
+{d3207beb-9af2-465f-a5f9-c9d7785ff488} bus:/Reverb
+{c30e44aa-2268-474b-b3f4-afe78415a07a} bus:/background
+{08405f9e-26c6-4f8a-908a-8e61d787996e} bus:/walking
+{5839c9de-7ae5-42c2-a7ef-374a1b37060a} event:/More_footsteps
+{84adf164-c99b-4c70-8e1b-e3a2d41bc08b} event:/owo
+{731e1a3a-e336-4993-9677-914162784f63} parameter:/Eq
+{1abc5b10-cf12-43b2-8fae-96d8c11aeb49} parameter:/Pitch
+{4721a7af-ff5e-4ccb-93b3-130512c41863} snapshot:/Rubbish Rush

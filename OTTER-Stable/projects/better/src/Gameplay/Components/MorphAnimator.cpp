@@ -28,7 +28,7 @@ MorphAnimator::MorphAnimator() :
 MorphAnimator::~MorphAnimator() = default;
 void MorphAnimator::Awake()
 {
-
+	_scene = GetGameObject()->GetScene();
 }
 
 void MorphAnimator::SetInitial()
@@ -75,18 +75,21 @@ void MorphAnimator::Update(float deltaTime)
 		}
 		else if (GetComponent<JumpBehaviour>()->in_air) //we're in the air but have already played the jump anim
 		{
+			_scene->walk = true;
 			//skip
 		}
 		else if (GetComponent<PlayerMovementBehavior>()->is_moving) //normal walking
 		{
 			SetFrames(walking);
 			SetFrameTime(0.2f);
+			_scene->walk = true;
 			//std::cout << "Walk now\n";
 		}
 		else //nothing pressed
 		{
 			SetFrames(idle);
 			SetFrameTime(0.2f);
+			_scene->walk = false;
 			//std::cout << "Idle now\n";
 		}
 	}
