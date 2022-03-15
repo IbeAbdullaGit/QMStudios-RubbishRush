@@ -266,6 +266,10 @@ void TutorialSceneLayer::OnUpdate()
 			if ((glfwGetKey(app.GetWindow(), GLFW_KEY_W) || glfwGetKey(app.GetWindow(), GLFW_KEY_A) || glfwGetKey(app.GetWindow(), GLFW_KEY_S) || glfwGetKey(app.GetWindow(), GLFW_KEY_D)) && hasMoved == false) {
 				hasMoved = true;
 			}
+			//Player Movement Tutorial
+			if ((glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE))&& hasJumped == false) {
+				hasJumped = true;
+			}
 
 			if (_tutcurrentScene->walk) {
 				test.PlayEvent("event:/Footsteps");
@@ -293,13 +297,13 @@ void TutorialSceneLayer::OnUpdate()
 			else {
 				walkUI->Get<GuiPanel>()->IsEnabled = false;
 			}
-			//if (Timing::Current().Timing::TimeSinceSceneLoad() > 7.5f && hasJumped == false) { //If the player has not moved for a set amount of seconds, show the tutorial UI for movement
-			//	jumpUI->Get<GuiPanel>()->IsEnabled = true;
+			if (Timing::Current().Timing::TimeSinceSceneLoad() > 7.5f && hasJumped == false) { //If the player has not moved for a set amount of seconds, show the tutorial UI for movement
+				jumpUI->Get<GuiPanel>()->IsEnabled = true;
 
-			//}
-			//else {
-			//	jumpUI->Get<GuiPanel>()->IsEnabled = false;
-			//}
+			}
+			else {
+				jumpUI->Get<GuiPanel>()->IsEnabled = false;
+			}
 
 
 
@@ -1218,7 +1222,9 @@ void TutorialSceneLayer::_CreateScene()
 			Gameplay::GameObject::Sptr jumpTutorial = scene->CreateGameObject("Jump Tutorial UI");
 			{
 				RectTransform::Sptr transform = jumpTutorial->Add<RectTransform>();
-				transform->SetMax({ 360, 202.5 });
+				transform->SetMax({ 894.37, 202.78 });
+				transform->SetMin({ 533.87, 0.34 });
+				transform->SetPosition(glm::vec2(720.0, 101.56));
 
 				GuiPanel::Sptr jumpPanel = jumpTutorial->Add<GuiPanel>();
 				jumpPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/Tut4tex.png"));
