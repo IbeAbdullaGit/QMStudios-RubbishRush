@@ -44,15 +44,10 @@ void InterfaceLayer::OnRender(const Framebuffer::Sptr& prevLayer) {
 	GuiBatcher::Flush();
 
 	// Disable alpha blending
-	//glDisable(GL_BLEND);
+	glDisable(GL_BLEND);
 	// Disable scissor testing
-	//glDisable(GL_SCISSOR_TEST);
+	glDisable(GL_SCISSOR_TEST);
 	// Re-enable depth writing
-	//glDepthMask(GL_TRUE);
-
-	glEnable(GL_DEPTH_TEST);
-
-	//// Re-enable depth writing
 	glDepthMask(GL_TRUE);
 }
 

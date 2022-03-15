@@ -13,15 +13,6 @@ Basic morph-based blending of vertex position and normals.
 #include "../fragments/vs_common.glsl"
 
 
-////Keyframe 0 vertex position.
-//layout(location = 0) in vec3 inPos_0;
-////Keyframe 1 vertex position.
-//layout(location = 1) in vec3 inPos_1;
-////Keyframe 0 vertex normal.
-//layout(location = 2) in vec3 inNorm_0;
-////Keyframe 1 vertex normal.
-//layout(location = 3) in vec3 inNorm_1;
-//
 
 layout(location = 6) in vec3 inPos_1;
 
@@ -36,20 +27,28 @@ void main()
     //(The final LERPed vert is, as always, transformed
     //by the model matrix.)
     vec3 new_pos = (mix(inPosition, inPos_1, t));
-    outViewPos = (u_Model * vec4(new_pos, 1.0)).xyz;
+    //OLD
+    outViewPos = (u_ModelView * vec4(new_pos, 1.0)).xyz;
+    // Pass vertex pos in world space to frag shader
+	//outViewPos = (u_ModelView * vec4(inPosition, 1.0)).xyz;
 
     //World-space normal - LERP the normals!
     //(And transform by the normal matrix.)
-    outNormal = mat3(u_NormalMatrix) * mix(inNormal, inNorm_1, t);
+    //OLD
+    //outNormal = mat3(u_NormalMatrix) * mix(inNormal, inNorm_1, t);
+    // Normals
+	outNormal = (u_View * vec4(mat3(u_NormalMatrix) * mix(inNormal,inNorm_1, t), 0)).xyz;
+
     
     //Output position - our viewprojection matrix
     //multiplied by world-space position.
-    gl_Position = u_ViewProjection * vec4(outViewPos, 1.0);
+    gl_Position = u_ModelViewProjection * vec4(inPosition, 1.0);
 
+    
     // We use a TBN matrix for tangent space normal mapping
-    vec3 T = normalize(vec3(mat3(u_NormalMatrix) * inTangent));
-    vec3 B = normalize(vec3(mat3(u_NormalMatrix) * inBiTangent));
-    vec3 N = normalize(vec3(mat3(u_NormalMatrix) * inNormal));
+    vec3 T = normalize((u_View * vec4(mat3(u_NormalMatrix) * inTangent, 0)).xyz);
+    vec3 B = normalize((u_View * vec4(mat3(u_NormalMatrix) * inBiTangent, 0)).xyz);
+    vec3 N = normalize((u_View * vec4(mat3(u_NormalMatrix) * inNormal, 0)).xyz);
     mat3 TBN = mat3(T, B, N);
 
     // We can pass the TBN matrix to the fragment shader to save computation

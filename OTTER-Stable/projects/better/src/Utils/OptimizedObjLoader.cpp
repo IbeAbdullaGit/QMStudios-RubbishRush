@@ -18,149 +18,31 @@ const std::string binaryExtension = ".bin";
 namespace fs = std::filesystem;
 
 VertexArrayObject::Sptr OptimizedObjLoader::LoadFromFile(const std::string& filename) {
-	if (!std::filesystem::exists(filename)) {
-		LOG_WARN("Failed to find OBJ file: \"{}\"", filename);
+	// Get the file extension and lowercase it
+	fs::path filePath = std::filesystem::path(filename);
+	std::string extension = filePath.extension().string();
+	StringTools::ToLower(extension);
+
+	// Load regular 'ol OBJ files
+	if (extension == ".obj") {
+		// Get the binary path
+		fs::path binPath = filePath.replace_extension(binaryExtension);
+		// If the file does not exist, convert the OBJ file to a binary file
+		if (!fs::exists(binPath)) {
+			ConvertToBinary(filename, binPath.string());
+		}
+		// Load the corresponding binary file
+		return _LoadFromBinFile(binPath.string());
+	}
+	// Load our fancy binary files
+	else if (extension == ".bin") {
+		return _LoadFromBinFile(filename);
+	}
+	// We've never met this extension in our life
+	else {
+		LOG_WARN("Cannot load model from \"{}\"", filename);
 		return nullptr;
 	}
-
-	// Open our file in binary mode
-	std::ifstream file;
-	file.open(filename, std::ios::binary);
-
-	// If our file fails to open, we will throw an error
-	if (!file) {
-		throw std::runtime_error("Failed to open file");
-	}
-
-	std::string line;
-	bool isduplicate = false;
-
-
-	// TODO: Load data from file
-	std::vector<glm::vec3> positions;
-	std::vector<glm::vec3> normals;
-	std::vector<glm::vec2> uvs;
-	std::vector<glm::ivec3> vertices;
-
-	glm::vec3 vecData;
-	glm::ivec3 vertexIndices;
-
-	float startTime = glfwGetTime();
-
-	// Read and process the entire file
-	while (file.peek() != EOF) {
-		// Read in the first part of the line (ex: f, v, vn, etc...)
-		std::string command;
-		file >> command;
-
-		// We will ignore the rest of the line for comment lines
-		if (command == "#") {
-			std::getline(file, line);
-		}
-
-		// The v command defines a vertex's position
-		else if (command == "v") {
-			// Read in and store a position
-			file >> vecData.x >> vecData.y >> vecData.z;
-			positions.push_back(vecData);
-		}
-		// TODO: handle normals and textures
-		else if (command == "vn") {
-			// Read in and store a position
-			file >> vecData.x >> vecData.y >> vecData.z;
-			normals.push_back(vecData);
-		}
-		else if (command == "vt") {
-			// Read in and store a position
-			file >> vecData.x >> vecData.y;
-			uvs.push_back(vecData);
-		}
-
-		// The f command defines a polygon in the mesh
-		// NOTE: make sure you triangulate in blender, otherwise it will
-		// output quads instead of triangles
-		else if (command == "f") {
-			// Read the rest of the line from the file
-			std::getline(file, line);
-			// Trim whitespace from either end of the line
-			StringTools::Trim(line);
-			// Create a string stream so we can use streaming operators on it
-			std::stringstream stream = std::stringstream(line);
-
-			// We'll support only triangles
-			for (int ix = 0; ix < 3; ix++) {
-				isduplicate = false;
-				// Read in the 3 attributes (position, UV, normal)
-				char separator;
-				stream >> vertexIndices.x >> separator >> vertexIndices.y >> separator >> vertexIndices.z;
-
-				// The OBJ format can have negative values, which are a reference from the last added attributes
-				if (vertexIndices.x < 0) { vertexIndices.x = positions.size() + 1 + vertexIndices.x; }
-				if (vertexIndices.y < 0) { vertexIndices.y = uvs.size() + 1 + vertexIndices.y; }
-				if (vertexIndices.z < 0) { vertexIndices.z = normals.size() + 1 + vertexIndices.z; }
-
-				// OBJ format uses 1-based indices
-				vertexIndices -= glm::ivec3(1);
-
-				// add the vertex indices to the list
-				// NOTE: This will create duplicate vertices!
-				// A smarter solution would create a map of what attribute
-				// combos have already been added
-				if (ix != 0) {
-					for (int c = 0; c < ix; c++) {
-						if (vertices[vertices.size() - 1 - c] == vertexIndices) {
-							isduplicate = true;
-
-						}
-					}
-					//counter += 1;
-					if (!isduplicate) {
-
-						//vertices[counter] = vertexIndices;
-						vertices.push_back(vertexIndices);
-					}
-				}
-				else {
-					vertices.push_back(vertexIndices);
-
-				}
-
-			}
-		}
-	}
-
-	// TODO: Generate mesh from the data we loaded
-	std::vector<VertexPosNormTexCol> vertexData;
-
-	for (int ix = 0; ix < vertices.size(); ix++) {
-		glm::ivec3 attribs = vertices[ix];
-
-		// Extract attributes from lists (except color)
-		glm::vec3 position = positions[attribs.x];
-		glm::vec2 uv = uvs[attribs.y];
-		glm::vec3 normal = normals[attribs.z];
-		glm::vec4 color = glm::vec4(1.0f);
-
-		// Add the vertex to the mesh
-		vertexData.push_back(VertexPosNormTexCol(position, normal, uv, color));
-	}
-
-	// Create a vertex buffer and load all our vertex data
-	VertexBuffer::Sptr vertexBuffer = VertexBuffer::Create();
-	vertexBuffer->LoadData(vertexData.data(), vertexData.size());
-
-	// Create the VAO, and add the vertices
-	VertexArrayObject::Sptr result = VertexArrayObject::Create();
-	result->AddVertexBuffer(vertexBuffer, VertexPosNormTexCol::V_DECL);
-
-	result->SetVDecl(VertexPosNormTexCol::V_DECL);
-
-	// Calculate and trace out how long it took us to load
-	float endTime = glfwGetTime();
-	LOG_TRACE("Loaded OBJ file \"{}\" in {} seconds ({} vertices, {} indices)", filename, endTime - startTime, vertexData.size(), 0);
-
-	return result;
-	//return VertexArrayObject::Create();
 }
 
 void OptimizedObjLoader::ConvertToBinary(const std::string& inFile, const std::string& outFile) {
@@ -171,7 +53,7 @@ void OptimizedObjLoader::ConvertToBinary(const std::string& inFile, const std::s
 
 	// If we didn't get an output path, just take the input and replace the extension
 	std::string outFileName = outFile;
-	if (outFileName.empty()) { 
+	if (outFileName.empty()) {
 		// Copy input path
 		auto path = std::filesystem::path(inFile);
 		// Change extension
@@ -247,7 +129,8 @@ MeshBuilder<VertexPosNormTexColTangents>* OptimizedObjLoader::_LoadFromObjFile(c
 			// Read in and store a position
 			file >> vecData.x >> vecData.y >> vecData.z;
 			normals.push_back(vecData);
-		} else if (command == "vt") {
+		}
+		else if (command == "vt") {
 			// Read in and store a position
 			file >> vecData.x >> vecData.y;
 			uvs.push_back(vecData);
@@ -275,8 +158,8 @@ MeshBuilder<VertexPosNormTexColTangents>* OptimizedObjLoader::_LoadFromObjFile(c
 					stream >> vertexIndices.x >> tempChar >> vertexIndices.y >> tempChar >> vertexIndices.z;
 					// The OBJ format can have negative values, which are a reference from the last added attributes
 					if (vertexIndices.x < 0) { vertexIndices.x = positions.size() + 1 + vertexIndices.x; }
-					if (vertexIndices.y < 0) { vertexIndices.y = uvs.size()       + 1 + vertexIndices.y; }
-					if (vertexIndices.z < 0) { vertexIndices.z = normals.size()   + 1 + vertexIndices.z; }
+					if (vertexIndices.y < 0) { vertexIndices.y = uvs.size() + 1 + vertexIndices.y; }
+					if (vertexIndices.z < 0) { vertexIndices.z = normals.size() + 1 + vertexIndices.z; }
 
 					// We can construct a key using a bitmask of the attribute indices
 					// This let's us quickly look up a combination of attributes to see if it's already been added
@@ -290,7 +173,8 @@ MeshBuilder<VertexPosNormTexColTangents>* OptimizedObjLoader::_LoadFromObjFile(c
 					// If it exists, we push the index to our indices
 					if (it != vertexMap.end()) {
 						edges[ix] = it->second;
-					} else {
+					}
+					else {
 						vertices.push_back(vertexIndices - glm::ivec3(1));
 						uint32_t index = static_cast<uint32_t>(vertices.size()) - 1;
 
@@ -328,9 +212,9 @@ MeshBuilder<VertexPosNormTexColTangents>* OptimizedObjLoader::_LoadFromObjFile(c
 		// Construct a new vertex using the indices for the vertex
 		VertexPosNormTexColTangents vertex;
 		vertex.Position = positions[vertexIndices.x];
-		vertex.UV       = vertexIndices.y != 0 ? uvs[vertexIndices.y] : glm::vec2(0.0f);
-		vertex.Normal   = vertexIndices.z != 0 ? normals[vertexIndices.z] : glm::vec3(0.0f, 0.0f, 1.0f);
-		vertex.Color    = color;
+		vertex.UV = vertexIndices.y != 0 ? uvs[vertexIndices.y] : glm::vec2(0.0f);
+		vertex.Normal = vertexIndices.z != 0 ? normals[vertexIndices.z] : glm::vec3(0.0f, 0.0f, 1.0f);
+		vertex.Color = color;
 
 		// Add to the mesh, get index of the added vertex
 		mesh->AddVertex(vertex);
@@ -369,7 +253,8 @@ VertexArrayObject::Sptr OptimizedObjLoader::_LoadFromBinFile(const std::string& 
 	BinaryHeader header = BinaryHeader();
 	if (size >= sizeof(BinaryHeader)) {
 		file.read(reinterpret_cast<char*>(&header), sizeof(BinaryHeader));
-	} else {
+	}
+	else {
 		LOG_ERROR("Not enough data in the file!");
 		return nullptr;
 	}
@@ -410,7 +295,7 @@ VertexArrayObject::Sptr OptimizedObjLoader::_LoadFromBinFile(const std::string& 
 			// Create memory to store indices, then read from the file
 			void* dataStore = malloc(header.NumIndices * GetIndexTypeSize(header.IndicesType));
 			file.read(reinterpret_cast<char*>(dataStore), header.NumIndices * GetIndexTypeSize(header.IndicesType));
-			
+
 			// Load data into OpenGL and free the CPU memory we allocated
 			indices->LoadData(dataStore, GetIndexTypeSize(header.IndicesType), header.NumIndices, header.IndicesType);
 			free(dataStore);
