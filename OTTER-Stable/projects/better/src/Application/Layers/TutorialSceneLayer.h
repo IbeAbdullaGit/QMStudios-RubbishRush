@@ -51,6 +51,8 @@ protected:
 	bool hasMoved = false;
 	bool hasCollected = false;
 	bool hasJumped = false;
+	bool hasSpill = false;
+
 	bool musicstart = false;
 	bool activated = false;
 	bool done = false;
@@ -58,6 +60,10 @@ protected:
 	bool hallwayLoaded = false;
 
 	bool doUpdate = true;
+
+	bool do_once = false;
+	bool do_once2 = false;
+
 	
 
 	int inventory = 2; //DEFAULT INVENTORY COUNT

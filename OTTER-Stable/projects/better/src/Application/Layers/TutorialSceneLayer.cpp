@@ -211,16 +211,31 @@ void TutorialSceneLayer::OnUpdate()
 				}
 				if (hallwayLoaded)
 				{
-					//Player Movement Tutorial
-					if ((glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE)) && hasJumped == false) {
-						hasJumped = true;
-					}
-					if (trashyM->GetPosition().x <=-3.0f && hasJumped == false) { //how far along player is
-						jumpUI->Get<GuiPanel>()->IsEnabled = true;
+					if (!do_once) //only run this once
+					{//Player Movement Tutorial
+						if (trashyM->GetPosition().x <= -9.0f &&(glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE)) && hasJumped == false) {
+							hasJumped = true;
+						}
+						if (trashyM->GetPosition().x <= -9.0f && hasJumped == false) { //how far along player is
+							jumpUI->Get<GuiPanel>()->IsEnabled = true;
 
+						}
+						else if (hasJumped){
+							jumpUI->Get<GuiPanel>()->IsEnabled = false;
+							do_once = true;
+						}
 					}
-					else {
-						jumpUI->Get<GuiPanel>()->IsEnabled = false;
+					if (!do_once2)
+					{
+						if (trashyM->GetPosition().x <= -3.0f && hasSpill == false) { //how far along player is
+							spillUI->Get<GuiPanel>()->IsEnabled = true;
+							hasSpill = true;
+
+						}
+						else if (trashyM->GetPosition().x <= -6.0f){
+							spillUI->Get<GuiPanel>()->IsEnabled = false;
+							do_once2 = true;
+						}
 					}
 				}
 
@@ -309,12 +324,8 @@ void TutorialSceneLayer::OnUpdate()
 			else {
 				walkUI->Get<GuiPanel>()->IsEnabled = false;
 			}
-			
 
-
-
-
-			if (trashyM->GetPosition().y < -5.0f   &&  _tutcurrentScene->held <= 1 && hasCollected == false) { //Pick up Trash tutorial stuff
+			if (trashyM->GetPosition().y < -5.0f   &&  (_tutcurrentScene->held < 1) && hasCollected == false) { //Pick up Trash tutorial stuff
 				
 				if(!hallwayLoaded){
 					pickupUI->Get<GuiPanel>()->IsEnabled = true;
@@ -323,7 +334,7 @@ void TutorialSceneLayer::OnUpdate()
 			}
 			else {
 				pickupUI->Get<GuiPanel>()->IsEnabled = false;
-				if (_tutcurrentScene->held > 1) {
+				if (_tutcurrentScene->held >= 1) {
 					hasCollected = true;
 				}
 			}
