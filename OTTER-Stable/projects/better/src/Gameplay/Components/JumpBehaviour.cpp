@@ -42,7 +42,6 @@ void JumpBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physi
 		if (body->GetGameObject()->Has<GroundBehaviour>())
 		{
 			activated = false;
-			_impulse = 3.0f;
 			in_air = true;
 		}
 	}

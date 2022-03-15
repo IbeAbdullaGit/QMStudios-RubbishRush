@@ -26,9 +26,15 @@ public:
 
 protected:
 	void _CreateScene();
+	void _CreateHallway();
 	Gameplay::Scene::Sptr _tutcurrentScene;
 	Gameplay::MeshResource::Sptr trashMesh;
+	Gameplay::MeshResource::Sptr benchMesh;
+	Gameplay::MeshResource::Sptr spillMesh;
 	Gameplay::Material::Sptr trashMaterial;
+	Gameplay::Material::Sptr hallwayMat;
+	Gameplay::Material::Sptr benchMaterial;
+	Gameplay::Material::Sptr spillMaterial;
 
 	Gameplay::GameObject::Sptr trashyM;
 
