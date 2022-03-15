@@ -153,6 +153,7 @@ void TutorialSceneLayer::OnUpdate()
 			jumpUI = _tutcurrentScene->FindObjectByName("Jump Tutorial UI");
 			pickupUI = _tutcurrentScene->FindObjectByName("Pickup Trash Tutorial UI");
 			dumpUI = _tutcurrentScene->FindObjectByName("Dump Tutorial UI");
+			spillUI = _tutcurrentScene->FindObjectByName("Spill Tutorial UI");
 			
 
 			trashyM = _tutcurrentScene->FindObjectByName("Trashy");
@@ -207,6 +208,20 @@ void TutorialSceneLayer::OnUpdate()
 					dumpUI->Get<GuiPanel>()->IsEnabled = false;
 					
 					_CreateHallway(); //Create the second part of the level
+				}
+				if (hallwayLoaded)
+				{
+					//Player Movement Tutorial
+					if ((glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE)) && hasJumped == false) {
+						hasJumped = true;
+					}
+					if (trashyM->GetPosition().x <=-3.0f && hasJumped == false) { //how far along player is
+						jumpUI->Get<GuiPanel>()->IsEnabled = true;
+
+					}
+					else {
+						jumpUI->Get<GuiPanel>()->IsEnabled = false;
+					}
 				}
 
 				if (_tutcurrentScene->score == max_trash) 
@@ -266,10 +281,7 @@ void TutorialSceneLayer::OnUpdate()
 			if ((glfwGetKey(app.GetWindow(), GLFW_KEY_W) || glfwGetKey(app.GetWindow(), GLFW_KEY_A) || glfwGetKey(app.GetWindow(), GLFW_KEY_S) || glfwGetKey(app.GetWindow(), GLFW_KEY_D)) && hasMoved == false) {
 				hasMoved = true;
 			}
-			//Player Movement Tutorial
-			if ((glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE))&& hasJumped == false) {
-				hasJumped = true;
-			}
+			
 
 			if (_tutcurrentScene->walk) {
 				test.PlayEvent("event:/Footsteps");
@@ -297,13 +309,7 @@ void TutorialSceneLayer::OnUpdate()
 			else {
 				walkUI->Get<GuiPanel>()->IsEnabled = false;
 			}
-			if (Timing::Current().Timing::TimeSinceSceneLoad() > 7.5f && hasJumped == false) { //If the player has not moved for a set amount of seconds, show the tutorial UI for movement
-				jumpUI->Get<GuiPanel>()->IsEnabled = true;
-
-			}
-			else {
-				jumpUI->Get<GuiPanel>()->IsEnabled = false;
-			}
+			
 
 
 
@@ -1113,9 +1119,49 @@ void TutorialSceneLayer::_CreateScene()
 			morph2->SetFrameTime(0.2f);
 			morph2->SetFrames(closed);
 
-		}	
+		}
+		//bin model
+		Gameplay::MeshResource::Sptr bin2Mesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("recycle bin.obj");
+		Texture2D::Sptr bin2Tex = ResourceManager::CreateAsset<Texture2D>("textures/recycle.jpg");
+		// Create our material
+		Gameplay::Material::Sptr bin2Material = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			bin2Material->Name = "Bin";
+			bin2Material->Set("u_Material.AlbedoMap", bin2Tex);
+			bin2Material->Set("u_Material.Shininess", 0.5f);
+			bin2Material->Set("u_Material.NormalMap", normalMapDefault);
+
+		}
+		Gameplay::GameObject::Sptr binM2 = scene->CreateGameObject("Bin Recycle");
+		{
+			binM2->SetPostion(glm::vec3(8.57f, -11.510f, 0.106f));
+			binM2->SetRotation(glm::vec3(90.0f, 0.0f, 180.0f));
+			binM2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+			// Add a render component
+			RenderComponent::Sptr renderer = binM2->Add<RenderComponent>();
+			renderer->SetMesh(bin2Mesh);
+			renderer->SetMaterial(bin2Material);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = binM2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create(glm::vec3(2.0f, 2.23f, 4.25f));
+			box->SetPosition(glm::vec3(0.0f, 0.37f, 0.1f));
+			box->SetScale(glm::vec3(0.2f, 0.19f, -0.08f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//heavy
+			//physics->SetMass(10.0f);
+
+			Gameplay::Physics::TriggerVolume::Sptr volume = binM2->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create(glm::vec3(2.0f, 2.23f, 4.25f));
+			box2->SetPosition(glm::vec3(0.0f, 0.37f, 0.1f));
+			box2->SetScale(glm::vec3(0.2f, 0.19f, -0.08f));
+		
+			volume->AddCollider(box2);
+			SubmittingTrashBehaviour::Sptr behaviour2 = binM2->Add<SubmittingTrashBehaviour>();
+			behaviour2->type = "Recycle";
 
 
+		}
 		//Bench
 		benchMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("bench.obj");
 		Texture2D::Sptr benchTex = ResourceManager::CreateAsset<Texture2D>("textures/bench.jpg");
@@ -1127,18 +1173,6 @@ void TutorialSceneLayer::_CreateScene()
 			benchMaterial->Set("u_Material.Shininess", 0.0f);
 			benchMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
-
-		Gameplay::GameObject::Sptr bench = scene->CreateGameObject("LobbyBench1");
-		{
-			bench->SetPostion(glm::vec3(-0.02f, -2.23f, 0.0f));
-			bench->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-			bench->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
-
-			RenderComponent::Sptr renderer = bench->Add<RenderComponent>();
-			renderer->SetMesh(benchMesh);
-			renderer->SetMaterial(benchMaterial);
-		}
-
 
 		//----------------------UI STUFF---------------------------------------------
 

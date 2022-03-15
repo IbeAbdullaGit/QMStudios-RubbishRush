@@ -44,6 +44,7 @@ protected:
 	Gameplay::GameObject::Sptr jumpUI;
 	Gameplay::GameObject::Sptr walkUI;
 	Gameplay::GameObject::Sptr pickupUI;
+	Gameplay::GameObject::Sptr spillUI;
 	
 	ToneFire::FMODStudio studio;
 	ToneFire::StudioSound test;

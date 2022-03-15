@@ -34,7 +34,10 @@ void SubmittingTrashBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Game
 		//	std::cout << "No trash to submit!\n";
 		//}
 		activated = true;
-		GetGameObject()->Get<MorphAnimator>()->SetFrames(open);
+		if (GetGameObject()->Has<MorphAnimator>())
+		{
+			GetGameObject()->Get<MorphAnimator>()->SetFrames(open);
+		}
 		ui->Get<GuiText>()->IsEnabled = true;
 
 	}
@@ -45,7 +48,10 @@ void SubmittingTrashBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Game
 
 	LOG_INFO("Left trigger: {}", body->GetGameObject()->Name);
 	activated = false;
-	GetGameObject()->Get<MorphAnimator>()->SetFrames(closed);
+	if (GetGameObject()->Has<MorphAnimator>())
+	{
+		GetGameObject()->Get<MorphAnimator>()->SetFrames(closed);
+	}
 	ui->Get<GuiText>()->IsEnabled = false;
 }
 void SubmittingTrashBehaviour::Update(float deltatime)
@@ -53,10 +59,10 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 	Application& app = Application::Get();
 	if (activated)
 	{
-		
-		if (glfwGetKey(app.GetWindow(), GLFW_KEY_E) && GLFW_PRESS)
+		press_once = false;
+		if (glfwGetKey(app.GetWindow(), GLFW_KEY_E) && !press_once)
 		{
-			
+			press_once = true;
 			//get our scene, delete this line later
 			//_scene = GetGameObject()->GetScene();
 			//do we have any trash
@@ -70,6 +76,10 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 				else if (type == "Recycle" && _scene->held_recycle >= 1)
 				{
 					_scene->held_recycle -= 1;
+				}
+				else //no match
+				{
+					return;
 				}
 				_scene->held -= 1;
 				//update UI
@@ -94,8 +104,6 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 			_scene->playmulti = true;
 		}
 
-		
-		
 	}
 	
 }

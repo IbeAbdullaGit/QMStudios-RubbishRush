@@ -50,4 +50,6 @@ protected:
 	Gameplay::GameObject::Sptr ui;
 	
 	bool activated = false;
+
+	bool press_once = false;
 };
