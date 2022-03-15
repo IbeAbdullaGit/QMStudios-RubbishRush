@@ -58,6 +58,7 @@ protected:
 	bool done = false;
 	bool nobreak = false;
 	bool hallwayLoaded = false;
+	bool spillCrossed = false;
 
 	bool doUpdate = true;
 
