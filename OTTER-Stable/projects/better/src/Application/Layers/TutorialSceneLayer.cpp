@@ -180,7 +180,6 @@ void TutorialSceneLayer::OnUpdate()
 			if (_tutcurrentScene->IsPlaying && !done &&!musicstart) {
 				
 				test.PlayEvent("event:/Music");	
-				
 				musicstart = true;
 			}
 
@@ -202,11 +201,18 @@ void TutorialSceneLayer::OnUpdate()
 
 			if (_tutcurrentScene->IsPlaying && !done)
 			{
+				if (_tutcurrentScene->score == 2 && hallwayLoaded == false) {
+					hallwayLoaded = true;
+					_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Top Right Barrier"));
+					dumpUI->Get<GuiPanel>()->IsEnabled = false;
+					
+					_CreateHallway(); //Create the second part of the level
+				}
+
 				if (_tutcurrentScene->score == max_trash) 
 				{
 					done = true; //LOAD NEXT SCENE
 					
-					dumpUI->Get<GuiPanel>()->IsEnabled = false;
 					//dumpUI->Get<RenderComponent>()->IsEnabled = false;
 					//pickupUI->Get<GuiPanel>()->IsEnabled = false;
 					test.StopEvent("event:/Music");
@@ -298,9 +304,12 @@ void TutorialSceneLayer::OnUpdate()
 
 
 
-			if (trashyM->GetPosition().y < -5.0f   &&   _tutcurrentScene->held <= 1   &&   hasCollected == false) { //Pick up Trash tutorial stuff
+			if (trashyM->GetPosition().y < -5.0f   &&  _tutcurrentScene->held <= 1 && hasCollected == false) { //Pick up Trash tutorial stuff
 				
-				pickupUI->Get<GuiPanel>()->IsEnabled = true;
+				if(!hallwayLoaded){
+					pickupUI->Get<GuiPanel>()->IsEnabled = true;
+				}
+				
 			}
 			else {
 				pickupUI->Get<GuiPanel>()->IsEnabled = false;
@@ -311,7 +320,9 @@ void TutorialSceneLayer::OnUpdate()
 
 
 			if (hasCollected == true) {//If the player has picked up the trash, then display the UI to teach them how to dump the trash
-				dumpUI->Get<GuiPanel>()->IsEnabled = true;
+				if (!hallwayLoaded) {
+					dumpUI->Get<GuiPanel>()->IsEnabled = true;
+				}
 			}
 
 		}
@@ -723,10 +734,10 @@ void TutorialSceneLayer::_CreateScene()
 
 		}
 
-		Gameplay::MeshResource::Sptr bagtrashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Trashbag.obj");
+		bagtrashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Trashbag.obj");
 		Texture2D::Sptr bagtrashTex = ResourceManager::CreateAsset<Texture2D>("textures/TrashBagTex.jpg");
 		
-		Gameplay::Material::Sptr bagtrashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		bagtrashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			bagtrashMaterial->Name = "Bag Trash";
 			bagtrashMaterial->Set("u_Material.AlbedoMap", bagtrashTex);
@@ -868,6 +879,19 @@ void TutorialSceneLayer::_CreateScene()
 			renderer->SetMesh(layoutMesh);
 			renderer->SetMaterial(layoutMaterial);
 		}
+
+		spillMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("spill.obj");
+		Texture2D::Sptr spillTex = ResourceManager::CreateAsset<Texture2D>("textures/goo.png");
+		// Create our material
+		spillMaterial = ResourceManager::CreateAsset<Gameplay::Material>(rackShader);
+		{
+			spillMaterial->Name = "Spill";
+			spillMaterial->Set("u_Material.AlbedoMap", spillTex);
+			spillMaterial->Set("u_Material.Shininess", 1.0f);
+			spillMaterial->Set("u_Material.NormalMap", normalMapDefault);
+
+		}
+
 		// Tutorial walls walls
 		{
 			//Walls
@@ -950,12 +974,12 @@ void TutorialSceneLayer::_CreateScene()
 
 			Gameplay::GameObject::Sptr layoutwall7 = scene->CreateGameObject("Layout Wall Top Right");
 			{
-				layoutwall7->SetPostion(glm::vec3(1.71f, -11.12f, 1.0f));
+				layoutwall7->SetPostion(glm::vec3(-3.69, -15.28, 1.0f));
 				layoutwall7->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
 				Gameplay::Physics::RigidBody::Sptr wall7Phys = layoutwall7->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall7 = Gameplay::Physics::BoxCollider::Create();
 				wall7->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall7->SetScale(glm::vec3(0.310, 3.50f, 2.02f));
+				wall7->SetScale(glm::vec3(5.500f, 4.00f, 2.02f));
 				wall7->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall7Phys->AddCollider(wall7);
 			}
@@ -969,6 +993,54 @@ void TutorialSceneLayer::_CreateScene()
 				wall8->SetScale(glm::vec3(0.310, 3.50f, 2.02f));
 				wall8->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall8Phys->AddCollider(wall8);
+			}
+
+			Gameplay::GameObject::Sptr layoutwall9 = scene->CreateGameObject("Layout Wall Top Right 2");
+			{
+				layoutwall9->SetPostion(glm::vec3(-5.39, -7.f, 1.0f));
+				layoutwall9->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				Gameplay::Physics::RigidBody::Sptr wall9Phys = layoutwall9->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wall9 = Gameplay::Physics::BoxCollider::Create();
+				wall9->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wall9->SetScale(glm::vec3(7.200f, 1.50f, 2.02f));
+				wall9->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				wall9Phys->AddCollider(wall9);
+			}
+
+			Gameplay::GameObject::Sptr layoutwallbarrier = scene->CreateGameObject("Layout Wall Top Right Barrier");
+			{
+				layoutwallbarrier->SetPostion(glm::vec3(2.13f, -9.88f, 1.0f));
+				layoutwallbarrier->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				Gameplay::Physics::RigidBody::Sptr wallBPhys = layoutwallbarrier->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wallB = Gameplay::Physics::BoxCollider::Create();
+				wallB->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wallB->SetScale(glm::vec3(0.310, 1.50f, 2.02f));
+				wallB->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				wallBPhys->AddCollider(wallB);
+			}
+
+			Gameplay::GameObject::Sptr layoutwall10 = scene->CreateGameObject("Layout Wall Hall Right");
+			{
+				layoutwall10->SetPostion(glm::vec3(-12.99f, -13.f, 1.0f));
+				layoutwall10->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				Gameplay::Physics::RigidBody::Sptr wall10Phys = layoutwall10->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wall10 = Gameplay::Physics::BoxCollider::Create();
+				wall10->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wall10->SetScale(glm::vec3(0.310, 6.00f, 2.02f));
+				wall10->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				wall10Phys->AddCollider(wall10);
+			}
+
+			Gameplay::GameObject::Sptr layoutwall11 = scene->CreateGameObject("Layout Wall Hall Top");
+			{
+				layoutwall11->SetPostion(glm::vec3(-5.39, -19.490, 1.0f));
+				layoutwall11->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
+				Gameplay::Physics::RigidBody::Sptr wall11Phys = layoutwall11->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr wall11 = Gameplay::Physics::BoxCollider::Create();
+				wall11->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+				wall11->SetScale(glm::vec3(7.200f, 1.50f, 2.02f));
+				wall11->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				wall11Phys->AddCollider(wall11);
 			}
 
 		}
@@ -1029,6 +1101,29 @@ void TutorialSceneLayer::_CreateScene()
 
 		}	
 
+
+		//Bench
+		benchMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("bench.obj");
+		Texture2D::Sptr benchTex = ResourceManager::CreateAsset<Texture2D>("textures/bench.jpg");
+
+		benchMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			benchMaterial->Name = "Bench";
+			benchMaterial->Set("u_Material.AlbedoMap", benchTex);
+			benchMaterial->Set("u_Material.Shininess", 0.0f);
+			benchMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::GameObject::Sptr bench = scene->CreateGameObject("LobbyBench1");
+		{
+			bench->SetPostion(glm::vec3(-0.02f, -2.23f, 0.0f));
+			bench->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			bench->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
+
+			RenderComponent::Sptr renderer = bench->Add<RenderComponent>();
+			renderer->SetMesh(benchMesh);
+			renderer->SetMaterial(benchMaterial);
+		}
 
 
 		//----------------------UI STUFF---------------------------------------------
@@ -1146,10 +1241,23 @@ void TutorialSceneLayer::_CreateScene()
 
 			}
 
+			Gameplay::GameObject::Sptr spillTutorial = scene->CreateGameObject("Spill Tutorial UI");
+			{
+				RectTransform::Sptr transform = spillTutorial->Add<RectTransform>();
+				transform->SetMax({ 360, 202.5 });
+
+				GuiPanel::Sptr spillPanel = spillTutorial->Add<GuiPanel>();
+				spillPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/Tut5tex.png"));
+				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				spillPanel->IsEnabled = false;
+
+			}
+
 			tutorialUICanvas->AddChild(walkTutorial);
 			tutorialUICanvas->AddChild(jumpTutorial);
 			tutorialUICanvas->AddChild(pickupTutorial);
 			tutorialUICanvas->AddChild(dumpTutorial);
+			tutorialUICanvas->AddChild(spillTutorial);
 		}
 		////PARTICLES
 		//Gameplay::GameObject::Sptr particles = scene->CreateGameObject("Particles");
@@ -1182,5 +1290,163 @@ void TutorialSceneLayer::_CreateScene()
 		scene->trash = 0;
 		scene->score = 0;
 		scene->held = 0;
+
 	}
+}
+
+void TutorialSceneLayer::_CreateHallway() {
+	
+	hallwayMat = _tutcurrentScene->FindObjectByName("Layout")->Get<RenderComponent>()->GetMaterial();
+	Gameplay::MeshResource::Sptr halllayoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("extrahallway.obj");
+
+
+	//Bench
+
+	Gameplay::GameObject::Sptr layouthall = _tutcurrentScene->CreateGameObject("Layout2");
+	{
+			layouthall->SetPostion(glm::vec3(-2.020, -10.32f, 0.0f));
+			layouthall->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+			layouthall->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+
+			RenderComponent::Sptr renderer = layouthall->Add<RenderComponent>();
+			renderer->SetMesh(halllayoutMesh);
+			renderer->SetMaterial(hallwayMat);
+	}
+
+	Gameplay::GameObject::Sptr bench = _tutcurrentScene->CreateGameObject("Bench1");
+	{
+		bench->SetPostion(glm::vec3(-0.32f, -10.82f, 0.0f));
+		bench->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+		bench->SetScale(glm::vec3(2.0f, 1.0f, 1.5f));
+
+		RenderComponent::Sptr renderer = bench->Add<RenderComponent>();
+		renderer->SetMesh(benchMesh);
+		renderer->SetMaterial(benchMaterial);
+
+		Gameplay::Physics::RigidBody::Sptr physics = bench->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+		Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+		boxCollider->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
+		physics->AddCollider(boxCollider);
+	}
+
+	Gameplay::GameObject::Sptr bench2 = _tutcurrentScene->CreateGameObject("Bench2");
+	{
+		bench2->SetPostion(glm::vec3(-2.86f, -9.f, 0.26f));
+		bench2->SetRotation(glm::vec3(180.f, 0.0f, 15.0f));
+		bench2->SetScale(glm::vec3(2.0f, 1.0f, 1.5f));
+
+		RenderComponent::Sptr renderer = bench2->Add<RenderComponent>();
+		renderer->SetMesh(benchMesh);
+		renderer->SetMaterial(benchMaterial);
+
+		Gameplay::Physics::RigidBody::Sptr physics = bench2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+		Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+		boxCollider->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
+		physics->AddCollider(boxCollider);
+	}
+
+	Gameplay::GameObject::Sptr bench3 = _tutcurrentScene->CreateGameObject("Bench3");
+	{
+		bench3->SetPostion(glm::vec3(-5.820f, -11.030f, 0.260f));
+		bench3->SetRotation(glm::vec3(0.f, 0.0f, -16.f));
+		bench3->SetScale(glm::vec3(2.0f, 1.0f, 1.5f));
+
+		RenderComponent::Sptr renderer = bench3->Add<RenderComponent>();
+		renderer->SetMesh(benchMesh);
+		renderer->SetMaterial(benchMaterial);
+
+		Gameplay::Physics::RigidBody::Sptr physics = bench3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+		Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+		boxCollider->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
+		physics->AddCollider(boxCollider);
+	}
+
+	Gameplay::GameObject::Sptr spillM = _tutcurrentScene->CreateGameObject("Spill");
+	{
+		spillM->SetPostion(glm::vec3(-6.f, -9.5f, 0.03f));
+		spillM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+		spillM->SetScale(glm::vec3(1.25f, 0.7f, 1.f));
+		// Add a render component
+		RenderComponent::Sptr renderer = spillM->Add<RenderComponent>();
+		renderer->SetMesh(spillMesh);
+		renderer->SetMaterial(spillMaterial);
+		// Add a dynamic rigid body to this monkey
+		Gameplay::Physics::RigidBody::Sptr physics = spillM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+		Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+		//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+		//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+		//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+		box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+		//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+		physics->AddCollider(box);
+		//physics->SetMass(0.0f);
+		Gameplay::Physics::TriggerVolume::Sptr volume = spillM->Add<Gameplay::Physics::TriggerVolume>();
+		Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+		//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+		box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+		volume->AddCollider(box2);
+		SpillBehaviour::Sptr behaviour = spillM->Add<SpillBehaviour>();
+		//give to our floor tiles to tag them
+		//GroundBehaviour::Sptr behaviour2 = spillM->Add<GroundBehaviour>();
+
+	}
+
+	/*Gameplay::GameObject::Sptr bench4 = _tutcurrentScene->CreateGameObject("Bench4");
+	{
+		bench4->SetPostion(glm::vec3(-9.41f, -8.690f, 0.260f));
+		bench4->SetRotation(glm::vec3(90.f, 0.0f, -177.f));
+		bench4->SetScale(glm::vec3(1.5f, 1.0f, 1.5f));
+
+		RenderComponent::Sptr renderer = bench4->Add<RenderComponent>();
+		renderer->SetMesh(benchMesh);
+		renderer->SetMaterial(benchMaterial);
+
+		Gameplay::Physics::RigidBody::Sptr physics = bench4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+		Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+		boxCollider->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
+		physics->AddCollider(boxCollider);
+	}*/
+
+	Gameplay::GameObject::Sptr bench5 = _tutcurrentScene->CreateGameObject("Bench5");
+	{
+		bench5->SetPostion(glm::vec3(-10.85f, -11.37f, 0.f));
+		bench5->SetRotation(glm::vec3(90.f, 0.0f, 0.f));
+		bench5->SetScale(glm::vec3(2.8f, 1.f, 1.5f));
+
+		RenderComponent::Sptr renderer = bench5->Add<RenderComponent>();
+		renderer->SetMesh(benchMesh);
+		renderer->SetMaterial(benchMaterial);
+
+		Gameplay::Physics::RigidBody::Sptr physics = bench5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+		Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+		boxCollider->SetScale(glm::vec3(1.75f, 0.35f, 0.35f));
+		physics->AddCollider(boxCollider);
+	}
+
+	Gameplay::GameObject::Sptr trash3 = _tutcurrentScene->CreateGameObject("Trash3");
+	{
+		trash3->SetPostion(glm::vec3(-10.85f, -15.0f, 0.0f));
+		trash3->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+		trash3->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
+
+		RenderComponent::Sptr renderer = trash3->Add<RenderComponent>();
+		renderer->SetMesh(bagtrashMesh);
+		renderer->SetMaterial(bagtrashMaterial);
+
+		Gameplay::Physics::RigidBody::Sptr physics = trash3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+		Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+		box->SetPosition(glm::vec3(0.00f, 0.16f, -0.08f));
+		box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
+		physics->AddCollider(box);
+
+		Gameplay::Physics::TriggerVolume::Sptr volume = trash3->Add<Gameplay::Physics::TriggerVolume>();
+		Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+		box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
+		box2->SetRotation(glm::vec3(0.0f, -3.0f, 0.0f));
+		box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
+		volume->AddCollider(box2);
+
+		CollectTrashBehaviour::Sptr behaviour3 = trash3->Add<CollectTrashBehaviour>();
+	}
+
 }
