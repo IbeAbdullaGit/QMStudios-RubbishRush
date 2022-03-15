@@ -154,6 +154,12 @@ void TutorialSceneLayer::OnUpdate()
 			pickupUI = _tutcurrentScene->FindObjectByName("Pickup Trash Tutorial UI");
 			dumpUI = _tutcurrentScene->FindObjectByName("Dump Tutorial UI");
 			spillUI = _tutcurrentScene->FindObjectByName("Spill Tutorial UI");
+
+			dialogue1 = _tutcurrentScene->FindObjectByName("Dialogue 1");
+			dialogue2 = _tutcurrentScene->FindObjectByName("Dialogue 2");
+			dialogue3 = _tutcurrentScene->FindObjectByName("Dialogue 3");
+			dialogue4 = _tutcurrentScene->FindObjectByName("Dialogue 4");
+			dialogue5 = _tutcurrentScene->FindObjectByName("Dialogue 5");
 			
 
 			trashyM = _tutcurrentScene->FindObjectByName("Trashy");
@@ -168,15 +174,6 @@ void TutorialSceneLayer::OnUpdate()
 
 
 		if (_tutcurrentScene != nullptr) {
-			//PARTICLE UPDATE WHEN TRASHY IS MOVING
-			/*if (_tutcurrentScene->IsPlaying && trashyM->Get<PlayerMovementBehavior>()->is_moving) 
-			{
-				_tutcurrentScene->Components().Each<ParticleSystem>([](const ParticleSystem::Sptr& system) {
-				if (system->IsEnabled) {
-					system->Update();
-				}
-				});
-			}*/
 			//MENU ANIMATED UPDATED
 			if (_tutcurrentScene->IsPlaying && !done &&!musicstart) {
 				
@@ -206,13 +203,29 @@ void TutorialSceneLayer::OnUpdate()
 					hallwayLoaded = true;
 					_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Top Right Barrier"));
 					dumpUI->Get<GuiPanel>()->IsEnabled = false;
+					dialogue3->Get<GuiPanel>()->IsEnabled = true;
+					play3 = true;
 					
 					_CreateHallway(); //Create the second part of the level
 				}
 				if (hallwayLoaded)
 				{
+					//dialogue
+					if (trashyM->GetPosition().x <= 4.19f && play3 && !play4)
+					{
+						dialogue3->Get<GuiPanel>()->IsEnabled = false;
+						dialogue5->Get<GuiPanel>()->IsEnabled = true;
+						play4 = true;
+					}
+					if (play4 && trashyM->GetPosition().x >= -0.5f)
+					{
+						play4 = false;
+						dialogue5->Get<GuiPanel>()->IsEnabled = false;
+						dialogue4->Get<GuiPanel>()->IsEnabled = true;
+					}
+
 					if (!do_once) //only run this once
-					{//Player Movement Tutorial
+					{//Player Movement JUMP Tutorial
 						if (trashyM->GetPosition().x <= -9.0f &&(glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE)) && hasJumped == false) {
 							hasJumped = true;
 						}
@@ -225,7 +238,7 @@ void TutorialSceneLayer::OnUpdate()
 							do_once = true;
 						}
 					}
-					if (!do_once2)
+					if (!do_once2) //slime tut
 					{
 						if (trashyM->GetPosition().x <= -3.0f && hasSpill == false) { //how far along player is
 							spillUI->Get<GuiPanel>()->IsEnabled = true;
@@ -242,7 +255,9 @@ void TutorialSceneLayer::OnUpdate()
 				if (_tutcurrentScene->score == max_trash) 
 				{
 					done = true; //LOAD NEXT SCENE
-					
+					//disable diagloue?
+					dialogue5->Get<GuiPanel>()->IsEnabled = false;
+
 					//dumpUI->Get<RenderComponent>()->IsEnabled = false;
 					//pickupUI->Get<GuiPanel>()->IsEnabled = false;
 					test.StopEvent("event:/Music");
@@ -260,35 +275,7 @@ void TutorialSceneLayer::OnUpdate()
 			}
 			else if (_tutcurrentScene->IsPlaying && done) {
 
-				//Gameplay::GameObject::Sptr trashM = _tutcurrentScene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
-				//{
-				//	trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.0f));
-				//	trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
-				//	trashM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-				//	// Add a render component
-				//	RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
-				//	renderer->SetMesh(trashMesh);
-				//	renderer->SetMaterial(trashMaterial);
-				//	// Add a dynamic rigid body to this monkey
-				//	Gameplay::Physics::RigidBody::Sptr physics = trashM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-				//	Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				//	box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				//	box->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
-				//	//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
-				//	//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
-				//	//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
-				//	physics->AddCollider(box);
-				//	//physics->SetMass(0.0f);
-				//	Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
-				//	Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//	box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				//	box2->SetScale(glm::vec3(0.06f, 0.09f, 0.12f));
-				//	volume->AddCollider(box2);
-				//	CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
-
-
-
-				//}
+				
 			}
 
 
@@ -307,16 +294,6 @@ void TutorialSceneLayer::OnUpdate()
 				test.StopEvent("event:/Footsteps");
 			}
 
-			/*if ((glfwGetKey(app.GetWindow(), GLFW_KEY_W) || glfwGetKey(app.GetWindow(), GLFW_KEY_A) || glfwGetKey(app.GetWindow(), GLFW_KEY_S) || glfwGetKey(app.GetWindow(), GLFW_KEY_D) && glfwGetKey(app.GetWindow(),GLFW_PRESS))) {
-				test.PlayEvent("event:/Footsteps");
-				test.SetEventParameter("event:/Footsteps", "parameter:/Pitch", 1.0f);
-			}*/
-			
-			////Player Movement Tutorial
-			//if ((glfwGetKey(app.GetWindow(), GLFW_KEY_SPACE))&& hasJumped == false) {
-			//	hasJumped = true;
-			//}
-
 			if (Timing::Current().Timing::TimeSinceSceneLoad() > 7.5f && hasMoved == false) { //If the player has not moved for a set amount of seconds, show the tutorial UI for movement
 				walkUI->Get<GuiPanel>()->IsEnabled = true;
 				
@@ -324,21 +301,36 @@ void TutorialSceneLayer::OnUpdate()
 			else {
 				walkUI->Get<GuiPanel>()->IsEnabled = false;
 			}
+			//dialogue 1
+			if (trashyM->GetPosition().y >= -2.5f)
+			{
+				dialogue1->Get<GuiPanel>()->IsEnabled = true;
+			}
+			else if (trashyM->GetPosition().y <= -4.0f)
+			{
+				dialogue1->Get<GuiPanel>()->IsEnabled = false;
+			}
 
 			if (trashyM->GetPosition().y < -5.0f   &&  (_tutcurrentScene->held < 1) && hasCollected == false) { //Pick up Trash tutorial stuff
 				
 				if(!hallwayLoaded){
 					pickupUI->Get<GuiPanel>()->IsEnabled = true;
+					dialogue2->Get<GuiPanel>()->IsEnabled = true;
 				}
 				
 			}
+			else if (_tutcurrentScene->score >= 2)
+			{
+				dialogue2->Get<GuiPanel>()->IsEnabled = false;
+			}
 			else {
 				pickupUI->Get<GuiPanel>()->IsEnabled = false;
+				
 				if (_tutcurrentScene->held >= 1) {
 					hasCollected = true;
 				}
 			}
-
+			
 
 			if (hasCollected == true) {//If the player has picked up the trash, then display the UI to teach them how to dump the trash
 				if (!hallwayLoaded) {
@@ -1165,7 +1157,7 @@ void TutorialSceneLayer::_CreateScene()
 			Gameplay::Physics::TriggerVolume::Sptr volume = binM2->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create(glm::vec3(2.0f, 2.23f, 4.25f));
 			box2->SetPosition(glm::vec3(0.0f, 0.37f, 0.1f));
-			box2->SetScale(glm::vec3(0.2f, 0.19f, -0.08f));
+			box2->SetScale(glm::vec3(0.29f, 0.19f, -0.12f));
 		
 			volume->AddCollider(box2);
 			SubmittingTrashBehaviour::Sptr behaviour2 = binM2->Add<SubmittingTrashBehaviour>();
@@ -1252,6 +1244,61 @@ void TutorialSceneLayer::_CreateScene()
 			GuiPanel::Sptr tutorialPanel = tutorialUICanvas->Add<GuiPanel>();
 			tutorialPanel->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 0.f));
 
+			Gameplay::GameObject::Sptr dialogue1 = scene->CreateGameObject("Dialogue 1");
+			{
+				RectTransform::Sptr transform = dialogue1->Add<RectTransform>();
+				transform->SetMax({ 360, 202.5 });
+
+				GuiPanel::Sptr Panel = dialogue1->Add<GuiPanel>();
+				Panel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/dialoguetut 1.png"));
+				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				Panel->IsEnabled = false;
+
+			}
+			Gameplay::GameObject::Sptr dialogue2 = scene->CreateGameObject("Dialogue 2");
+			{
+				RectTransform::Sptr transform = dialogue2->Add<RectTransform>();
+				transform->SetMax({ 360, 202.5 });
+
+				GuiPanel::Sptr Panel = dialogue2->Add<GuiPanel>();
+				Panel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/dialoguetut 5.png"));
+				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				Panel->IsEnabled = false;
+
+			}
+			Gameplay::GameObject::Sptr dialogue3 = scene->CreateGameObject("Dialogue 3");
+			{
+				RectTransform::Sptr transform = dialogue3->Add<RectTransform>();
+				transform->SetMax({ 360, 202.5 });
+
+				GuiPanel::Sptr Panel = dialogue3->Add<GuiPanel>();
+				Panel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/dialoguetut 2.png"));
+				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				Panel->IsEnabled = false;
+
+			}
+			Gameplay::GameObject::Sptr dialogue4 = scene->CreateGameObject("Dialogue 4");
+			{
+				RectTransform::Sptr transform = dialogue4->Add<RectTransform>();
+				transform->SetMax({ 360, 202.5 });
+
+				GuiPanel::Sptr Panel = dialogue4->Add<GuiPanel>();
+				Panel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/dialoguetut 3.png"));
+				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				Panel->IsEnabled = false;
+
+			}
+			Gameplay::GameObject::Sptr dialogue5 = scene->CreateGameObject("Dialogue 5");
+			{
+				RectTransform::Sptr transform = dialogue5->Add<RectTransform>();
+				transform->SetMax({ 360, 202.5 });
+
+				GuiPanel::Sptr Panel = dialogue5->Add<GuiPanel>();
+				Panel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/dialoguetut 4.png"));
+				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				Panel->IsEnabled = false;
+
+			}
 			Gameplay::GameObject::Sptr walkTutorial = scene->CreateGameObject("Walk Tutorial UI");
 			{
 				RectTransform::Sptr transform = walkTutorial->Add<RectTransform>();

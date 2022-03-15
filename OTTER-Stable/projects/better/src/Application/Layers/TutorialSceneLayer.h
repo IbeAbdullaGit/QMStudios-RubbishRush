@@ -45,6 +45,16 @@ protected:
 	Gameplay::GameObject::Sptr walkUI;
 	Gameplay::GameObject::Sptr pickupUI;
 	Gameplay::GameObject::Sptr spillUI;
+
+	Gameplay::GameObject::Sptr dialogue1;
+	Gameplay::GameObject::Sptr dialogue2;
+	Gameplay::GameObject::Sptr dialogue3;
+	Gameplay::GameObject::Sptr dialogue4;
+	Gameplay::GameObject::Sptr dialogue5;
+	bool play3 = false;
+	bool play4 = false;
+	bool play5 = false;
+
 	
 	ToneFire::FMODStudio studio;
 	ToneFire::StudioSound test;
