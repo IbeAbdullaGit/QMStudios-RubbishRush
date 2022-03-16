@@ -80,4 +80,6 @@ protected:
 	int inventory = 2; //DEFAULT INVENTORY COUNT
 	int max_trash = 3; //DEFAULT FOR NOW
 
+	float currentTime = 0.0f;
+
 };

@@ -205,24 +205,29 @@ void TutorialSceneLayer::OnUpdate()
 					dumpUI->Get<GuiPanel>()->IsEnabled = false;
 					dialogue3->Get<GuiPanel>()->IsEnabled = true;
 					play3 = true;
-					
+					currentTime = Timing::Current().TimeSinceAppLoad();
 					_CreateHallway(); //Create the second part of the level
 				}
 				if (hallwayLoaded)
 				{
 					//dialogue
-					if (trashyM->GetPosition().x <= 4.19f && play3 && !play4)
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 3.5f && !play4)
 					{
-						dialogue3->Get<GuiPanel>()->IsEnabled = false;
-						dialogue5->Get<GuiPanel>()->IsEnabled = true;
 						play4 = true;
-					}
-					if (play4 && trashyM->GetPosition().x >= -0.5f)
-					{
-						play4 = false;
-						dialogue5->Get<GuiPanel>()->IsEnabled = false;
+						dialogue3->Get<GuiPanel>()->IsEnabled = false;
 						dialogue4->Get<GuiPanel>()->IsEnabled = true;
+						currentTime = Timing::Current().TimeSinceAppLoad();
 					}
+					
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 3.5f && Timing::Current().TimeSinceAppLoad() - currentTime <= 7.f && play4)
+					{
+						dialogue4->Get<GuiPanel>()->IsEnabled = false;
+						dialogue5->Get<GuiPanel>()->IsEnabled = true;
+					}
+					else {
+						dialogue5->Get<GuiPanel>()->IsEnabled = false;
+					}
+					
 
 					if (!do_once) //only run this once
 					{//Player Movement JUMP Tutorial
@@ -301,6 +306,8 @@ void TutorialSceneLayer::OnUpdate()
 			else {
 				walkUI->Get<GuiPanel>()->IsEnabled = false;
 			}
+
+
 			//dialogue 1
 			if (trashyM->GetPosition().y >= -2.5f)
 			{
@@ -1247,7 +1254,9 @@ void TutorialSceneLayer::_CreateScene()
 			Gameplay::GameObject::Sptr dialogue1 = scene->CreateGameObject("Dialogue 1");
 			{
 				RectTransform::Sptr transform = dialogue1->Add<RectTransform>();
-				transform->SetMax({ 360, 202.5 });
+				transform->SetMax({ 1280, 720 });
+				transform->SetSize(glm::vec2(90.f, 50.625f));
+				transform->SetPosition(glm::vec2(1115.f, 100.f));
 
 				GuiPanel::Sptr Panel = dialogue1->Add<GuiPanel>();
 				Panel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/dialoguetut 1.png"));
@@ -1258,7 +1267,9 @@ void TutorialSceneLayer::_CreateScene()
 			Gameplay::GameObject::Sptr dialogue2 = scene->CreateGameObject("Dialogue 2");
 			{
 				RectTransform::Sptr transform = dialogue2->Add<RectTransform>();
-				transform->SetMax({ 360, 202.5 });
+				transform->SetMax({ 1280, 720 });
+				transform->SetSize(glm::vec2(90.f, 50.625f));
+				transform->SetPosition(glm::vec2(1115.f, 100.f));
 
 				GuiPanel::Sptr Panel = dialogue2->Add<GuiPanel>();
 				Panel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/dialoguetut 5.png"));
@@ -1269,7 +1280,9 @@ void TutorialSceneLayer::_CreateScene()
 			Gameplay::GameObject::Sptr dialogue3 = scene->CreateGameObject("Dialogue 3");
 			{
 				RectTransform::Sptr transform = dialogue3->Add<RectTransform>();
-				transform->SetMax({ 360, 202.5 });
+				transform->SetMax({ 1280, 720 });
+				transform->SetSize(glm::vec2(90.f, 50.625f));
+				transform->SetPosition(glm::vec2(1115.f, 100.f));
 
 				GuiPanel::Sptr Panel = dialogue3->Add<GuiPanel>();
 				Panel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/dialoguetut 2.png"));
@@ -1277,10 +1290,13 @@ void TutorialSceneLayer::_CreateScene()
 				Panel->IsEnabled = false;
 
 			}
+			
 			Gameplay::GameObject::Sptr dialogue4 = scene->CreateGameObject("Dialogue 4");
 			{
 				RectTransform::Sptr transform = dialogue4->Add<RectTransform>();
-				transform->SetMax({ 360, 202.5 });
+				transform->SetMax({ 1280, 720 });
+				transform->SetSize(glm::vec2(90.f, 50.625f));
+				transform->SetPosition(glm::vec2(1115.f, 100.f));
 
 				GuiPanel::Sptr Panel = dialogue4->Add<GuiPanel>();
 				Panel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/dialoguetut 3.png"));
@@ -1288,10 +1304,13 @@ void TutorialSceneLayer::_CreateScene()
 				Panel->IsEnabled = false;
 
 			}
+
 			Gameplay::GameObject::Sptr dialogue5 = scene->CreateGameObject("Dialogue 5");
 			{
 				RectTransform::Sptr transform = dialogue5->Add<RectTransform>();
-				transform->SetMax({ 360, 202.5 });
+				transform->SetMax({ 1280, 720 });
+				transform->SetSize(glm::vec2(90.f, 50.625f));
+				transform->SetPosition(glm::vec2(1115.f, 100.f));
 
 				GuiPanel::Sptr Panel = dialogue5->Add<GuiPanel>();
 				Panel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/dialoguetut 4.png"));
@@ -1299,6 +1318,8 @@ void TutorialSceneLayer::_CreateScene()
 				Panel->IsEnabled = false;
 
 			}
+
+			
 			Gameplay::GameObject::Sptr walkTutorial = scene->CreateGameObject("Walk Tutorial UI");
 			{
 				RectTransform::Sptr transform = walkTutorial->Add<RectTransform>();
@@ -1366,6 +1387,7 @@ void TutorialSceneLayer::_CreateScene()
 			tutorialUICanvas->AddChild(pickupTutorial);
 			tutorialUICanvas->AddChild(dumpTutorial);
 			tutorialUICanvas->AddChild(spillTutorial);
+
 		}
 		////PARTICLES
 		//Gameplay::GameObject::Sptr particles = scene->CreateGameObject("Particles");
