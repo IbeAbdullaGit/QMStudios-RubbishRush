@@ -1335,9 +1335,7 @@ void TutorialSceneLayer::_CreateScene()
 			Gameplay::GameObject::Sptr jumpTutorial = scene->CreateGameObject("Jump Tutorial UI");
 			{
 				RectTransform::Sptr transform = jumpTutorial->Add<RectTransform>();
-				transform->SetMax({ 894.37, 202.78 });
-				transform->SetMin({ 533.87, 0.34 });
-				transform->SetPosition(glm::vec2(720.0, 101.56));
+				transform->SetMax({ 360, 202.5 });
 
 				GuiPanel::Sptr jumpPanel = jumpTutorial->Add<GuiPanel>();
 				jumpPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/Tut4tex.png"));
