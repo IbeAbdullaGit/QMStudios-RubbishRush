@@ -62,6 +62,7 @@
 #include "Gameplay/Components/MorphAnimator.h"
 #include "Gameplay/Components/MorphMeshRenderer.h"
 #include "Gameplay/Components/GroundBehaviour.h"
+#include "Gameplay/Components/InventoryUI.h"
 
 
 // Physics
@@ -83,6 +84,7 @@
 #include "Application/Application.h"
 #include "Gameplay/Components/ParticleSystem.h"
 
+#include "Application/Layers/RenderLayer.h"
 
 TutorialSceneLayer::TutorialSceneLayer() :
 	ApplicationLayer()
@@ -118,7 +120,7 @@ void TutorialSceneLayer::OnSceneUnload()
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Submit Feedback"));
 
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Load"));
-
+	
 }
 
 void TutorialSceneLayer::OnAppLoad(const nlohmann::json& config) {
@@ -129,11 +131,10 @@ void TutorialSceneLayer::OnAppLoad(const nlohmann::json& config) {
 double tutlastFrame = glfwGetTime();
 void TutorialSceneLayer::OnUpdate()
 {
-	
-	
 	studio.Update();
 	if (doUpdate)
 	{
+		
 		//put this at the top to create a delay affect, creates time for the loading screen to render
 		if (done) //LOAD NEXT SCENE
 		{
@@ -142,6 +143,25 @@ void TutorialSceneLayer::OnUpdate()
 
 		Application& app = Application::Get();
 		_tutcurrentScene = app.CurrentScene();
+		isPressed = false;
+		//enable/disable lighting, only detect once
+		if (glfwGetKey(app.GetWindow(), GLFW_KEY_0) && !isPressed)
+		{
+			isPressed = true;
+			//switch between states easily
+			lights = !lights;
+			if (lights)
+			{
+				app.GetLayer<RenderLayer>()->SetRenderFlags(RenderFlags::EnableLights);
+				std::cout << "enabled\n";
+			}
+			else
+			{
+				app.GetLayer<RenderLayer>()->SetRenderFlags(RenderFlags::None);
+				std::cout << "disabled\n";
+			}
+		}
+
 
 		// Figure out the current time, and the time since the last frame
 		double thisFrame = glfwGetTime();
@@ -350,7 +370,7 @@ void TutorialSceneLayer::OnUpdate()
 		// Grab shorthands to the camera and shader from the _currentScene
 		Gameplay::Camera::Sptr camera = _tutcurrentScene->MainCamera;
 
-		//if (!camera->GetComponent<SimpleCameraControl>()->moving)
+		if (!camera->GetComponent<SimpleCameraControl>()->moving)
 		{
 			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
 			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
@@ -359,6 +379,8 @@ void TutorialSceneLayer::OnUpdate()
 		// Store timing for next loop
 		tutlastFrame = thisFrame;
 	}
+
+	
 
 }
 
@@ -507,7 +529,7 @@ void TutorialSceneLayer::_CreateScene()
 		// Loading in a color lookup table
 		Texture3D::Sptr lut = ResourceManager::CreateAsset<Texture3D>("luts/sepia.CUBE");  //MY CUSTOM
 		
-		scene->SetColorLUT(lut);
+		//scene->SetColorLUT(lut);
 		
 	
 		// Setting up our enviroment map
@@ -626,7 +648,9 @@ void TutorialSceneLayer::_CreateScene()
 			//box2->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			volume->AddCollider(box2);
 			JumpBehaviour::Sptr behaviour = trashyM->Add<JumpBehaviour>();
-			//CollectTrashBehaviour::Sptr behaviour2 = trashyM->Add<CollectTrashBehaviour>();
+			
+			//INVENTORY UI SYSTEM
+			InventoryUI::Sptr behaviour2 = trashyM->Add<InventoryUI>();
 
 			PlayerMovementBehavior::Sptr movement = trashyM->Add<PlayerMovementBehavior>();
 
@@ -908,6 +932,7 @@ void TutorialSceneLayer::_CreateScene()
 			RenderComponent::Sptr renderer = layout->Add<RenderComponent>();
 			renderer->SetMesh(layoutMesh);
 			renderer->SetMaterial(layoutMaterial);
+			GroundBehaviour::Sptr behaviour = layout->Add<GroundBehaviour>();
 		}
 
 		spillMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("spill.obj");
@@ -1379,6 +1404,16 @@ void TutorialSceneLayer::_CreateScene()
 				spillPanel->IsEnabled = false;
 
 			}
+			Gameplay::GameObject::Sptr inventoryUI = scene->CreateGameObject("Inventory UI");
+			{
+				RectTransform::Sptr transform = inventoryUI->Add<RectTransform>();
+				transform->SetMax({ 180, 100 });
+				transform->SetPosition(glm::vec2(881.94, 706.56));
+
+				GuiPanel::Sptr invPanel = inventoryUI->Add<GuiPanel>();
+				//invPanel->IsEnabled = false;
+
+			}
 
 			tutorialUICanvas->AddChild(walkTutorial);
 			tutorialUICanvas->AddChild(jumpTutorial);
@@ -1439,6 +1474,7 @@ void TutorialSceneLayer::_CreateHallway() {
 			RenderComponent::Sptr renderer = layouthall->Add<RenderComponent>();
 			renderer->SetMesh(halllayoutMesh);
 			renderer->SetMaterial(hallwayMat);
+			GroundBehaviour::Sptr behaviour = layouthall->Add<GroundBehaviour>();
 	}
 
 	Gameplay::GameObject::Sptr bench = _tutcurrentScene->CreateGameObject("Bench1");
@@ -1514,8 +1550,7 @@ void TutorialSceneLayer::_CreateHallway() {
 		box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
 		volume->AddCollider(box2);
 		SpillBehaviour::Sptr behaviour = spillM->Add<SpillBehaviour>();
-		//give to our floor tiles to tag them
-		//GroundBehaviour::Sptr behaviour2 = spillM->Add<GroundBehaviour>();
+		
 
 	}
 

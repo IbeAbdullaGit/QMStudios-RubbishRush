@@ -110,7 +110,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 
 void SubmittingTrashBehaviour::Awake() 
 {
-	inventory = 2; //DEFAULT SIZE
+	inventory = 4; //DEFAULT SIZE
 	_scene = GetGameObject()->GetScene();
 	ui = _scene->FindObjectByName("Submit Feedback");
 

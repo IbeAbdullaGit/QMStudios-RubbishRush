@@ -19,7 +19,6 @@ public:
 	virtual void Awake() override;
 	virtual void Update(float deltaTime) override;
 
-public:
 	virtual void RenderImGui() override;
 	MAKE_TYPENAME(JumpBehaviour);
 	virtual nlohmann::json ToJson() const override;

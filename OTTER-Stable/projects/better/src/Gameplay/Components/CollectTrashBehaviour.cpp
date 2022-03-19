@@ -50,9 +50,24 @@ void CollectTrashBehaviour::Update(float deltatime)
 		{
 			if (_scene->held < inventory)
 			{
-				//get our scene, delete this line later
-			//_scene = GetGameObject()->GetScene();
-			//delete trash from scene
+				
+				//differentiate between type of trash
+				if (type == "Normal")
+				{
+					_scene->held_normal += 1;
+					_scene->playtrashsound = true;
+				}
+				else if (_scene->held_recycle < 1) //we are type recycle, now we need to check how many recycle we're holding
+				{
+					_scene->held_recycle += 1;
+					_scene->playrecyclesound = true;
+				}
+				else //we are recycle but recycle inv is full
+				{
+					std::cout << "We're already holding a recycle item\n";
+					return;
+				}
+				//delete trash from scene
 				Gameplay::GameObject::Sptr trash = _scene->FindObjectByName(GetGameObject()->Name);
 				_scene->RemoveGameObject(trash);
 				//total held
@@ -62,17 +77,6 @@ void CollectTrashBehaviour::Update(float deltatime)
 				activated = false;
 				ui->Get<GuiText>()->IsEnabled = false;
 
-				//differentiate between type of trash
-				if (type == "Normal")
-				{
-					_scene->held_normal += 1;
-					_scene->playtrashsound = true;
-				}
-				else
-				{
-					_scene->held_recycle += 1;
-					_scene->playrecyclesound = true;
-				}
 			}
 			
 		}
@@ -88,7 +92,8 @@ void CollectTrashBehaviour::Awake()
 {
 	_scene = GetGameObject()->GetScene();
 	ui = _scene->FindObjectByName("Pickup Feedback");
-	inventory = 2; //DEFAULT SIZE
+	inventory = 4; //DEFAULT SIZE
+	
 }
 
 void CollectTrashBehaviour::RenderImGui() { }

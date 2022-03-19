@@ -59,6 +59,8 @@
 #include "Gameplay/Components/ConveyorBeltBehaviour.h"
 #include "Gameplay/Components/AudioEngine.h"
 #include "Gameplay/Components/common.h"
+#include "Gameplay/Components/InventoryUI.h"
+
 // GUI
 #include "Gameplay/Components/GUI/RectTransform.h"
 #include "Gameplay/Components/GUI/GuiPanel.h"
@@ -211,7 +213,7 @@ void Application::_Run()
 	_layers.push_back(std::make_shared<InterfaceLayer>());
 
 	//for playtesting
-	_isEditor = false;
+	//_isEditor = false;
 
 	// If we're in editor mode, we add all the editor layers
 	if (_isEditor) {
@@ -393,6 +395,7 @@ void Application::_RegisterClasses()
 	Gameplay::ComponentManager::RegisterType<MorphMeshRenderer>();
 	Gameplay::ComponentManager::RegisterType<GroundBehaviour>();
 	Gameplay::ComponentManager::RegisterType<ConveyorBeltBehaviour>();
+	Gameplay::ComponentManager::RegisterType<InventoryUI>();
 }
 
 void Application::_Load() {

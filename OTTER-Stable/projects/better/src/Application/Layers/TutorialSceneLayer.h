@@ -81,5 +81,7 @@ protected:
 	int max_trash = 3; //DEFAULT FOR NOW
 
 	float currentTime = 0.0f;
+	bool lights = true;
+	bool isPressed = false;
 
 };

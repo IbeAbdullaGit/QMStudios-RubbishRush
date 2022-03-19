@@ -36,6 +36,7 @@ void main() {
 
 	// We can use another texture to store things like our lighting settings
 	vec4 lightingParams = texture(u_Material.MetallicShininessMap, inUV);
+	
 
 	// Discarding fragments who's alpha is below the material's threshold
 	if (albedoColor.a < u_Material.DiscardThreshold) {
@@ -59,6 +60,6 @@ void main() {
 
 	// Extract emissive from the material
 	emissive = texture(u_Material.EmissiveMap, inUV);
-
+	
 	view_pos = inViewPos;
 }
