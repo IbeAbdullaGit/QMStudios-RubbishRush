@@ -85,6 +85,7 @@
 #include "Gameplay/Components/ParticleSystem.h"
 
 #include "Application/Layers/RenderLayer.h"
+#include "Gameplay/InputEngine.h"
 
 TutorialSceneLayer::TutorialSceneLayer() :
 	ApplicationLayer()
@@ -145,7 +146,8 @@ void TutorialSceneLayer::OnUpdate()
 		_tutcurrentScene = app.CurrentScene();
 		isPressed = false;
 		//enable/disable lighting, only detect once
-		if (glfwGetKey(app.GetWindow(), GLFW_KEY_0) && !isPressed)
+		
+		if (InputEngine::IsKeyDown(GLFW_KEY_0) && !isPressed)
 		{
 			isPressed = true;
 			//switch between states easily
