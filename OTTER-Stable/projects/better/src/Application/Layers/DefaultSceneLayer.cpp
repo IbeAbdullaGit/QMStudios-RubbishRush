@@ -1403,7 +1403,7 @@ void DefaultSceneLayer::_CreateScene()
 				InteriorWallsBotLeft->AddChild(layoutwall9);
 				InteriorWallsBotLeft->AddChild(layoutwall10);
 				InteriorWallsBotLeft->AddChild(layoutwall11);
-				InteriorWallsBotLeft->AddChild(layoutwall12);
+				//InteriorWallsBotLeft->AddChild(layoutwall12);
 				InteriorWallsBotLeft->AddChild(layoutwall25);
 			}
 
