@@ -878,17 +878,61 @@ void DefaultSceneLayer::_CreateScene()
 
 		//LOAD OBJECTS
 
-		// Load in the meshes
-		//setup trash
+		//CUP
 		Gameplay::MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("cup.obj");
 		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/cup.jpg");
-		// Create our material
 		Gameplay::Material::Sptr trashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			trashMaterial->Name = "Trash";
 			trashMaterial->Set("u_Material.AlbedoMap", trashTex);
 			trashMaterial->Set("u_Material.Shininess", 0.3f);
 			trashMaterial->Set("u_Material.NormalMap", normalMapDefault);
+
+		}
+		// TRASH BAG
+		Gameplay::MeshResource::Sptr bagtrashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Trashbag.obj");
+		Texture2D::Sptr bagtrashTex = ResourceManager::CreateAsset<Texture2D>("textures/TrashBagTex.jpg");
+
+		Gameplay::Material::Sptr bagtrashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			bagtrashMaterial->Name = "Bag Trash";
+			bagtrashMaterial->Set("u_Material.AlbedoMap", bagtrashTex);
+			bagtrashMaterial->Set("u_Material.Shininess", 0.3f);
+			bagtrashMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		}
+		//SPILL
+		Gameplay::MeshResource::Sptr spillMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("spill.obj");
+		Texture2D::Sptr spillTex = ResourceManager::CreateAsset<Texture2D>("textures/goo.png");
+		// Create our material
+		Gameplay::Material::Sptr spillMaterial = ResourceManager::CreateAsset<Gameplay::Material>(rackShader);
+		{
+			spillMaterial->Name = "Spill";
+			spillMaterial->Set("u_Material.AlbedoMap", spillTex);
+			spillMaterial->Set("u_Material.Shininess", 1.0f);
+			spillMaterial->Set("u_Material.NormalMap", normalMapDefault);
+
+		}
+		//RECYCLE BIN
+		Gameplay::MeshResource::Sptr bin2Mesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("recycle bin.obj");
+		Texture2D::Sptr bin2Tex = ResourceManager::CreateAsset<Texture2D>("textures/recycle.jpg");
+		// Create our material
+		Gameplay::Material::Sptr bin2Material = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			bin2Material->Name = "Bin";
+			bin2Material->Set("u_Material.AlbedoMap", bin2Tex);
+			bin2Material->Set("u_Material.Shininess", 0.5f);
+			bin2Material->Set("u_Material.NormalMap", normalMapDefault);
+
+		}
+		// CONVEYOR
+		Gameplay::MeshResource::Sptr conveyorMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("conveyor.obj");
+		Texture2D::Sptr conveyorTex = ResourceManager::CreateAsset<Texture2D>("textures/conveyor.jpg");
+		Gameplay::Material::Sptr conveyorMaterial = ResourceManager::CreateAsset<Gameplay::Material>(conveyorShader);
+		{
+			conveyorMaterial->Name = "Conveyor";
+			conveyorMaterial->Set("u_Material.AlbedoMap", conveyorTex);
+			conveyorMaterial->Set("u_Material.Shininess", 0.2f);
+			conveyorMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
 
@@ -1039,10 +1083,70 @@ void DefaultSceneLayer::_CreateScene()
 		Texture2D::Sptr lchairTex = ResourceManager::CreateAsset<Texture2D>("textures/Wall.png");
 		Gameplay::Material::Sptr lchairMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
-			lchairMat->Name = "Library Shelf";
+			lchairMat->Name = "Lounge Chair";
 			lchairMat->Set("u_Material.AlbedoMap", lchairTex);
 			lchairMat->Set("u_Material.Shininess", 0.3f);
 			lchairMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr toiletMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("toilet.obj");
+		Texture2D::Sptr toiletTex = ResourceManager::CreateAsset<Texture2D>("textures/toilet.jpg");
+		Gameplay::Material::Sptr toiletMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			toiletMat->Name = "Toilet";
+			toiletMat->Set("u_Material.AlbedoMap", toiletTex);
+			toiletMat->Set("u_Material.Shininess", 0.3f);
+			toiletMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr sinkMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Sink.obj");
+		Texture2D::Sptr sinkTex = ResourceManager::CreateAsset<Texture2D>("textures/sinktex.jpg");
+		Gameplay::Material::Sptr sinkMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			sinkMat->Name = "Sink";
+			sinkMat->Set("u_Material.AlbedoMap", sinkTex);
+			sinkMat->Set("u_Material.Shininess", 0.3f);
+			sinkMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr tubMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tub.obj");
+		Texture2D::Sptr tubTex = ResourceManager::CreateAsset<Texture2D>("textures/tub.jpg");
+		Gameplay::Material::Sptr tubMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			tubMat->Name = "Tub";
+			tubMat->Set("u_Material.AlbedoMap", tubTex);
+			tubMat->Set("u_Material.Shininess", 0.3f);
+			tubMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr statueMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("wolfstatue.obj");
+		Texture2D::Sptr statueTex = ResourceManager::CreateAsset <Texture2D>("textures/statue.jpg");
+		Gameplay::Material::Sptr statueMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			statueMaterial->Name = "Statue";
+			statueMaterial->Set("u_Material.AlbedoMap", statueTex);
+			statueMaterial->Set("u_Material.Shininess", 1.0f);
+			statueMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr tallfountainMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("FountainTall.obj");
+		Texture2D::Sptr tallfountainTex = ResourceManager::CreateAsset<Texture2D>("textures/fountain.jpg");
+		Gameplay::Material::Sptr tallfountainMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			tallfountainMat->Name = "Statue";
+			tallfountainMat->Set("u_Material.AlbedoMap", tallfountainTex);
+			tallfountainMat->Set("u_Material.Shininess", 1.0f);
+			tallfountainMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr longfountainMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("long fountain.obj");
+		Texture2D::Sptr longfountainTex = ResourceManager::CreateAsset<Texture2D>("textures/long fountain.jpg");
+		Gameplay::Material::Sptr longfountainMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			longfountainMat->Name = "Statue";
+			longfountainMat->Set("u_Material.AlbedoMap", longfountainTex);
+			longfountainMat->Set("u_Material.Shininess", 1.0f);
+			longfountainMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
 		// Here we'll load in the cubemap, as well as a special shader to handle drawing the skybox
@@ -3766,6 +3870,7 @@ void DefaultSceneLayer::_CreateScene()
 			feedbackUI->AddChild(submitFeedback);
 			feedbackUI->AddChild(returnFeedback);
 		}
+
 		Gameplay::GameObject::Sptr inventoryUI = scene->CreateGameObject("Inventory UI");
 		{
 			RectTransform::Sptr transform = inventoryUI->Add<RectTransform>();
