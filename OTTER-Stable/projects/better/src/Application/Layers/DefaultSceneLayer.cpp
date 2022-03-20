@@ -2709,6 +2709,11 @@ void DefaultSceneLayer::_CreateScene()
 				RenderComponent::Sptr renderer = tub->Add<RenderComponent>();
 				renderer->SetMesh(tubMesh);
 				renderer->SetMaterial(tubMaterial);
+				Gameplay::Physics::Rigidbody::Sptr physics = tub->Add<Gameplay::Physics::RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(1.0f,1.0f,1.0f);
+				box->SetExtents(glm::vec3(1.0f,1.0f,1.0f));
+				physics->AdCollider(box);
 			}
 			//Tv
 			Gameplay::GameObject::Sptr tvModel = scene->CreateGameObject("Tv Modelling");
