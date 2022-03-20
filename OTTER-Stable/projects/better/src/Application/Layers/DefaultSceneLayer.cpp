@@ -60,6 +60,7 @@
 #include "Gameplay/Components/MorphAnimator.h"
 #include "Gameplay/Components/MorphMeshRenderer.h"
 #include "Gameplay/Components/GroundBehaviour.h"
+#include "Gameplay/Components/InventoryUI.h"
 
 
 // Physics
@@ -1053,6 +1054,7 @@ void DefaultSceneLayer::_CreateScene()
 			//CollectTrashBehaviour::Sptr behaviour2 = trashyM->Add<CollectTrashBehaviour>();
 
 			PlayerMovementBehavior::Sptr movement = trashyM->Add<PlayerMovementBehavior>();
+			trashyM->Add<InventoryUI>();
 
 			//ANIMATION STUFF////
 			MorphMeshRenderer::Sptr morph1 = trashyM->Add<MorphMeshRenderer>();
@@ -2640,6 +2642,16 @@ void DefaultSceneLayer::_CreateScene()
 			feedbackUI->AddChild(pickupFeedback);
 			feedbackUI->AddChild(submitFeedback);
 			feedbackUI->AddChild(returnFeedback);
+		}
+		Gameplay::GameObject::Sptr inventoryUI = scene->CreateGameObject("Inventory UI");
+		{
+			RectTransform::Sptr transform = inventoryUI->Add<RectTransform>();
+			transform->SetMax({ 180, 100 });
+			transform->SetPosition(glm::vec2(881.94, 706.56));
+
+			GuiPanel::Sptr invPanel = inventoryUI->Add<GuiPanel>();
+			//invPanel->IsEnabled = false;
+
 		}
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
