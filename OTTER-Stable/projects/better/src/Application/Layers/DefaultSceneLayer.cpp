@@ -876,8 +876,174 @@ void DefaultSceneLayer::_CreateScene()
 
 #pragma endregion 
 
+		//LOAD OBJECTS
+
 		// Load in the meshes
+		//setup trash
+		Gameplay::MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("cup.obj");
+		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/cup.jpg");
+		// Create our material
+		Gameplay::Material::Sptr trashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			trashMaterial->Name = "Trash";
+			trashMaterial->Set("u_Material.AlbedoMap", trashTex);
+			trashMaterial->Set("u_Material.Shininess", 0.3f);
+			trashMaterial->Set("u_Material.NormalMap", normalMapDefault);
+
+		}
+
+		Gameplay::MeshResource::Sptr shelfMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("shelf.obj");
+		Texture2D::Sptr shelfTex = ResourceManager::CreateAsset <Texture2D>("textures/shelf.jpg");
+		//Create Material
+		Gameplay::Material::Sptr shelfMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			shelfMaterial->Name = "Shelf";
+			shelfMaterial->Set("u_Material.AlbedoMap", shelfTex);
+			shelfMaterial->Set("u_Material.Shininess", 0.2f);
+			shelfMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr tvboxMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tvbox2.obj");
+		Texture2D::Sptr tvboxTex = ResourceManager::CreateAsset<Texture2D>("textures/tvbox.png");
+		//Create Material
+		Gameplay::Material::Sptr tvboxMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			tvboxMaterial->Name = "TvBox";
+			tvboxMaterial->Set("u_Material.AlbedoMap", tvboxTex);
+			tvboxMaterial->Set("u_Material.Shininess", 0.0f);
+			tvboxMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr cashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("cashcounter.obj");
+		Texture2D::Sptr cashTex = ResourceManager::CreateAsset<Texture2D>("textures/cash.png");
+		//create Material
+		Gameplay::Material::Sptr cashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			cashMaterial->Name = "Cash";
+			cashMaterial->Set("u_Material.AlbedoMap", cashTex);
+			cashMaterial->Set("u_Material.Shininess", 0.75f);
+			cashMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr benchMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("bench.obj");
+		Texture2D::Sptr benchTex = ResourceManager::CreateAsset<Texture2D>("textures/bench.jpg");
+		Gameplay::Material::Sptr benchMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			benchMaterial->Name = "Bench";
+			benchMaterial->Set("u_Material.AlbedoMap", benchTex);
+			benchMaterial->Set("u_Material.Shininess", 0.0f);
+			benchMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr computerMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Computer.obj");
+		Texture2D::Sptr computerTex = ResourceManager::CreateAsset<Texture2D>("textures/desktoptex.jpg");
+		Gameplay::Material::Sptr computerMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			computerMaterial->Name = "Computer";
+			computerMaterial->Set("u_Material.AlbedoMap", computerTex);
+			computerMaterial->Set("u_Material.Shininess", 0.3f);
+			computerMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr boothMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("booth.obj");
+		Texture2D::Sptr boothTex = ResourceManager::CreateAsset<Texture2D>("textures/BOOTH.jpg");
+		Gameplay::Material::Sptr boothMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			boothMat->Name = "Booth";
+			boothMat->Set("u_Material.AlbedoMap", boothTex);
+			boothMat->Set("u_Material.Shininess", 0.3f);
+			boothMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
 		
+		Gameplay::MeshResource::Sptr sqrtableMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("table.obj");
+		Texture2D::Sptr sqrtableTex = ResourceManager::CreateAsset<Texture2D>("textures/lib table.jpg");
+		Gameplay::Material::Sptr sqrtableMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			sqrtableMat->Name = "Square Table";
+			sqrtableMat->Set("u_Material.AlbedoMap", sqrtableTex);
+			sqrtableMat->Set("u_Material.Shininess", 0.3f);
+			sqrtableMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr fridgeMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("fridge.obj");
+		Texture2D::Sptr fridgeTex = ResourceManager::CreateAsset<Texture2D>("textures/fridge.jpg");
+		Gameplay::Material::Sptr fridgeMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			fridgeMat->Name = "Fridge";
+			fridgeMat->Set("u_Material.AlbedoMap", fridgeTex);
+			fridgeMat->Set("u_Material.Shininess", 0.3f);
+			fridgeMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr stoveMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("stove.obj");
+		Texture2D::Sptr stoveTex = ResourceManager::CreateAsset<Texture2D>("textures/stove.jpg");
+		Gameplay::Material::Sptr stoveMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			stoveMat->Name = "Stove";
+			stoveMat->Set("u_Material.AlbedoMap", stoveTex);
+			stoveMat->Set("u_Material.Shininess", 0.3f);
+			stoveMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
+		
+		Gameplay::MeshResource::Sptr plantMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("plant.obj");
+		Texture2D::Sptr plantTex = ResourceManager::CreateAsset<Texture2D>("textures/planttex.png");
+		Gameplay::Material::Sptr plantMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			plantMaterial->Name = "Plant";
+			plantMaterial->Set("u_Material.AlbedoMap", plantTex);
+			plantMaterial->Set("u_Material.Shininess", 0.0f);
+			plantMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr dinerchairMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("diner chair.obj");
+		Texture2D::Sptr dinerchairTex = ResourceManager::CreateAsset<Texture2D>("textures/dine chair.jpg");
+		Gameplay::Material::Sptr dinerchairMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			dinerchairMat->Name = "Diner Chair";
+			dinerchairMat->Set("u_Material.AlbedoMap", dinerchairTex);
+			dinerchairMat->Set("u_Material.Shininess", 0.3f);
+			dinerchairMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
+		
+		Gameplay::MeshResource::Sptr dinertableMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("diner table.obj");
+		Texture2D::Sptr dinertableTex = ResourceManager::CreateAsset<Texture2D>("textures/lib table.jpg");
+		Gameplay::Material::Sptr dinertableMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			dinertableMat->Name = "Diner Table";
+			dinertableMat->Set("u_Material.AlbedoMap", dinertableTex);
+			dinertableMat->Set("u_Material.Shininess", 0.3f);
+			dinertableMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr showerMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("shower.obj");
+		Texture2D::Sptr showerTex = ResourceManager::CreateAsset<Texture2D>("textures/shower.jpg");
+		Gameplay::Material::Sptr showerMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			showerMaterial->Name = "Shower";
+			showerMaterial->Set("u_Material.AlbedoMap", showerTex);
+			showerMaterial->Set("u_Material.Shininess", 0.5f);
+			showerMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr libshelfMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("library shelf.obj");
+		Texture2D::Sptr libshelfTex = ResourceManager::CreateAsset<Texture2D>("textures/books2.jpg");
+		Gameplay::Material::Sptr libshelfMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			libshelfMat->Name = "Library Shelf";
+			libshelfMat->Set("u_Material.AlbedoMap", libshelfTex);
+			libshelfMat->Set("u_Material.Shininess", 0.3f);
+			libshelfMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr lchairMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("LoungeChair.obj");
+		Texture2D::Sptr lchairTex = ResourceManager::CreateAsset<Texture2D>("textures/Wall.png");
+		Gameplay::Material::Sptr lchairMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			lchairMat->Name = "Library Shelf";
+			lchairMat->Set("u_Material.AlbedoMap", lchairTex);
+			lchairMat->Set("u_Material.Shininess", 0.3f);
+			lchairMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
 
 		// Here we'll load in the cubemap, as well as a special shader to handle drawing the skybox
 		TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/ocean/ocean.jpg");
@@ -1180,25 +1346,6 @@ void DefaultSceneLayer::_CreateScene()
 
 		}
 
-		Gameplay::MeshResource::Sptr enterMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("InvisPlane.obj");
-		Texture2D::Sptr enterTex = ResourceManager::CreateAsset<Texture2D>("textures/ENTER.png");
-		Gameplay::Material::Sptr enterMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-		{
-			enterMaterial->Name = "Enter";
-			enterMaterial->Set("u_Material.AlbedoMap", enterTex);
-			enterMaterial->Set("u_Material.Shininess", 0.0f);
-			enterMaterial->Set("u_Material.NormalMap", normalMapDefault);
-		}
-		Gameplay::GameObject::Sptr enter = scene->CreateGameObject("Enter");
-		{
-			enter->SetPostion(glm::vec3(0.67f, -1.6f, 0.11f));
-			enter->SetRotation(glm::vec3(0.0f, -74.0f, -90.0f));
-			enter->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
-
-			RenderComponent::Sptr renderer = enter->Add<RenderComponent>();
-			renderer->SetMesh(enterMesh);
-			renderer->SetMaterial(enterMaterial);
-		}
 		//layout
 		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("malllayout.obj");
 		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/layout.jpg");
@@ -1575,19 +1722,723 @@ void DefaultSceneLayer::_CreateScene()
 			}
 		}
 
-		//placeholder trash object  TAGS: PLACEHOLDER, this is how u create a new object for trash
-		//setup trash
-		Gameplay::MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("cup.obj");
-		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/cup.jpg");
-		// Create our material
-		Gameplay::Material::Sptr trashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-		{
-			trashMaterial->Name = "Trash";
-			trashMaterial->Set("u_Material.AlbedoMap", trashTex);
-			trashMaterial->Set("u_Material.Shininess", 0.3f);
-			trashMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		
+		//Top Right Store
+		Gameplay::GameObject::Sptr TopRight = scene->CreateGameObject("Top Right Store");
 
-		}
+			Gameplay::GameObject::Sptr shelf = scene->CreateGameObject("Shelf 1");
+			{
+				shelf->SetPostion(glm::vec3(-12.71f, -5.31f, 0.0f));
+				shelf->SetRotation(glm::vec3(90.0, 0.0f, 0.0f));
+				shelf->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+
+				RenderComponent::Sptr renderer = shelf->Add<RenderComponent>();
+				renderer->SetMesh(shelfMesh);
+				renderer->SetMaterial(shelfMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = shelf->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.42f, 1.34f, 1.21f));
+				box->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr shelf2 = scene->CreateGameObject("Shelf 2");
+			{
+				shelf2->SetPostion(glm::vec3(-15.59f, -8.21f, 0.0f));
+				shelf2->SetRotation(glm::vec3(90.0, 0.0f, -90.0f));
+				shelf2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+
+				RenderComponent::Sptr renderer = shelf2->Add<RenderComponent>();
+				renderer->SetMesh(shelfMesh);
+				renderer->SetMaterial(shelfMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = shelf2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.42f, 1.34f, 1.21f));
+				box->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr shelf3 = scene->CreateGameObject("Shelf 3");
+			{
+				shelf3->SetPostion(glm::vec3(-12.7f, -9.12f, 0.0f));
+				shelf3->SetRotation(glm::vec3(90.0, 0.0f, 0.0f));
+				shelf3->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+
+				RenderComponent::Sptr renderer = shelf3->Add<RenderComponent>();
+				renderer->SetMesh(shelfMesh);
+				renderer->SetMaterial(shelfMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = shelf3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.42f, 1.34f, 1.21f));
+				box->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr shelf4 = scene->CreateGameObject("Shelf 4");
+			{
+				shelf4->SetPostion(glm::vec3(-6.09f, -7.86f, 0.0f));
+				shelf4->SetRotation(glm::vec3(90.0, 0.0f, -90.0f));
+				shelf4->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+
+				RenderComponent::Sptr renderer = shelf4->Add<RenderComponent>();
+				renderer->SetMesh(shelfMesh);
+				renderer->SetMaterial(shelfMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = shelf4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.42f, 1.34f, 1.21f));
+				box->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr tvbox1 = scene->CreateGameObject("tv 1");
+			{
+				tvbox1->SetPostion(glm::vec3(-15.02f, -4.29f, 0.0f));
+				tvbox1->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				tvbox1->SetScale(glm::vec3(0.7f, 0.8f, 0.7f));
+
+				RenderComponent::Sptr renderer = tvbox1->Add<RenderComponent>();
+				renderer->SetMesh(tvboxMesh);
+				renderer->SetMaterial(tvboxMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = tvbox1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
+				box->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr tvbox2 = scene->CreateGameObject("tv 2");
+			{
+				tvbox2->SetPostion(glm::vec3(-11.53f, -8.07f, 0.0f));
+				tvbox2->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				tvbox2->SetScale(glm::vec3(0.7f, 0.8f, 0.7f));
+
+				RenderComponent::Sptr renderer = tvbox2->Add<RenderComponent>();
+				renderer->SetMesh(tvboxMesh);
+				renderer->SetMaterial(tvboxMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = tvbox2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
+				box->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr tvbox3 = scene->CreateGameObject("tv 3");
+			{
+				tvbox3->SetPostion(glm::vec3(-10.07f, -8.07f, 0.0f));
+				tvbox3->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+				tvbox3->SetScale(glm::vec3(0.7f, 0.8f, 0.7f));
+
+				RenderComponent::Sptr renderer = tvbox3->Add<RenderComponent>();
+				renderer->SetMesh(tvboxMesh);
+				renderer->SetMaterial(tvboxMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = tvbox3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
+				box->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr tvbox4 = scene->CreateGameObject("tv4");
+			{
+				tvbox4->SetPostion(glm::vec3(-5.78f, -9.31f, 0.0f));
+				tvbox4->SetRotation(glm::vec3(90.0f, 0.0f, -20.0f));
+				tvbox4->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
+
+				RenderComponent::Sptr renderer = tvbox4->Add<RenderComponent>();
+				renderer->SetMesh(tvboxMesh);
+				renderer->SetMaterial(tvboxMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = tvbox4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
+				box->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr cashcounter = scene->CreateGameObject("CashCounter");
+			{
+				cashcounter->SetPostion(glm::vec3(-6.58f, -5.22f, 0.0f));
+				cashcounter->SetRotation(glm::vec3(90.0f, 0.0f, 180.0f));
+				cashcounter->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = cashcounter->Add<RenderComponent>();
+				renderer->SetMesh(cashMesh);
+				renderer->SetMaterial(cashMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = cashcounter->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.520f, 0.740f, 1.210f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr computer1 = scene->CreateGameObject("Desktop1");
+			{
+				computer1->SetPostion(glm::vec3(-13.99f, -8.15f, 0.0f));
+				computer1->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				computer1->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
+
+				RenderComponent::Sptr renderer = computer1->Add<RenderComponent>();
+				renderer->SetMesh(computerMesh);
+				renderer->SetMaterial(computerMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = computer1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.3f, 0.61f, 0.14f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr computer2 = scene->CreateGameObject("Desktop2");
+			{
+				computer2->SetPostion(glm::vec3(-13.48f, -8.16f, 0.0f));
+				computer2->SetRotation(glm::vec3(90.0f, 0.0f, 113.0f));
+				computer2->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
+
+				RenderComponent::Sptr renderer = computer2->Add<RenderComponent>();
+				renderer->SetMesh(computerMesh);
+				renderer->SetMaterial(computerMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = computer2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.3f, 0.61f, 0.14f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr bench1 = scene->CreateGameObject("Bench");
+			{
+				bench1->SetPostion(glm::vec3(-11.1f, -5.02f, 0.0f));
+				bench1->SetRotation(glm::vec3(90.0f, 0.0f, 34.0f));
+				bench1->SetScale(glm::vec3(2.0f, 1.0f, 1.5f));
+
+				RenderComponent::Sptr renderer = bench1->Add<RenderComponent>();
+				renderer->SetMesh(benchMesh);
+				renderer->SetMaterial(benchMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = bench1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+				boxCollider->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
+				physics->AddCollider(boxCollider);
+			}
+
+			TopRight->AddChild(shelf);
+			TopRight->AddChild(shelf2);
+			TopRight->AddChild(shelf3);
+			TopRight->AddChild(shelf4);
+			TopRight->AddChild(tvbox1);
+			TopRight->AddChild(tvbox2);
+			TopRight->AddChild(tvbox3);
+			TopRight->AddChild(tvbox4);
+			TopRight->AddChild(cashcounter);
+			TopRight->AddChild(computer1);
+			TopRight->AddChild(computer2);
+			TopRight->AddChild(bench1);
+
+			//Bot Left Store
+
+			Gameplay::GameObject::Sptr BotLeft = scene->CreateGameObject("Bottom Left");
+			
+			Gameplay::GameObject::Sptr table1 = scene->CreateGameObject("diner table 1");
+			{
+				table1->SetPostion(glm::vec3(9.46f, 4.09f, 0.0f));
+				table1->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				table1->SetScale(glm::vec3(0.3f, 0.4f, 0.3f));
+
+				RenderComponent::Sptr renderer = table1->Add<RenderComponent>();
+				renderer->SetMesh(dinertableMesh);
+				renderer->SetMaterial(dinertableMat);
+				
+				Gameplay::Physics::RigidBody::Sptr physics = table1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.47f, 0.99f, 0.93f));
+				physics->AddCollider(box);
+			}
+			
+			Gameplay::GameObject::Sptr table2 = scene->CreateGameObject("diner table 2");
+			{
+				table2->SetPostion(glm::vec3(1.84f, 7.65f, 0.0f));
+				table2->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				table2->SetScale(glm::vec3(0.3f, 0.4f, 0.3f));
+
+				RenderComponent::Sptr renderer = table2->Add<RenderComponent>();
+				renderer->SetMesh(dinertableMesh);
+				renderer->SetMaterial(dinertableMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = table2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.47f, 0.99f, 0.93f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr table3 = scene->CreateGameObject("diner table 3");
+			{
+				table3->SetPostion(glm::vec3(1.85f, 10.68f, 0.0f));
+				table3->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				table3->SetScale(glm::vec3(0.3f, 0.4f, 0.3f));
+
+				RenderComponent::Sptr renderer = table3->Add<RenderComponent>();
+				renderer->SetMesh(dinertableMesh);
+				renderer->SetMaterial(dinertableMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = table3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.47f, 0.99f, 0.93f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr booth1 = scene->CreateGameObject("booth 1");
+			{
+				booth1->SetPostion(glm::vec3(10.63f, 3.86f, 0.0f));
+				booth1->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				booth1->SetScale(glm::vec3(0.3f, 0.4f, 0.3f));
+
+				RenderComponent::Sptr renderer = booth1->Add<RenderComponent>();
+				renderer->SetMesh(boothMesh);
+				renderer->SetMaterial(boothMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = booth1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.68f, 1.0f, 0.28f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr booth2 = scene->CreateGameObject("booth 2");
+			{
+				booth2->SetPostion(glm::vec3(8.42f, 3.89f, 0.0f));
+				booth2->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+				booth2->SetScale(glm::vec3(0.3f, 0.4f, 0.3f));
+
+				RenderComponent::Sptr renderer = booth2->Add<RenderComponent>();
+				renderer->SetMesh(boothMesh);
+				renderer->SetMaterial(boothMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = booth2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.68f, 1.0f, 0.28f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr plant1 = scene->CreateGameObject("plant 1");
+			{
+				plant1->SetPostion(glm::vec3(-0.79f, 7.65f, 0.0f));
+				plant1->SetRotation(glm::vec3(90.0f, 0.0f, 43.0f));
+				plant1->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
+
+				RenderComponent::Sptr renderer = plant1->Add<RenderComponent>();
+				renderer->SetMesh(plantMesh);
+				renderer->SetMaterial(plantMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = plant1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.24f, 0.96f,0.65f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr fridge1 = scene->CreateGameObject("fridge 1");
+			{
+				fridge1->SetPostion(glm::vec3(16.44f, 6.81f, 0.0f));
+				fridge1->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+				fridge1->SetScale(glm::vec3(0.15f, 0.15f, 0.15f));
+
+				RenderComponent::Sptr renderer = fridge1->Add<RenderComponent>();
+				renderer->SetMesh(fridgeMesh);
+				renderer->SetMaterial(fridgeMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = fridge1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(-0.08f, 0.8f, 0.0f));
+				box->SetScale(glm::vec3(0.32f, 1.31f, 0.5f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr fridge2 = scene->CreateGameObject("fridge 2");
+			{
+				fridge2->SetPostion(glm::vec3(16.41f, 4.2f, 0.0f));
+				fridge2->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+				fridge2->SetScale(glm::vec3(0.15f, 0.15f, 0.15f));
+
+				RenderComponent::Sptr renderer = fridge2->Add<RenderComponent>();
+				renderer->SetMesh(fridgeMesh);
+				renderer->SetMaterial(fridgeMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = fridge2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(-0.08f, 0.8f, 0.0f));
+				box->SetScale(glm::vec3(0.32f, 1.31f, 0.5f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr stove1 = scene->CreateGameObject("stove 1");
+			{
+				stove1->SetPostion(glm::vec3(14.32f, 7.03f, 0.0f));
+				stove1->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				stove1->SetScale(glm::vec3(0.21f, 0.21f, 0.21f));
+
+				RenderComponent::Sptr renderer = stove1->Add<RenderComponent>();
+				renderer->SetMesh(stoveMesh);
+				renderer->SetMaterial(stoveMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = stove1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.46f, 1.27f, 0.43f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr stove2 = scene->CreateGameObject("stove 2");
+			{
+				stove2->SetPostion(glm::vec3(14.32f, 5.9f, 0.0f));
+				stove2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				stove2->SetScale(glm::vec3(0.21, 0.21f, 0.21f));
+
+				RenderComponent::Sptr renderer = stove2->Add<RenderComponent>();
+				renderer->SetMesh(stoveMesh);
+				renderer->SetMaterial(stoveMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = stove2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.46f, 1.27f, 0.43f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr cashcounter2 = scene->CreateGameObject("CashCounter 2");
+			{
+				cashcounter2->SetPostion(glm::vec3(6.120f, 6.16f, 0.0f));
+				cashcounter2->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+				cashcounter2->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = cashcounter2->Add<RenderComponent>();
+				renderer->SetMesh(cashMesh);
+				renderer->SetMaterial(cashMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = cashcounter2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.520f, 0.740f, 1.210f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr cashcounter3 = scene->CreateGameObject("CashCounter 3");
+			{
+				cashcounter3->SetPostion(glm::vec3(11.41f, 9.8f, 0.0f));
+				cashcounter3->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+				cashcounter3->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = cashcounter3->Add<RenderComponent>();
+				renderer->SetMesh(cashMesh);
+				renderer->SetMaterial(cashMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = cashcounter3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.520f, 0.740f, 1.210f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr tablesqrt1 = scene->CreateGameObject("Square Table");
+			{
+				tablesqrt1->SetPostion(glm::vec3(7.68f, 9.48f, 0.0f));
+				tablesqrt1->SetRotation(glm::vec3(90.0f, 0.0f, 45.0f));
+				tablesqrt1->SetScale(glm::vec3(0.4f, 0.55f, 0.4f));
+
+				RenderComponent::Sptr renderer = tablesqrt1->Add<RenderComponent>();
+				renderer->SetMesh(sqrtableMesh);
+				renderer->SetMaterial(sqrtableMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = tablesqrt1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.56f, 0.93f, 0.59f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr chair1 = scene->CreateGameObject("chair 1");
+			{
+				chair1->SetPostion(glm::vec3(7.15f, 10.01f, 0.0f));
+				chair1->SetRotation(glm::vec3(90.0f, 0.0f, -45.0f));
+				chair1->SetScale(glm::vec3(0.6f, 0.6f, 0.6f));
+
+				RenderComponent::Sptr renderer = chair1->Add<RenderComponent>();
+				renderer->SetMesh(dinerchairMesh);
+				renderer->SetMaterial(dinerchairMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = chair1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(-0.06f, 0.0f, 0.0f));
+				box->SetScale(glm::vec3(0.3f, 1.07f, 0.24f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr chair2 = scene->CreateGameObject("chair 2");
+			{
+				chair2->SetPostion(glm::vec3(2.73f, 7.6f, 0.0f));
+				chair2->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+				chair2->SetScale(glm::vec3(0.6f, 0.6f, 0.6f));
+
+				RenderComponent::Sptr renderer = chair2->Add<RenderComponent>();
+				renderer->SetMesh(dinerchairMesh);
+				renderer->SetMaterial(dinerchairMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = chair2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(-0.06f, 0.0f, 0.0f));
+				box->SetScale(glm::vec3(0.3f, 1.07f, 0.24f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr chair3 = scene->CreateGameObject("chair 3");
+			{
+				chair3->SetPostion(glm::vec3(8.33f, 8.88f, 0.0f));
+				chair3->SetRotation(glm::vec3(90.0f, 0.0f, 135.0f));
+				chair3->SetScale(glm::vec3(0.6f, 0.6f, 0.6f));
+
+				RenderComponent::Sptr renderer = chair3->Add<RenderComponent>();
+				renderer->SetMesh(dinerchairMesh);
+				renderer->SetMaterial(dinerchairMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = chair3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(-0.06f, 0.0f, 0.0f));
+				box->SetScale(glm::vec3(0.3f, 1.07f, 0.24f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr chair4 = scene->CreateGameObject("chair 4");
+			{
+				chair4->SetPostion(glm::vec3(0.92f, 7.56f, 0.0f));
+				chair4->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				chair4->SetScale(glm::vec3(0.6f, 0.6f, 0.6f));
+
+				RenderComponent::Sptr renderer = chair4->Add<RenderComponent>();
+				renderer->SetMesh(dinerchairMesh);
+				renderer->SetMaterial(dinerchairMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = chair4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(-0.06f, 0.0f, 0.0f));
+				box->SetScale(glm::vec3(0.3f, 1.07f, 0.24f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr chair5 = scene->CreateGameObject("chair 5");
+			{
+				chair5->SetPostion(glm::vec3(0.86f, 10.59f, 0.0f));
+				chair5->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				chair5->SetScale(glm::vec3(0.6f, 0.6f, 0.6f));
+
+				RenderComponent::Sptr renderer = chair5->Add<RenderComponent>();
+				renderer->SetMesh(dinerchairMesh);
+				renderer->SetMaterial(dinerchairMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = chair5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(-0.06f, 0.0f, 0.0f));
+				box->SetScale(glm::vec3(0.3f, 1.07f, 0.24f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr chair6 = scene->CreateGameObject("chair 6");
+			{
+				chair6->SetPostion(glm::vec3(2.730f, 10.62f, 0.0f));
+				chair6->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+				chair6->SetScale(glm::vec3(0.6f, 0.6f, 0.6f));
+
+				RenderComponent::Sptr renderer = chair6->Add<RenderComponent>();
+				renderer->SetMesh(dinerchairMesh);
+				renderer->SetMaterial(dinerchairMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = chair6->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(-0.06f, 0.0f, 0.0f));
+				box->SetScale(glm::vec3(0.3f, 1.07f, 0.24f));
+				physics->AddCollider(box);
+			}
+
+			BotLeft->AddChild(table1);
+			BotLeft->AddChild(table2);
+			BotLeft->AddChild(table3);
+			BotLeft->AddChild(booth1);
+			BotLeft->AddChild(booth2);
+			BotLeft->AddChild(plant1);
+			BotLeft->AddChild(fridge1);
+			BotLeft->AddChild(fridge2);
+			BotLeft->AddChild(stove1);
+			BotLeft->AddChild(stove2);
+			BotLeft->AddChild(cashcounter2);
+			BotLeft->AddChild(cashcounter3);
+			BotLeft->AddChild(tablesqrt1);
+			BotLeft->AddChild(chair1);
+			BotLeft->AddChild(chair2);
+			BotLeft->AddChild(chair3);
+			BotLeft->AddChild(chair4);
+			BotLeft->AddChild(chair5);
+			BotLeft->AddChild(chair6);
+
+			//Top Left
+
+			Gameplay::GameObject::Sptr TopLeft = scene->CreateGameObject("Top Left");
+
+			Gameplay::GameObject::Sptr libshelf1 = scene->CreateGameObject("library shelf 1");
+			{
+				libshelf1->SetPostion(glm::vec3(13.63f, -4.91f, 0.0f));
+				libshelf1->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				libshelf1->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
+
+				RenderComponent::Sptr renderer = libshelf1->Add<RenderComponent>();
+				renderer->SetMesh(libshelfMesh);
+				renderer->SetMaterial(libshelfMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = libshelf1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.38f, 1.88f, 0.89f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr libshelf2 = scene->CreateGameObject("library shelf 2");
+			{
+				libshelf2->SetPostion(glm::vec3(11.96f, -3.23f, 0.0f));
+				libshelf2->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				libshelf2->SetScale(glm::vec3(0.3f, 0.1f, 0.3f));
+
+				RenderComponent::Sptr renderer = libshelf2->Add<RenderComponent>();
+				renderer->SetMesh(libshelfMesh);
+				renderer->SetMaterial(libshelfMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = libshelf2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.38f, 0.65f, 0.89f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr libshelf3 = scene->CreateGameObject("library shelf 3");
+			{
+				libshelf3->SetPostion(glm::vec3(6.75f, -9.41f, 0.0f));
+				libshelf3->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+				libshelf3->SetScale(glm::vec3(0.3f, 0.3f, 0.3));
+
+				RenderComponent::Sptr renderer = libshelf3->Add<RenderComponent>();
+				renderer->SetMesh(libshelfMesh);
+				renderer->SetMaterial(libshelfMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = libshelf3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.38f, 1.88f, 0.89f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr libshelf4 = scene->CreateGameObject("library shelf 4");
+			{
+				libshelf4->SetPostion(glm::vec3(9.93f, -9.94f, 0.0f));
+				libshelf4->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+				libshelf4->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
+
+				RenderComponent::Sptr renderer = libshelf4->Add<RenderComponent>();
+				renderer->SetMesh(libshelfMesh);
+				renderer->SetMaterial(libshelfMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = libshelf4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.38f, 1.88f, 0.89f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr libshelf5 = scene->CreateGameObject("library shelf 5");
+			{
+				libshelf5->SetPostion(glm::vec3(11.910f, -7.82f, 0.0f));
+				libshelf5->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+				libshelf5->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
+
+				RenderComponent::Sptr renderer = libshelf5->Add<RenderComponent>();
+				renderer->SetMesh(libshelfMesh);
+				renderer->SetMaterial(libshelfMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = libshelf5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.38f, 1.88f, 0.89f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr libshelf6 = scene->CreateGameObject("library shelf 6");
+			{
+				libshelf6->SetPostion(glm::vec3(9.70f, -5.94f, 0.0f));
+				libshelf6->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				libshelf6->SetScale(glm::vec3(0.3f, 0.1f, 0.3f));
+
+				RenderComponent::Sptr renderer = libshelf6->Add<RenderComponent>();
+				renderer->SetMesh(libshelfMesh);
+				renderer->SetMaterial(libshelfMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = libshelf6->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.38f, 0.65f, 0.89f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr libshelf7 = scene->CreateGameObject("library shelf 7");
+			{
+				libshelf7->SetPostion(glm::vec3(9.74f, -3.24f, 0.0f));
+				libshelf7->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				libshelf7->SetScale(glm::vec3(0.3f, 0.1f, 0.3f));
+
+				RenderComponent::Sptr renderer = libshelf7->Add<RenderComponent>();
+				renderer->SetMesh(libshelfMesh);
+				renderer->SetMaterial(libshelfMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = libshelf7->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.38f, 0.65f, 0.89f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr cashcounter4 = scene->CreateGameObject("CashCounter 4");
+			{
+				cashcounter4->SetPostion(glm::vec3(15.56f, -8.63f, 0.0f));
+				cashcounter4->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				cashcounter4->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = cashcounter4->Add<RenderComponent>();
+				renderer->SetMesh(cashMesh);
+				renderer->SetMaterial(cashMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = cashcounter4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.520f, 0.740f, 1.210f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr loungechair1 = scene->CreateGameObject("Lounge Chair 1");
+			{
+				loungechair1->SetPostion(glm::vec3(10.62f, -7.84f, 0.0f));
+				loungechair1->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+				loungechair1->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
+
+				RenderComponent::Sptr renderer = loungechair1->Add<RenderComponent>();
+				renderer->SetMesh(lchairMesh);
+				renderer->SetMaterial(lchairMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = loungechair1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.48f, 1.08f, 0.46f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr loungechair2 = scene->CreateGameObject("Lounge Chair 2");
+			{
+				loungechair2->SetPostion(glm::vec3(8.7f, -7.79f, 0.0f));
+				loungechair2->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				loungechair2->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
+
+				RenderComponent::Sptr renderer = loungechair2->Add<RenderComponent>();
+				renderer->SetMesh(lchairMesh);
+				renderer->SetMaterial(lchairMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = loungechair2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.48f, 1.08f, 0.46f));
+				physics->AddCollider(box);
+			}
+
 		//cup collection
 		{
 			Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
@@ -2915,6 +3766,17 @@ void DefaultSceneLayer::_CreateScene()
 			feedbackUI->AddChild(submitFeedback);
 			feedbackUI->AddChild(returnFeedback);
 		}
+		Gameplay::GameObject::Sptr inventoryUI = scene->CreateGameObject("Inventory UI");
+		{
+			RectTransform::Sptr transform = inventoryUI->Add<RectTransform>();
+			transform->SetMax({ 180, 100 });
+			transform->SetPosition(glm::vec2(881.94, 706.56));
+
+			GuiPanel::Sptr invPanel = inventoryUI->Add<GuiPanel>();
+			//invPanel->IsEnabled = false;
+
+		}
+
 		Gameplay::GameObject::Sptr inventoryUI = scene->CreateGameObject("Inventory UI");
 		{
 			RectTransform::Sptr transform = inventoryUI->Add<RectTransform>();
