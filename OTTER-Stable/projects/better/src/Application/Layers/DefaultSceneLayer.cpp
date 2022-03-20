@@ -2543,7 +2543,271 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(box);
 			}
 
-		//cup collection
+			TopLeft->AddChild(libshelf1);
+			TopLeft->AddChild(libshelf2);
+			TopLeft->AddChild(libshelf3);
+			TopLeft->AddChild(libshelf4);
+			TopLeft->AddChild(libshelf5);
+			TopLeft->AddChild(libshelf6);
+			TopLeft->AddChild(libshelf7);
+			TopLeft->AddChild(cashcounter4);
+			TopLeft->AddChild(loungechair1);
+			TopLeft->AddChild(loungechair2);
+
+			// Bottom Right
+
+			Gameplay::GameObject::Sptr BotRight = scene->CreateGameObject("Bottom Right");
+
+			Gameplay::GameObject::Sptr toilet1 = scene->CreateGameObject("Toilet 1");
+			{
+				toilet1->SetPostion(glm::vec3(-7.65f, 3.75f, 0.0f));
+				toilet1->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				toilet1->SetScale(glm::vec3(0.35f, 0.35f, 0.35f));
+
+				RenderComponent::Sptr renderer = toilet1->Add<RenderComponent>();
+				renderer->SetMesh(toiletMesh);
+				renderer->SetMaterial(toiletMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = toilet1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.0f, 0.0f, 0.08f));
+				box->SetScale(glm::vec3(0.28f, 1.09f, 0.43f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr toilet2 = scene->CreateGameObject("Toilet 2");
+			{
+				toilet2->SetPostion(glm::vec3(-6.53f, 5.96f, 0.0f));
+				toilet2->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+				toilet2->SetScale(glm::vec3(0.35f, 0.35f, 0.35f));
+
+				RenderComponent::Sptr renderer = toilet2->Add<RenderComponent>();
+				renderer->SetMesh(toiletMesh);
+				renderer->SetMaterial(toiletMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = toilet2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.0f, 0.0f, 0.08f));
+				box->SetScale(glm::vec3(0.28f, 1.09f, 0.43f));
+				physics->AddCollider(box);
+			
+			
+			}
+
+			Gameplay::GameObject::Sptr toilet3 = scene->CreateGameObject("Toilet 3");
+			{
+				toilet3->SetPostion(glm::vec3(-12.55f, 6.04f, 0.0f));
+				toilet3->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+				toilet3->SetScale(glm::vec3(0.35f, 0.35f, 0.35f));
+
+				RenderComponent::Sptr renderer = toilet3->Add<RenderComponent>();
+				renderer->SetMesh(toiletMesh);
+				renderer->SetMaterial(toiletMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = toilet3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.0f, 0.0f, 0.08f));
+				box->SetScale(glm::vec3(0.28f, 1.09f, 0.43f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr sink1 = scene->CreateGameObject("Sink 1");
+			{
+				sink1->SetPostion(glm::vec3(-10.01f, 0.0f, 0.0f));
+				sink1->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				sink1->SetScale(glm::vec3(0.25f, 0.25f, 0.25f));
+
+				RenderComponent::Sptr renderer = sink1->Add<RenderComponent>();
+				renderer->SetMesh(sinkMesh);
+				renderer->SetMaterial(sinkMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = sink1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.38f, 1.2f, 0.41f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr sink2 = scene->CreateGameObject("Sink 2");
+			{
+				sink2->SetPostion(glm::vec3(-11.08f, 0.0f, 0.0f));
+				sink2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				sink2->SetScale(glm::vec3(0.25f, 0.25f, 0.25f));
+
+				RenderComponent::Sptr renderer = sink2->Add<RenderComponent>();
+				renderer->SetMesh(sinkMesh);
+				renderer->SetMaterial(sinkMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = sink2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.38f, 1.2f, 0.41f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr sink3 = scene->CreateGameObject("Sink 3");
+			{
+				sink3->SetPostion(glm::vec3(-12.15f, 0.0f, 0.0f));
+				sink3->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				sink3->SetScale(glm::vec3(0.25f, 0.25f, 0.25f));
+
+				RenderComponent::Sptr renderer = sink3->Add<RenderComponent>();
+				renderer->SetMesh(sinkMesh);
+				renderer->SetMaterial(sinkMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = sink3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.38f, 1.2f, 0.41f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr tub1 = scene->CreateGameObject("Tub 1");
+			{
+				tub1->SetPostion(glm::vec3(-8.63f, 4.28f, 0.0f));
+				tub1->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+				tub1->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = tub1->Add<RenderComponent>();
+				renderer->SetMesh(tubMesh);
+				renderer->SetMaterial(tubMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = tub1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.5f, 0.56f, 1.07f));
+				physics->AddCollider(box);
+			}
+			
+			Gameplay::GameObject::Sptr tub2 = scene->CreateGameObject("Tub 2");
+			{
+				tub2->SetPostion(glm::vec3(-11.75f, 1.8f, 0.0f));
+				tub2->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				tub2->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = tub2->Add<RenderComponent>();
+				renderer->SetMesh(tubMesh);
+				renderer->SetMaterial(tubMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = tub2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.5f, 0.56f, 1.07f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr shower1 = scene->CreateGameObject("Shower 1");
+			{
+				shower1->SetPostion(glm::vec3(-12.49f, 4.57f, 0.0f));
+				shower1->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				shower1->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = shower1->Add<RenderComponent>();
+				renderer->SetMesh(showerMesh);
+				renderer->SetMaterial(showerMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = shower1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.54f, 2.06f, 0.51f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr cashcounter5 = scene->CreateGameObject("CashCounter 5");
+			{
+				cashcounter5->SetPostion(glm::vec3(-15.56f, 1.28f, 0.0f));
+				cashcounter5->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				cashcounter5->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = cashcounter5->Add<RenderComponent>();
+				renderer->SetMesh(cashMesh);
+				renderer->SetMaterial(cashMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = cashcounter5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.520f, 0.740f, 1.210f));
+				physics->AddCollider(box);
+			}
+
+			BotRight->AddChild(toilet1);
+			BotRight->AddChild(toilet2);
+			BotRight->AddChild(toilet3);
+			BotRight->AddChild(sink1);
+			BotRight->AddChild(sink2);
+			BotRight->AddChild(sink3);
+			BotRight->AddChild(tub1);
+			BotRight->AddChild(tub2);
+			BotRight->AddChild(shower1);
+			BotRight->AddChild(cashcounter5);
+
+			//Main Hall
+
+			Gameplay::GameObject::Sptr MainHall = scene->CreateGameObject("Main Hall");
+
+			Gameplay::GameObject::Sptr benchhall1 = scene->CreateGameObject("Bench 1");
+			{
+				benchhall1->SetPostion(glm::vec3(14.76f, -3.56f, 0.0f));
+				benchhall1->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				benchhall1->SetScale(glm::vec3(1.21f, 1.0f, 1.5f));
+
+				RenderComponent::Sptr renderer = benchhall1->Add<RenderComponent>();
+				renderer->SetMesh(benchMesh);
+				renderer->SetMaterial(benchMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = benchhall1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+				boxCollider->SetScale(glm::vec3(0.75f, 0.35f, 0.35f));
+				physics->AddCollider(boxCollider);
+			}
+
+			Gameplay::GameObject::Sptr benchhall2 = scene->CreateGameObject("Bench 2");
+			{
+				benchhall2->SetPostion(glm::vec3(-9.67f, 7.93f, 0.0f));
+				benchhall2->SetRotation(glm::vec3(90.0f, 0.0f, 107.0f));
+				benchhall2->SetScale(glm::vec3(1.31f, 1.0f, 1.5f));
+
+				RenderComponent::Sptr renderer = benchhall2->Add<RenderComponent>();
+				renderer->SetMesh(benchMesh);
+				renderer->SetMaterial(benchMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = benchhall2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+				boxCollider->SetScale(glm::vec3(0.79f, 0.39f, 0.26f));
+				physics->AddCollider(boxCollider);
+			}
+
+			Gameplay::GameObject::Sptr longfountain1 = scene->CreateGameObject("Long Fountain");
+			{
+				longfountain1->SetPostion(glm::vec3(10.77f, 0.0f, 0.0f));
+				longfountain1->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				longfountain1->SetScale(glm::vec3(0.3f, 0.49f, 0.4f));
+
+				RenderComponent::Sptr renderer = longfountain1->Add<RenderComponent>();
+				renderer->SetMesh(longfountainMesh);
+				renderer->SetMaterial(longfountainMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = longfountain1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+				boxCollider->SetScale(glm::vec3(0.49f, 1.0f, 4.06f));
+				physics->AddCollider(boxCollider);
+			}
+
+			Gameplay::GameObject::Sptr tallfountain1 = scene->CreateGameObject("Tall Fountain");
+			{
+				tallfountain1->SetPostion(glm::vec3(0.0f, -7.4f, 0.0f));
+				tallfountain1->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+				tallfountain1->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
+
+				RenderComponent::Sptr renderer = tallfountain1->Add<RenderComponent>();
+				renderer->SetMesh(tallfountainMesh);
+				renderer->SetMaterial(tallfountainMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = tallfountain1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+				boxCollider->SetScale(glm::vec3(1.15f, 1.78f, 1.15f));
+				physics->AddCollider(boxCollider);
+			}
+
+			MainHall->AddChild(benchhall1);
+			MainHall->AddChild(benchhall2);
+			MainHall->AddChild(longfountain1);
+			MainHall->AddChild(tallfountain1);
+
+		//cup collection CUPS TRASH
 		{
 			Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
 			{
@@ -3869,17 +4133,6 @@ void DefaultSceneLayer::_CreateScene()
 			feedbackUI->AddChild(pickupFeedback);
 			feedbackUI->AddChild(submitFeedback);
 			feedbackUI->AddChild(returnFeedback);
-		}
-
-		Gameplay::GameObject::Sptr inventoryUI = scene->CreateGameObject("Inventory UI");
-		{
-			RectTransform::Sptr transform = inventoryUI->Add<RectTransform>();
-			transform->SetMax({ 180, 100 });
-			transform->SetPosition(glm::vec2(881.94, 706.56));
-
-			GuiPanel::Sptr invPanel = inventoryUI->Add<GuiPanel>();
-			//invPanel->IsEnabled = false;
-
 		}
 
 		Gameplay::GameObject::Sptr inventoryUI = scene->CreateGameObject("Inventory UI");
