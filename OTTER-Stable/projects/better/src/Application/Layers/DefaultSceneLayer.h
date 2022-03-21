@@ -5,6 +5,8 @@
 #include "Utils/Macros.h"
 #include "Gameplay/Scene.h"
 #include "Gameplay/MeshResource.h"
+#include <algorithm>
+#include <random>
 
 /**
  * This example layer handles creating a default test scene, which we will use 
@@ -23,6 +25,9 @@ public:
 
 protected:
 	void _CreateScene();
+
+	void RandomizePositions();
+	
 	// The current scene that the application is working on
 	Gameplay::Scene::Sptr _currentScene;
 

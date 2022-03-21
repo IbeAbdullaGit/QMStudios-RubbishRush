@@ -31,6 +31,8 @@ public:
 	virtual void OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) override;
 	virtual void Awake() override;
 	virtual void Update(float deltaTime) override;
+
+
 	virtual void RenderImGui() override;
 	virtual nlohmann::json ToJson() const override;
 	static CollectTrashBehaviour::Sptr FromJson(const nlohmann::json& blob);
@@ -38,7 +40,7 @@ public:
 
 	int inventory;
 	
-
+	
 	std::string type = "Normal";
 
 protected:
@@ -49,4 +51,5 @@ protected:
 	bool activated = false;
 	ToneFire::FMODStudio studio;
 	ToneFire::StudioSound test;
+
 };

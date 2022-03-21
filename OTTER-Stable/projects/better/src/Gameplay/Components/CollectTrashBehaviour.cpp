@@ -94,7 +94,9 @@ void CollectTrashBehaviour::Awake()
 	ui = _scene->FindObjectByName("Pickup Feedback");
 	inventory = 4; //DEFAULT SIZE
 	
+	
 }
+
 
 void CollectTrashBehaviour::RenderImGui() { }
 

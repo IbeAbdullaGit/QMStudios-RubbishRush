@@ -163,7 +163,8 @@ void DefaultSceneLayer::OnUpdate()
 		objective = _currentScene->FindObjectByName("Objective UI Canvas");
 		returnUI = _currentScene->FindObjectByName("Return Feedback");
 		submitUI = _currentScene->FindObjectByName("Submit Feedback");
-		
+		//randomize
+		//RandomizePositions();
 
 		//only run this once
 		activated = true;
@@ -506,6 +507,8 @@ void DefaultSceneLayer::OnUpdate()
 
 						}
 					}
+					//randomize again
+					//RandomizePositions();
 					//put menus back in
 					TrashyE->Get<RenderComponent>()->IsEnabled = true;
 					RectangleE->Get<RenderComponent>()->IsEnabled = true;
@@ -669,6 +672,8 @@ void DefaultSceneLayer::OnUpdate()
 
 						}
 					}
+					//randomize again
+					//RandomizePositions();
 					//put menus back in
 					TrashyE->Get<RenderComponent>()->IsEnabled = true;
 					RectangleE->Get<RenderComponent>()->IsEnabled = true;
@@ -2942,5 +2947,31 @@ void DefaultSceneLayer::_CreateScene()
 		scene->score = 0;
 		scene->trash = 0;
 		scene->held = 0;
+	}
+}
+
+void DefaultSceneLayer::RandomizePositions()
+{
+	Gameplay::GameObject::Sptr trash1;
+	Gameplay::GameObject::Sptr trash2;
+	Gameplay::GameObject::Sptr trash3;
+	Gameplay::GameObject::Sptr trash4;
+	std::vector<Gameplay::GameObject::Sptr> all_trash;
+	all_trash.push_back(trash1);
+	all_trash.push_back(trash2);
+	all_trash.push_back(trash3);
+	all_trash.push_back(trash4);
+
+	std::vector<glm::vec3> positions;
+	
+	//randomize/shuffle
+	auto rd = std::random_device{};
+	auto rng = std::default_random_engine{ rd() };
+	std::shuffle(std::begin(positions), std::end(positions), rng);
+
+	//actually setting the new positions
+	for (int i = 0; i < all_trash.size(); i++)
+	{
+		all_trash[i]->SetPostion(positions[i]);
 	}
 }
