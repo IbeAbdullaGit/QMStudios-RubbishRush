@@ -2802,6 +2802,7 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(boxCollider);
 			}
 
+
 			MainHall->AddChild(benchhall1);
 			MainHall->AddChild(benchhall2);
 			MainHall->AddChild(longfountain1);
@@ -2809,20 +2810,131 @@ void DefaultSceneLayer::_CreateScene()
 
 		//cup collection CUPS TRASH
 		{
-			Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
+			//Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
+			//{
+			//	trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.06f));
+			//	trashM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			//	trashM->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
+			//	// Add a render component
+			//	RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
+			//	renderer->SetMesh(trashMesh);
+			//	renderer->SetMaterial(trashMaterial);
+			//	// Add a dynamic rigid body to this monkey
+			//	Gameplay::Physics::RigidBody::Sptr physics = trashM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			//	Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//	box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+			//	box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
+			//	//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			//	//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+			//	//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			//	physics->AddCollider(box);
+			//	//physics->SetMass(0.0f);
+			//	Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
+			//	Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//	box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+			//	box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
+			//	volume->AddCollider(box2);
+			//	CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
+
+
+
+			//}
+			//Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2"); //Has Cup PLACEHOLDER
+			//{
+			//	trash2->SetPostion(glm::vec3(6.36f, 2.64f, 0.06f));
+			//	trash2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			//	trash2->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
+			//	// Add a render component
+			//	RenderComponent::Sptr renderer = trash2->Add<RenderComponent>();
+			//	renderer->SetMesh(trashMesh);
+			//	renderer->SetMaterial(trashMaterial);
+			//	// Add a dynamic rigid body to this monkey
+			//	Gameplay::Physics::RigidBody::Sptr physics = trash2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			//	Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//	box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+			//	box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
+			//	//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			//	//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+			//	//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			//	physics->AddCollider(box);
+			//	//physics->SetMass(0.0f);
+			//	Gameplay::Physics::TriggerVolume::Sptr volume = trash2->Add<Gameplay::Physics::TriggerVolume>();
+			//	Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//	box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+			//	box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
+			//	volume->AddCollider(box2);
+			//	CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
+
+			//}
+			//Gameplay::GameObject::Sptr trash3 = scene->CreateGameObject("Trash3"); //has Cup PLACEHOLDER
+			//{
+			//	trash3->SetPostion(glm::vec3(10.08f, -4.97f, 0.06f));
+			//	trash3->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
+			//	trash3->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
+			//	// Add a render component
+			//	RenderComponent::Sptr renderer = trash3->Add<RenderComponent>();
+			//	renderer->SetMesh(trashMesh);
+			//	renderer->SetMaterial(trashMaterial);
+			//	// Add a dynamic rigid body to this monkey
+			//	Gameplay::Physics::RigidBody::Sptr physics = trash3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			//	Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//	box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+			//	box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
+			//	//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			//	//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+			//	//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			//	physics->AddCollider(box);
+			//	//physics->SetMass(0.0f);
+			//	Gameplay::Physics::TriggerVolume::Sptr volume = trash3->Add<Gameplay::Physics::TriggerVolume>();
+			//	Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//	box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+			//	box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
+			//	volume->AddCollider(box2);
+			//	CollectTrashBehaviour::Sptr behaviour2 = trash3->Add<CollectTrashBehaviour>();
+
+			//}
+			//Gameplay::GameObject::Sptr trash4 = scene->CreateGameObject("Trash4"); //has cup PLACEHOLDER
+			//{
+			//	trash4->SetPostion(glm::vec3(13.680, -1.67f, 0.06f));
+			//	trash4->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
+			//	trash4->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
+			//	// Add a render component
+			//	RenderComponent::Sptr renderer = trash4->Add<RenderComponent>();
+			//	renderer->SetMesh(trashMesh);
+			//	renderer->SetMaterial(trashMaterial);
+			//	// Add a dynamic rigid body to this monkey
+			//	Gameplay::Physics::RigidBody::Sptr physics = trash4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			//	Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//	box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+			//	box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
+			//	//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			//	//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+			//	//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			//	physics->AddCollider(box);
+			//	//physics->SetMass(0.0f);
+			//	Gameplay::Physics::TriggerVolume::Sptr volume = trash4->Add<Gameplay::Physics::TriggerVolume>();
+			//	Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//	box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+			//	box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
+			//	volume->AddCollider(box2);
+			//	CollectTrashBehaviour::Sptr behaviour2 = trash4->Add<CollectTrashBehaviour>();
+
+			//}
+			
+			Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Trash1"); 
 			{
-				trashM->SetPostion(glm::vec3(2.75f, 2.27f, 0.06f));
-				trashM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				trashM->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
+				trashM->SetPostion(glm::vec3(3.487f, 5.735f, 0.0f));
+				trashM->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+				trashM->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
 				// Add a render component
 				RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
-				renderer->SetMesh(trashMesh);
-				renderer->SetMaterial(trashMaterial);
+				renderer->SetMesh(bagtrashMesh);
+				renderer->SetMaterial(bagtrashMaterial);
 				// Add a dynamic rigid body to this monkey
 				Gameplay::Physics::RigidBody::Sptr physics = trashM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
+				box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
+				box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
 				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
@@ -2830,28 +2942,31 @@ void DefaultSceneLayer::_CreateScene()
 				//physics->SetMass(0.0f);
 				Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
+				box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
+				box2->SetRotation(glm::vec3(0.0f, -3.0f, 0.0f));
+				box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
 				volume->AddCollider(box2);
 				CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
 
 
 
 			}
-			Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2"); //Has Cup PLACEHOLDER
+
+
+			Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2"); 
 			{
-				trash2->SetPostion(glm::vec3(6.36f, 2.64f, 0.06f));
-				trash2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				trash2->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
+				trash2->SetPostion(glm::vec3(-7.963f, 1.997f, 0.f));
+				trash2->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+				trash2->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
 				// Add a render component
 				RenderComponent::Sptr renderer = trash2->Add<RenderComponent>();
-				renderer->SetMesh(trashMesh);
-				renderer->SetMaterial(trashMaterial);
+				renderer->SetMesh(bagtrashMesh);
+				renderer->SetMaterial(bagtrashMaterial);
 				// Add a dynamic rigid body to this monkey
 				Gameplay::Physics::RigidBody::Sptr physics = trash2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
+				box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
+				box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
 				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
@@ -2859,26 +2974,29 @@ void DefaultSceneLayer::_CreateScene()
 				//physics->SetMass(0.0f);
 				Gameplay::Physics::TriggerVolume::Sptr volume = trash2->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
-				volume->AddCollider(box2);
-				CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
+box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
+box2->SetRotation(glm::vec3(0.0f, -3.0f, 0.0f));
+box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
+volume->AddCollider(box2);
+CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
 
 			}
-			Gameplay::GameObject::Sptr trash3 = scene->CreateGameObject("Trash3"); //has Cup PLACEHOLDER
+
+
+			Gameplay::GameObject::Sptr trash3 = scene->CreateGameObject("Trash3");
 			{
-				trash3->SetPostion(glm::vec3(10.08f, -4.97f, 0.06f));
-				trash3->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
-				trash3->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
+				trash3->SetPostion(glm::vec3(-16.344f, 2.197f, 0.0f));
+				trash3->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+				trash3->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
 				// Add a render component
 				RenderComponent::Sptr renderer = trash3->Add<RenderComponent>();
-				renderer->SetMesh(trashMesh);
-				renderer->SetMaterial(trashMaterial);
+				renderer->SetMesh(bagtrashMesh);
+				renderer->SetMaterial(bagtrashMaterial);
 				// Add a dynamic rigid body to this monkey
 				Gameplay::Physics::RigidBody::Sptr physics = trash3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
+				box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
+				box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
 				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
@@ -2886,23 +3004,54 @@ void DefaultSceneLayer::_CreateScene()
 				//physics->SetMass(0.0f);
 				Gameplay::Physics::TriggerVolume::Sptr volume = trash3->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
+				box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
+				box2->SetRotation(glm::vec3(0.0f, -3.0f, 0.0f));
+				box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
 				volume->AddCollider(box2);
 				CollectTrashBehaviour::Sptr behaviour2 = trash3->Add<CollectTrashBehaviour>();
 
 			}
+
 			Gameplay::GameObject::Sptr trash4 = scene->CreateGameObject("Trash4"); //has cup PLACEHOLDER
 			{
-				trash4->SetPostion(glm::vec3(13.680, -1.67f, 0.06f));
-				trash4->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
-				trash4->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
+				trash4->SetPostion(glm::vec3(-11.836, 5.937f, 0.0f));
+				trash4->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+				trash4->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
 				// Add a render component
 				RenderComponent::Sptr renderer = trash4->Add<RenderComponent>();
+				renderer->SetMesh(bagtrashMesh);
+				renderer->SetMaterial(bagtrashMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = trash4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
+				box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);
+				Gameplay::Physics::TriggerVolume::Sptr volume = trash4->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
+				box2->SetRotation(glm::vec3(0.0f, -3.0f, 0.0f));
+				box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
+				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = trash4->Add<CollectTrashBehaviour>();
+
+			}
+
+			Gameplay::GameObject::Sptr CupM = scene->CreateGameObject("Recycle1"); //has cup PLACEHOLDER
+			{
+				CupM->SetPostion(glm::vec3(-6.399, 3.569f, 0.06f));
+				CupM->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
+				CupM->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
+				// Add a render component
+				RenderComponent::Sptr renderer = CupM->Add<RenderComponent>();
 				renderer->SetMesh(trashMesh);
 				renderer->SetMaterial(trashMaterial);
 				// Add a dynamic rigid body to this monkey
-				Gameplay::Physics::RigidBody::Sptr physics = trash4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::RigidBody::Sptr physics = CupM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
 				box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
@@ -2911,15 +3060,638 @@ void DefaultSceneLayer::_CreateScene()
 				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 				physics->AddCollider(box);
 				//physics->SetMass(0.0f);
-				Gameplay::Physics::TriggerVolume::Sptr volume = trash4->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::TriggerVolume::Sptr volume = CupM->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
 				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
 				volume->AddCollider(box2);
-				CollectTrashBehaviour::Sptr behaviour2 = trash4->Add<CollectTrashBehaviour>();
+				CollectTrashBehaviour::Sptr behaviour2 = CupM->Add<CollectTrashBehaviour>();
+				behaviour2->type = "Recycle";
 
 			}
+
+
+			Gameplay::GameObject::Sptr trash5 = scene->CreateGameObject("Trash5"); //has cup PLACEHOLDER
+			{
+				trash5->SetPostion(glm::vec3(-3.404, -9.582f, 0.0f));
+				trash5->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+				trash5->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
+				// Add a render component
+				RenderComponent::Sptr renderer = trash5->Add<RenderComponent>();
+				renderer->SetMesh(bagtrashMesh);
+				renderer->SetMaterial(bagtrashMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = trash5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
+				box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);
+				Gameplay::Physics::TriggerVolume::Sptr volume = trash5->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
+				box2->SetRotation(glm::vec3(0.0f, -3.0f, 0.0f));
+				box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
+				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = trash5->Add<CollectTrashBehaviour>();
+
+			}
+
+			Gameplay::GameObject::Sptr trash6 = scene->CreateGameObject("Trash6"); //has cup PLACEHOLDER
+			{
+				trash6->SetPostion(glm::vec3(16.289, 5.601f, 0.0f));
+				trash6->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+				trash6->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
+				// Add a render component
+				RenderComponent::Sptr renderer = trash6->Add<RenderComponent>();
+				renderer->SetMesh(bagtrashMesh);
+				renderer->SetMaterial(bagtrashMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = trash6->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
+				box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);
+				Gameplay::Physics::TriggerVolume::Sptr volume = trash6->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
+				box2->SetRotation(glm::vec3(0.0f, -3.0f, 0.0f));
+				box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
+				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = trash6->Add<CollectTrashBehaviour>();
+
+			}
+
+			Gameplay::GameObject::Sptr trash7 = scene->CreateGameObject("Trash7"); //has cup PLACEHOLDER
+			{
+				trash7->SetPostion(glm::vec3(13.251, 10.554f, 0.0f));
+				trash7->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+				trash7->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
+				// Add a render component
+				RenderComponent::Sptr renderer = trash7->Add<RenderComponent>();
+				renderer->SetMesh(bagtrashMesh);
+				renderer->SetMaterial(bagtrashMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = trash7->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
+				box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);
+				Gameplay::Physics::TriggerVolume::Sptr volume = trash7->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
+				box2->SetRotation(glm::vec3(0.0f, -3.0f, 0.0f));
+				box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
+				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = trash7->Add<CollectTrashBehaviour>();
+
+			}
+
+			Gameplay::GameObject::Sptr Cup2 = scene->CreateGameObject("Recycle2"); //has cup PLACEHOLDER
+			{
+				Cup2->SetPostion(glm::vec3(-0.789, 10.168f, 0.06f));
+				Cup2->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
+				Cup2->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
+				// Add a render component
+				RenderComponent::Sptr renderer = Cup2->Add<RenderComponent>();
+				renderer->SetMesh(trashMesh);
+				renderer->SetMaterial(trashMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = Cup2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);
+				Gameplay::Physics::TriggerVolume::Sptr volume = Cup2->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
+				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = Cup2->Add<CollectTrashBehaviour>();
+				behaviour2->type = "Recycle";
+
+			}
+
+			Gameplay::GameObject::Sptr trash8 = scene->CreateGameObject("Trash8"); //has cup PLACEHOLDER
+			{
+				trash8->SetPostion(glm::vec3(13.064, -9.650f, 0.0f));
+				trash8->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+				trash8->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
+				// Add a render component
+				RenderComponent::Sptr renderer = trash8->Add<RenderComponent>();
+				renderer->SetMesh(bagtrashMesh);
+				renderer->SetMaterial(bagtrashMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = trash8->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
+				box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);
+				Gameplay::Physics::TriggerVolume::Sptr volume = trash8->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
+				box2->SetRotation(glm::vec3(0.0f, -3.0f, 0.0f));
+				box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
+				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = trash8->Add<CollectTrashBehaviour>();
+
+			}
+
+			Gameplay::GameObject::Sptr trash9 = scene->CreateGameObject("Trash9"); //has cup PLACEHOLDER
+			{
+				trash9->SetPostion(glm::vec3(7.801, -3.236f, 0.0f));
+				trash9->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+				trash9->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
+				// Add a render component
+				RenderComponent::Sptr renderer = trash9->Add<RenderComponent>();
+				renderer->SetMesh(bagtrashMesh);
+				renderer->SetMaterial(bagtrashMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = trash9->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
+				box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);
+				Gameplay::Physics::TriggerVolume::Sptr volume = trash9->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
+				box2->SetRotation(glm::vec3(0.0f, -3.0f, 0.0f));
+				box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
+				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = trash9->Add<CollectTrashBehaviour>();
+
+			}
+
+			Gameplay::GameObject::Sptr Cup3 = scene->CreateGameObject("Recycle3"); //has cup PLACEHOLDER
+			{
+				Cup3->SetPostion(glm::vec3(4.647, -9.695f, 0.06f));
+				Cup3->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
+				Cup3->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
+				// Add a render component
+				RenderComponent::Sptr renderer = Cup3->Add<RenderComponent>();
+				renderer->SetMesh(trashMesh);
+				renderer->SetMaterial(trashMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = Cup3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);
+				Gameplay::Physics::TriggerVolume::Sptr volume = Cup3->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
+				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = Cup3->Add<CollectTrashBehaviour>();
+				behaviour2->type = "Recycle";
+
+			}
+
+			Gameplay::GameObject::Sptr Cup4 = scene->CreateGameObject("Recycle4"); //has cup PLACEHOLDER
+			{
+				Cup4->SetPostion(glm::vec3(-16.379, -9.667f, 0.06f));
+				Cup4->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
+				Cup4->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
+				// Add a render component
+				RenderComponent::Sptr renderer = Cup4->Add<RenderComponent>();
+				renderer->SetMesh(trashMesh);
+				renderer->SetMaterial(trashMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = Cup4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);
+				Gameplay::Physics::TriggerVolume::Sptr volume = Cup4->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
+				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = Cup4->Add<CollectTrashBehaviour>();
+				behaviour2->type = "Recycle";
+
+			}
+
+			Gameplay::GameObject::Sptr trash10 = scene->CreateGameObject("Trash10"); //has cup PLACEHOLDER
+			{
+				trash10->SetPostion(glm::vec3(-5.428, -4.582f, 0.0f));
+				trash10->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+				trash10->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
+				// Add a render component
+				RenderComponent::Sptr renderer = trash10->Add<RenderComponent>();
+				renderer->SetMesh(bagtrashMesh);
+				renderer->SetMaterial(bagtrashMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = trash10->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
+				box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);
+				Gameplay::Physics::TriggerVolume::Sptr volume = trash10->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
+				box2->SetRotation(glm::vec3(0.0f, -3.0f, 0.0f));
+				box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
+				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = trash10->Add<CollectTrashBehaviour>();
+
+			}
+
+
+			Gameplay::GameObject::Sptr trash11 = scene->CreateGameObject("Trash11"); //has cup PLACEHOLDER
+			{
+				trash11->SetPostion(glm::vec3(-11.654, -9.563f, 0.0f));
+				trash11->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+				trash11->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
+				// Add a render component
+				RenderComponent::Sptr renderer = trash11->Add<RenderComponent>();
+				renderer->SetMesh(bagtrashMesh);
+				renderer->SetMaterial(bagtrashMaterial);
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = trash11->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
+				box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);
+				Gameplay::Physics::TriggerVolume::Sptr volume = trash11->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
+				box2->SetRotation(glm::vec3(0.0f, -3.0f, 0.0f));
+				box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
+				volume->AddCollider(box2);
+				CollectTrashBehaviour::Sptr behaviour2 = trash11->Add<CollectTrashBehaviour>();
+
+			}
+
 		}
+
+
+		//Obstacles
+		{
+
+		Gameplay::GameObject::Sptr spillM = scene->CreateGameObject("Spill1");
+		{
+			spillM->SetPostion(glm::vec3(-11.792f, 3.142f, 0.03f));
+			spillM->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+			spillM->SetScale(glm::vec3(0.790f, 0.7f, 1.f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spillM->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = spillM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spillM->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spillM->Add<SpillBehaviour>();
+
+
+		}
+
+		Gameplay::GameObject::Sptr spill2 = scene->CreateGameObject("Spill2");
+		{
+			spill2->SetPostion(glm::vec3(-14.500f, 7.044f, 0.03f));
+			spill2->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			spill2->SetScale(glm::vec3(0.870f, 0.7f, 1.f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill2->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = spill2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill2->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill2->Add<SpillBehaviour>();
+
+
+		}
+
+		Gameplay::GameObject::Sptr conveyor = scene->CreateGameObject("Conveyor");
+		{
+			conveyor->SetPostion(glm::vec3(-9.826f, 9.947f, 0.0f));
+			conveyor->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+			conveyor->SetScale(glm::vec3(0.5f, 0.64f, 0.39f));
+
+			RenderComponent::Sptr renderer = conveyor->Add<RenderComponent>();
+			renderer->SetMesh(conveyorMesh);
+			renderer->SetMaterial(conveyorMaterial);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = conveyor->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			box->SetScale(glm::vec3(0.28f, 0.151f, 1.52f));
+			physics->AddCollider(box);
+			Gameplay::Physics::TriggerVolume::Sptr volume = conveyor->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			box2->SetScale(glm::vec3(0.28f, 0.041f, 1.52f));
+			box2->SetPosition(glm::vec3(0.0f, 0.13f, 0.0f));
+			volume->AddCollider(box2);
+			ConveyorBeltBehaviour::Sptr behaviour2 = conveyor->Add<ConveyorBeltBehaviour>();
+		}
+
+		Gameplay::GameObject::Sptr spill3 = scene->CreateGameObject("Spill3");
+		{
+			spill3->SetPostion(glm::vec3(-3.489f, 8.356f, 0.03f));
+			spill3->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			spill3->SetScale(glm::vec3(1.25f, 0.7f, 1.f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill3->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = spill3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill3->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill3->Add<SpillBehaviour>();
+
+
+		}
+
+		Gameplay::GameObject::Sptr conveyor2 = scene->CreateGameObject("Conveyor2");
+		{
+			conveyor2->SetPostion(glm::vec3(1.625f, 4.915f, 0.50f));
+			conveyor2->SetRotation(glm::vec3(-90.0f, 0.0f, -90.0f));
+			conveyor2->SetScale(glm::vec3(0.31f, 0.69f, 0.45f));
+
+			RenderComponent::Sptr renderer = conveyor2->Add<RenderComponent>();
+			renderer->SetMesh(conveyorMesh);
+			renderer->SetMaterial(conveyorMaterial);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = conveyor2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			box->SetScale(glm::vec3(0.28f, 0.151f, 1.52f));
+			physics->AddCollider(box);
+			Gameplay::Physics::TriggerVolume::Sptr volume = conveyor2->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			box2->SetScale(glm::vec3(0.28f, 0.041f, 1.52f));
+			box2->SetPosition(glm::vec3(0.0f, 0.13f, 0.0f));
+			volume->AddCollider(box2);
+			ConveyorBeltBehaviour::Sptr behaviour2 = conveyor2->Add<ConveyorBeltBehaviour>();
+		}
+
+		Gameplay::GameObject::Sptr spill4 = scene->CreateGameObject("Spill4");
+		{
+			spill4->SetPostion(glm::vec3(-4.328f, 1.298f, 0.03f));
+			spill4->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			spill4->SetScale(glm::vec3(1.25f, 0.7f, 1.f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill4->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = spill4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill4->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill4->Add<SpillBehaviour>();
+
+		}
+
+		Gameplay::GameObject::Sptr conveyor3 = scene->CreateGameObject("Conveyor3");
+		{
+			conveyor3->SetPostion(glm::vec3(-6.118f, -2.091f, 0.0f));
+			conveyor3->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
+			conveyor3->SetScale(glm::vec3(0.3f, 0.3f, 0.39f));
+
+			RenderComponent::Sptr renderer = conveyor3->Add<RenderComponent>();
+			renderer->SetMesh(conveyorMesh);
+			renderer->SetMaterial(conveyorMaterial);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = conveyor3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			box->SetScale(glm::vec3(0.28f, 0.151f, 1.52f));
+			physics->AddCollider(box);
+			Gameplay::Physics::TriggerVolume::Sptr volume = conveyor3->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			box2->SetScale(glm::vec3(0.28f, 0.041f, 1.52f));
+			box2->SetPosition(glm::vec3(0.0f, 0.13f, 0.0f));
+			volume->AddCollider(box2);
+			ConveyorBeltBehaviour::Sptr behaviour2 = conveyor3->Add<ConveyorBeltBehaviour>();
+		}
+
+		Gameplay::GameObject::Sptr spill5 = scene->CreateGameObject("Spill5");
+		{
+			spill5->SetPostion(glm::vec3(2.946f, -2.231f, 0.03f));
+			spill5->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			spill5->SetScale(glm::vec3(1.25f, 0.7f, 1.f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill5->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = spill5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill5->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill5->Add<SpillBehaviour>();
+
+		}
+
+		Gameplay::GameObject::Sptr spill6 = scene->CreateGameObject("Spill6");
+		{
+			spill6->SetPostion(glm::vec3(14.24f, 4.38f, 0.03f));
+			spill6->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			spill6->SetScale(glm::vec3(1.25f, 0.7f, 1.f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill6->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = spill6->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill6->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill6->Add<SpillBehaviour>();
+
+		}
+
+		Gameplay::GameObject::Sptr spill7 = scene->CreateGameObject("Spill7");
+		{
+			spill7->SetPostion(glm::vec3(3.22f, 9.304f, 0.03f));
+			spill7->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			spill7->SetScale(glm::vec3(1.25f, 0.7f, 1.f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill7->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = spill7->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill7->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill7->Add<SpillBehaviour>();
+
+		}
+
+		Gameplay::GameObject::Sptr spill8 = scene->CreateGameObject("Spill8");
+		{
+			spill8->SetPostion(glm::vec3(10.791f, -4.363f, 0.03f));
+			spill8->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			spill8->SetScale(glm::vec3(1.25f, 0.7f, 1.f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill8->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = spill8->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill8->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill8->Add<SpillBehaviour>();
+
+		}
+
+		Gameplay::GameObject::Sptr spill9 = scene->CreateGameObject("Spill9");
+		{
+			spill9->SetPostion(glm::vec3(-8.420, -7.542f, 0.03f));
+			spill9->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			spill9->SetScale(glm::vec3(1.03f, 0.7f, 1.f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill9->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			Gameplay::Physics::RigidBody::Sptr physics = spill9->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill9->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill9->Add<SpillBehaviour>();
+
+		}
+
+	}
+
+
 		//set up robo toy
 		/*Gameplay::MeshResource::Sptr roboMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Robo/RoboWalk_000001.obj");
 		Texture2D::Sptr roboTex = ResourceManager::CreateAsset<Texture2D>("textures/robo.png");
