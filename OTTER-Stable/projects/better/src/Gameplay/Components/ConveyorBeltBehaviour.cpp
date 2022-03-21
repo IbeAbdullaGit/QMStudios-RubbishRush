@@ -23,18 +23,22 @@ void ConveyorBeltBehaviour::Awake()
 
 void ConveyorBeltBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>&body)
 {
-	LOG_INFO("Body has entered our trigger volume: {}", body->GetGameObject()->Name);
-	_playerInTrigger = true;
-	
-	//add force to objects that collide
-	body->ApplyImpulse(direction);
-	body2 = body;
-	//body->GetGameObject()->Get<RigidBody>()->ApplyImpulse(direction);
+	if (body != nullptr)
+	{//LOG_INFO("Body has entered our trigger volume: {}", body->GetGameObject()->Name);
+		_playerInTrigger = true;
+
+		//add force to objects that collide
+		body->ApplyImpulse(direction);
+		body2 = body;
+		//body->GetGameObject()->Get<RigidBody>()->ApplyImpulse(direction);
+	}
 }
 
 void ConveyorBeltBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>&body) {
-	LOG_INFO("Body has left our trigger volume: {}", body->GetGameObject()->Name);
-	_playerInTrigger = false;
+	if (body != nullptr)
+	{//LOG_INFO("Body has left our trigger volume: {}", body->GetGameObject()->Name);
+		_playerInTrigger = false;
+	}
 	
 }
 void ConveyorBeltBehaviour::Update(float deltatime)

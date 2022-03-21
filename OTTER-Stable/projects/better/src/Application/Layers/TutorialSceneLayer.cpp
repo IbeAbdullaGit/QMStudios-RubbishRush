@@ -1410,7 +1410,7 @@ void TutorialSceneLayer::_CreateScene()
 			{
 				RectTransform::Sptr transform = inventoryUI->Add<RectTransform>();
 				transform->SetMax({ 180, 100 });
-				transform->SetPosition(glm::vec2(881.94, 706.56));
+				transform->SetPosition(glm::vec2(929, 600));
 
 				GuiPanel::Sptr invPanel = inventoryUI->Add<GuiPanel>();
 				//invPanel->IsEnabled = false;
@@ -1537,14 +1537,14 @@ void TutorialSceneLayer::_CreateHallway() {
 		renderer->SetMesh(spillMesh);
 		renderer->SetMaterial(spillMaterial);
 		// Add a dynamic rigid body to this monkey
-		Gameplay::Physics::RigidBody::Sptr physics = spillM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+		//Gameplay::Physics::RigidBody::Sptr physics = spillM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 		Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 		//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
 		//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
 		//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 		box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
 		//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
-		physics->AddCollider(box);
+		//physics->AddCollider(box);
 		//physics->SetMass(0.0f);
 		Gameplay::Physics::TriggerVolume::Sptr volume = spillM->Add<Gameplay::Physics::TriggerVolume>();
 		Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
