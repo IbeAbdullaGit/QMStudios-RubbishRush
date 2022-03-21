@@ -81,14 +81,14 @@ void MorphAnimator::Update(float deltaTime)
 		else if (GetComponent<PlayerMovementBehavior>()->is_moving) //normal walking
 		{
 			SetFrames(walking);
-			SetFrameTime(0.2f);
+			SetFrameTime(0.1f);
 			_scene->walk = true;
 			//std::cout << "Walk now\n";
 		}
 		else //nothing pressed
 		{
 			SetFrames(idle);
-			SetFrameTime(0.2f);
+			SetFrameTime(0.1f);
 			_scene->walk = false;
 			//std::cout << "Idle now\n";
 		}

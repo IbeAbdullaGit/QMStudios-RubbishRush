@@ -60,6 +60,17 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 		_impulse = 0.1f;
 	}
 
+	//running
+	if (glfwGetKey(app.GetWindow(), GLFW_KEY_LEFT_SHIFT))
+	{
+		_impulse *= 3.0f;
+		is_running = true;
+	}
+	else
+	{
+		is_running = false;
+	}
+
 	//IF SPACE PRESSED = MOVE
 	if (glfwGetKey(app.GetWindow(), GLFW_KEY_W) || glfwGetKey(app.GetWindow(), GLFW_KEY_UP)) {
 		if (_body->GetLinearVelocity().y >= -5.0f) {

@@ -27,7 +27,7 @@ public:
 
 	void SetSpill(bool state);
 	bool is_moving = false;
-
+	bool is_running = false;
 	
 protected:
 	

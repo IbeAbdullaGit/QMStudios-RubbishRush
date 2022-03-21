@@ -25,6 +25,8 @@ public:
 
 protected:
 	void _CreateScene();
+	void _CreateTrash();
+	std::vector<Gameplay::GameObject::Sptr> all_trash;
 
 	void RandomizePositions();
 	
@@ -35,8 +37,8 @@ protected:
 	Gameplay::GameObject::Sptr binM;
 	Gameplay::GameObject::Sptr RectangleE;
 	Gameplay::GameObject::Sptr TrashyE;
-	Gameplay::MeshResource::Sptr trashMesh;
-	Gameplay::Material::Sptr trashMaterial;
+	//Gameplay::MeshResource::Sptr trashMesh;
+	//Gameplay::Material::Sptr trashMaterial;
 
 	Gameplay::GameObject::Sptr startMenu;
 	Gameplay::GameObject::Sptr pauseMenu;
@@ -71,7 +73,7 @@ protected:
 	bool lose = false;
 	bool Victory = false;
 
-
+	bool lights = true;
 	//Variables for changing stuff in the game
 	float timeLoop = 7.0f; //The seconds between start time and the menu that plays in the beginning
 	float timelevelt = 25000.f; //The time needed to collect all trash
@@ -86,4 +88,10 @@ protected:
 	int max_trash = 15; //DEFAULT FOR NOW
 
 	bool press_once = false;
+
+	//save trash resources
+	Gameplay::MeshResource::Sptr bagtrashMesh;
+	Gameplay::Material::Sptr bagtrashMaterial;
+	Gameplay::MeshResource::Sptr trashMesh;
+	Gameplay::Material::Sptr trashMaterial;
 };

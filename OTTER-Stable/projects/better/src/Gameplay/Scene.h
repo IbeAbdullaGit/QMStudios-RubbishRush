@@ -212,7 +212,7 @@ namespace Gameplay {
 		int NumObjects() const;
 		GameObject::Sptr GetObjectByIndex(int index) const;
 
-
+		//bool lights = true;
 		int trash = 0;
 		int held = 0;
 		int held_recycle = 0;
