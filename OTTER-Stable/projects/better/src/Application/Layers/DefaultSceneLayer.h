@@ -23,10 +23,12 @@ public:
 	virtual void OnAppLoad(const nlohmann::json& config) override;
 	void OnUpdate() override;
 
+	std::vector<Gameplay::GameObject::Sptr> all_trash;
+
 protected:
 	void _CreateScene();
 	void _CreateTrash();
-	std::vector<Gameplay::GameObject::Sptr> all_trash;
+	
 
 	void RandomizePositions();
 	
@@ -72,7 +74,6 @@ protected:
 	bool timeleveltDone = false;
 	bool lose = false;
 	bool Victory = false;
-
 	bool lights = true;
 	//Variables for changing stuff in the game
 	float timeLoop = 7.0f; //The seconds between start time and the menu that plays in the beginning

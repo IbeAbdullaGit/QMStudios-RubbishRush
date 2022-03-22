@@ -88,7 +88,7 @@ void MorphAnimator::Update(float deltaTime)
 		else //nothing pressed
 		{
 			SetFrames(idle);
-			SetFrameTime(0.1f);
+			SetFrameTime(0.2f);
 			_scene->walk = false;
 			//std::cout << "Idle now\n";
 		}

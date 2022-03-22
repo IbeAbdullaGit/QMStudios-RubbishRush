@@ -856,6 +856,7 @@ void TutorialSceneLayer::_CreateScene()
 				volume->AddCollider(box2);
 				CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
 				behaviour2->type = "Recycle";
+				behaviour2->tutorial = true;
 			}
 
 			/*Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
@@ -909,6 +910,7 @@ void TutorialSceneLayer::_CreateScene()
 				volume->AddCollider(box2);
 
 				CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
+				behaviour2->tutorial = true;
 			}
 
 		}
@@ -1612,6 +1614,7 @@ void TutorialSceneLayer::_CreateHallway() {
 		volume->AddCollider(box2);
 
 		CollectTrashBehaviour::Sptr behaviour3 = trash3->Add<CollectTrashBehaviour>();
+		behaviour3->tutorial = true;
 	}
 
 }

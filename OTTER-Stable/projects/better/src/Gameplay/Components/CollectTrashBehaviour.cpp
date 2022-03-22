@@ -9,7 +9,7 @@
 #include "Utils/ImGuiHelper.h"
 #include "GUI/GuiText.h"
 #include "Application/Application.h"
-
+#include "Application/Layers/DefaultSceneLayer.h"
 
 CollectTrashBehaviour::CollectTrashBehaviour() :
 	IComponent()
@@ -43,6 +43,8 @@ void CollectTrashBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Gamepla
 void CollectTrashBehaviour::Update(float deltatime)
 {
 	Application& app = Application::Get();
+	//auto& scene = app.CurrentScene();
+	//ui = scene->FindObjectByName("Pickup Feedback");
 
 	if (activated && GetGameObject() !=nullptr)
 	{
@@ -69,6 +71,13 @@ void CollectTrashBehaviour::Update(float deltatime)
 				}
 				//delete trash from scene
 				Gameplay::GameObject::Sptr trash = _scene->FindObjectByName(GetGameObject()->Name);
+				if (!tutorial)
+				{
+					auto& all_trash = app.GetLayer<DefaultSceneLayer>()->all_trash;
+					auto& it = std::find(all_trash.begin(), all_trash.end(), trash);
+					app.GetLayer<DefaultSceneLayer>()->all_trash.erase(it);
+					
+				}
 				_scene->RemoveGameObject(trash);
 				//total held
 				_scene->held += 1;
@@ -93,8 +102,6 @@ void CollectTrashBehaviour::Awake()
 	_scene = GetGameObject()->GetScene();
 	ui = _scene->FindObjectByName("Pickup Feedback");
 	inventory = 4; //DEFAULT SIZE
-	
-	
 }
 
 

@@ -96,7 +96,7 @@ DefaultSceneLayer::~DefaultSceneLayer() = default;
 
 void DefaultSceneLayer::OnAppLoad(const nlohmann::json& config) {
 	_CreateScene();
-	_CreateTrash();
+	
 
 }
 std::string TimeCountdown(float DisplayTime) { //Timer Function
@@ -132,16 +132,15 @@ double lastFrame = glfwGetTime();
 void DefaultSceneLayer::OnUpdate()
 {
 	Application& app = Application::Get();
+	_currentScene = app.CurrentScene();
 	// Figure out the current time, and the time since the last frame
 	double thisFrame = glfwGetTime();
 	float dt = static_cast<float>(thisFrame - lastFrame);
 	
 	//fetch resources
 	if (!activated)
-	{
+	{		
 		
-		_currentScene = app.CurrentScene();
-
 		
 		trashyM = _currentScene->FindObjectByName("Trashy");
 		binM = _currentScene->FindObjectByName("Bin");
@@ -213,6 +212,8 @@ void DefaultSceneLayer::OnUpdate()
 			spressed = false;
 
 			_currentScene->FindObjectByName("Inventory UI")->Get<GuiPanel>()->IsEnabled = true;
+			//CREATE THE TRASH AHHHH
+			_CreateTrash();
 
 		}
 
@@ -4201,10 +4202,10 @@ void DefaultSceneLayer::_CreateScene()
 
 void DefaultSceneLayer::_CreateTrash()
 {
-	auto& scene = Application::Get().CurrentScene();
+	//auto& scene = Application::Get().CurrentScene();
 	//cup collection CUPS TRASH
 	{
-		Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Trash1");
+		Gameplay::GameObject::Sptr trashM = _currentScene->CreateGameObject("Trash1");
 		{
 			trashM->SetPostion(glm::vec3(3.487f, 5.735f, 0.0f));
 			trashM->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
@@ -4234,7 +4235,7 @@ void DefaultSceneLayer::_CreateTrash()
 		}
 		all_trash.push_back(trashM);
 
-		Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2");
+		Gameplay::GameObject::Sptr trash2 = _currentScene->CreateGameObject("Trash2");
 		{
 			trash2->SetPostion(glm::vec3(-7.963f, 1.997f, 0.f));
 			trash2->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
@@ -4264,7 +4265,7 @@ void DefaultSceneLayer::_CreateTrash()
 		}
 		all_trash.push_back(trash2);
 
-		Gameplay::GameObject::Sptr trash3 = scene->CreateGameObject("Trash3");
+		Gameplay::GameObject::Sptr trash3 = _currentScene->CreateGameObject("Trash3");
 		{
 			trash3->SetPostion(glm::vec3(-16.344f, 2.197f, 0.0f));
 			trash3->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
@@ -4293,7 +4294,7 @@ void DefaultSceneLayer::_CreateTrash()
 
 		}
 		all_trash.push_back(trash3);
-		Gameplay::GameObject::Sptr trash4 = scene->CreateGameObject("Trash4"); //has cup PLACEHOLDER
+		Gameplay::GameObject::Sptr trash4 = _currentScene->CreateGameObject("Trash4"); //has cup PLACEHOLDER
 		{
 			trash4->SetPostion(glm::vec3(-11.836, 5.937f, 0.0f));
 			trash4->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
@@ -4322,7 +4323,7 @@ void DefaultSceneLayer::_CreateTrash()
 
 		}
 		all_trash.push_back(trash4);
-		Gameplay::GameObject::Sptr CupM = scene->CreateGameObject("Recycle1"); //has cup PLACEHOLDER
+		Gameplay::GameObject::Sptr CupM = _currentScene->CreateGameObject("Recycle1"); //has cup PLACEHOLDER
 		{
 			CupM->SetPostion(glm::vec3(-6.399, 3.569f, 0.06f));
 			CupM->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
@@ -4352,7 +4353,7 @@ void DefaultSceneLayer::_CreateTrash()
 		}
 		all_trash.push_back(CupM);
 
-		Gameplay::GameObject::Sptr trash5 = scene->CreateGameObject("Trash5"); //has cup PLACEHOLDER
+		Gameplay::GameObject::Sptr trash5 = _currentScene->CreateGameObject("Trash5"); //has cup PLACEHOLDER
 		{
 			trash5->SetPostion(glm::vec3(-3.404, -9.582f, 0.0f));
 			trash5->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
@@ -4381,7 +4382,7 @@ void DefaultSceneLayer::_CreateTrash()
 
 		}
 		all_trash.push_back(trash5);
-		Gameplay::GameObject::Sptr trash6 = scene->CreateGameObject("Trash6"); //has cup PLACEHOLDER
+		Gameplay::GameObject::Sptr trash6 = _currentScene->CreateGameObject("Trash6"); //has cup PLACEHOLDER
 		{
 			trash6->SetPostion(glm::vec3(16.289, 5.601f, 0.0f));
 			trash6->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
@@ -4410,7 +4411,7 @@ void DefaultSceneLayer::_CreateTrash()
 
 		}
 		all_trash.push_back(trash6);
-		Gameplay::GameObject::Sptr trash7 = scene->CreateGameObject("Trash7"); //has cup PLACEHOLDER
+		Gameplay::GameObject::Sptr trash7 = _currentScene->CreateGameObject("Trash7"); //has cup PLACEHOLDER
 		{
 			trash7->SetPostion(glm::vec3(13.251, 10.554f, 0.0f));
 			trash7->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
@@ -4439,7 +4440,7 @@ void DefaultSceneLayer::_CreateTrash()
 
 		}
 		all_trash.push_back(trash7);
-		Gameplay::GameObject::Sptr Cup2 = scene->CreateGameObject("Recycle2"); //has cup PLACEHOLDER
+		Gameplay::GameObject::Sptr Cup2 = _currentScene->CreateGameObject("Recycle2"); //has cup PLACEHOLDER
 		{
 			Cup2->SetPostion(glm::vec3(-0.789, 10.168f, 0.06f));
 			Cup2->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
@@ -4468,7 +4469,7 @@ void DefaultSceneLayer::_CreateTrash()
 
 		}
 		all_trash.push_back(Cup2);
-		Gameplay::GameObject::Sptr trash8 = scene->CreateGameObject("Trash8"); //has cup PLACEHOLDER
+		Gameplay::GameObject::Sptr trash8 = _currentScene->CreateGameObject("Trash8"); //has cup PLACEHOLDER
 		{
 			trash8->SetPostion(glm::vec3(13.064, -9.650f, 0.0f));
 			trash8->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
@@ -4497,7 +4498,7 @@ void DefaultSceneLayer::_CreateTrash()
 
 		}
 		all_trash.push_back(trash8);
-		Gameplay::GameObject::Sptr trash9 = scene->CreateGameObject("Trash9"); //has cup PLACEHOLDER
+		Gameplay::GameObject::Sptr trash9 = _currentScene->CreateGameObject("Trash9"); //has cup PLACEHOLDER
 		{
 			trash9->SetPostion(glm::vec3(7.801, -3.236f, 0.0f));
 			trash9->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
@@ -4526,7 +4527,7 @@ void DefaultSceneLayer::_CreateTrash()
 
 		}
 		all_trash.push_back(trash9);
-		Gameplay::GameObject::Sptr Cup3 = scene->CreateGameObject("Recycle3"); //has cup PLACEHOLDER
+		Gameplay::GameObject::Sptr Cup3 = _currentScene->CreateGameObject("Recycle3"); //has cup PLACEHOLDER
 		{
 			Cup3->SetPostion(glm::vec3(4.647, -9.695f, 0.06f));
 			Cup3->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
@@ -4555,7 +4556,7 @@ void DefaultSceneLayer::_CreateTrash()
 
 		}
 		all_trash.push_back(Cup3);
-		Gameplay::GameObject::Sptr Cup4 = scene->CreateGameObject("Recycle4"); //has cup PLACEHOLDER
+		Gameplay::GameObject::Sptr Cup4 = _currentScene->CreateGameObject("Recycle4"); //has cup PLACEHOLDER
 		{
 			Cup4->SetPostion(glm::vec3(-16.379, -9.667f, 0.06f));
 			Cup4->SetRotation(glm::vec3(120.0f, 0.0f, 0.0f));
@@ -4584,7 +4585,7 @@ void DefaultSceneLayer::_CreateTrash()
 
 		}
 		all_trash.push_back(Cup4);
-		Gameplay::GameObject::Sptr trash10 = scene->CreateGameObject("Trash10"); //has cup PLACEHOLDER
+		Gameplay::GameObject::Sptr trash10 = _currentScene->CreateGameObject("Trash10"); //has cup PLACEHOLDER
 		{
 			trash10->SetPostion(glm::vec3(-5.428, -4.582f, 0.0f));
 			trash10->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
@@ -4614,7 +4615,7 @@ void DefaultSceneLayer::_CreateTrash()
 		}
 		all_trash.push_back(trash10);
 
-		Gameplay::GameObject::Sptr trash11 = scene->CreateGameObject("Trash11"); //has cup PLACEHOLDER
+		Gameplay::GameObject::Sptr trash11 = _currentScene->CreateGameObject("Trash11"); //has cup PLACEHOLDER
 		{
 			trash11->SetPostion(glm::vec3(-11.654, -9.563f, 0.0f));
 			trash11->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));

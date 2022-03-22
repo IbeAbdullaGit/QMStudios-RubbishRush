@@ -42,6 +42,7 @@ public:
 	
 	
 	std::string type = "Normal";
+	bool tutorial = false;
 
 protected:
 

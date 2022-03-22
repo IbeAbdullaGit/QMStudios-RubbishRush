@@ -399,6 +399,13 @@ namespace Gameplay {
 				_objects.erase(it);
 			}
 		}
+		
+		////all objects supposed to be deleted
+		//for (int i = 0; i < _deletionQueue.size(); i++)
+		//{
+		//	auto& it = std::find(_objects.begin(), _objects.end(), _deletionQueue[i]);
+		//	_objects.erase(it);
+		//}
 		_deletionQueue.clear();
 	}
 
