@@ -1240,7 +1240,7 @@ void DefaultSceneLayer::_CreateScene()
 
 		//layout
 		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("malllayoutwall.obj");
-		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/layout.jpg");
+		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/walls.jpg");
 		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			layoutMaterial->Name = "Layout";
@@ -2545,7 +2545,7 @@ void DefaultSceneLayer::_CreateScene()
 
 			Gameplay::GameObject::Sptr benchhall2 = scene->CreateGameObject("Bench 2");
 			{
-				benchhall2->SetPostion(glm::vec3(-9.67f, 7.93f, 0.0f));
+				benchhall2->SetPostion(glm::vec3(-9.67f, 8.22f, 0.0f));
 				benchhall2->SetRotation(glm::vec3(90.0f, 0.0f, 107.0f));
 				benchhall2->SetScale(glm::vec3(1.31f, 1.0f, 1.5f));
 
@@ -2555,7 +2555,7 @@ void DefaultSceneLayer::_CreateScene()
 
 				Gameplay::Physics::RigidBody::Sptr physics = benchhall2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
-				boxCollider->SetScale(glm::vec3(0.79f, 0.39f, 0.26f));
+				boxCollider->SetScale(glm::vec3(1.9f, 0.39f, 0.26f));
 				physics->AddCollider(boxCollider);
 			}
 
@@ -2710,8 +2710,8 @@ void DefaultSceneLayer::_CreateScene()
 
 		Gameplay::GameObject::Sptr conveyor2 = scene->CreateGameObject("Conveyor2");
 		{
-			conveyor2->SetPostion(glm::vec3(1.625f, 4.915f, 0.50f));
-			conveyor2->SetRotation(glm::vec3(-90.0f, 0.0f, -90.0f));
+			conveyor2->SetPostion(glm::vec3(1.625f, 4.915f, 0.0f));
+			conveyor2->SetRotation(glm::vec3(-90.0f, -180.0f, -90.0f));
 			conveyor2->SetScale(glm::vec3(0.31f, 0.69f, 0.45f));
 
 			RenderComponent::Sptr renderer = conveyor2->Add<RenderComponent>();
