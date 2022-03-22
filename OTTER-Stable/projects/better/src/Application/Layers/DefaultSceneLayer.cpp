@@ -668,10 +668,10 @@ void DefaultSceneLayer::_CreateScene()
 		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/cup.jpg");
 		Gameplay::Material::Sptr trashMaterial2 = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
-			trashMaterial->Name = "Trash";
-			trashMaterial->Set("u_Material.AlbedoMap", trashTex);
-			trashMaterial->Set("u_Material.Shininess", 0.3f);
-			trashMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			trashMaterial2->Name = "Trash";
+			trashMaterial2->Set("u_Material.AlbedoMap", trashTex);
+			trashMaterial2->Set("u_Material.Shininess", 0.3f);
+			trashMaterial2->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
 		trashMesh = trashMesh2;
@@ -682,10 +682,10 @@ void DefaultSceneLayer::_CreateScene()
 
 		Gameplay::Material::Sptr bagtrashMaterial2 = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
-			bagtrashMaterial->Name = "Bag Trash";
-			bagtrashMaterial->Set("u_Material.AlbedoMap", bagtrashTex);
-			bagtrashMaterial->Set("u_Material.Shininess", 0.3f);
-			bagtrashMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			bagtrashMaterial2->Name = "Bag Trash";
+			bagtrashMaterial2->Set("u_Material.AlbedoMap", bagtrashTex);
+			bagtrashMaterial2->Set("u_Material.Shininess", 0.3f);
+			bagtrashMaterial2->Set("u_Material.NormalMap", normalMapDefault);
 		}
 		bagtrashMesh = bagtrashMesh2;
 		bagtrashMaterial = bagtrashMaterial2;
@@ -1239,7 +1239,7 @@ void DefaultSceneLayer::_CreateScene()
 		}
 
 		//layout
-		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("malllayout.obj");
+		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("malllayoutwall.obj");
 		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/layout.jpg");
 		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
