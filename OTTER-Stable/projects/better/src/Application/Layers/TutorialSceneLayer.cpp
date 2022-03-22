@@ -199,7 +199,7 @@ void TutorialSceneLayer::OnUpdate()
 			//MENU ANIMATED UPDATED
 			if (_tutcurrentScene->IsPlaying && !done &&!musicstart) {
 				
-				test.PlayEvent("event:/Music");	
+				test.PlayEvent("event:/Music Regular");
 				musicstart = true;
 			}
 
