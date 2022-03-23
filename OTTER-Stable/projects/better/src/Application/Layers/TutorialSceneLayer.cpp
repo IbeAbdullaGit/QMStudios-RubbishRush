@@ -91,7 +91,7 @@ TutorialSceneLayer::TutorialSceneLayer() :
 	ApplicationLayer()
 {
 	Name = "Tutorial Scene";
-	Overrides = AppLayerFunctions::OnAppLoad | AppLayerFunctions::OnUpdate | AppLayerFunctions::OnSceneUnload;
+	Overrides = AppLayerFunctions::OnAppLoad | AppLayerFunctions::OnUpdate /* | AppLayerFunctions::OnSceneUnload*/;
 }
 
 TutorialSceneLayer::~TutorialSceneLayer() = default;
