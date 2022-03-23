@@ -33,7 +33,7 @@ protected:
 	bool _playerInTrigger = false;
 	float currentScroll = 1.0f;
 	//adjust these how we want
-	float speed = 2.0f;
+	float speed = 1.5f;
 	float visualSpeedScalar = 1.0f; 
 	glm::vec3 direction;
 	//default is our body

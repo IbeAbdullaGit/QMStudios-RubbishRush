@@ -37,7 +37,7 @@ RenderLayer::~RenderLayer() = default;
 
 void RenderLayer::OnPreRender()
 {
-	using namespace Gameplay;
+	//using namespace Gameplay;
 
 	Application& app = Application::Get();
 
@@ -55,14 +55,14 @@ void RenderLayer::OnPreRender()
 
 
 	// Grab shorthands to the camera and shader from the scene
-	Camera::Sptr camera = app.CurrentScene()->MainCamera;
+	Gameplay::Camera::Sptr camera = app.CurrentScene()->MainCamera;
 
 	// Cache the camera's viewprojection
 	glm::mat4 viewProj = camera->GetViewProjection();
 	DebugDrawer::Get().SetViewProjection(viewProj);
 
 	// The current material that is bound for rendering
-	Material::Sptr currentMat = nullptr;
+	Gameplay::Material::Sptr currentMat = nullptr;
 	ShaderProgram::Sptr shader = nullptr;
 
 	// Bind the skybox texture to a reserved texture slot
@@ -95,18 +95,20 @@ void RenderLayer::OnPreRender()
 	frameData.u_Time = static_cast<float>(Timing::Current().TimeSinceSceneLoad());
 	frameData.u_DeltaTime = Timing::Current().DeltaTime();
 	frameData.u_RenderFlags = _renderFlags;
+	frameData.u_ZNear = camera->GetNearPlane();
+	frameData.u_ZFar = camera->GetFarPlane();
 	_frameUniforms->Update();
 }
 
 void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 {
-	using namespace Gameplay;
+	//using namespace Gameplay;
 
 	Application& app = Application::Get();
 
 
 	// Grab shorthands to the camera and shader from the scene
-	Camera::Sptr camera = app.CurrentScene()->MainCamera;
+	Gameplay::Camera::Sptr camera = app.CurrentScene()->MainCamera;
 
 	glm::mat4 view = camera->GetView();
 
@@ -114,20 +116,18 @@ void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 	glm::mat4 viewProj = camera->GetViewProjection();
 
 	// The current material that is bound for rendering
-	Material::Sptr currentMat = nullptr;
+	Gameplay::Material::Sptr currentMat = nullptr;
 	ShaderProgram::Sptr shader = nullptr;
 
-	Material::Sptr defaultMat = app.CurrentScene()->DefaultMaterial;
-	
-	//glClearColor(_clearColor.x, _clearColor.y, _clearColor.z, _clearColor.w);
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	Gameplay::Material::Sptr defaultMat = app.CurrentScene()->DefaultMaterial;
+
 	// Make sure depth testing and culling are re-enabled
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
 	glDepthMask(true);
 
 	// Disable blending, we want to override any existing colors
-	glDisable(GL_BLEND); //MAYBE REMOVE
+	glDisable(GL_BLEND);
 
 	// Render all our objects
 	app.CurrentScene()->Components().Each<RenderComponent>([&](const RenderComponent::Sptr& renderable) {
@@ -158,7 +158,7 @@ void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 		}
 
 		// Grab the game object so we can do some stuff with it
-		GameObject* object = renderable->GetGameObject();
+		Gameplay::GameObject* object = renderable->GetGameObject();
 
 		// Use our uniform buffer for our instance level uniforms
 		auto& instanceData = _instanceUniforms->GetData();
@@ -172,22 +172,23 @@ void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 		renderable->GetMesh()->Draw();
 		});
 
-
+	// Use our cubemap to draw our skybox
+	app.CurrentScene()->DrawSkybox();
 
 	VertexArrayObject::Unbind();
 }
 
 void RenderLayer::OnPostRender() {
-	using namespace Gameplay;
-
-	Application& app = Application::Get();
-	const glm::uvec4& viewport = app.GetPrimaryViewport();
+	//using namespace Gameplay;
 
 	// Unbind our G-Buffer
 	_primaryFBO->Unbind();
 
 	// Composite our lighting 
 	_Composite();
+
+	Application& app = Application::Get();
+	const glm::uvec4& viewport = app.GetPrimaryViewport();
 
 	// Restore viewport to game viewport
 	glViewport(viewport.x, viewport.y, viewport.z, viewport.w);
@@ -203,20 +204,23 @@ void RenderLayer::OnPostRender() {
 
 	// TODO: post processing effects
 
+	_outputBuffer->Unbind();
 	_outputBuffer->Bind(FramebufferBinding::Read);
 	Framebuffer::Blit(
 		{ 0, 0, _outputBuffer->GetWidth(), _outputBuffer->GetHeight() },
 		{ viewport.x, viewport.y, viewport.x + viewport.z, viewport.y + viewport.w },
 		BufferFlags::Color
 	);
+
+	_outputBuffer->Unbind();
 }
 
 void RenderLayer::_AccumulateLighting()
 {
-	using namespace Gameplay;
+	//using namespace Gameplay;
 
 	Application& app = Application::Get();
-	Scene::Sptr& scene = app.CurrentScene();
+	Gameplay::Scene::Sptr& scene = app.CurrentScene();
 
 	// Update our lighting UBO for any shaders that need it
 	LightingUboStruct& data = _lightingUbo->GetData();
@@ -381,8 +385,8 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_CULL_FACE);
-	//glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 
 	// Create a new descriptor for our FBO
 	FramebufferDescriptor fboDescriptor;
@@ -465,8 +469,8 @@ void RenderLayer::SetBlitEnabled(bool value) {
 	_blitFbo = value;
 }
 
-Framebuffer::Sptr RenderLayer::GetRenderOutput() {
-	return _primaryFBO;
+const Framebuffer::Sptr& RenderLayer::GetRenderOutput() const {
+	return _outputBuffer;
 }
 
 const glm::vec4& RenderLayer::GetClearColor() const {
@@ -487,5 +491,10 @@ RenderFlags RenderLayer::GetRenderFlags() const {
 
 const Framebuffer::Sptr& RenderLayer::GetLightingBuffer() const {
 	return _lightingFBO;
+}
+
+const Framebuffer::Sptr& RenderLayer::GetGBuffer() const
+{
+	return _primaryFBO;
 }
 

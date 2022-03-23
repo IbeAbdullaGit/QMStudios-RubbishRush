@@ -7,12 +7,14 @@
 #include "Utils/Windows/FileDialogs.h"
 #include <filesystem>
 #include "RenderLayer.h"
+
 #include "../Windows/HierarchyWindow.h"
 #include "../Windows/InspectorWindow.h"
 #include "../Windows/MaterialsWindow.h"
 #include "../Windows/TextureWindow.h"
 #include "../Windows/DebugWindow.h"
 #include "../Windows/GBufferPreviews.h"
+#include "../Windows/PostProcessingSettingsWindow.h"
 
 ImGuiDebugLayer::ImGuiDebugLayer() :
 	ApplicationLayer(),
@@ -35,6 +37,7 @@ void ImGuiDebugLayer::OnAppLoad(const nlohmann::json & config)
 	RegisterWindow<TextureWindow>();
 	RegisterWindow<DebugWindow>();
 	RegisterWindow<GBufferPreviews>();
+	RegisterWindow<PostProcessingSettingsWindow>();
 }
 
 void ImGuiDebugLayer::OnAppUnload()
@@ -49,7 +52,7 @@ void ImGuiDebugLayer::OnPreRender()
 
 void ImGuiDebugLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 {
-	using namespace Gameplay;
+	//using namespace Gameplay;
 	Application& app = Application::Get();
 
 	// We need to get the primary viewport, as well as track the ID of the primary window dock node
@@ -219,7 +222,7 @@ void ImGuiDebugLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 				// Track whether the window was previously open, only render open windows
 				bool wasOpen = window->Open;
 				if (window->Open) {
-					bool open = ImGui::Begin(window->Name.c_str(), &window->Open);
+					bool open = ImGui::Begin(window->Name.c_str(), &window->Open, window->WindowFlags);
 
 					// If the window was open or closed, mark our dock node as invalid
 					if (open != wasOpen) {
@@ -248,7 +251,7 @@ void ImGuiDebugLayer::OnPostRender()
 
 void ImGuiDebugLayer::_RenderGameWindow()
 {
-	using namespace Gameplay;
+	//using namespace Gameplay;
 	Application& app = Application::Get();
 
 	// Setting up the style and window flags for the game viewport
@@ -273,7 +276,7 @@ void ImGuiDebugLayer::_RenderGameWindow()
 	app.IsFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
 
 	// Grab the current scene the application is displaying
-	Scene::Sptr scene = app.CurrentScene();
+	Gameplay::Scene::Sptr scene = app.CurrentScene();
 
 	// Janky ass button text for the play/stop button
 	static char buffer[64];
@@ -296,7 +299,7 @@ void ImGuiDebugLayer::_RenderGameWindow()
 		if (!scene->IsPlaying) {
 			scene = nullptr;
 			// We reload to scene from our cached state
-			scene = Scene::FromJson(_backupState);
+			scene = Gameplay::Scene::FromJson(_backupState);
 			app.LoadScene(scene);
 		}
 	}

@@ -65,7 +65,7 @@ struct Texture3DDescription {
 		WrapS(WrapMode::Repeat),
 		WrapT(WrapMode::Repeat),
 		WrapR(WrapMode::Repeat),
-		MinificationFilter(MinFilter::NearestMipLinear),
+		MinificationFilter(MinFilter::LinearMipLinear),
 		MagnificationFilter(MagFilter::Linear),
 		GenerateMipMaps(true),
 		Filename(""),

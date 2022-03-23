@@ -22,7 +22,7 @@ struct Material {
 uniform Material u_Material;
 
 #include "../fragments/frame_uniforms.glsl"
-#include "../fragments/color_correction.glsl"
+//#include "../fragments/color_correction.glsl"
 
 // https://learnopengl.com/Advanced-Lighting/Advanced-Lighting
 void main() {
@@ -32,7 +32,7 @@ void main() {
 	vec4 albedoColor = texture(u_Material.AlbedoMap, inUV);
 
 	//apply color correction?
-	albedoColor =vec4(ColorCorrect(albedoColor.rgb), albedoColor.a);
+	//albedoColor =vec4(ColorCorrect(albedoColor.rgb), albedoColor.a);
 
 	// We can use another texture to store things like our lighting settings
 	vec4 lightingParams = texture(u_Material.MetallicShininessMap, inUV);

@@ -76,6 +76,7 @@
 #include "Layers/ImGuiDebugLayer.h"
 #include "Layers/InstancedRenderingTestLayer.h"
 #include "Layers/ParticleLayer.h"
+#include "Layers/PostProcessingLayer.h"
 
 
 
@@ -92,8 +93,8 @@ Application::Application() :
 	_isEditor(true),
 	_windowTitle("Rubbish Rush"),
 	_currentScene(nullptr),
-	_targetScene(nullptr),
-	_renderOutput(nullptr)
+	_targetScene(nullptr)
+	//_renderOutput(nullptr)
 { }
 
 Application::~Application() = default; 
@@ -209,7 +210,7 @@ void Application::_Run()
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
 	_layers.push_back(std::make_shared<RenderLayer>());
 	_layers.push_back(std::make_shared<ParticleLayer>());
-	//_layers.push_back(std::make_shared<InstancedRenderingTestLayer>());
+	_layers.push_back(std::make_shared<PostProcessingLayer>());
 	_layers.push_back(std::make_shared<InterfaceLayer>());
 
 	//for playtesting
@@ -453,12 +454,8 @@ void Application::_RenderScene() {
 	for (const auto& layer : _layers) {
 		if (layer->Enabled && *(layer->Overrides & AppLayerFunctions::OnRender)) {
 			layer->OnRender(result);
-			Framebuffer::Sptr layerResult = layer->GetRenderOutput();
-			result = layerResult != nullptr ? layerResult : result;
 		}
 	}
-	_renderOutput = result;
-
 }
 
 void Application::_PostRender() {

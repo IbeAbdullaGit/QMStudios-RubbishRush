@@ -28,6 +28,7 @@ public:
 	std::string Name;
 	std::string ParentName;
 	ImGuiID     DockId;
+	ImGuiWindowFlags_ WindowFlags;
 
 	virtual ~IEditorWindow() = default;
 

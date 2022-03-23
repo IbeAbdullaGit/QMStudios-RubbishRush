@@ -16,7 +16,8 @@ namespace Gameplay {
 
 		if (_isOrtho) {
 			_isProjectionDirty |= LABEL_LEFT(ImGui::DragFloat, "Ortho Scale", &_orthoVerticalScale, 0.01f, 0.01f);
-		} else {
+		}
+		else {
 			float fov_deg = glm::degrees(_fovRadians);
 			if (LABEL_LEFT(ImGui::SliderFloat, "FOV (deg) ", &fov_deg, 0.1f, 180.0f)) {
 				_fovRadians = glm::radians(fov_deg);
@@ -40,13 +41,13 @@ namespace Gameplay {
 	Camera::Sptr Camera::FromJson(const nlohmann::json& data)
 	{
 		Camera::Sptr result = Camera::Create();
-		result->_nearPlane          = JsonGet(data, "near_plane", result->_nearPlane);
-		result->_farPlane           = JsonGet(data, "far_plane", result->_farPlane);
-		result->_fovRadians         = JsonGet(data, "fov_radians", result->_fovRadians);
+		result->_nearPlane = JsonGet(data, "near_plane", result->_nearPlane);
+		result->_farPlane = JsonGet(data, "far_plane", result->_farPlane);
+		result->_fovRadians = JsonGet(data, "fov_radians", result->_fovRadians);
 		result->_orthoVerticalScale = JsonGet(data, "ortho_size", result->_orthoVerticalScale);
-		result->_isOrtho            = JsonGet(data, "ortho_enabled", result->_isOrtho);
-		result->_clearColor         = JsonGet(data, "clear_color", result->_clearColor);
-		result->_isProjectionDirty  = true;
+		result->_isOrtho = JsonGet(data, "ortho_enabled", result->_isOrtho);
+		result->_clearColor = JsonGet(data, "clear_color", result->_clearColor);
+		result->_isProjectionDirty = true;
 		return result;
 	}
 
@@ -114,6 +115,28 @@ namespace Gameplay {
 		_clearColor = color;
 	}
 
+	float Camera::GetNearPlane() const
+	{
+		return _nearPlane;
+	}
+
+	float Camera::GetFarPlane() const
+	{
+		return _farPlane;
+	}
+
+	void Camera::SetNearPlane(float value)
+	{
+		_nearPlane = value;
+		__CalculateProjection();
+	}
+
+	void Camera::SetFarPlane(float value)
+	{
+		_farPlane = value;
+		__CalculateProjection();
+	}
+
 	const glm::mat4& Camera::__CalculateProjection() const
 	{
 		if (_isProjectionDirty) {
@@ -121,7 +144,8 @@ namespace Gameplay {
 				float w = (_orthoVerticalScale * _aspectRatio) / 2.0f;
 				float h = (_orthoVerticalScale / 2.0f);
 				_projection = glm::ortho(-w, w, -h, h, _nearPlane, _farPlane);
-			} else {
+			}
+			else {
 				_projection = glm::perspective(_fovRadians, _aspectRatio, _nearPlane, _farPlane);
 			}
 			_isProjectionDirty = false;

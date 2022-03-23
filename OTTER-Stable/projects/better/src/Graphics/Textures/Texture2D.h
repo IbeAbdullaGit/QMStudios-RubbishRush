@@ -79,8 +79,8 @@ class Texture2D : public ITexture {
 public:
 	DEFINE_RESOURCE(Texture2D)
 
-		// Make sure we mark our destructor as virtual so base class is called
-		virtual ~Texture2D() = default;
+	// Make sure we mark our destructor as virtual so base class is called
+	virtual ~Texture2D() = default;
 
 public:
 	Texture2D(const std::string& filePath);

@@ -5,6 +5,7 @@
 #include "Utils/Macros.h"
 #include "Gameplay/Scene.h"
 #include "Gameplay/MeshResource.h"
+#include "Gameplay/Material.h"
 #include "ToneFire.h"
 
 /**

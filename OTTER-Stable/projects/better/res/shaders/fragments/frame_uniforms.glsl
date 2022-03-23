@@ -14,6 +14,10 @@ layout (std140, binding = 0) uniform b_FrameLevelUniforms {
     uniform float u_DeltaTime;
     // Lets us store up to 32 bool flags in one value
     uniform uint  u_Flags;
+    // Camera's near plane
+    uniform float u_ZNear;
+    // Camera's far plane
+    uniform float u_ZFar;
 };
 
 // Stores uniforms that change every object/instance
@@ -29,8 +33,12 @@ layout (std140, binding = 1) uniform b_InstanceLevelUniforms {
 };
 
 #define FLAG_ENABLE_COLOR_CORRECTION (1 << 0)
-#define FLAG_ENABLE_LIGHTS (1 <<1)
+#define FLAG_ENABLE_LIGHTS (1<<1)
 
 bool IsFlagSet(uint flag) {
     return (u_Flags & flag) != 0;
+}
+
+float linearize(float depth) {
+    return (2 * u_ZNear) / (u_ZFar + u_ZNear - depth * (u_ZFar - u_ZNear));
 }

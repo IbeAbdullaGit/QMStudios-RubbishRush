@@ -1,12 +1,13 @@
 #pragma once
 #include "Gameplay/Components/IComponent.h"
+#include "Graphics/ShaderProgram.h"
 
 ENUM(ParticleType, uint32_t,
-	Emitter       = 0,
-	Particle      = 1
+	Emitter = 0,
+	Particle = 1
 );
 
-class ParticleSystem : public Gameplay::IComponent{
+class ParticleSystem : public Gameplay::IComponent {
 public:
 	MAKE_PTRS(ParticleSystem);
 
@@ -17,11 +18,6 @@ public:
 	void Render();
 
 	void AddEmitter(const glm::vec3& position, const glm::vec3& direction, float emitRate = 1.0f, const glm::vec4& color = glm::vec4(1.0f));
-
-	void UpdatePosition(const glm::vec3& position);
-	void UpdateDirection(const glm::vec3& direction);
-
-	void DeleteEmitter();
 
 	// Inherited from IComponent
 

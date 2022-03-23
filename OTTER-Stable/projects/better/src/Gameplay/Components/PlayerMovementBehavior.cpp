@@ -63,7 +63,7 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 	//running
 	if (glfwGetKey(app.GetWindow(), GLFW_KEY_LEFT_SHIFT))
 	{
-		_impulse *= 3.0f;
+		_impulse *= 2.0f;
 		is_running = true;
 	}
 	else

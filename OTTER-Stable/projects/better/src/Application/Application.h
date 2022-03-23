@@ -18,7 +18,7 @@ public:
 	NO_MOVE(Application)
 	NO_COPY(Application)
 
-	bool IsFocused = true;
+		bool IsFocused = true;
 
 	~Application();
 
@@ -30,7 +30,7 @@ public:
 
 	static Application& Get();
 	/**
-	 * Called by the entry point to begin the application, creating the singleton 
+	 * Called by the entry point to begin the application, creating the singleton
 	 * intance and performing any library initialization
 	 */
 	static void Start(int argCount, char** arguments);
@@ -46,7 +46,7 @@ public:
 	const glm::ivec2& GetWindowSize() const;
 	/**
 	 * Resizes the application window to the given size in pixels
-	 * 
+	 *
 	 * @param newSize The new size for the window, in pixels. Should not contain zeroes or negative values
 	 */
 	void ResizeWindow(const glm::ivec2& newSize);
@@ -69,14 +69,14 @@ public:
 
 	/**
 	 * Loads a new scene into the application using a path on disk
-	 * 
+	 *
 	 * @param path The path to the scene file to load
 	 * @returns True if the file was found and the scene loaded, false if otherwise
 	 */
 	bool LoadScene(const std::string& path);
 	/**
 	 * Loads a scene that has been pre-loaded into the application
-	 * 
+	 *
 	 * @param scene The scene to switch to
 	 */
 	void LoadScene(const Gameplay::Scene::Sptr& scene);
@@ -88,7 +88,7 @@ public:
 
 	/**
 	 * Gets the layer of the given type from the application, or nullptr if it does not exist
-	 * 
+	 *
 	 * @param <T> The type of layer to get, must extend the ApplicationLayer interface
 	 * @returns A shared pointer to the layer instance, or nullptr if the layer cannot be found
 	 */
@@ -103,11 +103,13 @@ public:
 		}
 		return nullptr;
 	}
-	
+
 	/**
-	 * Saves the application settings to a file in %APPDATA% 
+	 * Saves the application settings to a file in %APPDATA%
 	 */
 	void SaveSettings();
+
+	bool change_scene = false;
 
 protected:
 	// The GL driver layer is a special friend that can access our protected members (mainly window info)
@@ -139,16 +141,8 @@ protected:
 	Gameplay::Scene::Sptr _targetScene;
 
 	
-
-	int inventory = 2; //DEFAULT INVENTORY COUNT
-	int max_trash = 4; //DEFAULT FOR NOW
-
-	bool change_scene = false;
-
 	// Stores all the layers of the application, in the order they should be invoked
 	std::vector<ApplicationLayer::Sptr> _layers;
-
-	Framebuffer::Sptr _renderOutput;
 
 	void _Run();
 	void _RegisterClasses();

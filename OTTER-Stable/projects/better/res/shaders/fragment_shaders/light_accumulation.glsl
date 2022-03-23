@@ -52,7 +52,7 @@ void CalcPointLightContribution(vec3 viewPos, vec3 normal, Light light, float sh
 
         // Dot product between normal and light
         float NdotL = max(dot(normal, lightDir), 0.0);
-        diffuse += NdotL * attenuation * light.ColorAttenuation.rgb * light.PositionIntensity.w;
+        diffuse += NdotL * attenuation * light.PositionIntensity.w * light.ColorAttenuation.rgb;
         
         vec3 reflectDir = reflect(lightDir, normal);
         float VdotR = pow(max(dot(normalize(-viewPos), reflectDir), 0.0), pow(2, shininess * 8));

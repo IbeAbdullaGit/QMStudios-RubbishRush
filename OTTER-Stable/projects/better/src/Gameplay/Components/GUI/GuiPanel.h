@@ -2,6 +2,7 @@
 
 #include "Gameplay/Components/IComponent.h"
 #include "Gameplay/Components/GUI/RectTransform.h"
+#include "Graphics/Textures/Texture2D.h"
 
 /// <summary>
 /// Draws a textured background for UI components

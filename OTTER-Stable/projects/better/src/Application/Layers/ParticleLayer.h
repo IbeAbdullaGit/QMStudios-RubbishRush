@@ -9,6 +9,6 @@ public:
 	virtual ~ParticleLayer();
 
 	void OnUpdate() override;
-	void OnRender(const Framebuffer::Sptr& prevLayer) override;
+	void OnPostRender() override;
 
 };

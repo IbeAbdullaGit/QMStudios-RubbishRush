@@ -52,6 +52,7 @@ namespace Gameplay {
 		// Whether the application is in "play mode", lets us leverage editors!
 		bool                       IsPlaying;
 
+		bool IsDestroyed;
 
 		Scene();
 		~Scene();

@@ -11,7 +11,7 @@ GLAppLayer::GLAppLayer() :
 
 GLAppLayer::~GLAppLayer() = default;
 
-void GLAppLayer::OnAppLoad(const nlohmann::json& config) {
+void GLAppLayer::OnAppLoad(const nlohmann::json & config) {
 	// Initialize GLFW
 	LOG_ASSERT(glfwInit() == GLFW_TRUE, "Failed to initialize GLFW");
 
@@ -40,29 +40,29 @@ void GLAppLayer::OnAppUnload()
 	glfwTerminate();
 }
 
-void GLAppLayer::GlDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
+void GLAppLayer::GlDebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar * message, const void* userParam) {
 	std::string sourceTxt;
 	switch (source) {
-		case GL_DEBUG_SOURCE_API:             sourceTxt = "DEBUG"; break;
-		case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   sourceTxt = "WINDOW"; break;
-		case GL_DEBUG_SOURCE_SHADER_COMPILER: sourceTxt = "SHADER"; break;
-		case GL_DEBUG_SOURCE_THIRD_PARTY:     sourceTxt = "THIRD PARTY"; break;
-		case GL_DEBUG_SOURCE_APPLICATION:     sourceTxt = "APP"; break;
-		case GL_DEBUG_SOURCE_OTHER: default:  sourceTxt = "OTHER"; break;
+	case GL_DEBUG_SOURCE_API:             sourceTxt = "DEBUG"; break;
+	case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   sourceTxt = "WINDOW"; break;
+	case GL_DEBUG_SOURCE_SHADER_COMPILER: sourceTxt = "SHADER"; break;
+	case GL_DEBUG_SOURCE_THIRD_PARTY:     sourceTxt = "THIRD PARTY"; break;
+	case GL_DEBUG_SOURCE_APPLICATION:     sourceTxt = "APP"; break;
+	case GL_DEBUG_SOURCE_OTHER: default:  sourceTxt = "OTHER"; break;
 	}
 
 	switch (severity) {
-		case GL_DEBUG_SEVERITY_LOW:          LOG_INFO("[{}] {}", sourceTxt, message); break;
-		case GL_DEBUG_SEVERITY_MEDIUM:       LOG_WARN("[{}] {}", sourceTxt, message); break;
-		case GL_DEBUG_SEVERITY_HIGH:         LOG_ERROR("[{}] {}", sourceTxt, message); break;
-			#ifdef LOG_GL_NOTIFICATIONS
-		case GL_DEBUG_SEVERITY_NOTIFICATION: LOG_INFO("[{}] {}", sourceTxt, message); break;
-			#endif
-		default: break;
+	case GL_DEBUG_SEVERITY_LOW:          LOG_INFO("[{}] {}", sourceTxt, message); break;
+	case GL_DEBUG_SEVERITY_MEDIUM:       LOG_WARN("[{}] {}", sourceTxt, message); break;
+	case GL_DEBUG_SEVERITY_HIGH:         LOG_ERROR("[{}] {}", sourceTxt, message); break;
+#ifdef LOG_GL_NOTIFICATIONS
+	case GL_DEBUG_SEVERITY_NOTIFICATION: LOG_INFO("[{}] {}", sourceTxt, message); break;
+#endif
+	default: break;
 	}
 }
 
-void GLAppLayer::GlWindowResizedCallback(GLFWwindow* window, int width, int height) {
+void GLAppLayer::GlWindowResizedCallback(GLFWwindow * window, int width, int height) {
 	// Get the application singleton
 	Application& app = Application::Get();
 

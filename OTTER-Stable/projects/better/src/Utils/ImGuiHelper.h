@@ -10,6 +10,7 @@
 // Will be included in the CPP to avoid header bloat
 struct GLFWwindow;
 
+
 // Allows for an ImGui command to have a left aligned label instead of right aligned
 // EX: LABEL_LEFT(ImGui::DragFloat3, "Label", &value);
 #define LABEL_LEFT(func, label, ...) (ImGui::TextUnformatted(label), ImGui::SameLine(), func("##" label, __VA_ARGS__))
@@ -39,11 +40,11 @@ public:
 	/// <param name="text">The text on the button</param>
 	/// <param name="size">The optional size of the button</param>
 	/// <returns>True if the button was pressed, false if otherwise</returns>
-	static bool WarningButton(const char* text, const ImVec2& size = ImVec2(0, 0));
+	static bool WarningButton(const char* text, const ImVec2& size = ImVec2(0,0));
 
 	template <typename T, typename BT>
 	static bool DrawEnumCombo(const char* label, T* value, const std::map<BT, std::string>& nameMap) {
-		bool result = false;
+		bool result = false; 
 		if (ImGui::BeginCombo(label, (~*value).c_str())) {
 			bool selected = false;
 			for (const auto& [key, str] : nameMap) {
@@ -97,7 +98,3 @@ protected:
 
 	static GLFWwindow* _window;
 };
-
-// Allows for an ImGui command to have a left aligned label instead of right aligned
-// EX: LABEL_LEFT(ImGui::DragFloat3, "Label", &value);
-#define LABEL_LEFT(func, label, ...) (ImGui::TextUnformatted(label), ImGui::SameLine(), func("##" label, __VA_ARGS__))

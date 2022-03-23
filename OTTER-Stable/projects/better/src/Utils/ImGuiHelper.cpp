@@ -60,8 +60,6 @@ void ImGuiHelper::Init(GLFWwindow* window) {
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	// Allow multiple viewports (so we can drag ImGui off our window)
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-	// Allow our viewports to use transparent backbuffers
-	io.ConfigFlags |= ImGuiConfigFlags_TransparentBackbuffers;
 
 	// Set up the ImGui implementation for OpenGL
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -88,8 +86,7 @@ void ImGuiHelper::Cleanup() {
 		ImGui::DestroyContext();
 
 		_window = nullptr;
-	}
-	else {
+	} else {
 		LOG_WARN("Called ImGuiHelper::Cleanup without initializing, seems sus");
 	}
 }

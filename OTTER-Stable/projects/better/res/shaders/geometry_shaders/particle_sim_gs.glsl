@@ -25,6 +25,8 @@ out vec4 out_Metadata;
 // Uniforms
 uniform vec3  u_Gravity;
 
+uniform mat4 u_ModelMatrix;
+
 #define TYPE_EMITTER 0
 #define TYPE_PARTICLE 1
 
@@ -45,10 +47,10 @@ void main() {
             // If the lifetime is at 0, we emit a particle
             while ((lifetime < 0) && (emitted < 32)) {
                 out_Type = TYPE_PARTICLE;
-                out_Position = inPosition[0] + inVelocity[0] * (-lifetime);
-                out_Velocity = inVelocity[0];
+                out_Position = (u_ModelMatrix * vec4(inPosition[0] + inVelocity[0] * (-lifetime), 1.0f)).xyz;
+                out_Velocity = mat3(u_ModelMatrix) * inVelocity[0];
                 out_Lifetime = meta.z + (meta.w - meta.z) * rand(vec2(inPosition[0].x, u_DeltaTime));
-                out_Metadata = vec4(0, 0, 0, 0);
+                out_Metadata = vec4(out_Lifetime, 0, 0, 0);
                 out_Color    = inColor[0];
                 
                 EmitVertex();
@@ -85,7 +87,8 @@ void main() {
 
                 // For now, just pass through metadata and color
                 out_Metadata = inMetadata[0];
-                out_Color    = inColor[0];
+                out_Color    = vec4(inColor[0].rgb, (lifetime / meta.x));
+                out_Metadata = inMetadata[0];
 
                 // Emit into vertex stream
                 EmitVertex();
