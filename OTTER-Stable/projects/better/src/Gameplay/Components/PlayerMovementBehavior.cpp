@@ -29,7 +29,7 @@ nlohmann::json PlayerMovementBehavior::ToJson() const {
 
 PlayerMovementBehavior::PlayerMovementBehavior() :
 	IComponent(),
-	_impulse(0.1f) //Movement Value
+	_impulse(0.0f) //Movement Value
 { }
 
 PlayerMovementBehavior::~PlayerMovementBehavior() = default;
@@ -50,26 +50,28 @@ void PlayerMovementBehavior::SetSpill(bool state)
 void PlayerMovementBehavior::Update(float deltaTime) {
 
 	Application& app = Application::Get();
+	//not moving
 	is_moving = false;
+	
 	if (in_spill)
 	{
-		_impulse = 0.05f;
+		_impulse = _impulse / 2.0f;
 	}
 	else
 	{
-		_impulse = 0.1f;
+		//_impulse = 0.0f;
 	}
 
-	//running
-	if (glfwGetKey(app.GetWindow(), GLFW_KEY_LEFT_SHIFT))
-	{
-		_impulse *= 2.0f;
-		is_running = true;
-	}
-	else
-	{
-		is_running = false;
-	}
+	////running
+	//if (glfwGetKey(app.GetWindow(), GLFW_KEY_LEFT_SHIFT))
+	//{
+	//	_impulse *= 2.0f;
+	//	is_running = true;
+	//}
+	//else
+	//{
+	//	is_running = false;
+	//}
 
 	//IF SPACE PRESSED = MOVE
 	if (glfwGetKey(app.GetWindow(), GLFW_KEY_W) || glfwGetKey(app.GetWindow(), GLFW_KEY_UP)) {
@@ -78,6 +80,11 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 			//body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(0.0f, -_impulse, 0.0f));
 			is_moving = true;
+			_impulse += acceleration;
+			if (_impulse > max_speed)
+			{
+				_impulse = max_speed;
+			}
 		}
 	}
 
@@ -87,6 +94,11 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 180.0f));
 			//_body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(0.0f, _impulse, 0.0f));
 			is_moving = true;
+			_impulse += acceleration;
+			if (_impulse > max_speed)
+			{
+				_impulse = max_speed;
+			}
 		}
 	}
 
@@ -97,18 +109,47 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
 			//_body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(_impulse, 0.0f, 0.0f));
 			is_moving = true;
+			_impulse += acceleration;
+			if (_impulse > max_speed)
+			{
+				_impulse = max_speed;
+			}
 		}
 	}
-
+	
 	if (glfwGetKey(app.GetWindow(), GLFW_KEY_D)|| glfwGetKey(app.GetWindow(), GLFW_KEY_RIGHT)) {
 		if (_body->GetLinearVelocity().x >= -5.0f) {
 			_body->ApplyImpulse(glm::vec3(-_impulse, 0.0f, 0.0f));
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
 			//_body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(-_impulse, 0.0f, 0.0f));
 			is_moving = true;
+			_impulse += acceleration;
+			if (_impulse > max_speed)
+			{
+				_impulse = max_speed;
+			}
 		}
 	}
+	if (!is_moving)
+	{
+		if (_impulse < 0)
+		{
+			_impulse += acceleration;
+			if (_impulse >= 0)
+			{
+				_impulse = 0.0f;
+			}
+		}
+		else
+		{
+			_impulse -= acceleration;
+			if (_impulse <= 0)
+			{
+				_impulse = 0.0f;
+			}
+		}
 
+	}
 
 	//Rotate when the key is pressed
 	if (glfwGetKey(app.GetWindow(), GLFW_KEY_W) && GLFW_PRESS) {
