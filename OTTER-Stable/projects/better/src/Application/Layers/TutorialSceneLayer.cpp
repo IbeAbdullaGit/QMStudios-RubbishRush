@@ -287,7 +287,7 @@ void TutorialSceneLayer::OnUpdate()
 
 					//dumpUI->Get<RenderComponent>()->IsEnabled = false;
 					//pickupUI->Get<GuiPanel>()->IsEnabled = false;
-					test.StopEvent("event:/Music");
+					test.StopEvent("event:/Music Regular");
 					//make loading screen
 					Gameplay::GameObject::Sptr loading = _tutcurrentScene->CreateGameObject("Load");
 					{
@@ -391,16 +391,15 @@ void TutorialSceneLayer::_CreateScene()
 	studio.LoadBank("Master.bank");
 	studio.LoadBank("Master.strings.bank");
 	studio.LoadBank("Sound.bank");
-	studio.LoadBank("Music.bank");
-	test.LoadEvent("event:/Music");
+	studio.LoadBank("Music_Background.bank");
+	test.LoadEvent("event:/Music Regular");
 	test.LoadEvent("event:/Footsteps");
 	test.LoadEvent("event:/Can Crush");
 	test.LoadEvent("event:/Plastic trash crush");
 	test.LoadEvent("event:/Trash multi");
-	test.SetEventPosition("event:/Music", FMOD_VECTOR{ 0.0f,0.0f,10.f });
 	test.SetEventPosition("event:/Footsteps", FMOD_VECTOR{ 0.0f,0.0f,2.f });
 	test.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });
-	test.SetEventPosition("event:/Plastic trash crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });
+
 	
 
 	//using namespace Gameplay;
