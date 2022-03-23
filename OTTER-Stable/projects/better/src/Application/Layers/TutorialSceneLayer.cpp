@@ -189,8 +189,6 @@ void TutorialSceneLayer::OnUpdate()
 			trashyM->Get<Gameplay::Physics::RigidBody>()->SetLinearDamping(0.9f);
 			activated = true;
 			//starting variables
-			//JumpBehaviour::Sptr behaviour = trashyM->Add<JumpBehaviour>();
-			JumpBehaviour::Sptr air = trashyM->Add<JumpBehaviour>();
 			//_tutcurrentScene->trash = 1;
 			
 		}
@@ -319,7 +317,7 @@ void TutorialSceneLayer::OnUpdate()
 				currentTime = Timing::Current().TimeSinceAppLoad();
 			}
 
-			if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.5f && _tutcurrentScene->walk == false) {
+			if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.5f && _tutcurrentScene->walk == false || trashyM->Get<JumpBehaviour>()->in_air) {
 				test.StopEvent("event:/Footsteps");
 			}
 
