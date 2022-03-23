@@ -189,7 +189,8 @@ void TutorialSceneLayer::OnUpdate()
 			trashyM->Get<Gameplay::Physics::RigidBody>()->SetLinearDamping(0.9f);
 			activated = true;
 			//starting variables
-			
+			//JumpBehaviour::Sptr behaviour = trashyM->Add<JumpBehaviour>();
+			JumpBehaviour::Sptr air = trashyM->Add<JumpBehaviour>();
 			//_tutcurrentScene->trash = 1;
 			
 		}
@@ -311,15 +312,18 @@ void TutorialSceneLayer::OnUpdate()
 				hasMoved = true;
 			}
 			
-
-			if (_tutcurrentScene->walk) {
+			
+			if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.3f && _tutcurrentScene->walk) {
 				test.PlayEvent("event:/Footsteps");
 				test.SetEventParameter("event:/Footsteps", "parameter:/Pitch", glm::linearRand(0.f, 4.f));
+				currentTime = Timing::Current().TimeSinceAppLoad();
 			}
 
-			if (_tutcurrentScene->walk == false) {
+			if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.5f && _tutcurrentScene->walk == false) {
 				test.StopEvent("event:/Footsteps");
 			}
+
+
 
 			if (Timing::Current().Timing::TimeSinceSceneLoad() > 7.5f && hasMoved == false) { //If the player has not moved for a set amount of seconds, show the tutorial UI for movement
 				walkUI->Get<GuiPanel>()->IsEnabled = true;
@@ -397,7 +401,6 @@ void TutorialSceneLayer::_CreateScene()
 	test.LoadEvent("event:/Can Crush");
 	test.LoadEvent("event:/Plastic trash crush");
 	test.LoadEvent("event:/Trash multi");
-	test.SetEventPosition("event:/Footsteps", FMOD_VECTOR{ 0.0f,0.0f,2.f });
 	test.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });
 
 	
@@ -649,7 +652,6 @@ void TutorialSceneLayer::_CreateScene()
 			//box2->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			volume->AddCollider(box2);
 			JumpBehaviour::Sptr behaviour = trashyM->Add<JumpBehaviour>();
-			
 			//INVENTORY UI SYSTEM
 			InventoryUI::Sptr behaviour2 = trashyM->Add<InventoryUI>();
 
