@@ -86,6 +86,7 @@
 
 #include "Application/Layers/RenderLayer.h"
 #include "Gameplay/InputEngine.h"
+#include "Graphics/Textures/Texture1D.h"
 
 TutorialSceneLayer::TutorialSceneLayer() :
 	ApplicationLayer()
@@ -147,7 +148,7 @@ void TutorialSceneLayer::OnUpdate()
 		isPressed = false;
 		//enable/disable lighting, only detect once
 		
-		if (InputEngine::IsKeyDown(GLFW_KEY_0) && !isPressed)
+		if (InputEngine::GetKeyState(GLFW_KEY_0) == ButtonState::Pressed && !isPressed)
 		{
 			isPressed = true;
 			//switch between states easily
@@ -190,7 +191,7 @@ void TutorialSceneLayer::OnUpdate()
 			activated = true;
 			//starting variables
 			//JumpBehaviour::Sptr behaviour = trashyM->Add<JumpBehaviour>();
-			JumpBehaviour::Sptr air = trashyM->Add<JumpBehaviour>();
+			//JumpBehaviour::Sptr air = trashyM->Add<JumpBehaviour>();
 			//_tutcurrentScene->trash = 1;
 			
 		}
@@ -455,19 +456,19 @@ void TutorialSceneLayer::_CreateScene()
 		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/textured_specular.glsl" }
 		//});
 
-		// This shader handles our foliage vertex shader example
-		ShaderProgram::Sptr foliageShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/foliage.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
-		});
+		//// This shader handles our foliage vertex shader example
+		//ShaderProgram::Sptr foliageShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/foliage.glsl" },
+		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
+		//});
 		///////////////////// NEW SHADERS ////////////////////////////////////////////
 
-		// This shader handles our displacement mapping example
-		ShaderProgram::Sptr displacementShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/displacement_mapping.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
-		});
-		displacementShader->SetDebugName("Displacement Mapping");
+		//// This shader handles our displacement mapping example
+		//ShaderProgram::Sptr displacementShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/displacement_mapping.glsl" },
+		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
+		//});
+		//displacementShader->SetDebugName("Displacement Mapping");
 
 
 		//// This shader handles our displacement mapping example
@@ -476,17 +477,24 @@ void TutorialSceneLayer::_CreateScene()
 		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
 		//});
 
-		// This shader handles our multitexturing example
-		ShaderProgram::Sptr multiTextureShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/vert_multitextured.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_multitextured.glsl" }
-		});
+		//// This shader handles our multitexturing example
+		//ShaderProgram::Sptr multiTextureShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/vert_multitextured.glsl" },
+		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_multitextured.glsl" }
+		//});
 		// This shader handles our cel shading example
+		//adjusted for trashy anims
 		ShaderProgram::Sptr celShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/displacement_mapping.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/cel_shader.glsl" }
 		});
 		celShader->SetDebugName("Cel Shader");
+		//adjusted for trashy anims
+		ShaderProgram::Sptr celShader2 = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/morph.vert" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/cel_shader.glsl" }
+		});
+		celShader2->SetDebugName("Cel Shader2");
 
 		// Basic gbuffer generation with no vertex manipulation
 		ShaderProgram::Sptr deferredForward = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
@@ -517,7 +525,9 @@ void TutorialSceneLayer::_CreateScene()
 		solidWhiteTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidWhite);
 
 #pragma endregion 
-		// Load in the meshes
+		// Loading in a 1D LUT
+		Texture1D::Sptr toonLut = ResourceManager::CreateAsset<Texture1D>("luts/toon-1D.png");
+		toonLut->SetWrap(WrapMode::ClampToEdge);
 
 
 		// Here we'll load in the cubemap, as well as a special shader to handle drawing the skybox
@@ -615,13 +625,23 @@ void TutorialSceneLayer::_CreateScene()
 		Gameplay::MeshResource::Sptr trashyMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashy.obj");
 		Texture2D::Sptr trashyTex = ResourceManager::CreateAsset<Texture2D>("textures/trashyTEX.png");
 		// Create our material
-		Gameplay::Material::Sptr trashyMaterial = ResourceManager::CreateAsset<Gameplay::Material>(animShader);
+		//Gameplay::Material::Sptr trashyMaterial = ResourceManager::CreateAsset<Gameplay::Material>(animShader);
+		//{
+		//	trashyMaterial->Name = "Trashy";
+		//	trashyMaterial->Set("u_Material.AlbedoMap", trashyTex);
+		//	//testMaterial->Set("u_Material.Specular", boxSpec);
+		//	trashyMaterial->Set("u_Material.Shininess", 0.5f);
+		//	trashyMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		//}
+		// Our toon shader material
+		Gameplay::Material::Sptr toonMaterial = ResourceManager::CreateAsset<Gameplay::Material>(celShader2);
 		{
-			trashyMaterial->Name = "Trashy";
-			trashyMaterial->Set("u_Material.AlbedoMap", trashyTex);
-			//testMaterial->Set("u_Material.Specular", boxSpec);
-			trashyMaterial->Set("u_Material.Shininess", 0.5f);
-			trashyMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			toonMaterial->Name = "Toon";
+			toonMaterial->Set("u_Material.AlbedoMap", trashyTex);
+			toonMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			toonMaterial->Set("s_ToonTerm", toonLut);
+			toonMaterial->Set("u_Material.Shininess", 0.1f);
+			toonMaterial->Set("u_Material.Steps", 16);
 		}
 		
 		Gameplay::GameObject::Sptr trashyM = scene->CreateGameObject("Trashy"); //SEARCHBAR TAGS: PLAYERENTITY, PLAYER, TRASHYENTITY, TRASHYOBJECT
@@ -632,7 +652,7 @@ void TutorialSceneLayer::_CreateScene()
 			// Add a render component
 			RenderComponent::Sptr renderer = trashyM->Add<RenderComponent>();
 			renderer->SetMesh(trashyMesh);
-			renderer->SetMaterial(trashyMaterial);
+			renderer->SetMaterial(toonMaterial);
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = trashyM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Dynamic);
 			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
@@ -659,7 +679,7 @@ void TutorialSceneLayer::_CreateScene()
 
 			//ANIMATION STUFF////
 			MorphMeshRenderer::Sptr morph1 = trashyM->Add<MorphMeshRenderer>();
-			morph1->SetMorphMeshRenderer(trashyMesh, trashyMaterial);
+			morph1->SetMorphMeshRenderer(trashyMesh, toonMaterial);
 			MorphAnimator::Sptr morph2 = trashyM->Add<MorphAnimator>();
 
 			//walking frames
@@ -1109,12 +1129,13 @@ void TutorialSceneLayer::_CreateScene()
 		Gameplay::MeshResource::Sptr binMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("BigBenClosed_000001.obj");
 		Texture2D::Sptr binTex = ResourceManager::CreateAsset<Texture2D>("textures/bigben.png");
 		// Create our material
-		Gameplay::Material::Sptr binMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		Gameplay::Material::Sptr binMaterial = ResourceManager::CreateAsset<Gameplay::Material>(celShader);
 		{
 			binMaterial->Name = "Bin";
 			binMaterial->Set("u_Material.AlbedoMap", binTex);
 			binMaterial->Set("u_Material.Shininess", 0.5f);
 			binMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			binMaterial->Set("s_ToonTerm", toonLut);
 
 		}
 		Gameplay::GameObject::Sptr binM = scene->CreateGameObject("Bin");

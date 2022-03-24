@@ -18,6 +18,7 @@ struct Material {
 	sampler2D NormalMap;
 	sampler2D MetallicShininessMap;
 	float     DiscardThreshold;
+	int       Steps;
 };
 // Create a uniform for the material
 uniform Material u_Material;

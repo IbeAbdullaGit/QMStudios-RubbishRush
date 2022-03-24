@@ -10,6 +10,8 @@
 #include "GUI/GuiText.h"
 #include "Application/Application.h"
 #include "Application/Layers/DefaultSceneLayer.h"
+#include "Gameplay/InputEngine.h"
+
 
 CollectTrashBehaviour::CollectTrashBehaviour() :
 	IComponent()
@@ -48,7 +50,7 @@ void CollectTrashBehaviour::Update(float deltatime)
 
 	if (activated && GetGameObject() !=nullptr)
 	{
-		if (glfwGetKey(app.GetWindow(), GLFW_KEY_E))
+		if (InputEngine::GetKeyState(GLFW_KEY_E) == ButtonState::Pressed)
 		{
 			if (_scene->held < inventory)
 			{

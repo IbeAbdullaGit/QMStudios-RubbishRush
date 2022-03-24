@@ -166,7 +166,7 @@ void DefaultSceneLayer::OnUpdate()
 		//only run this once
 		activated = true;
 	}
-	if (InputEngine::IsKeyDown(GLFW_KEY_0) && !isPressed)
+	if (InputEngine::GetKeyState(GLFW_KEY_0) == ButtonState::Pressed && !isPressed)
 	{
 		isPressed = true;
 		//switch between states easily

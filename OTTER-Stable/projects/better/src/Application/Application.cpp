@@ -18,7 +18,9 @@
 #include "Graphics/Buffers/VertexBuffer.h"
 #include "Graphics/VertexArrayObject.h"
 #include "Graphics/ShaderProgram.h"
+#include "Graphics/Textures/Texture1D.h"
 #include "Graphics/Textures/Texture2D.h"
+#include "Graphics/Textures/Texture3D.h"
 #include "Graphics/Textures/TextureCube.h"
 #include "Graphics/VertexTypes.h"
 #include "Graphics/Font.h"
@@ -358,7 +360,7 @@ void Application::_RegisterClasses()
 	ResourceManager::Init();
 
 	// Register all our resource types so we can load them from manifest files
-	//ResourceManager::RegisterType<Texture1D>();
+	ResourceManager::RegisterType<Texture1D>();
 	ResourceManager::RegisterType<Texture2D>();
 	ResourceManager::RegisterType<Texture3D>();
 	ResourceManager::RegisterType<TextureCube>();
