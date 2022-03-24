@@ -29,8 +29,9 @@ void MorphMeshRenderer::UpdateData(Gameplay::MeshResource::Sptr frame0, Gameplay
 	
 	VertexBuffer::Sptr vbo = VertexBuffer::Create();
 	VertexBuffer::Sptr vbo2 = VertexBuffer::Create();
-	vbo = frame1->Mesh->GetBufferBinding(AttribUsage::Position)->Buffer;
-	vbo2 = frame1->Mesh->GetBufferBinding(AttribUsage::Normal)->Buffer;
+	
+	vbo = frame1->Mesh->GetBufferBinding(AttribUsage::Position)->GetBuffer();
+	vbo2 = frame1->Mesh->GetBufferBinding(AttribUsage::Normal)->GetBuffer();
 	VertexArrayObject::VertexDeclaration newvd = frame1->Mesh->GetVDecl();
 	//std::cout << newvd[0].Usage << std::endl; //position
 	//std::cout << newvd[1].Usage << std::endl; //color

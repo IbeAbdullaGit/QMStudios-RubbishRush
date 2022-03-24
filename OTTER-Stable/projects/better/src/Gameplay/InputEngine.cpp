@@ -1,9 +1,10 @@
 #include "Gameplay/InputEngine.h"
 #include <locale>
 #include <codecvt>
+#include "Application/Application.h"
 
 GLFWwindow* InputEngine::__window = nullptr;
-glm::dvec2 InputEngine::__mousePos  = glm::dvec2(0.0);
+glm::dvec2 InputEngine::__mousePos = glm::dvec2(0.0);
 glm::dvec2 InputEngine::__prevMousePos = glm::dvec2(0.0);;
 glm::dvec2 InputEngine::__scrollDelta = glm::dvec2(0.0);
 std::wstring InputEngine::__inputText = LR"()";
@@ -38,7 +39,9 @@ bool InputEngine::IsMouseButtonDown(int button) {
 }
 
 const glm::dvec2& InputEngine::GetMousePos() {
-	return __mousePos;
+	Application& app = Application::Get();
+	glm::vec4 viewport = app.GetPrimaryViewport();
+	return (__mousePos - glm::dvec2(viewport.x, viewport.y));
 }
 
 glm::dvec2 InputEngine::GetMouseDelta() {
@@ -82,14 +85,14 @@ void InputEngine::__KeyCallback(GLFWwindow* window, int key, int scancode, int a
 		return;
 
 	switch (action) {
-		case GLFW_PRESS:
-			__keyState[key] = ButtonState::Pressed;
-			break;
-		case GLFW_RELEASE:
-			__keyState[key] = ButtonState::Released;
-			break;
-		default:
-			break;
+	case GLFW_PRESS:
+		__keyState[key] = ButtonState::Pressed;
+		break;
+	case GLFW_RELEASE:
+		__keyState[key] = ButtonState::Released;
+		break;
+	default:
+		break;
 	}
 }
 
@@ -103,7 +106,8 @@ void InputEngine::__MouseButtonCallback(GLFWwindow* window, int button, int acti
 
 	if (action == GLFW_PRESS) {
 		__mouseState[button] = ButtonState::Pressed;
-	} else if (action == GLFW_RELEASE) {
+	}
+	else if (action == GLFW_RELEASE) {
 		__mouseState[button] = ButtonState::Released;
 	}
 }

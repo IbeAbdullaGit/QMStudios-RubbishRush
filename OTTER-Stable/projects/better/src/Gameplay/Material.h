@@ -17,7 +17,7 @@ namespace Gameplay {
 		/// We'll sometimes want to reserve some texture slots for shared textures, such
 		/// as the environment map. We'll specify a number of reserved slots here
 		/// </summary>
-		static const int RESERVED_TEXTURE_SLOTS = 2;
+		static const int MAX_TEXTURE_SLOTS = 14;
 
 		/// <summary>
 		/// A human readable name for the material
@@ -98,25 +98,27 @@ namespace Gameplay {
 			union {
 				// A space to store non-array values, can store up to a dmat4
 				uint8_t        Value[128];
-				
+
 				// A space to store arrays of values
-				void*          ArrayBlock = nullptr;
+				void* ArrayBlock = nullptr;
 
 				// For when the uniform is a texture
 				ITexture::Sptr TextureAsset;
 			};
 			// The size of the array, in elements
 			size_t         ArraySize;
+			int            BindingSlot;
 
 			// The type of uniform
 			ShaderDataType Type = ShaderDataType::None;
-			
+
 			UniformData() :
 				Name("<unknown>"),
 				Location(-2),
 				TextureAsset(nullptr),
 				ArraySize(0),
-				Type(ShaderDataType::None) 
+				BindingSlot(-1),
+				Type(ShaderDataType::None)
 			{ }
 			UniformData(const UniformData& other);
 			UniformData(UniformData&& other);
@@ -128,7 +130,7 @@ namespace Gameplay {
 			/// <summary>
 			/// Renders GUI for this uniform
 			/// </summary>
-			void RenderImGui();
+			bool RenderImGui();
 
 			/// <summary>
 			/// Converts this uniform into a JSON representation
@@ -146,7 +148,8 @@ namespace Gameplay {
 				LOG_ASSERT(tType == Type, "Type mismatch");
 				if constexpr (std::is_base_of<ITexture, T>::value) {
 					return TextureAsset;
-				} else {
+				}
+				else {
 					return *reinterpret_cast<T*>(Value);
 				}
 			}
@@ -163,7 +166,7 @@ namespace Gameplay {
 				return GetShaderDataTypeCode(Type) == ShaderDataTypecode::Texture;
 			}
 		};
-	
+
 		/// <summary>
 		/// The shader that the material is using
 		/// </summary>
@@ -174,6 +177,6 @@ namespace Gameplay {
 		std::unordered_map<std::string, UniformData> _uniforms;
 
 		UniformData& _GetUniform(const std::string& name);
-
+		void _PopulateUniforms();
 	};
 }

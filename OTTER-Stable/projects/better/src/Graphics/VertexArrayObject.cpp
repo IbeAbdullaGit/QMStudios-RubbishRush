@@ -42,7 +42,7 @@ VertexArrayObject::VertexBufferBinding* VertexArrayObject::AddVertexBuffer(const
 		if (_indexBuffer == nullptr) {
 			_elementCount = _vertexCount;
 		}
-	} 
+	}
 	else if (buffer->GetElementCount() != _vertexCount) {
 		LOG_WARN("Buffer element count does not match vertex count of this VAO!!!");
 	}
@@ -59,7 +59,7 @@ VertexArrayObject::VertexBufferBinding* VertexArrayObject::AddVertexBuffer(const
 	for (const BufferAttribute& attrib : attributes) {
 		glEnableVertexArrayAttrib(_handle, attrib.Slot);
 		glVertexAttribPointer(attrib.Slot, attrib.Size, (GLenum)attrib.Type, attrib.Normalized, attrib.Stride,
-							  (void*)attrib.Offset);
+			(void*)attrib.Offset);
 
 		// Here is where we select whether the attribute is instanced or not
 		glVertexAttribDivisor(attrib.Slot, instanced ? 1 : 0);
@@ -74,7 +74,7 @@ void VertexArrayObject::ReplaceVertexBuffer(VertexBufferBinding* binding, const 
 	// Search for the BufferAttribute with the matching usage
 	auto& it = std::find_if(_vertexBuffers.begin(), _vertexBuffers.end(), [&](const VertexBufferBinding* buffer) {
 		return buffer == binding;
-	});
+		});
 
 	if (it != _vertexBuffers.end()) {
 		if (buffer->GetElementCount() != _vertexCount) {
@@ -106,7 +106,8 @@ void VertexArrayObject::Draw(DrawMode mode) {
 	if (_indexBuffer == nullptr) {
 		uint32_t elements = _elementCount == 0 ? _vertexBuffers[0]->Buffer->GetElementCount() : _elementCount;
 		glDrawArrays((GLenum)mode, 0, elements);
-	} else {
+	}
+	else {
 		uint32_t elements = _elementCount == 0 ? _indexBuffer->GetElementCount() : _elementCount;
 		glDrawElements((GLenum)mode, elements, (GLenum)_indexBuffer->GetElementType(), nullptr);
 	}
@@ -125,7 +126,7 @@ void VertexArrayObject::DrawInstanced(uint32_t instanceCount, DrawMode mode /*= 
 		glDrawElementsInstanced((GLenum)mode, elements, (GLenum)_indexBuffer->GetElementType(), nullptr, instanceCount);
 	}
 	Unbind();
-	
+
 }
 
 void VertexArrayObject::Bind() {
@@ -153,7 +154,7 @@ VertexArrayObject::VertexBufferBinding* VertexArrayObject::GetBufferBinding(Attr
 		// Search for the BufferAttribute with the matching usage
 		auto& it = std::find_if(binding->Attributes.begin(), binding->Attributes.end(), [&](const BufferAttribute& attrib) {
 			return attrib.Usage == usage;
-		});
+			});
 
 		// If the BufferAttribute was found, return the binding
 		if (it != binding->Attributes.end()) {

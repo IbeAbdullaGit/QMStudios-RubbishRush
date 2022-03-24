@@ -44,7 +44,7 @@ struct BufferAttribute {
 	AttribUsage Usage;
 
 	BufferAttribute() :
-		Slot(0), Size(0), Type(AttributeType::Unknown), Normalized(false), Stride(0), Offset(0), Usage(AttribUsage::Unknown){}
+		Slot(0), Size(0), Type(AttributeType::Unknown), Normalized(false), Stride(0), Offset(0), Usage(AttribUsage::Unknown) {}
 
 	BufferAttribute(uint32_t slot, uint32_t size, AttributeType type, GLsizei stride, GLsizei offset, AttribUsage usage, bool normalized = false) :
 		Slot(slot), Size(size), Type(type), Stride(stride), Offset(offset), Usage(usage), Normalized(normalized) { }
@@ -68,17 +68,15 @@ public:
 		const VertexBuffer::Sptr& GetBuffer() const { return Buffer; }
 		const std::vector<BufferAttribute>& GetAttributes() const { return Attributes; }
 		bool IsInstanced() const { return Instanced; }
-	public:
-		VertexBuffer::Sptr Buffer;
 
 	protected:
 		friend class VertexArrayObject;
 
-		//VertexBuffer::Sptr Buffer;
+		VertexBuffer::Sptr Buffer;
 		std::vector<BufferAttribute> Attributes;
 		bool Instanced;
 	};
-	
+
 public:
 	/// <summary>
 	/// Creates a new empty Vertex Array Object
@@ -154,7 +152,7 @@ public:
 	const VertexDeclaration& GetVDecl();
 
 protected:
-	
+
 	// The index buffer bound to this VAO
 	IndexBuffer::Sptr _indexBuffer;
 	// The vertex buffers bound to this VAO

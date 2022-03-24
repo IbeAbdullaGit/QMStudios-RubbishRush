@@ -6,16 +6,16 @@
 #include "GLFW/glfw3.h"
 
 ENUM_FLAGS(ButtonState, int,
-	 Up       = 0b00,
-	 Down     = 0b01,
-	 Pressed  = 0b11,
-	 Released = 0b10
+	Up = 0b00,
+	Down = 0b01,
+	Pressed = 0b11,
+	Released = 0b10
 );
 
 ENUM(CursorMode, int,
-	 Normal = GLFW_CURSOR_NORMAL,
-	 Disabled = GLFW_CURSOR_DISABLED,
-	 Hidden   = GLFW_CURSOR_HIDDEN
+	Normal = GLFW_CURSOR_NORMAL,
+	Disabled = GLFW_CURSOR_DISABLED,
+	Hidden = GLFW_CURSOR_HIDDEN
 );
 
 class InputEngine {
@@ -39,7 +39,7 @@ public:
 	static void EndFrame();
 
 private:
-	static GLFWwindow*  __window;
+	static GLFWwindow* __window;
 	static ButtonState  __keyState[GLFW_KEY_LAST + 1];
 	static ButtonState  __mouseState[GLFW_MOUSE_BUTTON_LAST + 1];
 	static glm::dvec2   __mousePos;
