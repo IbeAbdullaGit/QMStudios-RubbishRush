@@ -32,6 +32,7 @@
 #include "Utils/JsonGlmHelpers.h"
 #include "Utils/StringUtils.h"
 #include "Utils/GlmDefines.h"
+#include "ToneFire.h"
 
 // Gameplay
 #include "Gameplay/Material.h"
@@ -48,7 +49,8 @@
 #include "Gameplay/Components/TriggerVolumeEnterBehaviour.h"
 #include "Gameplay/Components/SimpleCameraControl.h"
 #include "Gameplay/Components/Light.h"
-//ours
+
+//Rubbish Rush Components
 #include "Gameplay/Components/DeleteObjectBehaviour.h"
 #include "Gameplay/Components/CollectTrashBehaviour.h"
 #include "Gameplay/Components/SubmittingTrashBehaviour.h"
@@ -210,6 +212,8 @@ void DefaultSceneLayer::OnUpdate()
 			//startMenu->GetScene()->DeleteGameObject
 			playMenu = true;
 			spressed = false;
+
+			audio.PlayEvent("Music Fast");
 
 			_currentScene->FindObjectByName("Inventory UI")->Get<GuiPanel>()->IsEnabled = true;
 			//CREATE THE TRASH AHHHH
@@ -522,6 +526,21 @@ void DefaultSceneLayer::OnUpdate()
 
 void DefaultSceneLayer::_CreateScene()
 {
+	// SFX MUSIC AND AUDIO//
+
+	studio.LoadBank("Master.bank");
+	studio.LoadBank("Master.strings.bank");
+	studio.LoadBank("Sound.bank");
+	studio.LoadBank("Music_Background.bank");
+	audio.LoadEvent("event:/Music Fast");
+	audio.LoadEvent("event:/Footsteps");
+	audio.LoadEvent("event:/Can Crush");
+	audio.LoadEvent("event:/Plastic trash crush");
+	audio.LoadEvent("event:/Trash multi");
+	audio.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });
+
+
+
 	pointsPos.push_back(glm::vec3(-1.36f, 1.22f, 7.1f));
 	pointsPos.push_back(glm::vec3(-1.36f, 1.22f, 3.27f));
 
@@ -4214,6 +4233,8 @@ void DefaultSceneLayer::_CreateScene()
 			invPanel->IsEnabled = false;
 
 		}
+
+
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);
