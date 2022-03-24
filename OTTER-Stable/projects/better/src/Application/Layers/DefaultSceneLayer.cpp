@@ -139,6 +139,8 @@ void DefaultSceneLayer::OnUpdate()
 	double thisFrame = glfwGetTime();
 	float dt = static_cast<float>(thisFrame - lastFrame);
 	
+	mallStudio.Update();
+
 	//fetch resources
 	if (!activated)
 	{		
@@ -213,7 +215,7 @@ void DefaultSceneLayer::OnUpdate()
 			playMenu = true;
 			spressed = false;
 
-			audio.PlayEvent("Music Fast");
+			//audio.PlayEvent("Music Fast");
 
 			_currentScene->FindObjectByName("Inventory UI")->Get<GuiPanel>()->IsEnabled = true;
 			//CREATE THE TRASH AHHHH
@@ -528,16 +530,16 @@ void DefaultSceneLayer::_CreateScene()
 {
 	// SFX MUSIC AND AUDIO//
 
-	studio.LoadBank("Master.bank");
-	studio.LoadBank("Master.strings.bank");
-	studio.LoadBank("Sound.bank");
-	studio.LoadBank("Music_Background.bank");
+	/*mallStudio.LoadBank("Master.bank");
+	mallStudio.LoadBank("Master.strings.bank");
+	mallStudio.LoadBank("Sound.bank");
+	mallStudio.LoadBank("Music_Background.bank");
 	audio.LoadEvent("event:/Music Fast");
 	audio.LoadEvent("event:/Footsteps");
 	audio.LoadEvent("event:/Can Crush");
 	audio.LoadEvent("event:/Plastic trash crush");
 	audio.LoadEvent("event:/Trash multi");
-	audio.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });
+	audio.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });*/
 
 
 

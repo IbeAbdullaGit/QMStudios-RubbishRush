@@ -54,7 +54,7 @@ protected:
 	Gameplay::GameObject::Sptr returnUI;
 	Gameplay::GameObject::Sptr submitUI;
 
-	ToneFire::FMODStudio studio;
+	ToneFire::FMODStudio mallStudio;
 	ToneFire::StudioSound audio;
 
 
