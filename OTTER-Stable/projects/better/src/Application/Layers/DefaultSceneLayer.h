@@ -8,6 +8,7 @@
 #include "Gameplay/Material.h"
 #include <algorithm>
 #include <random>
+#include "ToneFire.h"
 
 /**
  * This example layer handles creating a default test scene, which we will use 
@@ -52,6 +53,9 @@ protected:
 	Gameplay::GameObject::Sptr objective;
 	Gameplay::GameObject::Sptr returnUI;
 	Gameplay::GameObject::Sptr submitUI;
+
+	ToneFire::FMODStudio mallStudio;
+	ToneFire::StudioSound audio;
 
 
 	//create points we need for lerping

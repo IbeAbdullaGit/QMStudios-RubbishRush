@@ -50,6 +50,7 @@
 #include "Gameplay/Components/SimpleCameraControl.h"
 #include "Gameplay/Components/Light.h"
 #include "ToneFire.h"
+#include "Gameplay/Components/AudioEngine.h"
 //ours
 #include "Gameplay/Components/DeleteObjectBehaviour.h"
 #include "Gameplay/Components/CollectTrashBehaviour.h"
@@ -133,7 +134,8 @@ void TutorialSceneLayer::OnAppLoad(const nlohmann::json& config) {
 double tutlastFrame = glfwGetTime();
 void TutorialSceneLayer::OnUpdate()
 {
-	studio.Update();
+	AudioEngine::studioupdate();
+	//studio.Update();
 	if (doUpdate)
 	{
 		
@@ -141,6 +143,7 @@ void TutorialSceneLayer::OnUpdate()
 		if (done) //LOAD NEXT SCENE
 		{
 			_tutcurrentScene->should_switch = true; //maybe add some delay here
+			studio.~FMODStudio();
 		}
 
 		Application& app = Application::Get();
@@ -199,23 +202,24 @@ void TutorialSceneLayer::OnUpdate()
 			//MENU ANIMATED UPDATED
 			if (_tutcurrentScene->IsPlaying && !done &&!musicstart) {
 				
-				test.PlayEvent("event:/Music Regular");
+				AudioEngine::playEventS("event:/Music Regular");
+				//test.PlayEvent("event:/Music Regular");
 				musicstart = true;
 			}
 
 			if (_tutcurrentScene->playrecyclesound) {
-				test.PlayEvent("event:/Plastic trash crush");
+			//	test.PlayEvent("event:/Plastic trash crush");
 				_tutcurrentScene->playrecyclesound = false;
 			}
 
 			if (_tutcurrentScene->playtrashsound) {
-				test.PlayEvent("event:/Can Crush");
+			//	test.PlayEvent("event:/Can Crush");
 				_tutcurrentScene->playtrashsound = false;
 			}
 
 			if (_tutcurrentScene->playmulti) {
-				test.PlayEvent("event:/Trash multi");
-				test.SetEventParameter("event:/Trash multi", "parameter:/Pitch", glm::linearRand(0.f, 1.f));
+			//	test.PlayEvent("event:/Trash multi");
+				//test.SetEventParameter("event:/Trash multi", "parameter:/Pitch", glm::linearRand(0.f, 1.f));
 				_tutcurrentScene->playmulti = false;
 			}
 
@@ -313,13 +317,13 @@ void TutorialSceneLayer::OnUpdate()
 			
 			
 			if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.3f && _tutcurrentScene->walk) {
-				test.PlayEvent("event:/Footsteps");
-				test.SetEventParameter("event:/Footsteps", "parameter:/Pitch", glm::linearRand(0.f, 4.f));
+				//test.PlayEvent("event:/Footsteps");
+				//test.SetEventParameter("event:/Footsteps", "parameter:/Pitch", glm::linearRand(0.f, 4.f));
 				currentTime = Timing::Current().TimeSinceAppLoad();
 			}
 
 			if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.5f && _tutcurrentScene->walk == false || trashyM->Get<JumpBehaviour>()->in_air) {
-				test.StopEvent("event:/Footsteps");
+				//test.StopEvent("event:/Footsteps");
 			}
 
 
@@ -391,16 +395,26 @@ void TutorialSceneLayer::OnUpdate()
 
 void TutorialSceneLayer::_CreateScene()
 {
-	studio.LoadBank("Master.bank");
+	AudioEngine::loadBank("Master.bank");
+	AudioEngine::loadBank("Master.strings.bank");
+	AudioEngine::loadBank("Sound.bank");
+	AudioEngine::loadBank("Music_Background.bank");
+	/*.LoadBank("Master.bank");
 	studio.LoadBank("Master.strings.bank");
 	studio.LoadBank("Sound.bank");
-	studio.LoadBank("Music_Background.bank");
-	test.LoadEvent("event:/Music Regular");
+	studio.LoadBank("Music_Background.bank");*/
+	AudioEngine::loadEventS("event:/Music Regular");
+	AudioEngine::loadEventS("event:/Footsteps");
+	AudioEngine::loadEventS("event:/Can Crush");
+	AudioEngine::loadEventS("event:/Plastic trash crush");
+	AudioEngine::loadEventS("event:/Trash multi");
+	/*test.LoadEvent("event:/Music Regular");
 	test.LoadEvent("event:/Footsteps");
 	test.LoadEvent("event:/Can Crush");
 	test.LoadEvent("event:/Plastic trash crush");
-	test.LoadEvent("event:/Trash multi");
-	test.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });
+	test.LoadEvent("event:/Trash multi");*/
+
+	//test.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });
 
 	
 
