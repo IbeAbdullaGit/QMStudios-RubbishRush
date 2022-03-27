@@ -523,10 +523,7 @@ void TutorialSceneLayer::_CreateScene()
 		solidWhiteTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidWhite);
 
 #pragma endregion 
-		// Loading in a 1D LUT
-		Texture1D::Sptr toonLut = ResourceManager::CreateAsset<Texture1D>("luts/toon-1D.png");
-		toonLut->SetWrap(WrapMode::ClampToEdge);
-
+		
 
 		// Here we'll load in the cubemap, as well as a special shader to handle drawing the skybox
 		TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/ocean/ocean.jpg");
@@ -617,6 +614,9 @@ void TutorialSceneLayer::_CreateScene()
 			//scene->MainCamera = cam;
 			camera->Add<SimpleCameraControl>();
 		}
+		// Loading in a 1D LUT
+		Texture1D::Sptr toonLut = ResourceManager::CreateAsset<Texture1D>("luts/toon-1D.png");
+		toonLut->SetWrap(WrapMode::ClampToEdge);
 
 		// Set up all our sample objects
 		//setup trashy
