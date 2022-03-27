@@ -102,6 +102,11 @@ public:
 	/// Gets the sampler wrap mode along the x/s/u axis for this texture
 	/// </summary>
 	WrapMode GetWrapS() const { return _description.HorizontalWrap; }
+	void SetWrap(WrapMode value) {
+		_description.VerticalWrap = value;
+		glTextureParameteri(_rendererId, GL_TEXTURE_WRAP_S, *_description.VerticalWrap);
+		
+	}
 	/// <summary>
 	/// Gets the sampler wrap mode along the y/t/v axis for this texture
 	/// </summary>

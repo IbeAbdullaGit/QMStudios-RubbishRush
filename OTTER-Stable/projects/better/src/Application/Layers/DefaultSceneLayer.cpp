@@ -164,6 +164,8 @@ void DefaultSceneLayer::OnUpdate()
 		objective = _currentScene->FindObjectByName("Objective UI Canvas");
 		returnUI = _currentScene->FindObjectByName("Return Feedback");
 		submitUI = _currentScene->FindObjectByName("Submit Feedback");
+
+		conveyor_belt = _currentScene->FindObjectByName("Conveyor")->Get<RenderComponent>()->GetMaterial();
 		//randomize
 		//RandomizePositions();
 
@@ -227,6 +229,10 @@ void DefaultSceneLayer::OnUpdate()
 
 	// Core update loop
 	if (_currentScene != nullptr) {
+		//update conveyor belt
+		tracker += 0.01;
+		conveyor_belt->Set("Time", tracker);
+		
 		//MENU ANIMATED UPDATED
 		if (_currentScene->IsPlaying && !timerDone && playMenu && start)
 		{
@@ -307,6 +313,8 @@ void DefaultSceneLayer::OnUpdate()
 
 		else if (_currentScene->IsPlaying && !playMenu && !timeleveltDone && start)
 		{
+			
+			
 			//put gui here
 			//if all trash is collected, the timer stops, and victory is set to true to show of the victory screen
 			if (_currentScene->score == max_trash)
@@ -622,7 +630,7 @@ void DefaultSceneLayer::_CreateScene()
 		//for moving the conveyor belt?
 		ShaderProgram::Sptr conveyorShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic_moving.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forwardCONVEYOR.glsl" }
 		});
 
 		///////////////////// NEW SHADERS ////////////////////////////////////////////
@@ -738,12 +746,15 @@ void DefaultSceneLayer::_CreateScene()
 		// CONVEYOR
 		Gameplay::MeshResource::Sptr conveyorMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("conveyor.obj");
 		Texture2D::Sptr conveyorTex = ResourceManager::CreateAsset<Texture2D>("textures/conveyor.jpg");
+		//repeat conveyor belt texture
+		conveyorTex->SetWrap(WrapMode::Repeat);
 		Gameplay::Material::Sptr conveyorMaterial = ResourceManager::CreateAsset<Gameplay::Material>(conveyorShader);
 		{
 			conveyorMaterial->Name = "Conveyor";
 			conveyorMaterial->Set("u_Material.AlbedoMap", conveyorTex);
 			conveyorMaterial->Set("u_Material.Shininess", 0.2f);
 			conveyorMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			conveyorMaterial->Set("Time", 0);
 
 		}
 

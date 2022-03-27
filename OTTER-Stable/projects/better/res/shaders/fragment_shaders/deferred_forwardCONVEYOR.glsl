@@ -1,7 +1,6 @@
 #version 430
 
 #include "../fragments/fs_common_inputs.glsl"
-#include "../fragments/frame_uniforms.glsl"
 
 // We output a single color to the color buffer
 layout(location = 0) out vec4 albedo_specPower;
@@ -18,38 +17,29 @@ struct Material {
 	sampler2D NormalMap;
 	sampler2D MetallicShininessMap;
 	float     DiscardThreshold;
-	int       Steps;
 };
 // Create a uniform for the material
 uniform Material u_Material;
 
-uniform sampler1D s_ToonTerm;
-int every_other =0;
+uniform float Time;
+
+#include "../fragments/frame_uniforms.glsl"
+//#include "../fragments/color_correction.glsl"
 
 // https://learnopengl.com/Advanced-Lighting/Advanced-Lighting
-void main() {	
+void main() {
 	
-//	//how to do every other pixel?
-//	if (gl_FragDepth >0 && every_other ==0)
-//	{
-//		gl_FragDepth =0;
-//		every_other = 1;
-//	}
-//	else if (every_other ==1)
-//	{
-//		every_other =0;
-//	}
 	
 	// Get albedo from the material
-	vec4 albedoColor = texture(u_Material.AlbedoMap, inUV);
+	//SCROLLING TEXTURE
+	vec4 albedoColor = texture(u_Material.AlbedoMap, vec2(inUV.x, inUV.y - Time));
 
-    // Using a LUT to allow artists to tweak toon shading settings
-    albedoColor.r = texture(s_ToonTerm, albedoColor.r).r;
-    albedoColor.g = texture(s_ToonTerm, albedoColor.g).g;
-    albedoColor.b = texture(s_ToonTerm, albedoColor.b).b;
+	//apply color correction?
+	//albedoColor =vec4(ColorCorrect(albedoColor.rgb), albedoColor.a);
 
 	// We can use another texture to store things like our lighting settings
 	vec4 lightingParams = texture(u_Material.MetallicShininessMap, inUV);
+	
 
 	// Discarding fragments who's alpha is below the material's threshold
 	if (albedoColor.a < u_Material.DiscardThreshold) {
@@ -57,7 +47,7 @@ void main() {
 	}
 
 	// Extract albedo from material, and store shininess
-	albedo_specPower = vec4(albedoColor.rgb, lightingParams.x);
+	albedo_specPower = vec4(albedoColor.rgb, 1.0f);//lightingParams.x);
 	
 	// Normalize our input normal
     // Read our tangent from the map, and convert from the [0,1] range to [-1,1] range

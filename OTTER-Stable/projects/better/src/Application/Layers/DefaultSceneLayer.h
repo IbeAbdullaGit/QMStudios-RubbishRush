@@ -44,6 +44,10 @@ protected:
 	//Gameplay::MeshResource::Sptr trashMesh;
 	//Gameplay::Material::Sptr trashMaterial;
 
+	//conveyor belt
+	Gameplay::Material::Sptr conveyor_belt;
+	float tracker = 0;
+
 	Gameplay::GameObject::Sptr startMenu;
 	Gameplay::GameObject::Sptr pauseMenu;
 	Gameplay::GameObject::Sptr failMenu;
