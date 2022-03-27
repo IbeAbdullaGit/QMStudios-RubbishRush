@@ -3,6 +3,13 @@
 #include "fmod_studio_common.h"
 #include "fmod_studio.hpp"
 #include <iostream>
+#include "ToneFire.h"
+#include "fmod_studio_common.h"
+
+ToneFire::FMODStudio AudioEngine::studio;
+ToneFire::StudioSound AudioEngine::audio;
+
+
 int AudioEngine::ErrorCheck(FMOD_RESULT result)
 {
 	if (result != FMOD_OK) 
@@ -17,26 +24,17 @@ int AudioEngine::ErrorCheck(FMOD_RESULT result)
 	return 0;
 }
 
-void AudioEngine::init()
-{
-	ErrorCheck(FMOD::System_Create(&pSystem));
-	ErrorCheck(pSystem->init(32, FMOD_INIT_NORMAL, nullptr));
-}
 
 void AudioEngine::studioinit()
 {
-	ErrorCheck(FMOD::Studio::System::create(&pStudioSystem));
-	ErrorCheck(pStudioSystem->initialize(512, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
+	
+	
 }
 
-void AudioEngine::update()
-{
-	ErrorCheck(pSystem->update());
-}
 
 void AudioEngine::studioupdate()
 {
-	ErrorCheck(pStudioSystem->update());
+	studio.Update();
 }
 
 void AudioEngine::shutdown()
@@ -45,10 +43,7 @@ void AudioEngine::shutdown()
 	ErrorCheck(pSystem->release());
 }
 
-void AudioEngine::studioshutdown()
-{
-ErrorCheck(pStudioSystem->release());
-}
+
 
 void AudioEngine::loadSound(const std::string& soundName, const std::string& filename, bool b3d, bool bLooping, bool bStream)
 {
@@ -73,9 +68,9 @@ void AudioEngine::loadSound(const std::string& soundName, const std::string& fil
 	}
 }
 
-void AudioEngine::loadBank(const char* filename, FMOD::Studio::Bank** bank)
+void AudioEngine::loadBank(const std::string& filename)
 {
-	ErrorCheck(pStudioSystem->loadBankFile(filename, FMOD_STUDIO_LOAD_BANK_NONBLOCKING, bank));
+	studio.LoadBank(filename);
 }
 
 //FMOD_RESULT AudioEngine::s(const char* filename, FMOD::Studio::Bank** bank = NULL)
@@ -95,19 +90,16 @@ void AudioEngine::unloadSound(const std::string& soundName)
 	}
 }
 
-void AudioEngine::getEventS(const char* pathname,FMOD::Studio::EventDescription* eventd, FMOD::Studio::EventInstance** eventInst)
+void AudioEngine::loadEventS(const std::string & eventname)
 {
-	ErrorCheck(pStudioSystem->getEvent(pathname, &eventd));
-
-
-	ErrorCheck(eventd->createInstance(eventInst));
+	audio.LoadEvent(eventname);
 }
 
 
 
-void AudioEngine::playEvent(FMOD::Studio::EventInstance* eventInst)
+void AudioEngine::playEventS(const std::string& eventname)
 {
-	ErrorCheck(eventInst->start());
+	audio.PlayEvent(eventname);
 }
 
 

@@ -5,25 +5,27 @@
 #include "fmod_common.h"
 #include <string>
 #include <unordered_map>
+#include "ToneFire.h"
 
 class AudioEngine
 {
 public:
 	static int ErrorCheck(FMOD_RESULT result);
-	void init();
-	void studioinit();
+	static void init();
+	static void studioinit();
 	void update();
-	void studioupdate();
+	static void studioupdate();
 	void shutdown();
 	void studioshutdown();
 
 	void loadSound(const std::string& soundName, const std::string& filename, bool b3d, bool bLooping = false, bool bStream = false);
-	void loadBank(const char* filename , FMOD::Studio::Bank** bank = NULL);
+	static void loadBank(const std::string& filename);
 	void unloadSound(const std::string& soundName);
-	void getEventS(const char* pathname, FMOD::Studio::EventDescription * eventd = NULL, FMOD::Studio::EventInstance** eventInst = NULL);
-	void playEvent(FMOD::Studio::EventInstance* eventInst);
+	static void loadEventS(const std::string& eventname);
+	static void playEventS(const std::string& eventname);
 	void playSoundByName(const std::string& soundName);
-	FMOD::Studio::System* pStudioSystem;
+	static ToneFire::FMODStudio studio;
+	static ToneFire::StudioSound audio;
 private:
 	FMOD::System* pSystem;
 	

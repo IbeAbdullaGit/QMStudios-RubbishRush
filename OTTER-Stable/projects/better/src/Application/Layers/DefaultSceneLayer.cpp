@@ -530,7 +530,7 @@ void DefaultSceneLayer::_CreateScene()
 {
 	// SFX MUSIC AND AUDIO//
 
-	/*mallStudio.LoadBank("Master.bank");
+	mallStudio.LoadBank("Master.bank");
 	mallStudio.LoadBank("Master.strings.bank");
 	mallStudio.LoadBank("Sound.bank");
 	mallStudio.LoadBank("Music_Background.bank");
@@ -539,7 +539,7 @@ void DefaultSceneLayer::_CreateScene()
 	audio.LoadEvent("event:/Can Crush");
 	audio.LoadEvent("event:/Plastic trash crush");
 	audio.LoadEvent("event:/Trash multi");
-	audio.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });*/
+	audio.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });
 
 
 
