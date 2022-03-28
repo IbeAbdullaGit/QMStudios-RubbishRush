@@ -58,8 +58,6 @@ protected:
 	Gameplay::GameObject::Sptr returnUI;
 	Gameplay::GameObject::Sptr submitUI;
 
-	ToneFire::FMODStudio mallStudio;
-	ToneFire::StudioSound audio;
 
 
 	//create points we need for lerping

@@ -57,8 +57,6 @@ protected:
 	bool play5 = false;
 
 	
-	ToneFire::FMODStudio studio;
-	ToneFire::StudioSound test;
 	bool hasMoved = false;
 	bool hasCollected = false;
 	bool hasJumped = false;
