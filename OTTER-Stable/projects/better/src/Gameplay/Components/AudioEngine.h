@@ -19,10 +19,13 @@ public:
 	void studioshutdown();
 
 	void loadSound(const std::string& soundName, const std::string& filename, bool b3d, bool bLooping = false, bool bStream = false);
-	static void loadBank(const std::string& filename);
+	static void loadBankS();
 	void unloadSound(const std::string& soundName);
-	static void loadEventS(const std::string& eventname);
+	static void loadEventS();
 	static void playEventS(const std::string& eventname);
+	static void stopEventS(const std::string& eventname);
+	static void EventPosChangeS(const std::string& eventname, float x, float y, float z);
+	static void EventParamChangeS(const std::string& eventname, std::string& paramname, float x, float y);
 	void playSoundByName(const std::string& soundName);
 	static ToneFire::FMODStudio studio;
 	static ToneFire::StudioSound audio;

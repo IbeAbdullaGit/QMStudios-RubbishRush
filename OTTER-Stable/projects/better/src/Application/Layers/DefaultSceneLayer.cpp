@@ -63,7 +63,7 @@
 #include "Gameplay/Components/MorphMeshRenderer.h"
 #include "Gameplay/Components/GroundBehaviour.h"
 #include "Gameplay/Components/InventoryUI.h"
-
+#include "Gameplay/Components/AudioEngine.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -139,7 +139,7 @@ void DefaultSceneLayer::OnUpdate()
 	double thisFrame = glfwGetTime();
 	float dt = static_cast<float>(thisFrame - lastFrame);
 	
-	mallStudio.Update();
+	//mallStudio.Update();
 
 	//fetch resources
 	if (!activated)
@@ -194,6 +194,7 @@ void DefaultSceneLayer::OnUpdate()
 		if (glfwGetKey(app.GetWindow(), GLFW_KEY_ENTER))
 		{
 			spressed = true;
+			
 		}
 		if (glfwGetKey(app.GetWindow(), GLFW_KEY_ESCAPE)) //exit
 		{
@@ -216,8 +217,7 @@ void DefaultSceneLayer::OnUpdate()
 			//startMenu->GetScene()->DeleteGameObject
 			playMenu = true;
 			spressed = false;
-
-			//audio.PlayEvent("Music Fast");
+			AudioEngine::playEventS("event:/Music Fast");
 
 			_currentScene->FindObjectByName("Inventory UI")->Get<GuiPanel>()->IsEnabled = true;
 			//CREATE THE TRASH AHHHH
@@ -233,9 +233,38 @@ void DefaultSceneLayer::OnUpdate()
 		tracker += 0.01;
 		conveyor_belt->Set("Time", tracker);
 		
+
+		if (_currentScene->playrecyclesound) {
+			AudioEngine::playEventS("event:/Plastic trash crush");
+			_currentScene->playrecyclesound = false;
+		}
+
+		if (_currentScene->playtrashsound) {
+			//	test.PlayEvent("event:/Can Crush");
+			AudioEngine::playEventS("event:/Can Crush");
+			_currentScene->playtrashsound = false;
+		}
+
+		if (_currentScene->playmulti) {
+			//test.SetEventParameter("event:/Trash multi", "parameter:/Pitch", glm::linearRand(0.f, 1.f));
+			AudioEngine::playEventS("event:/Trash multi");
+			_currentScene->playmulti = false;
+		}
+
+		if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.3f && _currentScene->walk) {
+			AudioEngine::playEventS("event:/Footsteps");
+			currentTime = Timing::Current().TimeSinceAppLoad();
+		}
+
+		if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.5f && _currentScene->walk == false || trashyM->Get<JumpBehaviour>()->in_air) {
+			AudioEngine::stopEventS("event:/Footsteps");
+		}
+
+
 		//MENU ANIMATED UPDATED
 		if (_currentScene->IsPlaying && !timerDone && playMenu && start)
 		{
+			currentTime = Timing::Current().TimeSinceAppLoad();
 			//When the game starts a menu plays, this just ensure the menu plays in that amount of time
 			if (timeLoop > 0) {
 				timerDone = false;
@@ -421,7 +450,7 @@ void DefaultSceneLayer::OnUpdate()
 					RectangleE->Get<RenderComponent>()->IsEnabled = true;
 					TrashyE->SetPostion(glm::vec3(0.5f, 1.49f, 3.3f));
 					RectangleE->SetPostion(glm::vec3(-1.36f, 1.22f, 7.0f));
-
+					AudioEngine::stopEventS("event:/Music Fast");
 
 				}
 				if (glfwGetKey(app.GetWindow(), GLFW_KEY_ESCAPE)) //exit
@@ -474,7 +503,7 @@ void DefaultSceneLayer::OnUpdate()
 					RectangleE->Get<RenderComponent>()->IsEnabled = true;
 					TrashyE->SetPostion(glm::vec3(0.5f, 1.49f, 3.3f));
 					RectangleE->SetPostion(glm::vec3(-1.36f, 1.22f, 7.0f));
-
+					AudioEngine::stopEventS("event:/Music Fast");
 
 				}
 				if (glfwGetKey(app.GetWindow(), GLFW_KEY_ESCAPE)) //exit
@@ -538,7 +567,7 @@ void DefaultSceneLayer::_CreateScene()
 {
 	// SFX MUSIC AND AUDIO//
 
-	mallStudio.LoadBank("Master.bank");
+	/*mallStudio.LoadBank("Master.bank");
 	mallStudio.LoadBank("Master.strings.bank");
 	mallStudio.LoadBank("Sound.bank");
 	mallStudio.LoadBank("Music_Background.bank");
@@ -547,7 +576,7 @@ void DefaultSceneLayer::_CreateScene()
 	audio.LoadEvent("event:/Can Crush");
 	audio.LoadEvent("event:/Plastic trash crush");
 	audio.LoadEvent("event:/Trash multi");
-	audio.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });
+	audio.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });*/
 
 
 
@@ -893,12 +922,21 @@ void DefaultSceneLayer::_CreateScene()
 
 		Gameplay::MeshResource::Sptr libshelfMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("library shelf.obj");
 		Texture2D::Sptr libshelfTex = ResourceManager::CreateAsset<Texture2D>("textures/books2.jpg");
+		Texture2D::Sptr libshelfTex2 = ResourceManager::CreateAsset<Texture2D>("textures/books3.png");
 		Gameplay::Material::Sptr libshelfMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			libshelfMat->Name = "Library Shelf";
 			libshelfMat->Set("u_Material.AlbedoMap", libshelfTex);
 			libshelfMat->Set("u_Material.Shininess", 0.3f);
 			libshelfMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::Material::Sptr libshelfMat2 = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			libshelfMat2->Name = "Library Shelf";
+			libshelfMat2->Set("u_Material.AlbedoMap", libshelfTex2);
+			libshelfMat2->Set("u_Material.Shininess", 0.3f);
+			libshelfMat2->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
 		Gameplay::MeshResource::Sptr lchairMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("LoungeChair.obj");
@@ -973,13 +1011,30 @@ void DefaultSceneLayer::_CreateScene()
 
 		Gameplay::MeshResource::Sptr posterMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Poster.obj");
 		Texture2D::Sptr posterTex = ResourceManager::CreateAsset<Texture2D>("textures/poster.jpg");
+		Texture2D::Sptr posterTex2 = ResourceManager::CreateAsset<Texture2D>("textures/poster2.jpg");
+		Texture2D::Sptr posterTex3 = ResourceManager::CreateAsset<Texture2D>("textures/poster3.jpg");
 		Gameplay::Material::Sptr posterMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
-			posterMat->Name = "Statue";
+			posterMat->Name = "Poster 1";
 			posterMat->Set("u_Material.AlbedoMap", posterTex);
 			posterMat->Set("u_Material.Shininess", 1.0f);
 			posterMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
+		Gameplay::Material::Sptr posterMat2 = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			posterMat2->Name = "Poster 2";
+			posterMat2->Set("u_Material.AlbedoMap", posterTex2);
+			posterMat2->Set("u_Material.Shininess", 1.0f);
+			posterMat2->Set("u_Material.NormalMap", normalMapDefault);
+		}
+		Gameplay::Material::Sptr posterMat3 = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			posterMat3->Name = "Statue";
+			posterMat3->Set("u_Material.AlbedoMap", posterTex3);
+			posterMat3->Set("u_Material.Shininess", 1.0f);
+			posterMat3->Set("u_Material.NormalMap", normalMapDefault);
+		}
+		
 
 		// Here we'll load in the cubemap, as well as a special shader to handle drawing the skybox
 		TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/ocean/ocean.jpg");
@@ -2210,7 +2265,7 @@ void DefaultSceneLayer::_CreateScene()
 
 				RenderComponent::Sptr renderer = poster2->Add<RenderComponent>();
 				renderer->SetMesh(posterMesh);
-				renderer->SetMaterial(posterMat);
+				renderer->SetMaterial(posterMat2);
 			}
 
 			BotLeft->AddChild(table1);
@@ -2247,7 +2302,7 @@ void DefaultSceneLayer::_CreateScene()
 
 				RenderComponent::Sptr renderer = libshelf1->Add<RenderComponent>();
 				renderer->SetMesh(libshelfMesh);
-				renderer->SetMaterial(libshelfMat);
+				renderer->SetMaterial(libshelfMat2);
 
 				Gameplay::Physics::RigidBody::Sptr physics = libshelf1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
@@ -2311,7 +2366,7 @@ void DefaultSceneLayer::_CreateScene()
 
 				RenderComponent::Sptr renderer = libshelf5->Add<RenderComponent>();
 				renderer->SetMesh(libshelfMesh);
-				renderer->SetMaterial(libshelfMat);
+				renderer->SetMaterial(libshelfMat2);
 
 				Gameplay::Physics::RigidBody::Sptr physics = libshelf5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
@@ -2579,6 +2634,17 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(box);
 			}
 
+			Gameplay::GameObject::Sptr poster3 = scene->CreateGameObject("poster 3");
+			{
+				poster3->SetPostion(glm::vec3(-8.65, 3.21f, 0.88f));
+				poster3->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+				poster3->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = poster3->Add<RenderComponent>();
+				renderer->SetMesh(posterMesh);
+				renderer->SetMaterial(posterMat3);
+			}
+
 			BotRight->AddChild(toilet1);
 			BotRight->AddChild(toilet2);
 			BotRight->AddChild(toilet3);
@@ -2589,6 +2655,7 @@ void DefaultSceneLayer::_CreateScene()
 			BotRight->AddChild(tub2);
 			BotRight->AddChild(shower1);
 			BotRight->AddChild(cashcounter5);
+			BotRight->AddChild(poster3);
 
 			//Main Hall
 
@@ -2658,11 +2725,11 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(boxCollider);
 			}
 
-
 			MainHall->AddChild(benchhall1);
 			MainHall->AddChild(benchhall2);
 			MainHall->AddChild(longfountain1);
 			MainHall->AddChild(tallfountain1);
+
 		//Obstacles
 		{
 
@@ -3373,6 +3440,7 @@ void DefaultSceneLayer::_CreateScene()
 			binMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
+
 		Gameplay::GameObject::Sptr binM = scene->CreateGameObject("Bin");
 		{
 			binM->SetPostion(glm::vec3(-1.5f, 2.0f, 0.07f));
@@ -4247,7 +4315,11 @@ void DefaultSceneLayer::_CreateScene()
 
 		}
 
-
+		Gameplay::GameObject::Sptr LfountainParticles1 = scene->CreateGameObject("Long Foutain Particles 1");
+		{
+			ParticleSystem::Sptr particleManager = LfountainParticles1->Add<ParticleSystem>();
+			particleManager->AddEmitter(glm::vec3(0.21f, -7.360f, 1.846f), glm::vec3(0.0f, -1.0f, 10.0f), 10.0f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		}
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);
@@ -4266,6 +4338,8 @@ void DefaultSceneLayer::_CreateScene()
 		scene->trash = 0;
 		scene->held = 0;
 	}
+
+
 }
 
 void DefaultSceneLayer::_CreateTrash()

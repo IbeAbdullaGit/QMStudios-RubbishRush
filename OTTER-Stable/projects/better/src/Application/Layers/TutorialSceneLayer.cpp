@@ -134,8 +134,8 @@ void TutorialSceneLayer::OnAppLoad(const nlohmann::json& config) {
 double tutlastFrame = glfwGetTime();
 void TutorialSceneLayer::OnUpdate()
 {
-	AudioEngine::studioupdate();
-	//studio.Update();
+	
+	
 	if (doUpdate)
 	{
 		
@@ -143,7 +143,7 @@ void TutorialSceneLayer::OnUpdate()
 		if (done) //LOAD NEXT SCENE
 		{
 			_tutcurrentScene->should_switch = true; //maybe add some delay here
-			studio.~FMODStudio();
+			//studio.~FMODStudio();
 		}
 
 		Application& app = Application::Get();
@@ -203,23 +203,24 @@ void TutorialSceneLayer::OnUpdate()
 			if (_tutcurrentScene->IsPlaying && !done &&!musicstart) {
 				
 				AudioEngine::playEventS("event:/Music Regular");
-				//test.PlayEvent("event:/Music Regular");
+				
 				musicstart = true;
 			}
 
 			if (_tutcurrentScene->playrecyclesound) {
-			//	test.PlayEvent("event:/Plastic trash crush");
+				AudioEngine::playEventS("event:/Plastic trash crush");
 				_tutcurrentScene->playrecyclesound = false;
 			}
 
 			if (_tutcurrentScene->playtrashsound) {
 			//	test.PlayEvent("event:/Can Crush");
+				AudioEngine::playEventS("event:/Can Crush");
 				_tutcurrentScene->playtrashsound = false;
 			}
 
 			if (_tutcurrentScene->playmulti) {
-			//	test.PlayEvent("event:/Trash multi");
 				//test.SetEventParameter("event:/Trash multi", "parameter:/Pitch", glm::linearRand(0.f, 1.f));
+				AudioEngine::playEventS("event:/Trash multi");
 				_tutcurrentScene->playmulti = false;
 			}
 
@@ -291,7 +292,7 @@ void TutorialSceneLayer::OnUpdate()
 
 					//dumpUI->Get<RenderComponent>()->IsEnabled = false;
 					//pickupUI->Get<GuiPanel>()->IsEnabled = false;
-					test.StopEvent("event:/Music Regular");
+					AudioEngine::stopEventS("event:/Music Regular");
 					//make loading screen
 					Gameplay::GameObject::Sptr loading = _tutcurrentScene->CreateGameObject("Load");
 					{
@@ -317,13 +318,12 @@ void TutorialSceneLayer::OnUpdate()
 			
 			
 			if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.3f && _tutcurrentScene->walk) {
-				//test.PlayEvent("event:/Footsteps");
-				//test.SetEventParameter("event:/Footsteps", "parameter:/Pitch", glm::linearRand(0.f, 4.f));
+				AudioEngine::playEventS("event:/Footsteps");
 				currentTime = Timing::Current().TimeSinceAppLoad();
 			}
 
 			if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.5f && _tutcurrentScene->walk == false || trashyM->Get<JumpBehaviour>()->in_air) {
-				//test.StopEvent("event:/Footsteps");
+				AudioEngine::stopEventS("event:/Footsteps");
 			}
 
 
@@ -395,29 +395,6 @@ void TutorialSceneLayer::OnUpdate()
 
 void TutorialSceneLayer::_CreateScene()
 {
-	AudioEngine::loadBank("Master.bank");
-	AudioEngine::loadBank("Master.strings.bank");
-	AudioEngine::loadBank("Sound.bank");
-	AudioEngine::loadBank("Music_Background.bank");
-	/*.LoadBank("Master.bank");
-	studio.LoadBank("Master.strings.bank");
-	studio.LoadBank("Sound.bank");
-	studio.LoadBank("Music_Background.bank");*/
-	AudioEngine::loadEventS("event:/Music Regular");
-	AudioEngine::loadEventS("event:/Footsteps");
-	AudioEngine::loadEventS("event:/Can Crush");
-	AudioEngine::loadEventS("event:/Plastic trash crush");
-	AudioEngine::loadEventS("event:/Trash multi");
-	/*test.LoadEvent("event:/Music Regular");
-	test.LoadEvent("event:/Footsteps");
-	test.LoadEvent("event:/Can Crush");
-	test.LoadEvent("event:/Plastic trash crush");
-	test.LoadEvent("event:/Trash multi");*/
-
-	//test.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });
-
-	
-
 	//using namespace Gameplay;
 	//using namespace Gameplay::Physics;
 

@@ -171,6 +171,10 @@ void Application::SaveSettings()
 void Application::_Run()
 {
 
+
+	AudioEngine::loadBankS();
+	AudioEngine::loadEventS();
+
 	//AUDIO EXAMPLE STUDIO
 	/*AudioEngine audioEngineS;
 	audioEngineS.studioinit();
@@ -250,6 +254,8 @@ void Application::_Run()
 
 	// Infinite loop as long as the application is running
 	while (_isRunning) {
+
+		AudioEngine::studioupdate();
 
 		//AUDIO EXAMPLE STUDIO
 		/*audioEngineS.studioupdate();
