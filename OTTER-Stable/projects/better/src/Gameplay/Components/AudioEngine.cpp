@@ -68,9 +68,13 @@ void AudioEngine::loadSound(const std::string& soundName, const std::string& fil
 	}
 }
 
-void AudioEngine::loadBank(const std::string& filename)
+void AudioEngine::loadBankS()
 {
-	studio.LoadBank(filename);
+	studio.LoadBank("Master.bank");
+	studio.LoadBank("Master.strings.bank");
+	studio.LoadBank("Sound.bank");
+	studio.LoadBank("Music_Background.bank");
+
 }
 
 //FMOD_RESULT AudioEngine::s(const char* filename, FMOD::Studio::Bank** bank = NULL)
@@ -90,9 +94,14 @@ void AudioEngine::unloadSound(const std::string& soundName)
 	}
 }
 
-void AudioEngine::loadEventS(const std::string & eventname)
+void AudioEngine::loadEventS()
 {
-	audio.LoadEvent(eventname);
+	audio.LoadEvent("event:/Music Fast");
+	audio.LoadEvent("event:/Music Regular");
+	audio.LoadEvent("event:/Footsteps");
+	audio.LoadEvent("event:/Can Crush");
+	audio.LoadEvent("event:/Plastic trash crush");
+	audio.LoadEvent("event:/Trash multi");
 }
 
 
@@ -100,6 +109,21 @@ void AudioEngine::loadEventS(const std::string & eventname)
 void AudioEngine::playEventS(const std::string& eventname)
 {
 	audio.PlayEvent(eventname);
+}
+
+void AudioEngine::stopEventS(const std::string& eventname)
+{
+	audio.StopEvent(eventname);
+}
+
+void AudioEngine::EventPosChangeS(const std::string& eventname, float x, float y, float z)
+{
+	audio.SetEventPosition(eventname, FMOD_VECTOR{ x, y, z });
+}
+
+void AudioEngine::EventParamChangeS(const std::string& eventname, std::string& paramname, float x, float y)
+{
+	audio.SetEventParameter(eventname, paramname, x);
 }
 
 

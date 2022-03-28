@@ -63,7 +63,7 @@
 #include "Gameplay/Components/MorphMeshRenderer.h"
 #include "Gameplay/Components/GroundBehaviour.h"
 #include "Gameplay/Components/InventoryUI.h"
-
+#include "Gameplay/Components/AudioEngine.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -194,6 +194,7 @@ void DefaultSceneLayer::OnUpdate()
 		if (glfwGetKey(app.GetWindow(), GLFW_KEY_ENTER))
 		{
 			spressed = true;
+			
 		}
 		if (glfwGetKey(app.GetWindow(), GLFW_KEY_ESCAPE)) //exit
 		{
@@ -216,8 +217,7 @@ void DefaultSceneLayer::OnUpdate()
 			//startMenu->GetScene()->DeleteGameObject
 			playMenu = true;
 			spressed = false;
-
-			//audio.PlayEvent("Music Fast");
+			AudioEngine::playEventS("event:/Music Fast");
 
 			_currentScene->FindObjectByName("Inventory UI")->Get<GuiPanel>()->IsEnabled = true;
 			//CREATE THE TRASH AHHHH
@@ -233,9 +233,38 @@ void DefaultSceneLayer::OnUpdate()
 		tracker += 0.01;
 		conveyor_belt->Set("Time", tracker);
 		
+
+		if (_currentScene->playrecyclesound) {
+			AudioEngine::playEventS("event:/Plastic trash crush");
+			_currentScene->playrecyclesound = false;
+		}
+
+		if (_currentScene->playtrashsound) {
+			//	test.PlayEvent("event:/Can Crush");
+			AudioEngine::playEventS("event:/Can Crush");
+			_currentScene->playtrashsound = false;
+		}
+
+		if (_currentScene->playmulti) {
+			//test.SetEventParameter("event:/Trash multi", "parameter:/Pitch", glm::linearRand(0.f, 1.f));
+			AudioEngine::playEventS("event:/Trash multi");
+			_currentScene->playmulti = false;
+		}
+
+		if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.3f && _currentScene->walk) {
+			AudioEngine::playEventS("event:/Footsteps");
+			currentTime = Timing::Current().TimeSinceAppLoad();
+		}
+
+		if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.5f && _currentScene->walk == false || trashyM->Get<JumpBehaviour>()->in_air) {
+			AudioEngine::stopEventS("event:/Footsteps");
+		}
+
+
 		//MENU ANIMATED UPDATED
 		if (_currentScene->IsPlaying && !timerDone && playMenu && start)
 		{
+			currentTime = Timing::Current().TimeSinceAppLoad();
 			//When the game starts a menu plays, this just ensure the menu plays in that amount of time
 			if (timeLoop > 0) {
 				timerDone = false;
@@ -421,7 +450,7 @@ void DefaultSceneLayer::OnUpdate()
 					RectangleE->Get<RenderComponent>()->IsEnabled = true;
 					TrashyE->SetPostion(glm::vec3(0.5f, 1.49f, 3.3f));
 					RectangleE->SetPostion(glm::vec3(-1.36f, 1.22f, 7.0f));
-
+					AudioEngine::stopEventS("event:/Music Fast");
 
 				}
 				if (glfwGetKey(app.GetWindow(), GLFW_KEY_ESCAPE)) //exit
@@ -474,7 +503,7 @@ void DefaultSceneLayer::OnUpdate()
 					RectangleE->Get<RenderComponent>()->IsEnabled = true;
 					TrashyE->SetPostion(glm::vec3(0.5f, 1.49f, 3.3f));
 					RectangleE->SetPostion(glm::vec3(-1.36f, 1.22f, 7.0f));
-
+					AudioEngine::stopEventS("event:/Music Fast");
 
 				}
 				if (glfwGetKey(app.GetWindow(), GLFW_KEY_ESCAPE)) //exit
