@@ -31,14 +31,15 @@ nlohmann::json TextureCube::ToJson() const
 	nlohmann::json result;
 	result["filter_min"] = ~_description.MinificationFilter;
 	result["filter_mag"] = ~_description.MagnificationFilter;
-	
+
 	if (!_description.FaceFileNames.empty()) {
 		result["face_filenames"] = nlohmann::json();
 		for (int ix = 0; ix < 6; ix++) {
 			CubeMapFace face = (CubeMapFace)ix;
 			result["face_filenames"][~face] = _description.FaceFileNames.at(face);
 		}
-	} else {
+	}
+	else {
 		result["base_filename"] = _description.Filename;
 	}
 	return result;
@@ -47,9 +48,9 @@ nlohmann::json TextureCube::ToJson() const
 TextureCube::Sptr TextureCube::FromJson(const nlohmann::json& data)
 {
 	TextureCubeDescription descr = TextureCubeDescription();
-	descr.MinificationFilter  = JsonParseEnum(MinFilter, data, "filter_min", MinFilter::NearestMipNearest);
+	descr.MinificationFilter = JsonParseEnum(MinFilter, data, "filter_min", MinFilter::NearestMipNearest);
 	descr.MagnificationFilter = JsonParseEnum(MagFilter, data, "filter_mag", MagFilter::Linear);
-	descr.Filename       = JsonGet<std::string>(data, "base_filename", "");
+	descr.Filename = JsonGet<std::string>(data, "base_filename", "");
 	if (data.contains("face_filenames") && data["face_filenames"].is_object()) {
 		for (auto& [key, value] : data["face_filenames"].items()) {
 			CubeMapFace face = ParseCubeMapFace(key, CubeMapFace::Unknown);
@@ -111,7 +112,7 @@ void TextureCube::_LoadImages(const std::unordered_map<CubeMapFace, std::string>
 	// Load all 6 faces
 	for (int ix = 0; ix < 6; ix++) {
 		CubeMapFace face = (CubeMapFace)ix;
-		
+
 		const std::string& filename = _description.FaceFileNames[face];
 		int fileWidth, fileHeight, fileNumChannels;
 
@@ -177,7 +178,7 @@ void TextureCube::_LoadImages(const std::unordered_map<CubeMapFace, std::string>
 	delete[] datastore;
 }
 
-void TextureCube::_SetTextureParams(){
+void TextureCube::_SetTextureParams() {
 	// Make sure the size is greater than zero and that we have a format specified before trying to set parameters
 	if (_description.Size > 0 && _description.Format != InternalFormat::Unknown) {
 		// Allocates the memory for our texture

@@ -233,6 +233,9 @@ void Texture2D::_SetTextureParams() {
 
 		glTextureParameteri(_rendererId, GL_TEXTURE_WRAP_S, (GLenum)_description.HorizontalWrap);
 		glTextureParameteri(_rendererId, GL_TEXTURE_WRAP_T, (GLenum)_description.VerticalWrap);
+
+		glTextureParameteri(_rendererId, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+		glTextureParameteri(_rendererId, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 	}
 }
 

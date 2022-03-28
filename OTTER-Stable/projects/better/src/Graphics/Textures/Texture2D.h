@@ -79,12 +79,17 @@ class Texture2D : public ITexture {
 public:
 	DEFINE_RESOURCE(Texture2D)
 
-	// Make sure we mark our destructor as virtual so base class is called
-	virtual ~Texture2D() = default;
+		// Make sure we mark our destructor as virtual so base class is called
+		virtual ~Texture2D() = default;
 
 public:
 	Texture2D(const std::string& filePath);
 	Texture2D(const Texture2DDescription& description);
+	void SetWrap(WrapMode value) {
+		_description.VerticalWrap = value;
+		glTextureParameteri(_rendererId, GL_TEXTURE_WRAP_S, *_description.VerticalWrap);
+
+	}
 
 	/// <summary>
 	/// Gets the internal format OpenGL is using for this texture
@@ -102,11 +107,6 @@ public:
 	/// Gets the sampler wrap mode along the x/s/u axis for this texture
 	/// </summary>
 	WrapMode GetWrapS() const { return _description.HorizontalWrap; }
-	void SetWrap(WrapMode value) {
-		_description.VerticalWrap = value;
-		glTextureParameteri(_rendererId, GL_TEXTURE_WRAP_S, *_description.VerticalWrap);
-		
-	}
 	/// <summary>
 	/// Gets the sampler wrap mode along the y/t/v axis for this texture
 	/// </summary>

@@ -62,9 +62,9 @@ struct Texture3DDescription {
 	Texture3DDescription() :
 		Width(0), Height(0), Depth(0),
 		Format(InternalFormat::Unknown),
-		WrapS(WrapMode::Repeat),
-		WrapT(WrapMode::Repeat),
-		WrapR(WrapMode::Repeat),
+		WrapS(WrapMode::ClampToEdge),
+		WrapT(WrapMode::ClampToEdge),
+		WrapR(WrapMode::ClampToEdge),
 		MinificationFilter(MinFilter::LinearMipLinear),
 		MagnificationFilter(MagFilter::Linear),
 		GenerateMipMaps(true),

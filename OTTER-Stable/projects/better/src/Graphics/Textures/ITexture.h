@@ -15,17 +15,17 @@ class ITexture : public IGraphicsResource, public IResource
 public:
 	DEFINE_RESOURCE(ITexture)
 
-	/// <summary>
-	/// Represents the limits available to OpenGL textures on the current renderer
-	/// </summary>
-	struct Limits {
+		/// <summary>
+		/// Represents the limits available to OpenGL textures on the current renderer
+		/// </summary>
+		struct Limits {
 		int   MAX_TEXTURE_SIZE;
 		int   MAX_TEXTURE_UNITS;
 		int   MAX_3D_TEXTURE_SIZE;
 		int   MAX_TEXTURE_IMAGE_UNITS;
 		float MAX_ANISOTROPY;
 	};
-	
+
 	/// <summary>
 	/// Virtual destructor that cleans up texture
 	/// </summary>

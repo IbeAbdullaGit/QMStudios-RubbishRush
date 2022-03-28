@@ -631,6 +631,7 @@ void TutorialSceneLayer::_CreateScene()
 		// Loading in a 1D LUT
 		Texture1D::Sptr toonLut = ResourceManager::CreateAsset<Texture1D>("luts/toon-1D.png");
 		toonLut->SetWrap(WrapMode::ClampToEdge);
+		//toonLut->Bind();
 
 		// Set up all our sample objects
 		//setup trashy
@@ -655,6 +656,7 @@ void TutorialSceneLayer::_CreateScene()
 			toonMaterial->Set("u_Material.Shininess", 0.1f);
 			toonMaterial->Set("u_Material.Steps", 16);
 		}
+		toonMaterial->Apply();
 		
 		Gameplay::GameObject::Sptr trashyM = scene->CreateGameObject("Trashy"); //SEARCHBAR TAGS: PLAYERENTITY, PLAYER, TRASHYENTITY, TRASHYOBJECT
 		{
