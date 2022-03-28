@@ -893,12 +893,21 @@ void DefaultSceneLayer::_CreateScene()
 
 		Gameplay::MeshResource::Sptr libshelfMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("library shelf.obj");
 		Texture2D::Sptr libshelfTex = ResourceManager::CreateAsset<Texture2D>("textures/books2.jpg");
+		Texture2D::Sptr libshelfTex2 = ResourceManager::CreateAsset<Texture2D>("textures/books3.png");
 		Gameplay::Material::Sptr libshelfMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			libshelfMat->Name = "Library Shelf";
 			libshelfMat->Set("u_Material.AlbedoMap", libshelfTex);
 			libshelfMat->Set("u_Material.Shininess", 0.3f);
 			libshelfMat->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::Material::Sptr libshelfMat2 = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			libshelfMat2->Name = "Library Shelf";
+			libshelfMat2->Set("u_Material.AlbedoMap", libshelfTex2);
+			libshelfMat2->Set("u_Material.Shininess", 0.3f);
+			libshelfMat2->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
 		Gameplay::MeshResource::Sptr lchairMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("LoungeChair.obj");
@@ -2264,7 +2273,7 @@ void DefaultSceneLayer::_CreateScene()
 
 				RenderComponent::Sptr renderer = libshelf1->Add<RenderComponent>();
 				renderer->SetMesh(libshelfMesh);
-				renderer->SetMaterial(libshelfMat);
+				renderer->SetMaterial(libshelfMat2);
 
 				Gameplay::Physics::RigidBody::Sptr physics = libshelf1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
@@ -2328,7 +2337,7 @@ void DefaultSceneLayer::_CreateScene()
 
 				RenderComponent::Sptr renderer = libshelf5->Add<RenderComponent>();
 				renderer->SetMesh(libshelfMesh);
-				renderer->SetMaterial(libshelfMat);
+				renderer->SetMaterial(libshelfMat2);
 
 				Gameplay::Physics::RigidBody::Sptr physics = libshelf5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
