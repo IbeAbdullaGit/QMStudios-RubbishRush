@@ -973,13 +973,30 @@ void DefaultSceneLayer::_CreateScene()
 
 		Gameplay::MeshResource::Sptr posterMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Poster.obj");
 		Texture2D::Sptr posterTex = ResourceManager::CreateAsset<Texture2D>("textures/poster.jpg");
+		Texture2D::Sptr posterTex2 = ResourceManager::CreateAsset<Texture2D>("textures/poster2.jpg");
+		Texture2D::Sptr posterTex3 = ResourceManager::CreateAsset<Texture2D>("textures/poster3.jpg");
 		Gameplay::Material::Sptr posterMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
-			posterMat->Name = "Statue";
+			posterMat->Name = "Poster 1";
 			posterMat->Set("u_Material.AlbedoMap", posterTex);
 			posterMat->Set("u_Material.Shininess", 1.0f);
 			posterMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
+		Gameplay::Material::Sptr posterMat2 = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			posterMat2->Name = "Poster 2";
+			posterMat2->Set("u_Material.AlbedoMap", posterTex2);
+			posterMat2->Set("u_Material.Shininess", 1.0f);
+			posterMat2->Set("u_Material.NormalMap", normalMapDefault);
+		}
+		Gameplay::Material::Sptr posterMat3 = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			posterMat3->Name = "Statue";
+			posterMat3->Set("u_Material.AlbedoMap", posterTex3);
+			posterMat3->Set("u_Material.Shininess", 1.0f);
+			posterMat3->Set("u_Material.NormalMap", normalMapDefault);
+		}
+		
 
 		// Here we'll load in the cubemap, as well as a special shader to handle drawing the skybox
 		TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/ocean/ocean.jpg");
@@ -2210,7 +2227,7 @@ void DefaultSceneLayer::_CreateScene()
 
 				RenderComponent::Sptr renderer = poster2->Add<RenderComponent>();
 				renderer->SetMesh(posterMesh);
-				renderer->SetMaterial(posterMat);
+				renderer->SetMaterial(posterMat2);
 			}
 
 			BotLeft->AddChild(table1);
@@ -2579,6 +2596,17 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(box);
 			}
 
+			Gameplay::GameObject::Sptr poster3 = scene->CreateGameObject("poster 3");
+			{
+				poster3->SetPostion(glm::vec3(-8.65, 3.21f, 0.88f));
+				poster3->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+				poster3->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = poster3->Add<RenderComponent>();
+				renderer->SetMesh(posterMesh);
+				renderer->SetMaterial(posterMat3);
+			}
+
 			BotRight->AddChild(toilet1);
 			BotRight->AddChild(toilet2);
 			BotRight->AddChild(toilet3);
@@ -2589,6 +2617,7 @@ void DefaultSceneLayer::_CreateScene()
 			BotRight->AddChild(tub2);
 			BotRight->AddChild(shower1);
 			BotRight->AddChild(cashcounter5);
+			BotRight->AddChild(poster3);
 
 			//Main Hall
 
@@ -2658,11 +2687,18 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(boxCollider);
 			}
 
+			Gameplay::GameObject::Sptr LfountainParticles1 = scene->CreateGameObject("Long Foutain Particles 1");
+			{
+				ParticleSystem::Sptr particleManager = LfountainParticles1->Add<ParticleSystem>();
+				particleManager->AddEmitter(glm::vec3(0.21f,-7.360f, 1.846f), glm::vec3(0.0f, -1.0f, 10.0f), 10.0f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+			}
+
 
 			MainHall->AddChild(benchhall1);
 			MainHall->AddChild(benchhall2);
 			MainHall->AddChild(longfountain1);
 			MainHall->AddChild(tallfountain1);
+
 		//Obstacles
 		{
 
