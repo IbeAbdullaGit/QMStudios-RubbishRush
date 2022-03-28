@@ -16,6 +16,8 @@
 #include "../Windows/GBufferPreviews.h"
 #include "../Windows/PostProcessingSettingsWindow.h"
 
+#include "Graphics/DebugDraw.h"
+
 ImGuiDebugLayer::ImGuiDebugLayer() :
 	ApplicationLayer(),
 	_dockInvalid(true)
@@ -52,7 +54,7 @@ void ImGuiDebugLayer::OnPreRender()
 
 void ImGuiDebugLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 {
-	//using namespace Gameplay;
+	using namespace Gameplay;
 	Application& app = Application::Get();
 
 	// We need to get the primary viewport, as well as track the ID of the primary window dock node
@@ -246,12 +248,23 @@ void ImGuiDebugLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 
 void ImGuiDebugLayer::OnPostRender()
 {
-	//ImGuiHelper::EndFrame();
+	// HACK HACK HACK - Getting debug gizmos to show up
+	Application& app = Application::Get();
+	const glm::uvec4& viewport = app.GetPrimaryViewport();
+	glViewport(viewport.x, viewport.y, viewport.z, viewport.w);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(true);
+
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	DebugDrawer::Get().SetViewProjection(app.CurrentScene()->MainCamera->GetViewProjection());
+	DebugDrawer::Get().FlushAll();
 }
 
 void ImGuiDebugLayer::_RenderGameWindow()
 {
-	//using namespace Gameplay;
+	using namespace Gameplay;
 	Application& app = Application::Get();
 
 	// Setting up the style and window flags for the game viewport
@@ -276,7 +289,7 @@ void ImGuiDebugLayer::_RenderGameWindow()
 	app.IsFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
 
 	// Grab the current scene the application is displaying
-	Gameplay::Scene::Sptr scene = app.CurrentScene();
+	Scene::Sptr scene = app.CurrentScene();
 
 	// Janky ass button text for the play/stop button
 	static char buffer[64];
@@ -299,7 +312,7 @@ void ImGuiDebugLayer::_RenderGameWindow()
 		if (!scene->IsPlaying) {
 			scene = nullptr;
 			// We reload to scene from our cached state
-			scene = Gameplay::Scene::FromJson(_backupState);
+			scene = Scene::FromJson(_backupState);
 			app.LoadScene(scene);
 		}
 	}

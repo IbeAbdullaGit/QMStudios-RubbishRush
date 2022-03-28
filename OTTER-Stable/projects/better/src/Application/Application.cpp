@@ -468,7 +468,7 @@ void Application::_RenderScene() {
 
 void Application::_PostRender() {
 	// Note that we use a reverse iterator for post render
-	for (auto it = _layers.crbegin(); it != _layers.crend(); it++) {
+	for (auto it = _layers.begin(); it != _layers.end(); it++) {
 		const auto& layer = *it;
 		if (layer->Enabled && *(layer->Overrides & AppLayerFunctions::OnPostRender)) {
 			layer->OnPostRender();

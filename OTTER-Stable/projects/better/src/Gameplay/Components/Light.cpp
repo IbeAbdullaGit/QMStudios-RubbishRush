@@ -2,7 +2,7 @@
 #include "Utils/JsonGlmHelpers.h"
 #include "Utils/ImGuiHelper.h"
 
-Light::Light() : 
+Light::Light() :
 	Gameplay::IComponent(),
 	_color(glm::vec3(1.0f)),
 	_direction(glm::vec3(0.0f, 0.0f, -1.0f)),
@@ -20,7 +20,7 @@ const glm::vec3& Light::GetColor() const {
 	return _color;
 }
 
-void Light::SetColor(const glm::vec3& value){
+void Light::SetColor(const glm::vec3 & value) {
 	_color = value;
 }
 
@@ -28,7 +28,7 @@ const glm::vec3& Light::GetDirection() const {
 	return _direction;
 }
 
-void Light::SetDirection(const glm::vec3& value) {
+void Light::SetDirection(const glm::vec3 & value) {
 	_direction = value;
 }
 
@@ -36,7 +36,7 @@ const glm::vec3& Light::GetParams() const {
 	return _params;
 }
 
-void Light::SetParams(const glm::vec3& value) {
+void Light::SetParams(const glm::vec3 & value) {
 	_params = value;
 }
 
@@ -67,7 +67,7 @@ void Light::SetType(LightType value) {
 /// <summary>
 /// Loads a light from a JSON blob
 /// </summary>
-Light::Sptr Light::FromJson(const nlohmann::json& data) {
+Light::Sptr Light::FromJson(const nlohmann::json & data) {
 	Light::Sptr result = std::make_shared<Light>();
 	result->_color = JsonGet(data, "color", result->_color);
 	result->_radius = JsonGet(data, "range", result->_radius);
@@ -95,10 +95,10 @@ inline nlohmann::json Light::ToJson() const {
 void Light::RenderImGui()
 {
 	LABEL_LEFT(ImGui::ColorPicker3, "    Color", &_color.x);
-	LABEL_LEFT(ImGui::DragFloat,    "    Range", &_radius, 0.1f, 0.0f);
-	LABEL_LEFT(ImGui::DragFloat,    "Intensity", &_intensity, 0.1f, 0.0f);
-	LABEL_LEFT(ImGui::DragFloat3,   "Direction", &_direction.x, 0.01f, -1.0f, 1.0f);
-	LABEL_LEFT(ImGui::DragFloat3,   "   Params", &_params.x, 0.01f);
+	LABEL_LEFT(ImGui::DragFloat, "    Range", &_radius, 0.1f, 0.0f);
+	LABEL_LEFT(ImGui::DragFloat, "Intensity", &_intensity, 0.1f, 0.0f);
+	LABEL_LEFT(ImGui::DragFloat3, "Direction", &_direction.x, 0.01f, -1.0f, 1.0f);
+	LABEL_LEFT(ImGui::DragFloat3, "   Params", &_params.x, 0.01f);
 
 	ENUM_COMBO("     Type", &_type, LightType);
 
