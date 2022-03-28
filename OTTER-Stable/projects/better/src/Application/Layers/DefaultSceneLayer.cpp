@@ -2687,13 +2687,6 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(boxCollider);
 			}
 
-			Gameplay::GameObject::Sptr LfountainParticles1 = scene->CreateGameObject("Long Foutain Particles 1");
-			{
-				ParticleSystem::Sptr particleManager = LfountainParticles1->Add<ParticleSystem>();
-				particleManager->AddEmitter(glm::vec3(0.21f,-7.360f, 1.846f), glm::vec3(0.0f, -1.0f, 10.0f), 10.0f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-			}
-
-
 			MainHall->AddChild(benchhall1);
 			MainHall->AddChild(benchhall2);
 			MainHall->AddChild(longfountain1);
@@ -3409,6 +3402,7 @@ void DefaultSceneLayer::_CreateScene()
 			binMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
+
 		Gameplay::GameObject::Sptr binM = scene->CreateGameObject("Bin");
 		{
 			binM->SetPostion(glm::vec3(-1.5f, 2.0f, 0.07f));
@@ -4283,7 +4277,11 @@ void DefaultSceneLayer::_CreateScene()
 
 		}
 
-
+		Gameplay::GameObject::Sptr LfountainParticles1 = scene->CreateGameObject("Long Foutain Particles 1");
+		{
+			ParticleSystem::Sptr particleManager = LfountainParticles1->Add<ParticleSystem>();
+			particleManager->AddEmitter(glm::vec3(0.21f, -7.360f, 1.846f), glm::vec3(0.0f, -1.0f, 10.0f), 10.0f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		}
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);
@@ -4302,6 +4300,8 @@ void DefaultSceneLayer::_CreateScene()
 		scene->trash = 0;
 		scene->held = 0;
 	}
+
+
 }
 
 void DefaultSceneLayer::_CreateTrash()
