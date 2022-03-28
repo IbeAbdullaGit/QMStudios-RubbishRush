@@ -1063,77 +1063,77 @@ void DefaultSceneLayer::_CreateScene()
 		//set this up for every light
 		{
 			{
-				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
-				light->SetPostion(glm::vec3(15.3f, 12.42f, 3.0f));
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light 1");
+				light->SetPostion(glm::vec3(19.9f, 11.67f, 3.0f));
 				lightParent->AddChild(light);
 
 				Light::Sptr lightComponent = light->Add<Light>();
 				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 				lightComponent->SetRadius(20.0f);
-				lightComponent->SetIntensity(2.2f);
+				lightComponent->SetIntensity(6.0f);
 			}
 			{
-				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
-				light->SetPostion(glm::vec3(7.9f, -4.89f, 3.0f));
-				lightParent->AddChild(light);
-
-				Light::Sptr lightComponent = light->Add<Light>();
-				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.1f));
-				lightComponent->SetRadius(10.0f);
-				lightComponent->SetIntensity(1.0f);
-			}
-			{
-				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
-				light->SetPostion(glm::vec3(2.58f, -6.29f, 3.0f));
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light 2");
+				light->SetPostion(glm::vec3(13.4f, 12.35f, 3.0f));
 				lightParent->AddChild(light);
 
 				Light::Sptr lightComponent = light->Add<Light>();
 				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-				lightComponent->SetRadius(10.0f);
-				lightComponent->SetIntensity(1.0f);
+				lightComponent->SetRadius(20.0f);
+				lightComponent->SetIntensity(6.0f);
 			}
 			{
-				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
-				light->SetPostion(glm::vec3(3.83f, 3.13f, 3.0f));
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light 3");
+				light->SetPostion(glm::vec3(21.78f, 0.380f, 3.0f));
 				lightParent->AddChild(light);
 
 				Light::Sptr lightComponent = light->Add<Light>();
 				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-				lightComponent->SetRadius(10.0f);
-				lightComponent->SetIntensity(1.0f);
+				lightComponent->SetRadius(20.0f);
+				lightComponent->SetIntensity(6.0f);
 			}
 			{
-				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
-				light->SetPostion(glm::vec3(-0.150f, 5.470f, 3.0f));
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light 4");
+				light->SetPostion(glm::vec3(11.7f, 3.06f, 3.0f));
 				lightParent->AddChild(light);
 
 				Light::Sptr lightComponent = light->Add<Light>();
 				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-				lightComponent->SetRadius(189.500f);
-				lightComponent->SetIntensity(1.0f);
+				lightComponent->SetRadius(20.0f);
+				lightComponent->SetIntensity(6.0f);
 			}
 			{
-				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light 5");
+				light->SetPostion(glm::vec3(-2.19f, 22.51f, 3.0f));
+				lightParent->AddChild(light);
+
+				Light::Sptr lightComponent = light->Add<Light>();
+				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+				lightComponent->SetRadius(20.0f);
+				lightComponent->SetIntensity(10.0f);
+			}
+			{
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light 6");
 				light->SetPostion(glm::vec3(-14.41f, 0.56f, 3.0f));
 				lightParent->AddChild(light);
 
 				Light::Sptr lightComponent = light->Add<Light>();
 				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-				lightComponent->SetRadius(10.0f);
+				lightComponent->SetRadius(20.0f);
 				lightComponent->SetIntensity(1.0f);
 			}
 			{
-				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light 7");
 				light->SetPostion(glm::vec3(-8.17f, 0.87f, 3.0f));
 				lightParent->AddChild(light);
 
 				Light::Sptr lightComponent = light->Add<Light>();
 				lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-				lightComponent->SetRadius(10.0f);
+				lightComponent->SetRadius(20.0f);
 				lightComponent->SetIntensity(1.0f);
 			}
 			{
-				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
+				Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light 8");
 				light->SetPostion(glm::vec3(-2.060f, -0.94f, 4.60f));
 				lightParent->AddChild(light);
 
@@ -1338,7 +1338,7 @@ void DefaultSceneLayer::_CreateScene()
 
 		//layout
 		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("malllayoutwall.obj");
-		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/malldiner.jpg");
+		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/mall.jpg");
 		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			layoutMaterial->Name = "Layout";
@@ -1346,6 +1346,7 @@ void DefaultSceneLayer::_CreateScene()
 			layoutMaterial->Set("u_Material.Shininess", 0.0f);
 			layoutMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
+
 		Gameplay::GameObject::Sptr layout = scene->CreateGameObject("Layout");
 		{
 			layout->SetPostion(glm::vec3(0.0f, 0.0f, 0.0f));
