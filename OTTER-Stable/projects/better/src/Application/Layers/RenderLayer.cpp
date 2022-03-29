@@ -447,7 +447,7 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	_shadowShader->LoadShaderPartFromFile("shaders/vertex_shaders/fullscreen_quad.glsl", ShaderPartType::Vertex);
 	_shadowShader->LoadShaderPartFromFile("shaders/fragment_shaders/shadow_composite.glsl", ShaderPartType::Fragment);
 	_shadowShader->Link();
-
+	
 	// We need a mesh for drawing fullscreen quads
 
 	glm::vec2 positions[6] = {
