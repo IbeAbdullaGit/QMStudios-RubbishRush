@@ -8,6 +8,9 @@
 #include "PostProcessing/BoxFilter5x5.h"
 #include "PostProcessing/OutlineEffect.h"
 #include "PostProcessing/ToonEffect.h"
+#include "PostProcessing/BloomEffect.h"
+#include "PostProcessing/MotionblurEffect.h"
+
 
 PostProcessingLayer::PostProcessingLayer() :
 	ApplicationLayer()
@@ -34,6 +37,10 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	//_effects.push_back(std::make_shared<BoxFilter5x5>());
 	//_effects.push_back(std::make_shared<OutlineEffect>());
 	_effects.push_back(std::make_shared<ToonEffect>());
+	//_effects.push_back(std::make_shared<BloomEffect>());
+	//_effects.push_back(std::make_shared<MotionblurEffect>());
+
+	
 
 	Application& app = Application::Get();
 	const glm::uvec4& viewport = app.GetPrimaryViewport();

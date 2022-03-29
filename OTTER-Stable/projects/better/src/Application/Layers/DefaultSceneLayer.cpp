@@ -784,7 +784,7 @@ void DefaultSceneLayer::_CreateScene()
 			conveyorMaterial->Set("u_Material.AlbedoMap", conveyorTex);
 			conveyorMaterial->Set("u_Material.Shininess", 0.2f);
 			conveyorMaterial->Set("u_Material.NormalMap", normalMapDefault);
-			conveyorMaterial->Set("Time", 0);
+			conveyorMaterial->Set("Time", 0.0);
 
 		}
 
