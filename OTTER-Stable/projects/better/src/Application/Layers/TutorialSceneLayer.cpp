@@ -51,6 +51,7 @@
 #include "Gameplay/Components/Light.h"
 #include "ToneFire.h"
 #include "Gameplay/Components/AudioEngine.h"
+#include "Gameplay/Components/ShadowCamera.h"
 //ours
 #include "Gameplay/Components/DeleteObjectBehaviour.h"
 #include "Gameplay/Components/CollectTrashBehaviour.h"
@@ -548,6 +549,17 @@ void TutorialSceneLayer::_CreateScene()
 			camera->Add<SimpleCameraControl>();
 		}
 	
+		Gameplay::GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
+		{
+			// Set position in the scene
+			shadowCaster->SetPostion(glm::vec3(3.0f, 3.0f, 5.0f));
+			shadowCaster->LookAt(glm::vec3(0.0f));
+
+			// Create and attach a renderer for the monkey
+			ShadowCamera::Sptr shadowCam = shadowCaster->Add<ShadowCamera>();
+			shadowCam->SetProjection(glm::perspective(glm::radians(120.0f), 1.0f, 0.1f, 100.0f));
+		}
+
 		// Set up all our sample objects
 		//setup trashy
 		Gameplay::MeshResource::Sptr trashyMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashy.obj");

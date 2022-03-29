@@ -64,6 +64,7 @@
 #include "Gameplay/Components/GroundBehaviour.h"
 #include "Gameplay/Components/InventoryUI.h"
 #include "Gameplay/Components/AudioEngine.h"
+#include "Gameplay/Components/ShadowCamera.h"
 
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
@@ -1163,6 +1164,18 @@ void DefaultSceneLayer::_CreateScene()
 			camera->Add<SimpleCameraControl>();
 
 		}
+
+		Gameplay::GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
+		{
+			// Set position in the scene
+			shadowCaster->SetPostion(glm::vec3(3.0f, 3.0f, 5.0f));
+			shadowCaster->LookAt(glm::vec3(0.0f));
+
+			// Create and attach a renderer for the monkey
+			ShadowCamera::Sptr shadowCam = shadowCaster->Add<ShadowCamera>();
+			shadowCam->SetProjection(glm::perspective(glm::radians(120.0f), -1.42f, 4.69f, 5.73f));
+		}
+		
 
 		// Set up all our sample objects
 		//setup trashy
