@@ -6,6 +6,8 @@
 
 #include <map>
 #include <EnumToString.h>
+#include "Graphics/ShaderProgram.h"
+#include "Graphics/Textures/Texture2D.h"
 
 // Will be included in the CPP to avoid header bloat
 struct GLFWwindow;
@@ -79,6 +81,10 @@ public:
 		return result;
 	}
 
+	static bool DrawTextureDrop(Texture2D::Sptr& image, ImVec2 size);
+
+	static void DrawLinearDepthTexture(const Texture2D::Sptr& image, const glm::ivec2& size, float zNear, float zFar);
+	
 	/// <summary>
 	/// Notifies ImGui that a new frame has begun
 	/// Call at start of render loop
@@ -97,4 +103,6 @@ protected:
 	ImGuiHelper() = default;
 
 	static GLFWwindow* _window;
+
+	static ShaderProgram::Sptr _linearDepthShader;
 };

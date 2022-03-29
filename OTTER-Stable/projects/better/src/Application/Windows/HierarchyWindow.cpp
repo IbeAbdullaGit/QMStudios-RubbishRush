@@ -2,6 +2,7 @@
 #include "../Application.h"
 #include "Utils/ImGuiHelper.h"
 #include "imgui_internal.h"
+#include "Graphics/DebugDraw.h"
 
 HierarchyWindow::HierarchyWindow() :
 	IEditorWindow()
@@ -32,7 +33,7 @@ void HierarchyWindow::Render()
 }
 
 void HierarchyWindow::_RenderObjectNode(Gameplay::GameObject::Sptr object, int depth) {
-	//using namespace Gameplay;
+	using namespace Gameplay;
 
 	if (object->HideInHierarchy) {
 		return;
@@ -54,6 +55,31 @@ void HierarchyWindow::_RenderObjectNode(Gameplay::GameObject::Sptr object, int d
 
 	if (selectedObject != nullptr && selectedObject == object) {
 		flags |= ImGuiTreeNodeFlags_Selected;
+
+		glm::mat3 rot = glm::mat3(1.0f);
+
+		// Todo: some kinda toggle to switch this, and an actual gizmos system lol
+		rot = glm::mat3(object->GetTransform());
+
+		glm::vec3 forward = glm::normalize(rot * glm::vec3(1.0f, 0.0f, 0.0f));
+		glm::vec3 right = glm::normalize(rot * glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::vec3 up = glm::normalize(rot * glm::vec3(0.0f, 0.0f, 1.0f));
+
+		DebugDrawer::Get().DrawLine(
+			object->GetWorldPosition(),
+			object->GetWorldPosition() + (glm::vec3)forward,
+			glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)
+		);
+		DebugDrawer::Get().DrawLine(
+			object->GetWorldPosition(),
+			object->GetWorldPosition() + (glm::vec3)right,
+			glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)
+		);
+		DebugDrawer::Get().DrawLine(
+			object->GetWorldPosition(),
+			object->GetWorldPosition() + (glm::vec3)up,
+			glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)
+		);
 	}
 	if (object->GetChildren().size() == 0) {
 		flags |= ImGuiTreeNodeFlags_Leaf;

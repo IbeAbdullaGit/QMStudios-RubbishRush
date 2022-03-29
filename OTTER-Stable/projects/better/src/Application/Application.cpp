@@ -46,6 +46,7 @@
 #include "Gameplay/Components/SimpleCameraControl.h"
 #include "Gameplay/Components/ParticleSystem.h"
 #include "Gameplay/Components/Light.h"
+#include "Gameplay/Components/ShadowCamera.h"
 //ours
 #include "Gameplay/Components/DeleteObjectBehaviour.h"
 #include "Gameplay/Components/CollectTrashBehaviour.h"
@@ -391,6 +392,7 @@ void Application::_RegisterClasses()
 	Gameplay::ComponentManager::RegisterType<GuiText>();
 	Gameplay::ComponentManager::RegisterType<ParticleSystem>();
 	Gameplay::ComponentManager::RegisterType<Light>();
+	Gameplay::ComponentManager::RegisterType<ShadowCamera>();
 
 	Gameplay::ComponentManager::RegisterType<DeleteObjectBehaviour>();
 	Gameplay::ComponentManager::RegisterType<CollectTrashBehaviour>();

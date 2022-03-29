@@ -117,6 +117,7 @@ protected:
 	ShaderProgram::Sptr _clearShader;
 	ShaderProgram::Sptr _lightAccumulationShader;
 	ShaderProgram::Sptr _compositingShader;
+	ShaderProgram::Sptr _shadowShader;
 
 	VertexArrayObject::Sptr _fullscreenQuad;
 
@@ -132,6 +133,8 @@ protected:
 
 	const int LIGHTING_UBO_BINDING = 2;
 	UniformBuffer<LightingUboStruct>::Sptr _lightingUbo;
+	void _InitFrameUniforms();
+	void _RenderScene(const glm::mat4& view, const glm::mat4& Projection);
 
 	void _AccumulateLighting();
 	void _Composite();
