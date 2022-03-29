@@ -131,6 +131,10 @@ public:
 	void SetUniform(int location, const glm::ivec2* value, int count = 1);
 	void SetUniform(int location, const glm::ivec3* value, int count = 1);
 	void SetUniform(int location, const glm::ivec4* value, int count = 1);
+	void SetUniform(int location, const uint32_t* value, int count = 1);
+	void SetUniform(int location, const glm::uvec2* value, int count = 1);
+	void SetUniform(int location, const glm::uvec3* value, int count = 1);
+	void SetUniform(int location, const glm::uvec4* value, int count = 1);
 	void SetUniform(int location, const bool* value, int count = 1);
 	void SetUniform(int location, const glm::bvec2* value, int count = 1);
 	void SetUniform(int location, const glm::bvec3* value, int count = 1);

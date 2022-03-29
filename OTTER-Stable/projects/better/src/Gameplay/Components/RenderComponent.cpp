@@ -16,8 +16,9 @@ RenderComponent::RenderComponent() :
 	_meshBuilderParams(std::vector<MeshBuilderParam>())
 { }
 
-void RenderComponent::SetMesh(const Gameplay::MeshResource::Sptr& mesh) {
+RenderComponent* RenderComponent::SetMesh(const Gameplay::MeshResource::Sptr& mesh) {
 	_mesh = mesh;
+	return this;
 }
 
 const Gameplay::MeshResource::Sptr& RenderComponent::GetMeshResource() const {
@@ -28,8 +29,9 @@ VertexArrayObject::Sptr RenderComponent::GetMesh() const {
 	return _mesh ? _mesh->Mesh : nullptr;
 }
 
-void RenderComponent::SetMaterial(const Gameplay::Material::Sptr& mat) {
+RenderComponent* RenderComponent::SetMaterial(const Gameplay::Material::Sptr& mat) {
 	_material = mat;
+	return this;
 }
 
 const Gameplay::Material::Sptr& RenderComponent::GetMaterial() const {

@@ -17,6 +17,8 @@
 
 GLFWwindow* ImGuiHelper::_window = nullptr;
 
+ShaderProgram::Sptr ImGuiHelper::_linearDepthShader = nullptr;
+
 bool CheckboxEx(ImGuiID id, ImVec2 pos, bool* value) {
 	ImGuiWindow* window = ImGui::GetCurrentWindow();
 	ImGuiContext& g = *GImGui;
@@ -75,6 +77,25 @@ void ImGuiHelper::Init(GLFWwindow* window) {
 		style.WindowRounding = 0.0f;
 		style.Colors[ImGuiCol_WindowBg].w = 0.8f;
 	}
+
+	_linearDepthShader = ShaderProgram::Create();
+	_linearDepthShader->LoadShaderPartFromFile("shaders/vertex_shaders/imgui_vs.glsl", ShaderPartType::Vertex);
+	const char* fs =
+		"#version 450\n"
+		"in vec2 Frag_UV;\n"
+		"in vec4 Frag_Color;\n"
+		"layout (binding = 0) uniform sampler2D Texture;\n"
+		"layout (location = 1) uniform vec2 DepthPlanes;\n"
+		"layout (location = 0) out vec4 Out_Color;\n"
+		"void main()\n"
+		"{\n"
+		"	float ndc = texture(Texture, Frag_UV.st).r * 2.0 - 1.0;\n"
+		"   float depth = (2 * DepthPlanes.x * DepthPlanes.y) / (DepthPlanes.y + DepthPlanes.x - ndc * (DepthPlanes.y - DepthPlanes.x));\n"
+		"   depth = (depth - DepthPlanes.x) / (DepthPlanes.y - DepthPlanes.x);\n"
+		"   Out_Color = vec4(depth, depth, depth, 1.0);\n"
+		"}\n";
+	_linearDepthShader->LoadShaderPart(fs, ShaderPartType::Fragment);
+	_linearDepthShader->Link();
 }
 
 void ImGuiHelper::Cleanup() {
@@ -123,6 +144,58 @@ void ImGuiHelper::HeaderCheckbox(ImGuiID headerId, bool* value)
 	last_item_backup.Restore();
 }
 
+bool ImGuiHelper::DrawTextureDrop(Texture2D::Sptr& image, ImVec2 size)
+{
+	if (image != nullptr) {
+		ImGui::Image(
+			(ImTextureID)image->GetHandle(),
+			size,
+			ImVec2(0, 1), ImVec2(1, 0)
+		);
+	}
+	else {
+		ImGui::BeginChildFrame(ImGui::GetID("img"), size);
+		ImGui::EndChildFrame();
+	}
+	return ImGuiHelper::ResourceDragTarget<Texture2D>(image);
+}
+
+void ImGuiHelper::DrawLinearDepthTexture(const Texture2D::Sptr& image, const glm::ivec2& size, float zNear, float zFar)
+{
+	struct Data {
+		int programId;
+		int restoreProgram;
+		glm::vec2 nearFar;
+		ImVec2 dispPos;
+		ImVec2 dispSize;
+	};
+
+	ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+	Data* temp = new Data();
+	temp->programId = _linearDepthShader->GetHandle();
+	temp->nearFar = glm::vec2(zNear, zFar);
+	temp->dispPos = ImGui::GetWindowViewport()->Pos;
+	temp->dispSize = ImGui::GetWindowViewport()->Size;
+
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+	drawList->AddCallback([](const ImDrawList* parent_list, const ImDrawCmd* cmd) {
+		Data* data = static_cast<Data*>(cmd->UserCallbackData);
+
+		glGetIntegerv(GL_CURRENT_PROGRAM, &data->restoreProgram);
+		glUseProgram(data->programId);
+		glUniform2fv(1, 1, &data->nearFar.x);
+		}, temp);
+	ImGui::Image((ImTextureID)image->GetHandle(), ImVec2(size.x, size.y), ImVec2(0, 1), ImVec2(1, 0));
+	drawList->AddCallback([](const ImDrawList* parent_list, const ImDrawCmd* cmd) {
+		Data* data = static_cast<Data*>(cmd->UserCallbackData);
+		glUseProgram(data->restoreProgram);
+		delete cmd->UserCallbackData;
+		}, temp);
+
+	ImGui::PopStyleVar();
+}
+
 void ImGuiHelper::StartFrame() {
 	LOG_ASSERT(_window != nullptr, "You must initialize ImGuiHelper before use!");
 
@@ -131,6 +204,7 @@ void ImGuiHelper::StartFrame() {
 	ImGui_ImplGlfw_NewFrame();
 	// ImGui context new frame
 	ImGui::NewFrame();
+
 }
 
 void ImGuiHelper::EndFrame() {
@@ -144,6 +218,20 @@ void ImGuiHelper::EndFrame() {
 
 	// Render all of our ImGui elements
 	ImGui::Render();
+	ImDrawData* data = ImGui::GetDrawData();
+
+	float L = data->DisplayPos.x;
+	float R = data->DisplayPos.x + data->DisplaySize.x;
+	float T = data->DisplayPos.y;
+	float B = data->DisplayPos.y + data->DisplaySize.y;
+	const float ortho_projection[4][4] =
+	{
+		{ 2.0f / (R - L),   0.0f,                 0.0f,   0.0f },
+		{ 0.0f,             2.0f / (T - B),       0.0f,   0.0f },
+		{ 0.0f,             0.0f,                -1.0f,   0.0f },
+		{ (R + L) / (L - R),  (T + B) / (B - T),  0.0f,   1.0f },
+	};
+	glProgramUniformMatrix4fv(_linearDepthShader->GetHandle(), 0, 1, GL_FALSE, &ortho_projection[0][0]);
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	// If we have multiple viewports enabled (can drag into a new window)

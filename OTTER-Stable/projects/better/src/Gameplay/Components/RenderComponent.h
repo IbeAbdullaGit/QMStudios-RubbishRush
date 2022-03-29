@@ -34,13 +34,13 @@ public:
 	/// Sets this render component's mesh resource, from which the VAO will be retrieved for rendering
 	/// </summary>
 	/// <param name="mesh">The mesh resource containing info about the model to be rendered</param>
-	void SetMesh(const Gameplay::MeshResource::Sptr& mesh);
+	RenderComponent* SetMesh(const Gameplay::MeshResource::Sptr& mesh);
 	/// <summary>
 	/// Sets this render component's material, which will be used to feed material parameters to the appropriate
 	/// shader, and ensure that the shader is bound when this object should be drawn
 	/// </summary>
 	/// <param name="mat">The material for this object</param>
-	void SetMaterial(const Gameplay::Material::Sptr& mat);
+	RenderComponent* SetMaterial(const Gameplay::Material::Sptr& mat);
 
 	// Inherited from IComponent
 

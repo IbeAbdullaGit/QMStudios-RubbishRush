@@ -71,6 +71,7 @@ void DebugDrawer::FlushLines()
 		__Shader->Bind();
 		__Shader->SetUniformMatrix("u_MVP", _viewProjection * _transformStack.top());
 		int restorePoint = 0;
+		glLineWidth(2.0f);
 		glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &restorePoint);
 		VertexArrayObject::Unbind();
 		_linesVBO->LoadData<VertexPosCol>(_lineBuffer, LINE_BATCH_SIZE * 2);
