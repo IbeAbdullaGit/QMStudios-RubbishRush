@@ -192,9 +192,10 @@ void DefaultSceneLayer::OnUpdate()
 	if (!start)
 	{
 
-		if (glfwGetKey(app.GetWindow(), GLFW_KEY_ENTER))
+		if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed)
 		{
 			spressed = true;
+			_currentScene->IsPlaying = true;
 			
 		}
 		if (glfwGetKey(app.GetWindow(), GLFW_KEY_ESCAPE)) //exit
@@ -233,7 +234,8 @@ void DefaultSceneLayer::OnUpdate()
 		//update conveyor belt
 		tracker += 0.01;
 		conveyor_belt->Set("Time", tracker);
-		
+		//custom function
+		//CheckTrash();	
 
 		if (_currentScene->playrecyclesound) {
 			AudioEngine::playEventS("event:/Plastic trash crush");
@@ -411,7 +413,7 @@ void DefaultSceneLayer::OnUpdate()
 				press_once = false;
 				//pause the timer*****
 
-				if (glfwGetKey(app.GetWindow(), GLFW_KEY_ENTER) && !press_once) //return to game
+				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_once) //return to game
 				{
 					//need this so program doesnt detect multiple presses
 					press_once = true;
@@ -443,7 +445,7 @@ void DefaultSceneLayer::OnUpdate()
 						}
 					}
 					all_trash.clear();
-					_CreateTrash();
+					//_CreateTrash();
 					//randomize again
 					//RandomizePositions();
 					//put menus back in
@@ -473,7 +475,7 @@ void DefaultSceneLayer::OnUpdate()
 				press_once = false;
 				//pause the timer*****
 
-				if (glfwGetKey(app.GetWindow(), GLFW_KEY_ENTER) && !press_once) //return to game
+				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_once) //return to game
 				{
 					//need this so program doesnt detect multiple presses
 					press_once = true;
@@ -496,7 +498,7 @@ void DefaultSceneLayer::OnUpdate()
 					_currentScene->held_recycle = 0;
 					//create trash objects again
 					all_trash.clear();
-					_CreateTrash();
+					//_CreateTrash();
 					//randomize again
 					//RandomizePositions();
 					//put menus back in
@@ -553,7 +555,7 @@ void DefaultSceneLayer::OnUpdate()
 		Gameplay::Camera::Sptr camera = _currentScene->MainCamera;
 
 		//EDIT THIS TO ALLOW CAMERA CONTROL
-		if (!camera->GetComponent<SimpleCameraControl>()->moving)
+		//if (!camera->GetComponent<SimpleCameraControl>()->moving)
 		{
 			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
 			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
@@ -563,6 +565,8 @@ void DefaultSceneLayer::OnUpdate()
 	lastFrame = thisFrame;
 
 }
+
+
 
 void DefaultSceneLayer::_CreateScene()
 {
@@ -621,18 +625,7 @@ void DefaultSceneLayer::_CreateScene()
 		app.LoadScene("scene.json");
 	}
 	else {
-		// This time we'll have 2 different shaders, and share data between both of them using the UBO
-		// This shader will handle reflective materials 
-		/*ShaderProgram::Sptr reflectiveShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-			{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_environment_reflective.glsl" }
-		});*/
-
-		//// This shader handles our basic materials without reflections (cause they expensive)
-		//ShaderProgram::Sptr deferredForward = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_blinn_phong_textured.glsl" }
-		//});
+		
 		// This shader handles our basic materials without reflections (cause they expensive)
 		ShaderProgram::Sptr rackShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
@@ -645,12 +638,7 @@ void DefaultSceneLayer::_CreateScene()
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
 
-		//// This shader handles our basic materials without reflections (cause they expensive)
-		//ShaderProgram::Sptr specShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/textured_specular.glsl" }
-		//});
-
+		
 		// This shader handles our foliage vertex shader example
 		ShaderProgram::Sptr foliageShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/foliage.glsl" },
@@ -671,13 +659,6 @@ void DefaultSceneLayer::_CreateScene()
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
 		displacementShader->SetDebugName("Displacement Mapping");
-
-
-		//// This shader handles our displacement mapping example
-		//ShaderProgram::Sptr tangentSpaceMapping = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
-		//	{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
-		//	{ ShaderPartType::Fragment, "shaders/fragment_shaders/frag_tangentspace_normal_maps.glsl" }
-		//});
 
 		// This shader handles our multitexturing example
 		ShaderProgram::Sptr multiTextureShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
@@ -784,7 +765,7 @@ void DefaultSceneLayer::_CreateScene()
 			conveyorMaterial->Set("u_Material.AlbedoMap", conveyorTex);
 			conveyorMaterial->Set("u_Material.Shininess", 0.2f);
 			conveyorMaterial->Set("u_Material.NormalMap", normalMapDefault);
-			conveyorMaterial->Set("Time", 0.0);
+			conveyorMaterial->Set("Time", 0.0f);
 
 		}
 
@@ -1342,7 +1323,7 @@ void DefaultSceneLayer::_CreateScene()
 			Gameplay::Physics::TriggerVolume::Sptr volume = plane->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-			box2->SetScale(glm::vec3(50.0f, -0.12f, 50.0f));
+			box2->SetScale(glm::vec3(50.0f, 1.0f, 50.0f));
 			volume->AddCollider(box2);
 			//give to our floor tiles to tag them
 			GroundBehaviour::Sptr behaviour = plane->Add<GroundBehaviour>();
@@ -1369,7 +1350,7 @@ void DefaultSceneLayer::_CreateScene()
 			RenderComponent::Sptr renderer = layout->Add<RenderComponent>();
 			renderer->SetMesh(layoutMesh);
 			renderer->SetMaterial(layoutMaterial);
-			GroundBehaviour::Sptr behaviour = layout->Add<GroundBehaviour>();
+			//GroundBehaviour::Sptr behaviour = layout->Add<GroundBehaviour>();
 		}
 		//exterior walls
 		
@@ -1499,6 +1480,8 @@ void DefaultSceneLayer::_CreateScene()
 					wall->SetScale(glm::vec3(4.38f, 0.31f, 1.5f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
+
+					//GroundBehaviour::Sptr behaviour = layoutwall8->Add<GroundBehaviour>();
 				}
 				InteriorWallsTopRight->AddChild(layoutwall7);
 				InteriorWallsTopRight->AddChild(layoutwall8);
@@ -1621,6 +1604,8 @@ void DefaultSceneLayer::_CreateScene()
 					wall->SetScale(glm::vec3(3.89f, 0.41f, 1.5f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
+
+					//GroundBehaviour::Sptr behaviour = layoutwall17->Add<GroundBehaviour>();
 				}
 
 				Gameplay::GameObject::Sptr layoutwall18 = scene->CreateGameObject("Right");
@@ -1666,6 +1651,8 @@ void DefaultSceneLayer::_CreateScene()
 					wall->SetScale(glm::vec3(3.73f, 0.28f, 1.5f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
+
+					//GroundBehaviour::Sptr behaviour = layoutwall20->Add<GroundBehaviour>();
 				}
 
 				Gameplay::GameObject::Sptr layoutwall21 = scene->CreateGameObject("Right Bot");
@@ -4332,7 +4319,8 @@ void DefaultSceneLayer::_CreateScene()
 		Gameplay::GameObject::Sptr LfountainParticles1 = scene->CreateGameObject("Long Foutain Particles 1");
 		{
 			ParticleSystem::Sptr particleManager = LfountainParticles1->Add<ParticleSystem>();
-			particleManager->AddEmitter(glm::vec3(0.21f, -7.360f, 1.846f), glm::vec3(0.0f, -1.0f, 10.0f), 10.0f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+			particleManager->AddEmitter(glm::vec3(0.0f), glm::vec3(0.0f, -1.0f, 10.0f), 10.0f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+			particleManager->Render();
 		}
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
@@ -4345,7 +4333,7 @@ void DefaultSceneLayer::_CreateScene()
 		
 		// Send the scene to the application
 		app.LoadScene(scene);
-		scene->IsPlaying = true;
+		scene->IsPlaying = false;
 
 		////starting variables
 		scene->score = 0;

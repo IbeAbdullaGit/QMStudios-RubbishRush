@@ -77,7 +77,10 @@ void CollectTrashBehaviour::Update(float deltatime)
 				{
 					auto& all_trash = app.GetLayer<DefaultSceneLayer>()->all_trash;
 					auto& it = std::find(all_trash.begin(), all_trash.end(), trash);
-					app.GetLayer<DefaultSceneLayer>()->all_trash.erase(it);
+					
+					{
+						app.GetLayer<DefaultSceneLayer>()->all_trash.erase(it);
+					}
 					
 				}
 				_scene->RemoveGameObject(trash);

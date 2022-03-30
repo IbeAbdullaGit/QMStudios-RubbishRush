@@ -43,13 +43,14 @@ public:
 	
 	std::string type = "Normal";
 	bool tutorial = false;
+	bool activated = false;
 
 protected:
 
 	RenderComponent::Sptr _renderer;
 	Gameplay::Scene* _scene;
 	Gameplay::GameObject::Sptr ui;
-	bool activated = false;
+	
 	ToneFire::FMODStudio studio;
 	ToneFire::StudioSound test;
 

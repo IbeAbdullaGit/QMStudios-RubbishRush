@@ -9,6 +9,7 @@
 #include "Utils/ImGuiHelper.h"
 #include "MorphAnimator.h"
 #include "Application/Application.h"
+#include "Gameplay/InputEngine.h"
 
 
 SubmittingTrashBehaviour::SubmittingTrashBehaviour() :
@@ -60,7 +61,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 	if (activated)
 	{
 		press_once = false;
-		if (glfwGetKey(app.GetWindow(), GLFW_KEY_E) && !press_once)
+		if (InputEngine::GetKeyState(GLFW_KEY_E) == ButtonState::Pressed && !press_once)
 		{
 			press_once = true;
 			//get our scene, delete this line later

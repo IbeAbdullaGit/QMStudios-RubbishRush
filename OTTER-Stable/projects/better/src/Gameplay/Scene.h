@@ -224,6 +224,7 @@ namespace Gameplay {
 		bool playmulti = false;
 		bool should_switch = false;
 		bool walk = false;
+		
 
 	protected:
 		friend class HierarchyWindow;

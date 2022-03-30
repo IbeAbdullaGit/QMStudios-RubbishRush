@@ -26,7 +26,7 @@ public:
 	void OnUpdate() override;
 
 	std::vector<Gameplay::GameObject::Sptr> all_trash;
-
+	
 protected:
 	void _CreateScene();
 	void _CreateTrash();
