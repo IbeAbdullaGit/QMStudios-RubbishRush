@@ -18,7 +18,7 @@ void PlayerMovementBehavior::Awake()
 }
 
 void PlayerMovementBehavior::RenderImGui() {
-	return;
+	LABEL_LEFT(ImGui::DragFloat, "Impulse", &_impulse, 1.0f);
 }
 
 nlohmann::json PlayerMovementBehavior::ToJson() const {
