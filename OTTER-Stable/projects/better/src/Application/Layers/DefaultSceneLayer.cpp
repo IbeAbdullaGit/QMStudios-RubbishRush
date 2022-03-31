@@ -1333,7 +1333,7 @@ void DefaultSceneLayer::_CreateScene()
 
 		//layout
 		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("malllayoutwall.obj");
-		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/mall.jpg");
+		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/mall.png");
 		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			layoutMaterial->Name = "Layout";
@@ -4382,7 +4382,7 @@ void DefaultSceneLayer::_CreateTrash()
 
 		Gameplay::GameObject::Sptr trash2 = _currentScene->CreateGameObject("Trash2");
 		{
-			trash2->SetPostion(glm::vec3(-7.963f, 1.997f, 0.f));
+			trash2->SetPostion(glm::vec3(-7.883f, -0.103f, 0.f));
 			trash2->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
 			trash2->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
 			// Add a render component
@@ -4558,8 +4558,8 @@ void DefaultSceneLayer::_CreateTrash()
 		all_trash.push_back(trash6);
 		Gameplay::GameObject::Sptr trash7 = _currentScene->CreateGameObject("Trash7"); //has cup PLACEHOLDER
 		{
-			trash7->SetPostion(glm::vec3(13.251, 10.554f, 0.0f));
-			trash7->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+			trash7->SetPostion(glm::vec3(12.801f, 9.244f, 0.0f));
+			trash7->SetRotation(glm::vec3(90.0f, 0.0f, -76.0f));
 			trash7->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
 			// Add a render component
 			RenderComponent::Sptr renderer = trash7->Add<RenderComponent>();

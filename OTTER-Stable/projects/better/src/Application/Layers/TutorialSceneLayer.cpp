@@ -687,7 +687,7 @@ void TutorialSceneLayer::_CreateScene()
 			morph2->SetJumping(jumping);
 		}
 
-		Texture2D::Sptr planeTex = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
+		Texture2D::Sptr planeTex = ResourceManager::CreateAsset<Texture2D>("textures/therealthing.jpg");
 		//MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<MeshResource>("layout2.obj");
 		Gameplay::Material::Sptr planeMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward); {
 			planeMaterial->Name = "Plane";
@@ -869,8 +869,8 @@ void TutorialSceneLayer::_CreateScene()
 
 
 		//layout
-		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tutorial level.obj");
-		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/tutorial tex.jpg");
+		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tutoriallayoutread.obj");
+		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/therealthing.jpg");
 		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			layoutMaterial->Name = "Layout";
@@ -881,7 +881,7 @@ void TutorialSceneLayer::_CreateScene()
 		}
 		Gameplay::GameObject::Sptr layout = scene->CreateGameObject("Layout");
 		{
-			layout->SetPostion(glm::vec3(6.33, -10.32f, 0.0f));
+			layout->SetPostion(glm::vec3(6.33, -6.59f, 0.0f));
 			layout->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
 			layout->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 
@@ -961,24 +961,24 @@ void TutorialSceneLayer::_CreateScene()
 			//Center Left
 			Gameplay::GameObject::Sptr layoutwall5 = scene->CreateGameObject("Layout Wall Center Left");
 			{
-				layoutwall5->SetPostion(glm::vec3(10.450f, -5.650f, 1.0f));
+				layoutwall5->SetPostion(glm::vec3(10.450f, -5.26f, 1.0f));
 				layoutwall5->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
 				Gameplay::Physics::RigidBody::Sptr wall5Phys = layoutwall5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall5 = Gameplay::Physics::BoxCollider::Create();
 				wall5->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall5->SetScale(glm::vec3(2.620, 1.78f, 2.02f));
+				wall5->SetScale(glm::vec3(2.620, 1.56f, 2.02f));
 				wall5->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall5Phys->AddCollider(wall5);
 			}
 			//Center Right
 			Gameplay::GameObject::Sptr layoutwall6 = scene->CreateGameObject("Layout Wall Center Right");
 			{
-				layoutwall6->SetPostion(glm::vec3(2.060f, -5.650f, 1.0f));
+				layoutwall6->SetPostion(glm::vec3(2.060f, -5.33f, 1.0f));
 				layoutwall6->SetScale(glm::vec3(0.3f, 1.54f, 2.37f));
 				Gameplay::Physics::RigidBody::Sptr wall6Phys = layoutwall6->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall6 = Gameplay::Physics::BoxCollider::Create();
 				wall6->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall6->SetScale(glm::vec3(2.670, 1.78f, 2.02f));
+				wall6->SetScale(glm::vec3(2.670, 1.59f, 2.02f));
 				wall6->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall6Phys->AddCollider(wall6);
 			}
@@ -1342,7 +1342,7 @@ void TutorialSceneLayer::_CreateScene()
 				transform->SetMax({ 360, 202.5 });
 
 				GuiPanel::Sptr dumpPanel = dumpTutorial->Add<GuiPanel>();
-				dumpPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/Tut2tex.png"));
+				dumpPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/Tut7tex.png"));
 				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
 				dumpPanel->IsEnabled = false;
 
@@ -1415,14 +1415,14 @@ void TutorialSceneLayer::_CreateScene()
 void TutorialSceneLayer::_CreateHallway() {
 	
 	hallwayMat = _tutcurrentScene->FindObjectByName("Layout")->Get<RenderComponent>()->GetMaterial();
-	Gameplay::MeshResource::Sptr halllayoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("extrahallway.obj");
+	Gameplay::MeshResource::Sptr halllayoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("extrahall.obj");
 
 
 	//Bench
 
 	Gameplay::GameObject::Sptr layouthall = _tutcurrentScene->CreateGameObject("Layout2");
 	{
-			layouthall->SetPostion(glm::vec3(-2.020, -10.32f, 0.0f));
+			layouthall->SetPostion(glm::vec3(-2.02f, -10.32f, 0.0f));
 			layouthall->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
 			layouthall->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 
