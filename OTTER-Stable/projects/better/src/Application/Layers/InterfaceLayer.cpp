@@ -8,13 +8,13 @@ InterfaceLayer::InterfaceLayer() :
 	ApplicationLayer()
 {
 	Name = "Interface";
-	Overrides = AppLayerFunctions::OnRender | AppLayerFunctions::OnWindowResize;
+	Overrides = AppLayerFunctions::OnPostRender | AppLayerFunctions::OnWindowResize;
 }
 
 InterfaceLayer::~InterfaceLayer()
 { }
 
-void InterfaceLayer::OnRender(const Framebuffer::Sptr& prevLayer) {
+void InterfaceLayer::OnPostRender() {
 	// Gets the application instance
 	Application& app = Application::Get();
 

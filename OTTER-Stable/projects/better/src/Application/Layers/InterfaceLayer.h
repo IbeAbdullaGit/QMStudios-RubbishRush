@@ -12,6 +12,7 @@ public:
 		
 	// Inherited from ApplicationLayer
 
-	virtual void OnRender(const Framebuffer::Sptr& prevLayer) override;
+	//virtual void OnRender(const Framebuffer::Sptr& prevLayer) override;
+	virtual void OnPostRender() override;
 	virtual void OnWindowResize(const glm::ivec2& oldSize, const glm::ivec2& newSize) override;
 };

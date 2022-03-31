@@ -216,8 +216,8 @@ void Application::_Run()
 	//_layers.push_back(std::make_shared<TutorialSceneLayer>());
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
 	_layers.push_back(std::make_shared<RenderLayer>());
-	_layers.push_back(std::make_shared<ParticleLayer>());
 	_layers.push_back(std::make_shared<PostProcessingLayer>());
+	_layers.push_back(std::make_shared<ParticleLayer>());
 	_layers.push_back(std::make_shared<InterfaceLayer>());
 
 	//for playtesting
