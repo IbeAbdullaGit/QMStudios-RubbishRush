@@ -173,22 +173,7 @@ void DefaultSceneLayer::OnUpdate()
 		//only run this once
 		activated = true;
 	}
-	if (InputEngine::GetKeyState(GLFW_KEY_0) == ButtonState::Pressed && !isPressed)
-	{
-		isPressed = true;
-		//switch between states easily
-		lights = !lights;
-		if (lights)
-		{
-			app.GetLayer<RenderLayer>()->SetRenderFlags(RenderFlags::EnableLights);
-			std::cout << "enabled\n";
-		}
-		else
-		{
-			app.GetLayer<RenderLayer>()->SetRenderFlags(RenderFlags::None);
-			std::cout << "disabled\n";
-		}
-	}
+	
 	if (!start)
 	{
 

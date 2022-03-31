@@ -76,12 +76,12 @@ protected:
 	std::vector<glm::vec3> pointsR2;
 	
 	//all conditions to change between in-game conditions and menus
-	bool isPressed = false;
+	//bool isPressed = false;
 	bool timerDone = false;
 	bool timeleveltDone = false;
 	bool lose = false;
 	bool Victory = false;
-	bool lights = true;
+	
 	bool playrecyclesound = false;
 	bool playtrashsound = false;
 	bool playmulti = false;

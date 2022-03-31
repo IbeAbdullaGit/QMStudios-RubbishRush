@@ -3,6 +3,8 @@
 #include "Application/ApplicationLayer.h"
 #include "Utils/Macros.h"
 #include "Graphics/VertexArrayObject.h"
+#include "Gameplay/InputEngine.h"
+#include "Graphics/Textures/Texture3D.h"
 
 /**
  * The post processing layer will handle rendering effects after the primary
@@ -27,6 +29,8 @@ public:
 
 		virtual ~Effect() = default;
 
+		//function specifically for color correction
+		virtual void ChangeLut(Texture3D::Sptr new_lut) {}
 		/**
 		 * Overload this in derived classes to apply the effect. Texture slot 0
 		 * will contain the image from the previous pass
@@ -102,6 +106,7 @@ public:
 	// Inherited from ApplicationLayer
 
 	virtual void OnAppLoad(const nlohmann::json& config) override;
+	virtual void OnUpdate() override;
 	virtual void OnPostRender() override;
 	virtual void OnSceneLoad() override;
 	virtual void OnSceneUnload() override;
@@ -112,4 +117,12 @@ protected:
 
 	std::vector<Effect::Sptr> _effects;
 	VertexArrayObject::Sptr _quadVAO;
+
+	bool lut1 = false;
+	bool lut2 = false;
+	bool lut3 = false;
+
+	Texture3D::Sptr cool_lut;
+	Texture3D::Sptr warm_lut;
+	Texture3D::Sptr other_lut;
 };

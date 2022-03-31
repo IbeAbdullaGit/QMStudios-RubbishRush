@@ -20,7 +20,7 @@ PostProcessingLayer::PostProcessingLayer() :
 		AppLayerFunctions::OnAppLoad |
 		AppLayerFunctions::OnSceneLoad | AppLayerFunctions::OnSceneUnload | 
 		AppLayerFunctions::OnPostRender |
-		AppLayerFunctions::OnWindowResize;
+		AppLayerFunctions::OnWindowResize | AppLayerFunctions::OnUpdate;
 }
 
 PostProcessingLayer::~PostProcessingLayer() = default;
@@ -32,7 +32,7 @@ void PostProcessingLayer::AddEffect(const Effect::Sptr& effect) {
 void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 {
 	// Loads some effects in
-	/*_effects.push_back(std::make_shared<ColorCorrectionEffect>());*/
+	_effects.push_back(std::make_shared<ColorCorrectionEffect>());
 	//_effects.push_back(std::make_shared<BoxFilter3x3>());
 	//_effects.push_back(std::make_shared<BoxFilter5x5>());
 	////_effects.push_back(std::make_shared<OutlineEffect>());
@@ -68,6 +68,11 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	_quadVAO->AddVertexBuffer(vbo, {
 		BufferAttribute(0, 2, AttributeType::Float, sizeof(glm::vec2), 0, AttribUsage::Position)
 	});
+
+	//load in luts
+	cool_lut = ResourceManager::CreateAsset<Texture3D>("luts/cool.cube");
+	warm_lut = ResourceManager::CreateAsset<Texture3D>("luts/warm.cube");
+	other_lut = ResourceManager::CreateAsset<Texture3D>("luts/sepia.cube");
 }
 
 void PostProcessingLayer::OnPostRender()
@@ -156,6 +161,43 @@ void PostProcessingLayer::OnWindowResize(const glm::ivec2& oldSize, const glm::i
 const std::vector<PostProcessingLayer::Effect::Sptr>& PostProcessingLayer::GetEffects() const
 {
 	return _effects;
+}
+
+void PostProcessingLayer::OnUpdate()
+{
+	if (InputEngine::GetKeyState(GLFW_KEY_1) == ButtonState::Pressed)
+	{
+		lut1 = !lut1;
+	}
+	if (InputEngine::GetKeyState(GLFW_KEY_2) == ButtonState::Pressed)
+	{
+		lut2 = !lut2;
+	}
+	if (InputEngine::GetKeyState(GLFW_KEY_3) == ButtonState::Pressed)
+	{
+		lut3 = !lut3;
+	}
+	if (lut1)
+	{
+		_effects[0]->ChangeLut(cool_lut);
+	}
+	if (lut2)
+	{
+		_effects[0]->ChangeLut(warm_lut);
+	}
+	if (lut3)
+	{
+		_effects[0]->ChangeLut(other_lut);
+	}
+	if (!lut1 && !lut2 && !lut3) //none enabled
+	{
+		_effects[0]->Enabled = false; //turn off color correction
+	}
+	else //one of them is on
+	{
+		_effects[0]->Enabled = true;
+	}
+
 }
 
 void PostProcessingLayer::Effect::DrawFullscreen()

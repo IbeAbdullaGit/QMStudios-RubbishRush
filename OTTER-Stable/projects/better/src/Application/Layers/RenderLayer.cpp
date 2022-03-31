@@ -24,14 +24,14 @@ RenderLayer::RenderLayer() :
 	_blitFbo(true),
 	_frameUniforms(nullptr),
 	_instanceUniforms(nullptr),
-	_renderFlags(RenderFlags::EnableLights),
+	_renderFlags(RenderFlags::EnableLights | RenderFlags::EnableSpecular | RenderFlags::EnableAmbient),
 	_clearColor({ 0.1f, 0.1f, 0.1f, 1.0f })
 {
 	Name = "Rendering";
 	Overrides =
 		AppLayerFunctions::OnAppLoad |
 		AppLayerFunctions::OnPreRender | AppLayerFunctions::OnRender | AppLayerFunctions::OnPostRender |
-		AppLayerFunctions::OnWindowResize;
+		AppLayerFunctions::OnWindowResize | AppLayerFunctions::OnUpdate;
 }
 
 RenderLayer::~RenderLayer() = default;
@@ -169,12 +169,30 @@ void RenderLayer::_AccumulateLighting()
 	data.EnvironmentRotation = scene->GetSkyboxRotation() * glm::inverse(glm::mat3(scene->MainCamera->GetView()));
 
 	const glm::vec3& ambient = scene->GetAmbientLight();
-	const glm::vec4 colors[2] = {
+	const glm::vec3& ambient2 = glm::vec3(0);
+	if (!enable_ambient)
+	{
+		data.AmbientCol = glm::vec3(0);
+		const glm::vec4 colors[2] = {
+		{ ambient2, 1.0f },         // diffuse (multiplicative)
+		{ 0.0f, 0.0f, 0.0f, 1.0f } // specular (additive)
+		};
+		_lightingFBO->Bind();
+		_ClearFramebuffer(_lightingFBO, colors, 2);
+	}
+	else
+	{
+		const glm::vec4 colors[2] = {
 		{ ambient, 1.0f },         // diffuse (multiplicative)
 		{ 0.0f, 0.0f, 0.0f, 1.0f } // specular (additive)
-	};
-	_lightingFBO->Bind();
-	_ClearFramebuffer(_lightingFBO, colors, 2);
+		};
+		_lightingFBO->Bind();
+		_ClearFramebuffer(_lightingFBO, colors, 2);
+	}
+	
+	
+	//_lightingFBO->Bind();
+	//_ClearFramebuffer(_lightingFBO, colors, 2);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -191,7 +209,10 @@ void RenderLayer::_AccumulateLighting()
 
 	
 	// Send in how many active lights we have and the global lighting settings
-	data.AmbientCol = glm::vec3(0.1f);
+	if (enable_ambient)
+	{
+		data.AmbientCol = glm::vec3(0.1f);
+	}
 	int ix = 0;
 	app.CurrentScene()->Components().Each<Light>([&](const Light::Sptr& light) {
 		// Get the light's position in view space, since we're doing view space lighting
@@ -384,6 +405,58 @@ void RenderLayer::OnWindowResize(const glm::ivec2 & oldSize, const glm::ivec2 & 
 	// Update the main camera's projection
 	Application& app = Application::Get();
 	app.CurrentScene()->MainCamera->ResizeWindow(newSize.x, newSize.y);
+}
+
+void RenderLayer::OnUpdate()
+{
+	
+	if (InputEngine::GetKeyState(GLFW_KEY_4) == ButtonState::Pressed)//enable/disable specular
+	{
+		enable_specular = !enable_specular;
+	}
+	if (InputEngine::GetKeyState(GLFW_KEY_5) == ButtonState::Pressed)
+	{
+		enable_ambient = !enable_ambient;
+	}
+	if (InputEngine::GetKeyState(GLFW_KEY_0) == ButtonState::Pressed)
+	{
+		lights = !lights;
+	}
+	
+	
+	if (enable_specular && lights && enable_ambient)
+	{
+		_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights | RenderFlags::EnableAmbient;
+	}
+	else if (lights && enable_ambient) //no specular, but has lights
+	{
+		_renderFlags = RenderFlags::EnableLights | RenderFlags::EnableAmbient;
+	}
+	else if (lights && enable_specular) //no ambient, but has lights
+	{
+		_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights;
+	}
+	else if (lights)//only lights
+	{
+		_renderFlags = RenderFlags::EnableLights;
+	}
+	else if (enable_ambient && enable_specular)//ambient + specular
+	{
+		_renderFlags = RenderFlags::EnableAmbient | RenderFlags::EnableSpecular;
+	}
+	else if (enable_ambient)//only ambient
+	{
+		_renderFlags = RenderFlags::EnableAmbient;
+	}
+	else if (enable_specular)//only specular
+	{
+		_renderFlags = RenderFlags::EnableSpecular;
+	}
+	else//none
+	{
+		_renderFlags = RenderFlags::None;
+	}
+	
 }
 
 void RenderLayer::OnAppLoad(const nlohmann::json & config)

@@ -152,24 +152,6 @@ void TutorialSceneLayer::OnUpdate()
 		isPressed = false;
 		//enable/disable lighting, only detect once
 		
-		if (InputEngine::GetKeyState(GLFW_KEY_0) == ButtonState::Pressed && !isPressed)
-		{
-			isPressed = true;
-			//switch between states easily
-			lights = !lights;
-			if (lights)
-			{
-				app.GetLayer<RenderLayer>()->SetRenderFlags(RenderFlags::EnableLights);
-				std::cout << "enabled\n";
-			}
-			else
-			{
-				app.GetLayer<RenderLayer>()->SetRenderFlags(RenderFlags::None);
-				std::cout << "disabled\n";
-			}
-		}
-
-
 		// Figure out the current time, and the time since the last frame
 		double thisFrame = glfwGetTime();
 		float dt = static_cast<float>(thisFrame - tutlastFrame);

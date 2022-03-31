@@ -13,4 +13,19 @@ vec3 LightCorrect(vec3 lightAccumulation) {
         return vec3(0.0);
     }
 }
-
+vec3 SpecularCorrect(vec3 specular){
+    if (IsFlagSet(FLAG_ENABLE_SPECULAR))
+    {
+        return specular;
+    }
+    else
+        return vec3(0.0);
+}
+vec3 AmbientCorrect(vec3 specular){
+    if (IsFlagSet(FLAG_ENABLE_AMBIENT))
+    {
+        return specular;
+    }
+    else
+        return vec3(0.0);
+}

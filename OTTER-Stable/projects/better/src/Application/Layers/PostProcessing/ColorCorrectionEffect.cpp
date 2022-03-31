@@ -34,6 +34,11 @@ void ColorCorrectionEffect::Apply(const Framebuffer::Sptr& gBuffer)
 	_shader->SetUniform("u_Strength", _strength);
 }
 
+void ColorCorrectionEffect::ChangeLut(Texture3D::Sptr new_lut)
+{
+	Lut = new_lut;
+}
+
 void ColorCorrectionEffect::RenderImGui()
 {
 	LABEL_LEFT(ImGui::LabelText, "LUT", Lut ? Lut->GetDebugName().c_str() : "none");

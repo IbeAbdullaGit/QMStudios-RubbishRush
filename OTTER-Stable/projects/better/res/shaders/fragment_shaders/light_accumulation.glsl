@@ -32,6 +32,7 @@ layout (std140, binding = 2) uniform b_LightBlock {
 #include "../fragments/deferred_post_common.glsl"
 
 #include "../fragments/frame_uniforms.glsl"
+//#include "../fragments/light_correction.glsl"
 
 // Calculates the contribution the given point light has 
 // for the current fragment
@@ -61,6 +62,9 @@ void CalcPointLightContribution(vec3 viewPos, vec3 normal, Light light, float sh
 }
 
 void main() {
+    
+    //AmbientColAndNumLights.rgb = AmbientCorrect(AmbientColAndNumLights.rgb);
+
     vec3 normal = GetNormal(inUV);
     
     if (length(normal) < 0.1) {

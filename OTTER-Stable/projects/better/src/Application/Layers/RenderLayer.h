@@ -4,13 +4,17 @@
 #include "Graphics/Buffers/UniformBuffer.h"
 #include "Graphics/ShaderProgram.h"
 #include "Graphics/VertexArrayObject.h"
+#include "Gameplay/InputEngine.h"
 
 #define MAX_LIGHTS 8
 
 ENUM_FLAGS(RenderFlags, uint32_t,
 	None = 0,
 	EnableColorCorrection = 1 << 0,
-	EnableLights = 1<<1
+	EnableLights = 1<<1,
+	EnableSpecular = 1<<2,
+	EnableAmbient = 1<<3
+	
 );
 
 class RenderLayer final : public ApplicationLayer {
@@ -101,6 +105,7 @@ public:
 	const Framebuffer::Sptr& GetGBuffer() const;
 
 	// Inherited from ApplicationLayer
+	virtual void OnUpdate() override;
 
 	virtual void OnAppLoad(const nlohmann::json& config) override;
 	virtual void OnPreRender() override;
@@ -110,6 +115,11 @@ public:
 	//virtual Framebuffer::Sptr GetRenderOutput() override;
 
 protected:
+
+	bool enable_specular = true;
+	bool lights = true;
+	bool enable_ambient = true;
+
 	Framebuffer::Sptr   _primaryFBO;
 	Framebuffer::Sptr   _lightingFBO;
 	Framebuffer::Sptr   _outputBuffer;

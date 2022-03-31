@@ -13,6 +13,8 @@ public:
 	virtual ~ColorCorrectionEffect();
 
 	virtual void Apply(const Framebuffer::Sptr& gBuffer) override;
+	virtual void ChangeLut(Texture3D::Sptr new_lut) override;
+
 	virtual void RenderImGui() override;
 
 	// Inherited from IResource
