@@ -491,7 +491,7 @@ void TutorialSceneLayer::_CreateScene()
 			Light::Sptr lightComponent = light->Add<Light>();
 			lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 			lightComponent->SetRadius(5.0f);
-			lightComponent->SetIntensity(1.0f);
+			lightComponent->SetIntensity(55.0f);
 		}
 		{
 			Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
@@ -501,7 +501,7 @@ void TutorialSceneLayer::_CreateScene()
 			Light::Sptr lightComponent = light->Add<Light>();
 			lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.1f));
 			lightComponent->SetRadius(6.5f);
-			lightComponent->SetIntensity(1.0f);
+			lightComponent->SetIntensity(20.0f);
 		}
 		{
 			Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
@@ -511,7 +511,7 @@ void TutorialSceneLayer::_CreateScene()
 			Light::Sptr lightComponent = light->Add<Light>();
 			lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.1f));
 			lightComponent->SetRadius(5.5f);
-			lightComponent->SetIntensity(1.0f);
+			lightComponent->SetIntensity(15.0f);
 		}
 	/*	for (int ix = 0; ix < 50; ix++) {
 			Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
@@ -570,7 +570,7 @@ void TutorialSceneLayer::_CreateScene()
 			trashyMaterial->Name = "Trashy";
 			trashyMaterial->Set("u_Material.AlbedoMap", trashyTex);
 			//testMaterial->Set("u_Material.Specular", boxSpec);
-			trashyMaterial->Set("u_Material.Shininess", 0.5f);
+			trashyMaterial->Set("u_Material.Shininess", 0.0f);
 			trashyMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 		
@@ -874,7 +874,7 @@ void TutorialSceneLayer::_CreateScene()
 		{
 			layoutMaterial->Name = "Layout";
 			layoutMaterial->Set("u_Material.AlbedoMap", layoutTex);
-			layoutMaterial->Set("u_Material.Shininess", 0.1f);
+			layoutMaterial->Set("u_Material.Shininess", 0.0f);
 			layoutMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
@@ -897,7 +897,7 @@ void TutorialSceneLayer::_CreateScene()
 		{
 			spillMaterial->Name = "Spill";
 			spillMaterial->Set("u_Material.AlbedoMap", spillTex);
-			spillMaterial->Set("u_Material.Shininess", 1.0f);
+			spillMaterial->Set("u_Material.Shininess", 0.f);
 			spillMaterial->Set("u_Material.NormalMap", normalMapDefault);
 
 		}
