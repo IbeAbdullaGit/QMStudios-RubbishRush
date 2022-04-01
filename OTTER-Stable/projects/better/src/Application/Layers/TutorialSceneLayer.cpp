@@ -364,8 +364,9 @@ void TutorialSceneLayer::OnUpdate()
 
 		if (!camera->GetComponent<SimpleCameraControl>()->moving)
 		{
-			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
-			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
+			//Set Camera position
+			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.0f, 6.f));
+			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -3.9f, -2.0f));
 		}
 
 		// Store timing for next loop
@@ -522,6 +523,8 @@ void TutorialSceneLayer::_CreateScene()
 			camera->LookAt(glm::vec3(0.0f));
 			camera->SetRotation(glm::vec3(59.0f, 0.0f, 177.0f));
 			camera->SetScale(glm::vec3(1.0f, 1.0f, 3.1f));
+			scene->MainCamera->SetFovDegrees(105.f);
+			
 
 			//Gameplay::Camera::Sptr cam = camera->Add<Gameplay::Camera>();
 			//cam->SetOrthoEnabled(true);

@@ -542,8 +542,8 @@ void DefaultSceneLayer::OnUpdate()
 		//EDIT THIS TO ALLOW CAMERA CONTROL
 		//if (!camera->GetComponent<SimpleCameraControl>()->moving)
 		{
-			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
-			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
+			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 2.50f, 6.f));
+			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -3.9f, -2.0f));
 		}
 	}
 	// Store timing for next loop
@@ -1126,6 +1126,7 @@ void DefaultSceneLayer::_CreateScene()
 			camera->LookAt(glm::vec3(0.0f));
 			camera->SetRotation(glm::vec3(59.0f, 0.0f, 177.0f));
 			camera->SetScale(glm::vec3(1.0f, 1.0f, 3.1f));
+			scene->MainCamera->SetFovDegrees(105.f);
 
 			camera->Add<SimpleCameraControl>();
 
