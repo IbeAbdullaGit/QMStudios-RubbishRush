@@ -4295,11 +4295,12 @@ void DefaultSceneLayer::_CreateScene()
 		Gameplay::GameObject::Sptr inventoryUI = scene->CreateGameObject("Inventory UI");
 		{
 			RectTransform::Sptr transform = inventoryUI->Add<RectTransform>();
-			transform->SetMax({ 180, 100 });
-			transform->SetPosition(glm::vec2(929, 600));
+			transform->SetMax(app.GetWindowSize());
+			transform->SetPosition(glm::vec2(app.GetWindowSize().x - 100.f, app.GetWindowSize().y - 80));
+			transform->SetSize(glm::vec2(25.f, 40.f));
 
 			GuiPanel::Sptr invPanel = inventoryUI->Add<GuiPanel>();
-			invPanel->IsEnabled = false;
+			//invPanel->IsEnabled = false;
 
 		}
 
