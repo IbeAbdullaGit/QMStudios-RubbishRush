@@ -199,6 +199,9 @@ void RenderLayer::_AccumulateLighting()
 
 	// Bind our shader for processing lighting
 	_lightAccumulationShader->Bind();
+	//bind the warp
+	diffusewarp->Bind(5);
+	specularwarp->Bind(6);
 
 	// Bind our G-Buffer textures so that they're readable
 	_primaryFBO->GetTextureAttachment(RenderTargetAttachment::Depth)->Bind(0);  // depth
@@ -409,6 +412,10 @@ void RenderLayer::OnWindowResize(const glm::ivec2 & oldSize, const glm::ivec2 & 
 
 void RenderLayer::OnUpdate()
 {
+	using namespace Gameplay;
+	Application& app = Application::Get();
+
+	Scene::Sptr& scene = app.CurrentScene();
 	
 	if (InputEngine::GetKeyState(GLFW_KEY_4) == ButtonState::Pressed)//enable/disable specular
 	{
@@ -418,39 +425,95 @@ void RenderLayer::OnUpdate()
 	{
 		enable_ambient = !enable_ambient;
 	}
+	if (InputEngine::GetKeyState(GLFW_KEY_6) == ButtonState::Pressed)
+	{
+		enable_ramp_d = !enable_ramp_d;
+	}
+	if (InputEngine::GetKeyState(GLFW_KEY_7) == ButtonState::Pressed)
+	{
+		enable_ramp_s = !enable_ramp_s;
+	}
 	if (InputEngine::GetKeyState(GLFW_KEY_0) == ButtonState::Pressed)
 	{
 		lights = !lights;
 	}
-	
-	
-	if (enable_specular && lights && enable_ambient)
+	if (enable_ambient)
 	{
-		_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights | RenderFlags::EnableAmbient;
+		scene->SetAmbientLight(glm::vec3(0.2f));   
 	}
-	else if (lights && enable_ambient) //no specular, but has lights
+	else
 	{
-		_renderFlags = RenderFlags::EnableLights | RenderFlags::EnableAmbient;
+		scene->SetAmbientLight(glm::vec3(0.0f));
 	}
-	else if (lights && enable_specular) //no ambient, but has lights
+	if (enable_specular)
 	{
-		_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights;
+		if (enable_ramp_d && enable_ramp_s && lights)
+		{
+			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights | RenderFlags::EnableRDiffuse | RenderFlags::EnableRSpec;
+		}
+		else if (enable_ramp_d && lights)//no spec ramp
+		{
+			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights | RenderFlags::EnableRDiffuse;
+		}
+		else if (enable_ramp_d && enable_ramp_s)//no lights
+		{
+			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableRDiffuse | RenderFlags::EnableRSpec;
+		}
+		else if (enable_ramp_d) //specular and ramp diffuse
+		{
+			_renderFlags = RenderFlags::EnableRDiffuse | RenderFlags::EnableSpecular;
+		}
+		else if (enable_ramp_s && lights)//no diff ramp
+		{
+			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights | RenderFlags::EnableRSpec;
+		}
+		else if (enable_ramp_s) //specular and ramp spec
+		{
+			_renderFlags = RenderFlags::EnableRSpec | RenderFlags::EnableSpecular;
+		}
+
+		else if (lights)//no ramps, but has lights
+		{
+			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights;
+		}
+		else //only specular
+		{
+			_renderFlags = RenderFlags::EnableSpecular;
+		}
 	}
-	else if (lights)//only lights
+	else if (lights)
 	{
-		_renderFlags = RenderFlags::EnableLights;
+		if (enable_ramp_s && enable_ramp_d) //no specular, but has lights
+		{
+			_renderFlags = RenderFlags::EnableLights | RenderFlags::EnableRDiffuse | RenderFlags::EnableRSpec;
+		}
+		else if (enable_ramp_s) //lights and ramp specular
+		{
+			_renderFlags = RenderFlags::EnableRSpec | RenderFlags::EnableLights;
+		}
+		else if (enable_ramp_d) //lights and ramp diffuse
+		{
+			_renderFlags = RenderFlags::EnableRDiffuse | RenderFlags::EnableLights;
+		}
+		else//only lights
+		{
+			_renderFlags = RenderFlags::EnableLights;
+		}
 	}
-	else if (enable_ambient && enable_specular)//ambient + specular
+	else if (enable_ramp_s)
 	{
-		_renderFlags = RenderFlags::EnableAmbient | RenderFlags::EnableSpecular;
+		if (enable_ramp_d) //only the ramps on
+		{
+			_renderFlags = RenderFlags::EnableRDiffuse | RenderFlags::EnableRSpec;
+		}
+		else//only ramp specular
+		{
+			_renderFlags = RenderFlags::EnableRSpec;
+		}
 	}
-	else if (enable_ambient)//only ambient
+	else if (enable_ramp_d)//only ramp diffuse
 	{
-		_renderFlags = RenderFlags::EnableAmbient;
-	}
-	else if (enable_specular)//only specular
-	{
-		_renderFlags = RenderFlags::EnableSpecular;
+		_renderFlags = RenderFlags::EnableRDiffuse;
 	}
 	else//none
 	{
@@ -505,6 +568,15 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	_lightAccumulationShader->LoadShaderPartFromFile("shaders/vertex_shaders/fullscreen_quad.glsl", ShaderPartType::Vertex);
 	_lightAccumulationShader->LoadShaderPartFromFile("shaders/fragment_shaders/light_accumulation.glsl", ShaderPartType::Fragment);
 	_lightAccumulationShader->Link();
+
+	//set warps here!!!
+	diffusewarp = ResourceManager::CreateAsset<Texture1D>("luts/difftoon.png");
+	specularwarp = ResourceManager::CreateAsset<Texture1D>("luts/spectoon.png");
+	diffusewarp->SetWrap(WrapMode::ClampToEdge);
+	diffusewarp->SetWrap(WrapMode::MirrorClampToEdge);
+	specularwarp->SetWrap(WrapMode::ClampToEdge);
+	specularwarp->SetWrap(WrapMode::MirrorClampToEdge);
+
 
 	_compositingShader = ShaderProgram::Create();
 	_compositingShader->LoadShaderPartFromFile("shaders/vertex_shaders/fullscreen_quad.glsl", ShaderPartType::Vertex);

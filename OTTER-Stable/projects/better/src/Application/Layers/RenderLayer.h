@@ -5,6 +5,7 @@
 #include "Graphics/ShaderProgram.h"
 #include "Graphics/VertexArrayObject.h"
 #include "Gameplay/InputEngine.h"
+#include "Graphics/Textures/Texture1D.h"
 
 #define MAX_LIGHTS 8
 
@@ -13,7 +14,9 @@ ENUM_FLAGS(RenderFlags, uint32_t,
 	EnableColorCorrection = 1 << 0,
 	EnableLights = 1<<1,
 	EnableSpecular = 1<<2,
-	EnableAmbient = 1<<3
+	EnableAmbient = 1<<3,
+	EnableRDiffuse = 1<<4,
+	EnableRSpec = 1<<5
 	
 );
 
@@ -119,6 +122,11 @@ protected:
 	bool enable_specular = true;
 	bool lights = true;
 	bool enable_ambient = true;
+	bool enable_ramp_d = false;
+	bool enable_ramp_s = false;
+
+	Texture1D::Sptr diffusewarp;
+	Texture1D::Sptr specularwarp;
 
 	Framebuffer::Sptr   _primaryFBO;
 	Framebuffer::Sptr   _lightingFBO;

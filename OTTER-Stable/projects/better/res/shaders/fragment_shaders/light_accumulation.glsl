@@ -4,6 +4,9 @@ layout(location = 0) in vec2 inUV;
 layout(location = 0) out vec4 outDiffuse;
 layout(location = 1) out vec4 outSpecular;
 
+uniform layout(binding = 5) sampler1D diffuse_ramp;
+uniform layout(binding = 6) sampler1D spec_ramp;
+
 // The maximum number of lights the shader supports, increasing this will lower performance!
 #define MAX_LIGHTS 8
 
@@ -83,6 +86,21 @@ void main() {
     for (int ix = 0; ix < AmbientColAndNumLights.w && ix < MAX_LIGHTS; ix++) {
         CalcPointLightContribution(viewPos, normal, Lights[ix], specularPow, diffuse, specular);
     }
+
+    if (IsFlagSet(FLAG_DIFFUSE_WARP))
+    { 
+        diffuse.r = texture(diffuse_ramp, diffuse.r).r;
+        diffuse.g = texture(diffuse_ramp, diffuse.g).g;
+        diffuse.b = texture(diffuse_ramp, diffuse.b).b;
+    }
+ 
+    if (IsFlagSet(FLAG_SPECULAR_WARP))
+    {
+        specular.r = texture(spec_ramp, specular.r).r;
+        specular.g = texture(spec_ramp, specular.g).g;
+        specular.b = texture(spec_ramp, specular.b).b;
+    }
+
 
     outDiffuse = vec4(diffuse, 1);
     outSpecular = vec4(specular, 1);

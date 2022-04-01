@@ -36,6 +36,8 @@ layout (std140, binding = 1) uniform b_InstanceLevelUniforms {
 #define FLAG_ENABLE_LIGHTS (1 << 1)
 #define FLAG_ENABLE_SPECULAR (1 << 2)
 #define FLAG_ENABLE_AMBIENT (1 <<3)
+#define FLAG_DIFFUSE_WARP (1 <<4)
+#define FLAG_SPECULAR_WARP (1<<5)
 
 bool IsFlagSet(uint flag) {
     return (u_Flags & flag) != 0;
