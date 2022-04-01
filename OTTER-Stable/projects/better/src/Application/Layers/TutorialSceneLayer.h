@@ -28,6 +28,7 @@ public:
 protected:
 	void _CreateScene();
 	void _CreateHallway();
+	void _UpdateUIPositions();
 	Gameplay::Scene::Sptr _tutcurrentScene;
 	Gameplay::MeshResource::Sptr trashMesh;
 	Gameplay::MeshResource::Sptr benchMesh;

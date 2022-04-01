@@ -293,7 +293,7 @@ void TutorialSceneLayer::OnUpdate()
 				
 			}
 
-
+			
 			//Player Movement Tutorial
 			if ((glfwGetKey(app.GetWindow(), GLFW_KEY_W) || glfwGetKey(app.GetWindow(), GLFW_KEY_A) || glfwGetKey(app.GetWindow(), GLFW_KEY_S) || glfwGetKey(app.GetWindow(), GLFW_KEY_D)) && hasMoved == false) {
 				hasMoved = true;
@@ -1344,8 +1344,9 @@ void TutorialSceneLayer::_CreateScene()
 			Gameplay::GameObject::Sptr inventoryUI = scene->CreateGameObject("Inventory UI");
 			{
 				RectTransform::Sptr transform = inventoryUI->Add<RectTransform>();
-				transform->SetMax({ 180, 100 });
-				transform->SetPosition(glm::vec2(929, 600));
+				transform->SetMax(app.GetWindowSize());
+				transform->SetPosition(glm::vec2(app.GetWindowSize().x - 100.f, app.GetWindowSize().y - 80));
+				transform->SetSize(glm::vec2(25.f, 40.f));
 
 				GuiPanel::Sptr invPanel = inventoryUI->Add<GuiPanel>();
 				//invPanel->IsEnabled = false;
@@ -1392,6 +1393,11 @@ void TutorialSceneLayer::_CreateScene()
 		scene->held = 0;
 
 	}
+}
+
+void TutorialSceneLayer::_UpdateUIPositions() {
+	//Gonna put stuff that makes it adjust positions when the window size changes yadayada
+	return;
 }
 
 void TutorialSceneLayer::_CreateHallway() {
@@ -1549,5 +1555,6 @@ void TutorialSceneLayer::_CreateHallway() {
 		CollectTrashBehaviour::Sptr behaviour3 = trash3->Add<CollectTrashBehaviour>();
 		behaviour3->tutorial = true;
 	}
+
 
 }
