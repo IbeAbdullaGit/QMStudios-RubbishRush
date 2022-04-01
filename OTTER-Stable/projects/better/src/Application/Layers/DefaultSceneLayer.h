@@ -87,7 +87,7 @@ protected:
 	bool playmulti = false;
 	//Variables for changing stuff in the game
 	float timeLoop = 7.0f; //The seconds between start time and the menu that plays in the beginning
-	float timelevelt = 25000.f; //The time needed to collect all trash
+	float timelevelt = 300.f; //The time needed to collect all trash
 	bool playMenu = true;
 
 	bool start = false;
