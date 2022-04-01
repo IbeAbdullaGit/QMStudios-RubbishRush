@@ -79,7 +79,7 @@ namespace nou
 
 		//This one makes it so that we won't draw the "back faces" of an object.
 		//(In other words, the stuff we wouldn't be able to see for opaque objects anyway.)
-		glEnable(GL_CULL_FACE);
+		//glEnable(GL_CULL_FACE);
 
 		//This one controls how semi-transparent objects will be blended.
 		//If you start playing with alpha textures and things don't look right,

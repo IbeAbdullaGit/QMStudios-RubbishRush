@@ -327,7 +327,7 @@ void DefaultSceneLayer::OnUpdate()
 				objective->Get<GuiPanel>()->IsEnabled = true;
 			}
 		}
-
+		
 		else if (_currentScene->IsPlaying && !playMenu && !timeleveltDone && start)
 		{
 			
@@ -411,7 +411,7 @@ void DefaultSceneLayer::OnUpdate()
 					start = false;
 					playMenu = false;
 					timeLoop = 7.0f;
-					timelevelt = 65.f;
+					timelevelt = 300.f;
 					timerDone = false;
 					timeleveltDone = false;
 					trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f)); //reset position to start
@@ -472,7 +472,7 @@ void DefaultSceneLayer::OnUpdate()
 					start = false;
 					playMenu = false;
 					timeLoop = 7.0f;
-					timelevelt = 65.f;
+					timelevelt = 300.f;
 					timerDone = false;
 					timeleveltDone = false;
 					trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f)); //reset position to start
@@ -2707,7 +2707,8 @@ void DefaultSceneLayer::_CreateScene()
 				renderer->SetMaterial(tallfountainMat);
 
 				Gameplay::Physics::RigidBody::Sptr physics = tallfountain1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+				//Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+				Gameplay::Physics::CylinderCollider::Sptr boxCollider = Gameplay::Physics::CylinderCollider::Create();
 				boxCollider->SetScale(glm::vec3(1.15f, 1.78f, 1.15f));
 				physics->AddCollider(boxCollider);
 			}

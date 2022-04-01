@@ -98,7 +98,7 @@ void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 
 	// Make sure depth testing and culling are re-enabled
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	glDepthMask(true);
 
 	// Disable blending, we want to override any existing colors
@@ -528,7 +528,7 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 
 	// GL states, we'll enable depth testing and backface fulling
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
 	// Create a new descriptor for our FBO
