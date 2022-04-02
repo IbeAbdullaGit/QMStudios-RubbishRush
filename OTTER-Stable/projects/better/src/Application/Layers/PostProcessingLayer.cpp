@@ -11,6 +11,8 @@
 #include "PostProcessing/BloomEffect.h"
 #include "PostProcessing/MotionblurEffect.h"
 #include "PostProcessing/FilmGrain.h"
+#include "PostProcessing/Pixelate.h"
+#include "PostProcessing/RimLightEffect.h"
 
 
 PostProcessingLayer::PostProcessingLayer() :
@@ -39,9 +41,10 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	////_effects.push_back(std::make_shared<OutlineEffect>());
 	_effects.push_back(std::make_shared<ToonEffect>());
 	//_effects.push_back(std::make_shared<MotionblurEffect>());
-	_effects.push_back(std::make_shared<BloomEffect>());
-	//_effects.push_back(std::make_shared<FilmGrain>());
-	
+	//_effects.push_back(std::make_shared<BloomEffect>());
+	_effects.push_back(std::make_shared<FilmGrain>());
+	_effects.push_back(std::make_shared<Pixelate>());
+	//_effects.push_back(std::make_shared<RimLightEffect>());
 	
 
 	Application& app = Application::Get();

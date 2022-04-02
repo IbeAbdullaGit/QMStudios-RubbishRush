@@ -1,27 +1,27 @@
 #pragma once
+
 #include "Application/Layers/PostProcessingLayer.h"
 #include "Graphics/ShaderProgram.h"
 #include "Graphics/Textures/Texture3D.h"
+#include "Graphics/Framebuffer.h"
 
-class BloomEffect3 : public PostProcessingLayer::Effect {
+class Pixelate : public PostProcessingLayer::Effect {
 public:
-	MAKE_PTRS(BloomEffect3);
-	
-	BloomEffect3();
-	BloomEffect3(bool defaultLut);
-	virtual ~BloomEffect3();
+	MAKE_PTRS(Pixelate);
+
+	Pixelate();
+	virtual ~Pixelate();
 
 	virtual void Apply(const Framebuffer::Sptr& gBuffer, VertexArrayObject::Sptr _quadVAO) override;
 	virtual void RenderImGui() override;
 
 	// Inherited from IResource
 
-	BloomEffect3::Sptr FromJson(const nlohmann::json& data);
+	Pixelate::Sptr FromJson(const nlohmann::json& data);
 	virtual nlohmann::json ToJson() const override;
 
 protected:
-	ShaderProgram::Sptr _shader2;
-	float _strength;
-	float threshold;
-};
+	ShaderProgram::Sptr _shader;
 
+	int strength = 40;
+};
