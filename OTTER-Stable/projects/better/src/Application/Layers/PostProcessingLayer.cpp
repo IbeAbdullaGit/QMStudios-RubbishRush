@@ -42,7 +42,7 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	//_effects.push_back(std::make_shared<MotionblurEffect>());
 	//_effects.push_back(std::make_shared<BloomEffect>());
 	//_effects.push_back(std::make_shared<FilmGrain>());
-	_effects.push_back(std::make_shared<SlimeVignette>());
+	//_effects.push_back(std::make_shared<SlimeVignette>());
 	
 
 	Application& app = Application::Get();
