@@ -24,7 +24,7 @@ BoxFilter3x3::BoxFilter3x3() :
 
 BoxFilter3x3::~BoxFilter3x3() = default;
 
-void BoxFilter3x3::Apply(const Framebuffer::Sptr& gBuffer)
+void BoxFilter3x3::Apply(const Framebuffer::Sptr& gBuffer, VertexArrayObject::Sptr _quadVAO)
 {
 	_shader->Bind(); 
 	_shader->SetUniform("u_Filter", Filter, 9); 

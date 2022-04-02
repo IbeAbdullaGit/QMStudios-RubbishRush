@@ -12,7 +12,7 @@ public:
 	ColorCorrectionEffect(bool defaultLut);
 	virtual ~ColorCorrectionEffect();
 
-	virtual void Apply(const Framebuffer::Sptr& gBuffer) override;
+	virtual void Apply(const Framebuffer::Sptr& gBuffer, VertexArrayObject::Sptr _quadVAO) override;
 	virtual void ChangeLut(Texture3D::Sptr new_lut) override;
 
 	virtual void RenderImGui() override;

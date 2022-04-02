@@ -12,7 +12,7 @@ public:
 	FilmGrain();
 	virtual ~FilmGrain();
 
-	virtual void Apply(const Framebuffer::Sptr& gBuffer) override;
+	virtual void Apply(const Framebuffer::Sptr& gBuffer, VertexArrayObject::Sptr _quadVAO) override;
 	virtual void RenderImGui() override;
 
 	// Inherited from IResource
@@ -23,5 +23,5 @@ public:
 protected:
 	ShaderProgram::Sptr _shader;
 
-	float timer = 0;
+	float timer = 1.0f;
 };

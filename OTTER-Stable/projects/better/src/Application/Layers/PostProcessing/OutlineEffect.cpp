@@ -24,7 +24,7 @@ OutlineEffect::OutlineEffect() :
 
 OutlineEffect::~OutlineEffect() = default;
 
-void OutlineEffect::Apply(const Framebuffer::Sptr& gBuffer)
+void OutlineEffect::Apply(const Framebuffer::Sptr& gBuffer, VertexArrayObject::Sptr _quadVAO)
 {
 	_shader->Bind();
 	_shader->SetUniform("u_OutlineColor", _outlineColor);

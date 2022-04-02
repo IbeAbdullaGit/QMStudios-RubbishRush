@@ -24,7 +24,7 @@ BloomEffect3::BloomEffect3(bool defaultLut) :
 
 BloomEffect3::~BloomEffect3() = default;
 
-void BloomEffect3::Apply(const Framebuffer::Sptr& gBuffer)
+void BloomEffect3::Apply(const Framebuffer::Sptr& gBuffer, VertexArrayObject::Sptr _quadVAO)
 {
 	_shader2->Bind();
 	_shader2->SetUniform("resolution", Application::Get().GetWindowSize().y);

@@ -36,7 +36,7 @@ public:
 		 * will contain the image from the previous pass
 		 * @param gBuffer The G-Buffer from the deferred rendering pipeline
 		 */
-		virtual void Apply(const Framebuffer::Sptr& gBuffer) = 0;
+		virtual void Apply(const Framebuffer::Sptr& gBuffer, VertexArrayObject::Sptr _quadVAO = nullptr) = 0;
 		/**
 		 * Allows this effect to perform logic when a new scene is loaded
 		 */

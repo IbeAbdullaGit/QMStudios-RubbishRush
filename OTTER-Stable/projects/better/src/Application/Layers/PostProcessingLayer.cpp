@@ -10,6 +10,7 @@
 #include "PostProcessing/ToonEffect.h"
 #include "PostProcessing/BloomEffect.h"
 #include "PostProcessing/MotionblurEffect.h"
+#include "PostProcessing/FilmGrain.h"
 
 
 PostProcessingLayer::PostProcessingLayer() :
@@ -37,9 +38,10 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	//_effects.push_back(std::make_shared<BoxFilter5x5>());
 	////_effects.push_back(std::make_shared<OutlineEffect>());
 	_effects.push_back(std::make_shared<ToonEffect>());
-	//_effects.push_back(std::make_shared<BloomEffect>());
 	//_effects.push_back(std::make_shared<MotionblurEffect>());
-
+	_effects.push_back(std::make_shared<BloomEffect>());
+	//_effects.push_back(std::make_shared<FilmGrain>());
+	
 	
 
 	Application& app = Application::Get();
@@ -108,7 +110,7 @@ void PostProcessingLayer::OnPostRender()
 			current->BindAttachment(RenderTargetAttachment::Color0, 0);
 
 			// Apply the effect and render the fullscreen quad
-			effect->Apply(gBuffer);
+			effect->Apply(gBuffer, _quadVAO);
 			_quadVAO->Draw();
 
 			// Unbind output and set it as input for next pass

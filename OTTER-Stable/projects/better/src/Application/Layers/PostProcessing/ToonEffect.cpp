@@ -27,7 +27,7 @@ ToonEffect::ToonEffect(bool defaultLut) :
 
 ToonEffect::~ToonEffect() = default;
 
-void ToonEffect::Apply(const Framebuffer::Sptr& gBuffer)
+void ToonEffect::Apply(const Framebuffer::Sptr& gBuffer, VertexArrayObject::Sptr _quadVAO)
 {
 	_shader->Bind();
 	toonterm->Bind(1);

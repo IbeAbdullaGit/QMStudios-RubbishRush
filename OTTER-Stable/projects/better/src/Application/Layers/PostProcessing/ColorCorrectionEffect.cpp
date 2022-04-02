@@ -27,7 +27,7 @@ ColorCorrectionEffect::ColorCorrectionEffect(bool defaultLut) :
 
 ColorCorrectionEffect::~ColorCorrectionEffect() = default;
 
-void ColorCorrectionEffect::Apply(const Framebuffer::Sptr& gBuffer)
+void ColorCorrectionEffect::Apply(const Framebuffer::Sptr& gBuffer, VertexArrayObject::Sptr _quadVAO)
 {
 	_shader->Bind();
 	Lut->Bind(1);

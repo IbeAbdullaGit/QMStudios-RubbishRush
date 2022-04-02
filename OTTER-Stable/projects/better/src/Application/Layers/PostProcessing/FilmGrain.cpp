@@ -9,7 +9,7 @@ FilmGrain::FilmGrain() :
 	PostProcessingLayer::Effect(),
 	_shader(nullptr)
 {
-	Name = "Depth of Field";
+	Name = "Film Grain";
 	_format = RenderTargetType::ColorRgb8;
 
 	_shader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
@@ -20,9 +20,9 @@ FilmGrain::FilmGrain() :
 
 FilmGrain::~FilmGrain() = default;
 
-void FilmGrain::Apply(const Framebuffer::Sptr& gBuffer)
+void FilmGrain::Apply(const Framebuffer::Sptr& gBuffer, VertexArrayObject::Sptr _quadVAO)
 {
-	timer += 0.01f;
+	
 	_shader->Bind();
 	_shader->SetUniform("iTime", timer);
 }
@@ -36,6 +36,7 @@ void FilmGrain::RenderImGui()
 		ImGui::DragFloat("Lens Dist. ", &cam->LensDepth,  0.01f, 0.001f, 50.0f);
 		ImGui::DragFloat("Aperture   ", &cam->Aperture,   0.1f, 0.1f, 60.0f);
 	}*/
+	ImGui::SliderFloat("Strength", &timer, 0.0f, 10.0f);
 }
 
 FilmGrain::Sptr FilmGrain::FromJson(const nlohmann::json& data)

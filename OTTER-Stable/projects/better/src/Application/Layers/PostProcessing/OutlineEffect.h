@@ -10,7 +10,7 @@ public:
 	OutlineEffect();
 	virtual ~OutlineEffect();
 
-	virtual void Apply(const Framebuffer::Sptr& gBuffer) override;
+	virtual void Apply(const Framebuffer::Sptr& gBuffer, VertexArrayObject::Sptr _quadVAO) override;
 	virtual void RenderImGui() override;
 
 	// Inherited from IResource

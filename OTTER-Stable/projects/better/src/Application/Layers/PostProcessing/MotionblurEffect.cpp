@@ -34,7 +34,7 @@ MotionblurEffect::MotionblurEffect(bool defaultLut) :
 
 MotionblurEffect::~MotionblurEffect() = default;
 
-void MotionblurEffect::Apply(const Framebuffer::Sptr& gBuffer)
+void MotionblurEffect::Apply(const Framebuffer::Sptr& gBuffer, VertexArrayObject::Sptr _quadVAO)
 {
 	_shader2->Bind();
 	texVelocity->Bind(1);
