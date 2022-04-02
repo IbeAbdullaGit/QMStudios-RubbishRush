@@ -293,7 +293,7 @@ void TutorialSceneLayer::OnUpdate()
 				
 			}
 
-
+			
 			//Player Movement Tutorial
 			if ((glfwGetKey(app.GetWindow(), GLFW_KEY_W) || glfwGetKey(app.GetWindow(), GLFW_KEY_A) || glfwGetKey(app.GetWindow(), GLFW_KEY_S) || glfwGetKey(app.GetWindow(), GLFW_KEY_D)) && hasMoved == false) {
 				hasMoved = true;
@@ -364,8 +364,9 @@ void TutorialSceneLayer::OnUpdate()
 
 		if (!camera->GetComponent<SimpleCameraControl>()->moving)
 		{
-			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.00f, 5.7f));
-			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -4.0f, -2.0f));
+			//Set Camera position
+			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.0f, 6.f));
+			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -3.9f, -2.0f));
 		}
 
 		// Store timing for next loop
@@ -522,6 +523,8 @@ void TutorialSceneLayer::_CreateScene()
 			camera->LookAt(glm::vec3(0.0f));
 			camera->SetRotation(glm::vec3(59.0f, 0.0f, 177.0f));
 			camera->SetScale(glm::vec3(1.0f, 1.0f, 3.1f));
+			scene->MainCamera->SetFovDegrees(105.f);
+			
 
 			//Gameplay::Camera::Sptr cam = camera->Add<Gameplay::Camera>();
 			//cam->SetOrthoEnabled(true);
@@ -1344,8 +1347,9 @@ void TutorialSceneLayer::_CreateScene()
 			Gameplay::GameObject::Sptr inventoryUI = scene->CreateGameObject("Inventory UI");
 			{
 				RectTransform::Sptr transform = inventoryUI->Add<RectTransform>();
-				transform->SetMax({ 180, 100 });
-				transform->SetPosition(glm::vec2(929, 600));
+				transform->SetMax(app.GetWindowSize());
+				transform->SetPosition(glm::vec2(app.GetWindowSize().x - 100.f, app.GetWindowSize().y - 80));
+				transform->SetSize(glm::vec2(25.f, 40.f));
 
 				GuiPanel::Sptr invPanel = inventoryUI->Add<GuiPanel>();
 				//invPanel->IsEnabled = false;
@@ -1392,6 +1396,11 @@ void TutorialSceneLayer::_CreateScene()
 		scene->held = 0;
 
 	}
+}
+
+void TutorialSceneLayer::_UpdateUIPositions() {
+	//Gonna put stuff that makes it adjust positions when the window size changes yadayada
+	return;
 }
 
 void TutorialSceneLayer::_CreateHallway() {
@@ -1549,5 +1558,6 @@ void TutorialSceneLayer::_CreateHallway() {
 		CollectTrashBehaviour::Sptr behaviour3 = trash3->Add<CollectTrashBehaviour>();
 		behaviour3->tutorial = true;
 	}
+
 
 }
