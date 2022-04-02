@@ -22,7 +22,7 @@ SlimeVignette::~SlimeVignette() = default;
 
 void SlimeVignette::Apply(const Framebuffer::Sptr& gBuffer, VertexArrayObject::Sptr _quadVAO)
 {
-
+	timer += 0.1f;
 	_shader->Bind();
 	_shader->SetUniform("iTime", timer);
 }
