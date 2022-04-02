@@ -1,6 +1,10 @@
-#version 450
+#version 430
 
 layout(location = 0) in vec2 inUV;
+layout(location = 0) out vec4 outColor;
+uniform float iTime;
+
+uniform layout(binding = 0) sampler2D s_Image;
 
 float GooFunc(vec2 uv,float zoom,float distortion, float gooeyness,float wibble)
 {
@@ -10,7 +14,7 @@ float GooFunc(vec2 uv,float zoom,float distortion, float gooeyness,float wibble)
     d.x += iTime*0.25+sin(d.x+d.y + iTime*0.3)*wibble;
     d.y += iTime*0.25+sin(d.x + iTime*0.3)*wibble;
     float v1=length(0.5-fract(d.xy))+gooeyness;
-    d = (1.0-zoom)*0.5+(uv*zoom);					// try removing this :)
+    d = (1.0-zoom)*0.5+(uv*zoom);
     float v2=length(0.5-fract(d.xy));
     v1 *= 1.0-v2*v1;
     v1 = v1*v1*v1;
@@ -18,9 +22,9 @@ float GooFunc(vec2 uv,float zoom,float distortion, float gooeyness,float wibble)
     return v1;
 }
 
-void mainImage(out vec4 k, vec2 p)
+void main()
 {
-    vec3 uv = GetNormal(inUV);
+    vec2 uv = inUV;
 
 	float distortion = 4.0;						// increase or decrease to suit your taste.
     float zoom = 0.7;							// zoom value
@@ -31,18 +35,20 @@ void mainImage(out vec4 k, vec2 p)
     const vec4 col1 = vec4(0.0,.1,.1,1.0);
     const vec4 col2 = vec4(0.5,0.9,0.3,1.0);
     float saturation = 2.4;
-    k = mix(col2,col1,goo)*saturation;
+    outColor = mix(col2,col1,goo)*saturation;
 
-    float avg = max(max(k.r,k.g),k.b);		//float avg = k.g;	//(k.r+k.g+k.b)/3.0;
+    vec4 background = texture(s_Image,uv);
+
+    float avg = max(max(outColor.r,outColor.g),outColor.b);		
     float alpha=1.0;
     if (avg<=0.4)
     {
         // darken & alpha edge of goo...
         avg = clamp(avg,0.0,1.0);
-        k*=avg+0.2;						// 0.0 = black edges
+        outColor*=avg+0.2;						// 0.0 = black edges
         alpha = clamp((avg*avg)*5.5,0.0,1.0);
     }
 
     // blend goo + background based on the Alpha
-    k = mix(k,alpha);
+   outColor = mix(background,outColor,alpha);
 }
