@@ -74,9 +74,9 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	});
 
 	//load in luts
-	cool_lut = ResourceManager::CreateAsset<Texture3D>("luts/cool.cube");
-	warm_lut = ResourceManager::CreateAsset<Texture3D>("luts/warm.cube");
-	other_lut = ResourceManager::CreateAsset<Texture3D>("luts/sepia.cube");
+	cool_lut = ResourceManager::CreateAsset<Texture3D>("luts/RRCoolLUT.CUBE");
+	warm_lut = ResourceManager::CreateAsset<Texture3D>("luts/RRWarmLUT.CUBE");
+	other_lut = ResourceManager::CreateAsset<Texture3D>("luts/RRDarkenedLUT.CUBE");
 }
 
 void PostProcessingLayer::OnPostRender()
