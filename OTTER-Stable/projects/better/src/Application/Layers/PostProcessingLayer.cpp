@@ -11,6 +11,7 @@
 #include "PostProcessing/BloomEffect.h"
 #include "PostProcessing/MotionblurEffect.h"
 #include "PostProcessing/FilmGrain.h"
+#include "PostProcessing/SlimeVignette.h"
 #include "PostProcessing/Pixelate.h"
 #include "PostProcessing/RimLightEffect.h"
 
@@ -44,7 +45,7 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	//_effects.push_back(std::make_shared<BloomEffect>());
 	_effects.push_back(std::make_shared<FilmGrain>());
 	_effects.push_back(std::make_shared<Pixelate>());
-	//_effects.push_back(std::make_shared<RimLightEffect>());
+	//_effects.push_back(std::make_shared<SlimeVignette>());
 	
 
 	Application& app = Application::Get();
@@ -75,9 +76,9 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	});
 
 	//load in luts
-	cool_lut = ResourceManager::CreateAsset<Texture3D>("luts/cool.cube");
-	warm_lut = ResourceManager::CreateAsset<Texture3D>("luts/warm.cube");
-	other_lut = ResourceManager::CreateAsset<Texture3D>("luts/sepia.cube");
+	cool_lut = ResourceManager::CreateAsset<Texture3D>("luts/RRCoolLUT.CUBE");
+	warm_lut = ResourceManager::CreateAsset<Texture3D>("luts/RRWarmLUT.CUBE");
+	other_lut = ResourceManager::CreateAsset<Texture3D>("luts/RRDarkenedLUT.CUBE");
 }
 
 void PostProcessingLayer::OnPostRender()
