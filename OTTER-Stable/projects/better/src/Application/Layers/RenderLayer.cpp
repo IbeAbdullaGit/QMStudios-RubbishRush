@@ -569,6 +569,11 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	_lightAccumulationShader->LoadShaderPartFromFile("shaders/fragment_shaders/light_accumulation.glsl", ShaderPartType::Fragment);
 	_lightAccumulationShader->Link();
 
+	//_SlimeShader = ShaderProgram::Create();
+	//_SlimeShader->LoadShaderPartFromFile("shaders/vertex_shaders/fullscreen_quad.glsl", ShaderPartType::Vertex);
+	//_SlimeShader->LoadShaderPartFromFile("shaders/fragment_shaders/Test.glsl", ShaderPartType::Fragment);
+	//_SlimeShader->Link();
+		
 	//set warps here!!!
 	diffusewarp = ResourceManager::CreateAsset<Texture1D>("luts/difftoon.png");
 	specularwarp = ResourceManager::CreateAsset<Texture1D>("luts/spectoon.png");

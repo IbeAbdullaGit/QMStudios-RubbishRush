@@ -136,7 +136,7 @@ protected:
 	ShaderProgram::Sptr _lightAccumulationShader;
 	ShaderProgram::Sptr _compositingShader;
 	ShaderProgram::Sptr _shadowShader;
-
+	ShaderProgram::Sptr _SlimeShader;
 	VertexArrayObject::Sptr _fullscreenQuad;
 
 	bool              _blitFbo;
