@@ -14,6 +14,7 @@
 #include "PostProcessing/SlimeVignette.h"
 #include "PostProcessing/Pixelate.h"
 #include "PostProcessing/RimLightEffect.h"
+#include "PostProcessing/NightVision.h"
 
 
 PostProcessingLayer::PostProcessingLayer() :
@@ -43,9 +44,11 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	_effects.push_back(std::make_shared<ToonEffect>());
 	//_effects.push_back(std::make_shared<MotionblurEffect>());
 	//_effects.push_back(std::make_shared<BloomEffect>());
-	_effects.push_back(std::make_shared<FilmGrain>());
-	_effects.push_back(std::make_shared<Pixelate>());
-	_effects.push_back(std::make_shared<SlimeVignette>());
+	//_effects.push_back(std::make_shared<FilmGrain>());
+	//_effects.push_back(std::make_shared<Pixelate>());
+	//_effects.push_back(std::make_shared<SlimeVignette>());
+	_effects.push_back(std::make_shared<NightVision>());
+	//pls work
 	
 
 	Application& app = Application::Get();
