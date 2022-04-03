@@ -417,23 +417,23 @@ void RenderLayer::OnUpdate()
 
 	Scene::Sptr& scene = app.CurrentScene();
 	
-	if (InputEngine::GetKeyState(GLFW_KEY_4) == ButtonState::Pressed)//enable/disable specular
+	if (InputEngine::GetKeyState(GLFW_KEY_3) == ButtonState::Pressed)//enable/disable specular
 	{
 		enable_specular = !enable_specular;
 	}
-	if (InputEngine::GetKeyState(GLFW_KEY_5) == ButtonState::Pressed)
+	if (InputEngine::GetKeyState(GLFW_KEY_2) == ButtonState::Pressed)//ambient light only
 	{
 		enable_ambient = !enable_ambient;
 	}
-	if (InputEngine::GetKeyState(GLFW_KEY_6) == ButtonState::Pressed)
+	if (InputEngine::GetKeyState(GLFW_KEY_6) == ButtonState::Pressed)//diffuse warp
 	{
 		enable_ramp_d = !enable_ramp_d;
 	}
-	if (InputEngine::GetKeyState(GLFW_KEY_7) == ButtonState::Pressed)
+	if (InputEngine::GetKeyState(GLFW_KEY_7) == ButtonState::Pressed)//specular warp
 	{
 		enable_ramp_s = !enable_ramp_s;
 	}
-	if (InputEngine::GetKeyState(GLFW_KEY_0) == ButtonState::Pressed)
+	if (InputEngine::GetKeyState(GLFW_KEY_1) == ButtonState::Pressed)//no lighting
 	{
 		lights = !lights;
 	}

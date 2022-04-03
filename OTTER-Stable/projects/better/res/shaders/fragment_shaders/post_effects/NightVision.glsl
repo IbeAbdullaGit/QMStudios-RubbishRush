@@ -9,6 +9,9 @@ uniform layout(binding = 2) sampler2D maskTex;
 uniform float luminanceThreshold = 0.2; // 0.2
 uniform float colorAmplification = 4.0; // 4.0
 uniform float effectCoverage = 1.0; // 0.5
+
+//https://www.geeks3d.com/20091009/shader-library-night-vision-post-processing-filter-glsl/
+
 void main ()
 {
   vec4 finalColor;

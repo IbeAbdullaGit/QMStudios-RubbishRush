@@ -174,19 +174,19 @@ const std::vector<PostProcessingLayer::Effect::Sptr>& PostProcessingLayer::GetEf
 
 void PostProcessingLayer::OnUpdate()
 {
-	if (InputEngine::GetKeyState(GLFW_KEY_1) == ButtonState::Pressed)
+	if (InputEngine::GetKeyState(GLFW_KEY_9) == ButtonState::Pressed)//cool
 	{
 		lut1 = !lut1;
 	}
-	if (InputEngine::GetKeyState(GLFW_KEY_2) == ButtonState::Pressed)
+	if (InputEngine::GetKeyState(GLFW_KEY_8) == ButtonState::Pressed)//warm
 	{
 		lut2 = !lut2;
 	}
-	if (InputEngine::GetKeyState(GLFW_KEY_3) == ButtonState::Pressed)
+	if (InputEngine::GetKeyState(GLFW_KEY_0) == ButtonState::Pressed)//custom
 	{
 		lut3 = !lut3;
 	}
-	if (InputEngine::GetKeyState(GLFW_KEY_8) == ButtonState::Pressed)
+	if (InputEngine::GetKeyState(GLFW_KEY_5) == ButtonState::Pressed) //custom effect
 	{
 		enable_slime = !enable_slime;
 	}
