@@ -28,4 +28,6 @@ protected:
 	ShaderProgram::Sptr _shader;
 
 	float timer = 1.0f;
+	float light = 0.2f;
+	float color = 4.0f;
 };

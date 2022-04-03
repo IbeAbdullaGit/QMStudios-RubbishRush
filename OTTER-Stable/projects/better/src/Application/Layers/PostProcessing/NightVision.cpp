@@ -37,6 +37,8 @@ void NightVision::Apply(const Framebuffer::Sptr & gBuffer, VertexArrayObject::Sp
 	_noise->Bind(1);
 	_mask->Bind(2);
 	_shader->SetUniform("iTime", timer);
+	_shader->SetUniform("luminanceThreshold", light);
+	_shader->SetUniform("colorAmplification", color);
 }
 
 void NightVision::RenderImGui()
@@ -49,6 +51,8 @@ void NightVision::RenderImGui()
 		ImGui::DragFloat("Aperture   ", &cam->Aperture,   0.1f, 0.1f, 60.0f);
 	}*/
 	ImGui::SliderFloat("Strength", &timer, 0.0f, 10.0f);
+	ImGui::SliderFloat("Luminence", &light, 0.0f, 30.0f);
+	ImGui::SliderFloat("Color", &color, 0.0f, 40.0f);
 }
 
 NightVision::Sptr NightVision::FromJson(const nlohmann::json & data)
