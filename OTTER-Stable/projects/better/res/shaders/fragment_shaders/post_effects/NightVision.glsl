@@ -8,7 +8,7 @@ uniform layout(binding = 1) sampler2D noiseTex;
 uniform layout(binding = 2) sampler2D maskTex;
 uniform float luminanceThreshold = 0.2; // 0.2
 uniform float colorAmplification = 4.0; // 4.0
-uniform float effectCoverage = 0.5; // 0.5
+uniform float effectCoverage = 1.0; // 0.5
 void main ()
 {
   vec4 finalColor;

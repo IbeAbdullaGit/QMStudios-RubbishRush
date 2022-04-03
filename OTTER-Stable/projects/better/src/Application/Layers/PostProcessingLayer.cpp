@@ -48,7 +48,7 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	//_effects.push_back(std::make_shared<Pixelate>());
 	//_effects.push_back(std::make_shared<SlimeVignette>());
 	_effects.push_back(std::make_shared<NightVision>());
-	//pls work
+	//pl
 	
 
 	Application& app = Application::Get();
