@@ -776,16 +776,18 @@ void TutorialSceneLayer::_CreateScene()
 				RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
 				renderer->SetMesh(trashMesh);
 				renderer->SetMaterial(trashMaterial);
+
 				// Add a dynamic rigid body to this monkey
 				Gameplay::Physics::RigidBody::Sptr physics = trashM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
 				box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
 				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 				physics->AddCollider(box);
-				//physics->SetMass(0.0f);
+				//physics->SetMass(0.0f);*/
+
 				Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
@@ -834,10 +836,10 @@ void TutorialSceneLayer::_CreateScene()
 				renderer->SetMaterial(bagtrashMaterial);
 				
 				Gameplay::Physics::RigidBody::Sptr physics = trash2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 				box->SetPosition(glm::vec3(0.00f, 0.16f, -0.08f));
 				box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
-				physics->AddCollider(box);
+				physics->AddCollider(box);*/
 
 				Gameplay::Physics::TriggerVolume::Sptr volume = trash2->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
@@ -1074,7 +1076,7 @@ void TutorialSceneLayer::_CreateScene()
 			Gameplay::Physics::TriggerVolume::Sptr volume = binM->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create(glm::vec3(2.0f, 2.23f, 4.25f));
 			box2->SetPosition(glm::vec3(0.0f, 0.4f, 0.0f));
-			box2->SetScale(glm::vec3(0.25f, 0.22f, 0.2f));
+			box2->SetScale(glm::vec3(0.3f, 0.22f, 0.22f));
 			volume->AddCollider(box2);
 			SubmittingTrashBehaviour::Sptr behaviour2 = binM->Add<SubmittingTrashBehaviour>();
 
@@ -1543,10 +1545,10 @@ void TutorialSceneLayer::_CreateHallway() {
 		renderer->SetMaterial(bagtrashMaterial);
 
 		Gameplay::Physics::RigidBody::Sptr physics = trash3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-		Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+		/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 		box->SetPosition(glm::vec3(0.00f, 0.16f, -0.08f));
 		box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
-		physics->AddCollider(box);
+		physics->AddCollider(box);*/
 
 		Gameplay::Physics::TriggerVolume::Sptr volume = trash3->Add<Gameplay::Physics::TriggerVolume>();
 		Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();

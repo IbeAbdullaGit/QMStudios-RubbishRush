@@ -21,6 +21,7 @@
 #include "Graphics/Font.h"
 #include "Graphics/GuiBatcher.h"
 #include "Graphics/Framebuffer.h"
+#include "Graphics/Framebuffer.h"
 
 // Utilities
 #include "Utils/MeshBuilder.h"
@@ -2735,6 +2736,7 @@ void DefaultSceneLayer::_CreateScene()
 			MainHall->AddChild(benchhall2);
 			MainHall->AddChild(longfountain1);
 			MainHall->AddChild(tallfountain1);
+			MainHall->AddChild(statue1);
 
 		//Obstacles
 		{
@@ -3469,7 +3471,7 @@ void DefaultSceneLayer::_CreateScene()
 			Gameplay::Physics::TriggerVolume::Sptr volume = binM->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create(glm::vec3(2.0f, 2.23f, 4.25f));
 			box2->SetPosition(glm::vec3(0.0f, 0.4f, 0.0f));
-			box2->SetScale(glm::vec3(0.25f, 0.22f, 0.2f));
+			box2->SetScale(glm::vec3(0.3f, 0.22f, 0.22f));
 			volume->AddCollider(box2);
 			SubmittingTrashBehaviour::Sptr behaviour2 = binM->Add<SubmittingTrashBehaviour>();
 
@@ -4364,16 +4366,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = trashM->Add<RenderComponent>();
 			renderer->SetMesh(bagtrashMesh);
 			renderer->SetMaterial(bagtrashMaterial);
+
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = trashM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
 			box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = trashM->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
@@ -4394,16 +4398,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = trash2->Add<RenderComponent>();
 			renderer->SetMesh(bagtrashMesh);
 			renderer->SetMaterial(bagtrashMaterial);
+
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = trash2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
 			box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);\*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = trash2->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
@@ -4424,16 +4430,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = trash3->Add<RenderComponent>();
 			renderer->SetMesh(bagtrashMesh);
 			renderer->SetMaterial(bagtrashMaterial);
+
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = trash3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
 			box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = trash3->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
@@ -4453,16 +4461,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = trash4->Add<RenderComponent>();
 			renderer->SetMesh(bagtrashMesh);
 			renderer->SetMaterial(bagtrashMaterial);
+
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = trash4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
 			box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = trash4->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
@@ -4482,16 +4492,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = CupM->Add<RenderComponent>();
 			renderer->SetMesh(trashMesh);
 			renderer->SetMaterial(trashMaterial);
+
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = CupM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
 			box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = CupM->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
@@ -4512,16 +4524,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = trash5->Add<RenderComponent>();
 			renderer->SetMesh(bagtrashMesh);
 			renderer->SetMaterial(bagtrashMaterial);
+
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = trash5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
 			box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = trash5->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
@@ -4541,16 +4555,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = trash6->Add<RenderComponent>();
 			renderer->SetMesh(bagtrashMesh);
 			renderer->SetMaterial(bagtrashMaterial);
+
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = trash6->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
 			box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = trash6->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
@@ -4570,16 +4586,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = trash7->Add<RenderComponent>();
 			renderer->SetMesh(bagtrashMesh);
 			renderer->SetMaterial(bagtrashMaterial);
+
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = trash7->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
 			box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = trash7->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
@@ -4599,16 +4617,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = Cup2->Add<RenderComponent>();
 			renderer->SetMesh(trashMesh);
 			renderer->SetMaterial(trashMaterial);
+
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = Cup2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
 			box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = Cup2->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
@@ -4628,16 +4648,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = trash8->Add<RenderComponent>();
 			renderer->SetMesh(bagtrashMesh);
 			renderer->SetMaterial(bagtrashMaterial);
+
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = trash8->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
 			box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = trash8->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
@@ -4657,16 +4679,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = trash9->Add<RenderComponent>();
 			renderer->SetMesh(bagtrashMesh);
 			renderer->SetMaterial(bagtrashMaterial);
+
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = trash9->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
 			box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = trash9->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
@@ -4686,16 +4710,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = Cup3->Add<RenderComponent>();
 			renderer->SetMesh(trashMesh);
 			renderer->SetMaterial(trashMaterial);
+
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = Cup3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
 			box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = Cup3->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
@@ -4715,16 +4741,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = Cup4->Add<RenderComponent>();
 			renderer->SetMesh(trashMesh);
 			renderer->SetMaterial(trashMaterial);
+			
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = Cup4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
 			box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = Cup4->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
@@ -4744,16 +4772,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = trash10->Add<RenderComponent>();
 			renderer->SetMesh(bagtrashMesh);
 			renderer->SetMaterial(bagtrashMaterial);
+
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = trash10->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
 			box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = trash10->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
@@ -4774,16 +4804,18 @@ void DefaultSceneLayer::_CreateTrash()
 			RenderComponent::Sptr renderer = trash11->Add<RenderComponent>();
 			renderer->SetMesh(bagtrashMesh);
 			renderer->SetMaterial(bagtrashMaterial);
+
 			// Add a dynamic rigid body to this monkey
 			Gameplay::Physics::RigidBody::Sptr physics = trash11->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetPosition(glm::vec3(0.00f, 0.15f, 0.0f));
 			box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
 			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
 			//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
 			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			physics->AddCollider(box);
-			//physics->SetMass(0.0f);
+			//physics->SetMass(0.0f);*/
+
 			Gameplay::Physics::TriggerVolume::Sptr volume = trash11->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
