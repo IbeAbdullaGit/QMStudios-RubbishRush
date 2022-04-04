@@ -691,7 +691,7 @@ void DefaultSceneLayer::_CreateScene()
 		//LOAD OBJECTS
 
 		//CUP
-		Gameplay::MeshResource::Sptr trashMesh2 = ResourceManager::CreateAsset<Gameplay::MeshResource>("cup.obj");
+		Gameplay::MeshResource::Sptr trashMesh2 = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/cup.obj");
 		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/cup.jpg");
 		Gameplay::Material::Sptr trashMaterial2 = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -704,7 +704,7 @@ void DefaultSceneLayer::_CreateScene()
 		trashMesh = trashMesh2;
 		trashMaterial = trashMaterial2;
 		// TRASH BAG
-		Gameplay::MeshResource::Sptr bagtrashMesh2 = ResourceManager::CreateAsset<Gameplay::MeshResource>("Trashbag.obj");
+		Gameplay::MeshResource::Sptr bagtrashMesh2 = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/Trashbag.obj");
 		Texture2D::Sptr bagtrashTex = ResourceManager::CreateAsset<Texture2D>("textures/TrashBagTex.jpg");
 
 		Gameplay::Material::Sptr bagtrashMaterial2 = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
@@ -717,7 +717,7 @@ void DefaultSceneLayer::_CreateScene()
 		bagtrashMesh = bagtrashMesh2;
 		bagtrashMaterial = bagtrashMaterial2;
 		//SPILL
-		Gameplay::MeshResource::Sptr spillMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("spill.obj");
+		Gameplay::MeshResource::Sptr spillMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/spill.obj");
 		Texture2D::Sptr spillTex = ResourceManager::CreateAsset<Texture2D>("textures/goo.png");
 		// Create our material
 		Gameplay::Material::Sptr spillMaterial = ResourceManager::CreateAsset<Gameplay::Material>(rackShader);
@@ -729,7 +729,7 @@ void DefaultSceneLayer::_CreateScene()
 
 		}
 		//RECYCLE BIN
-		Gameplay::MeshResource::Sptr bin2Mesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("recycle bin.obj");
+		Gameplay::MeshResource::Sptr bin2Mesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/recycle bin.obj");
 		Texture2D::Sptr bin2Tex = ResourceManager::CreateAsset<Texture2D>("textures/recycle.jpg");
 		// Create our material
 		Gameplay::Material::Sptr bin2Material = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
@@ -741,7 +741,7 @@ void DefaultSceneLayer::_CreateScene()
 
 		}
 		// CONVEYOR
-		Gameplay::MeshResource::Sptr conveyorMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("conveyor.obj");
+		Gameplay::MeshResource::Sptr conveyorMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/conveyor.obj");
 		Texture2D::Sptr conveyorTex = ResourceManager::CreateAsset<Texture2D>("textures/conveyor.jpg");
 		//repeat conveyor belt texture
 		conveyorTex->SetWrap(WrapMode::Repeat);
@@ -755,7 +755,7 @@ void DefaultSceneLayer::_CreateScene()
 
 		}
 
-		Gameplay::MeshResource::Sptr shelfMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("shelf.obj");
+		Gameplay::MeshResource::Sptr shelfMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/shelf.obj");
 		Texture2D::Sptr shelfTex = ResourceManager::CreateAsset <Texture2D>("textures/shelf.jpg");
 		//Create Material
 		Gameplay::Material::Sptr shelfMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
@@ -766,7 +766,7 @@ void DefaultSceneLayer::_CreateScene()
 			shelfMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr tvboxMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tvbox2.obj");
+		Gameplay::MeshResource::Sptr tvboxMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/tvbox2.obj");
 		Texture2D::Sptr tvboxTex = ResourceManager::CreateAsset<Texture2D>("textures/tvbox.png");
 		//Create Material
 		Gameplay::Material::Sptr tvboxMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
@@ -777,7 +777,7 @@ void DefaultSceneLayer::_CreateScene()
 			tvboxMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr cashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("cashcounter.obj");
+		Gameplay::MeshResource::Sptr cashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/cashcounter.obj");
 		Texture2D::Sptr cashTex = ResourceManager::CreateAsset<Texture2D>("textures/cash.png");
 		//create Material
 		Gameplay::Material::Sptr cashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
@@ -788,7 +788,7 @@ void DefaultSceneLayer::_CreateScene()
 			cashMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr benchMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("bench.obj");
+		Gameplay::MeshResource::Sptr benchMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/bench.obj");
 		Texture2D::Sptr benchTex = ResourceManager::CreateAsset<Texture2D>("textures/bench.jpg");
 		Gameplay::Material::Sptr benchMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -798,7 +798,7 @@ void DefaultSceneLayer::_CreateScene()
 			benchMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr computerMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Computer.obj");
+		Gameplay::MeshResource::Sptr computerMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/Computer.obj");
 		Texture2D::Sptr computerTex = ResourceManager::CreateAsset<Texture2D>("textures/desktoptex.jpg");
 		Gameplay::Material::Sptr computerMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -808,7 +808,7 @@ void DefaultSceneLayer::_CreateScene()
 			computerMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr boothMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("booth.obj");
+		Gameplay::MeshResource::Sptr boothMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/booth.obj");
 		Texture2D::Sptr boothTex = ResourceManager::CreateAsset<Texture2D>("textures/BOOTH.jpg");
 		Gameplay::Material::Sptr boothMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -818,7 +818,7 @@ void DefaultSceneLayer::_CreateScene()
 			boothMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
 		
-		Gameplay::MeshResource::Sptr sqrtableMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("table.obj");
+		Gameplay::MeshResource::Sptr sqrtableMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/table.obj");
 		Texture2D::Sptr sqrtableTex = ResourceManager::CreateAsset<Texture2D>("textures/lib table.jpg");
 		Gameplay::Material::Sptr sqrtableMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -828,7 +828,7 @@ void DefaultSceneLayer::_CreateScene()
 			sqrtableMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr fridgeMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("fridge.obj");
+		Gameplay::MeshResource::Sptr fridgeMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/fridge.obj");
 		Texture2D::Sptr fridgeTex = ResourceManager::CreateAsset<Texture2D>("textures/fridge.jpg");
 		Gameplay::Material::Sptr fridgeMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -838,7 +838,7 @@ void DefaultSceneLayer::_CreateScene()
 			fridgeMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr stoveMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("stove.obj");
+		Gameplay::MeshResource::Sptr stoveMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/stove.obj");
 		Texture2D::Sptr stoveTex = ResourceManager::CreateAsset<Texture2D>("textures/stove.jpg");
 		Gameplay::Material::Sptr stoveMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -848,7 +848,7 @@ void DefaultSceneLayer::_CreateScene()
 			stoveMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
 		
-		Gameplay::MeshResource::Sptr plantMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("plant.obj");
+		Gameplay::MeshResource::Sptr plantMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/plant.obj");
 		Texture2D::Sptr plantTex = ResourceManager::CreateAsset<Texture2D>("textures/planttex.png");
 		Gameplay::Material::Sptr plantMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -858,7 +858,7 @@ void DefaultSceneLayer::_CreateScene()
 			plantMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr dinerchairMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("diner chair.obj");
+		Gameplay::MeshResource::Sptr dinerchairMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/diner chair.obj");
 		Texture2D::Sptr dinerchairTex = ResourceManager::CreateAsset<Texture2D>("textures/dine chair.jpg");
 		Gameplay::Material::Sptr dinerchairMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -868,7 +868,7 @@ void DefaultSceneLayer::_CreateScene()
 			dinerchairMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
 		
-		Gameplay::MeshResource::Sptr dinertableMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("diner table.obj");
+		Gameplay::MeshResource::Sptr dinertableMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/diner table.obj");
 		Texture2D::Sptr dinertableTex = ResourceManager::CreateAsset<Texture2D>("textures/lib table.jpg");
 		Gameplay::Material::Sptr dinertableMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -878,7 +878,7 @@ void DefaultSceneLayer::_CreateScene()
 			dinertableMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr showerMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("shower.obj");
+		Gameplay::MeshResource::Sptr showerMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/shower.obj");
 		Texture2D::Sptr showerTex = ResourceManager::CreateAsset<Texture2D>("textures/shower.jpg");
 		Gameplay::Material::Sptr showerMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -888,7 +888,7 @@ void DefaultSceneLayer::_CreateScene()
 			showerMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr libshelfMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("library shelf.obj");
+		Gameplay::MeshResource::Sptr libshelfMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/library shelf.obj");
 		Texture2D::Sptr libshelfTex = ResourceManager::CreateAsset<Texture2D>("textures/books2.jpg");
 		Texture2D::Sptr libshelfTex2 = ResourceManager::CreateAsset<Texture2D>("textures/books3.png");
 		Gameplay::Material::Sptr libshelfMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
@@ -907,7 +907,7 @@ void DefaultSceneLayer::_CreateScene()
 			libshelfMat2->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr lchairMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("LoungeChair.obj");
+		Gameplay::MeshResource::Sptr lchairMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/LoungeChair.obj");
 		Texture2D::Sptr lchairTex = ResourceManager::CreateAsset<Texture2D>("textures/Wall.png");
 		Gameplay::Material::Sptr lchairMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -917,7 +917,7 @@ void DefaultSceneLayer::_CreateScene()
 			lchairMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr toiletMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("toilet.obj");
+		Gameplay::MeshResource::Sptr toiletMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/toilet.obj");
 		Texture2D::Sptr toiletTex = ResourceManager::CreateAsset<Texture2D>("textures/toilet.jpg");
 		Gameplay::Material::Sptr toiletMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -927,7 +927,7 @@ void DefaultSceneLayer::_CreateScene()
 			toiletMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr sinkMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Sink.obj");
+		Gameplay::MeshResource::Sptr sinkMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/Sink.obj");
 		Texture2D::Sptr sinkTex = ResourceManager::CreateAsset<Texture2D>("textures/sinktex.jpg");
 		Gameplay::Material::Sptr sinkMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -937,7 +937,7 @@ void DefaultSceneLayer::_CreateScene()
 			sinkMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr tubMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tub.obj");
+		Gameplay::MeshResource::Sptr tubMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/tub.obj");
 		Texture2D::Sptr tubTex = ResourceManager::CreateAsset<Texture2D>("textures/tub.jpg");
 		Gameplay::Material::Sptr tubMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -947,7 +947,7 @@ void DefaultSceneLayer::_CreateScene()
 			tubMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr statueMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("wolfstatue.obj");
+		Gameplay::MeshResource::Sptr statueMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/wolfstatue.obj");
 		Texture2D::Sptr statueTex = ResourceManager::CreateAsset <Texture2D>("textures/statue.jpg");
 		Gameplay::Material::Sptr statueMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -957,7 +957,7 @@ void DefaultSceneLayer::_CreateScene()
 			statueMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr tallfountainMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("FountainTall.obj");
+		Gameplay::MeshResource::Sptr tallfountainMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/FountainTall.obj");
 		Texture2D::Sptr tallfountainTex = ResourceManager::CreateAsset<Texture2D>("textures/fountain.jpg");
 		Gameplay::Material::Sptr tallfountainMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -967,7 +967,7 @@ void DefaultSceneLayer::_CreateScene()
 			tallfountainMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr longfountainMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("long fountain.obj");
+		Gameplay::MeshResource::Sptr longfountainMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/long fountain.obj");
 		Texture2D::Sptr longfountainTex = ResourceManager::CreateAsset<Texture2D>("textures/long fountain.jpg");
 		Gameplay::Material::Sptr longfountainMat = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -977,7 +977,7 @@ void DefaultSceneLayer::_CreateScene()
 			longfountainMat->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
-		Gameplay::MeshResource::Sptr posterMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Poster.obj");
+		Gameplay::MeshResource::Sptr posterMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/Poster.obj");
 		Texture2D::Sptr posterTex = ResourceManager::CreateAsset<Texture2D>("textures/poster.jpg");
 		Texture2D::Sptr posterTex2 = ResourceManager::CreateAsset<Texture2D>("textures/poster2.jpg");
 		Texture2D::Sptr posterTex3 = ResourceManager::CreateAsset<Texture2D>("textures/poster3.jpg");
@@ -1148,7 +1148,7 @@ void DefaultSceneLayer::_CreateScene()
 
 		// Set up all our sample objects
 		//setup trashy
-		Gameplay::MeshResource::Sptr trashyMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashy.obj");
+		Gameplay::MeshResource::Sptr trashyMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/trashy.obj");
 		Texture2D::Sptr trashyTex = ResourceManager::CreateAsset<Texture2D>("textures/trashyTEX.png");
 		// Create our material
 		Gameplay::Material::Sptr trashyMaterial = ResourceManager::CreateAsset<Gameplay::Material>(animShader);
@@ -1319,7 +1319,7 @@ void DefaultSceneLayer::_CreateScene()
 		}
 
 		//layout
-		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("malllayoutwall.obj");
+		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/malllayoutwall.obj");
 		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/mall.png");
 		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -3437,7 +3437,7 @@ void DefaultSceneLayer::_CreateScene()
 		}
 		*/
 		//bin model
-		Gameplay::MeshResource::Sptr binMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("BigBenClosed_000001.obj");
+		Gameplay::MeshResource::Sptr binMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/BigBenClosed_000001.obj");
 		Texture2D::Sptr binTex = ResourceManager::CreateAsset<Texture2D>("textures/bigben.png");
 		// Create our material
 		Gameplay::Material::Sptr binMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
@@ -3482,7 +3482,7 @@ void DefaultSceneLayer::_CreateScene()
 
 			//idle frames
 			//std::vector <MeshResource::Sptr> frames2;
-			Gameplay::MeshResource::Sptr binMesh8 = ResourceManager::CreateAsset<Gameplay::MeshResource>("BigBenClosed_000001.obj");
+			Gameplay::MeshResource::Sptr binMesh8 = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/BigBenClosed_000001.obj");
 			std::vector<Gameplay::MeshResource::Sptr> closed;
 			closed.push_back(binMesh8);
 			behaviour2->getIdle(closed); //send idle frames to behaviour
@@ -3832,7 +3832,7 @@ void DefaultSceneLayer::_CreateScene()
 			physics->AddCollider(box);
 		}
 		*/
-		Gameplay::MeshResource::Sptr recMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("RecOBJ.obj");
+		Gameplay::MeshResource::Sptr recMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/RecOBJ.obj");
 		Texture2D::Sptr recTex = ResourceManager::CreateAsset<Texture2D>("textures/Rec1.png");
 		// Create our material
 		Gameplay::Material::Sptr recMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
@@ -3856,7 +3856,7 @@ void DefaultSceneLayer::_CreateScene()
 			//Gameplay::Physics::RigidBody::Sptr physics = recE->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 
 		}
-		Gameplay::MeshResource::Sptr trashyEMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashy2OBJ.obj");
+		Gameplay::MeshResource::Sptr trashyEMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/trashy2OBJ.obj");
 		Texture2D::Sptr trashyETex = ResourceManager::CreateAsset<Texture2D>("textures/Trashy2.png");
 		// Create our material
 		Gameplay::Material::Sptr trashyEMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);

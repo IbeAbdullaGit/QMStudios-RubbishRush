@@ -548,7 +548,7 @@ void TutorialSceneLayer::_CreateScene()
 
 		// Set up all our sample objects
 		//setup trashy
-		Gameplay::MeshResource::Sptr trashyMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("trashy.obj");
+		Gameplay::MeshResource::Sptr trashyMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/trashy.obj");
 		Texture2D::Sptr trashyTex = ResourceManager::CreateAsset<Texture2D>("textures/trashyTEX.png");
 		// Create our material
 		Gameplay::Material::Sptr trashyMaterial = ResourceManager::CreateAsset<Gameplay::Material>(animShader);
@@ -715,7 +715,7 @@ void TutorialSceneLayer::_CreateScene()
 
 		//placeholder trash object  TAGS: PLACEHOLDER, this is how u create a new object for trash
 		//setup trash
-		Gameplay::MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("cup.obj");
+		Gameplay::MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/cup.obj");
 		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/cup.jpg");
 		// Create our material
 		Gameplay::Material::Sptr trashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
@@ -727,7 +727,7 @@ void TutorialSceneLayer::_CreateScene()
 
 		}
 
-		bagtrashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Trashbag.obj");
+		bagtrashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/Trashbag.obj");
 		Texture2D::Sptr bagtrashTex = ResourceManager::CreateAsset<Texture2D>("textures/TrashBagTex.jpg");
 		
 		bagtrashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
@@ -856,7 +856,7 @@ void TutorialSceneLayer::_CreateScene()
 
 
 		//layout
-		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tutoriallayoutread.obj");
+		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/tutoriallayoutread.obj");
 		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/therealthing.jpg");
 		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
@@ -878,7 +878,7 @@ void TutorialSceneLayer::_CreateScene()
 			GroundBehaviour::Sptr behaviour = layout->Add<GroundBehaviour>();
 		}
 
-		spillMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("spill.obj");
+		spillMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/spill.obj");
 		Texture2D::Sptr spillTex = ResourceManager::CreateAsset<Texture2D>("textures/goo.png");
 		// Create our material
 		spillMaterial = ResourceManager::CreateAsset<Gameplay::Material>(rackShader);
@@ -1044,7 +1044,7 @@ void TutorialSceneLayer::_CreateScene()
 		}
 
 		//bin model
-		Gameplay::MeshResource::Sptr binMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("BigBenClosed_000001.obj");
+		Gameplay::MeshResource::Sptr binMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/BigBenClosed_000001.obj");
 		Texture2D::Sptr binTex = ResourceManager::CreateAsset<Texture2D>("textures/bigben.png");
 		// Create our material
 		Gameplay::Material::Sptr binMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
@@ -1087,7 +1087,7 @@ void TutorialSceneLayer::_CreateScene()
 
 			//idle frames
 			//std::vector <MeshResource::Sptr> frames2;
-			Gameplay::MeshResource::Sptr binMesh8 = ResourceManager::CreateAsset<Gameplay::MeshResource>("BigBenClosed_000001.obj");
+			Gameplay::MeshResource::Sptr binMesh8 = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/BigBenClosed_000001.obj");
 			std::vector<Gameplay::MeshResource::Sptr> closed;
 			closed.push_back(binMesh8);
 			behaviour2->getIdle(closed); //send idle frames to behaviour
@@ -1098,7 +1098,7 @@ void TutorialSceneLayer::_CreateScene()
 
 		}
 		//bin model
-		Gameplay::MeshResource::Sptr bin2Mesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("recycle bin.obj");
+		Gameplay::MeshResource::Sptr bin2Mesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/recycle bin.obj");
 		Texture2D::Sptr bin2Tex = ResourceManager::CreateAsset<Texture2D>("textures/recycle.jpg");
 		// Create our material
 		Gameplay::Material::Sptr bin2Material = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
@@ -1140,7 +1140,7 @@ void TutorialSceneLayer::_CreateScene()
 
 		}
 		//Bench
-		benchMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("bench.obj");
+		benchMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/bench.obj");
 		Texture2D::Sptr benchTex = ResourceManager::CreateAsset<Texture2D>("textures/bench.jpg");
 
 		benchMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
@@ -1408,7 +1408,7 @@ void TutorialSceneLayer::_UpdateUIPositions() {
 void TutorialSceneLayer::_CreateHallway() {
 	
 	hallwayMat = _tutcurrentScene->FindObjectByName("Layout")->Get<RenderComponent>()->GetMaterial();
-	Gameplay::MeshResource::Sptr halllayoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("extrahall.obj");
+	Gameplay::MeshResource::Sptr halllayoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/extrahall.obj");
 
 
 	//Bench
