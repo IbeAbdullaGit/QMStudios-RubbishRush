@@ -2708,10 +2708,27 @@ void DefaultSceneLayer::_CreateScene()
 				renderer->SetMaterial(tallfountainMat);
 
 				Gameplay::Physics::RigidBody::Sptr physics = tallfountain1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				//Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
-				Gameplay::Physics::CylinderCollider::Sptr boxCollider = Gameplay::Physics::CylinderCollider::Create();
+				Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+				//Gameplay::Physics::CylinderCollider::Sptr boxCollider = Gameplay::Physics::CylinderCollider::Create();
 				boxCollider->SetScale(glm::vec3(1.15f, 1.78f, 1.15f));
 				physics->AddCollider(boxCollider);
+			}
+
+			Gameplay::GameObject::Sptr statue1 = scene->CreateGameObject("Statue");
+			{
+				statue1->SetPostion(glm::vec3(5.41f, -5.17f, 0.0f));
+				statue1->SetRotation(glm::vec3(90.0f, 0.0f, -124.0f));
+				statue1->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+				RenderComponent::Sptr renderer = statue1->Add<RenderComponent>();
+				renderer->SetMesh(statueMesh);
+				renderer->SetMaterial(statueMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = statue1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+				boxCollider->SetScale(glm::vec3(0.51f, 1.53f, 0.23f));
+				physics->AddCollider(boxCollider);
+
 			}
 
 			MainHall->AddChild(benchhall1);
