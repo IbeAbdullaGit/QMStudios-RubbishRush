@@ -44,10 +44,10 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	_effects.push_back(std::make_shared<ToonEffect>());
 	//_effects.push_back(std::make_shared<MotionblurEffect>());
 	//_effects.push_back(std::make_shared<BloomEffect>());
-	_effects.push_back(std::make_shared<FilmGrain>());
-	_effects.push_back(std::make_shared<Pixelate>());
-	_effects.push_back(std::make_shared<SlimeVignette>());
-	_effects.push_back(std::make_shared<NightVision>());
+	//_effects.push_back(std::make_shared<FilmGrain>());
+	//_effects.push_back(std::make_shared<Pixelate>());
+	//_effects.push_back(std::make_shared<SlimeVignette>());
+	//_effects.push_back(std::make_shared<NightVision>());
 	//pl
 	
 
@@ -186,12 +186,12 @@ void PostProcessingLayer::OnUpdate()
 	{
 		lut3 = !lut3;
 	}
-	if (InputEngine::GetKeyState(GLFW_KEY_5) == ButtonState::Pressed) //custom effect
-	{
-		enable_slime = !enable_slime;
-	}
-	
-	_effects[4]->Enabled = enable_slime;
+	//if (InputEngine::GetKeyState(GLFW_KEY_5) == ButtonState::Pressed) //custom effect
+	//{
+	//	enable_slime = !enable_slime;
+	//}
+	//
+	//_effects[4]->Enabled = enable_slime;
 	
 	if (lut1)
 	{
