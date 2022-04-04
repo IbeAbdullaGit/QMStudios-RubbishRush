@@ -1005,7 +1005,7 @@ void DefaultSceneLayer::_CreateScene()
 		
 
 		// Here we'll load in the cubemap, as well as a special shader to handle drawing the skybox
-		TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/ocean/ocean.jpg");
+		TextureCube::Sptr testCubemap = ResourceManager::CreateAsset<TextureCube>("cubemaps/lot/lot.png");
 		ShaderProgram::Sptr      skyboxShader = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
 			{ ShaderPartType::Vertex, "shaders/vertex_shaders/skybox_vert.glsl" },
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/skybox_frag.glsl" }
@@ -1014,11 +1014,13 @@ void DefaultSceneLayer::_CreateScene()
 		// Create an empty scene
 		Gameplay::Scene::Sptr scene = std::make_shared<Gameplay::Scene>();
 
-		// Loading in a color lookup table
-		Texture3D::Sptr lut = ResourceManager::CreateAsset<Texture3D>("luts/sepia.CUBE");  //MY CUSTOM
-		// Configure the color correction LUT
-		scene->SetColorLUT(lut);
+		// Setting up our enviroment map
+		scene->SetSkyboxTexture(testCubemap);
+		scene->SetSkyboxShader(skyboxShader);
+		// Since the skybox I used was for Y-up, we need to rotate it 90 deg around the X-axis to convert it to z-up
+		scene->SetSkyboxRotation(glm::rotate(MAT4_IDENTITY, glm::half_pi<float>(), glm::vec3(1.0f, 0.0f, 0.0f)));
 
+		
 		// Setting up our enviroment map
 		//scene->SetSkyboxTexture(testCubemap);
 		//scene->SetSkyboxShader(skyboxShader);
