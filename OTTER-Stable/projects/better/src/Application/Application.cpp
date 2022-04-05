@@ -80,7 +80,7 @@
 #include "Layers/InstancedRenderingTestLayer.h"
 #include "Layers/ParticleLayer.h"
 #include "Layers/PostProcessingLayer.h"
-
+#include "Layers/MenuSceneLayer.h"
 
 
 Application* Application::_singleton = nullptr;
@@ -219,6 +219,7 @@ void Application::_Run()
 	_layers.push_back(std::make_shared<PostProcessingLayer>());
 	_layers.push_back(std::make_shared<ParticleLayer>());
 	_layers.push_back(std::make_shared<InterfaceLayer>());
+	//_layers.push_back(std::make_shared<MenuSceneLayer>());
 
 	//for playtesting
 	//_isEditor = false;
