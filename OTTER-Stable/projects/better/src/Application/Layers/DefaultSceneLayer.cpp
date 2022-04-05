@@ -6,7 +6,7 @@
 #include <GLM/gtc/type_ptr.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <GLM/gtx/common.hpp> // for fmod (floating modulus)
-
+#include <fstream>
 #include <filesystem>
 #include "Application/Timing.h"
 
@@ -386,7 +386,57 @@ void DefaultSceneLayer::OnUpdate()
 		{
 			if (lose)
 			{
+				int numberoftrashcollected = _currentScene->score;
+				int time = timelevelt;
+				int finalscore;
 
+				int array[11];
+
+				std::ifstream input;
+				std::ofstream output;
+
+				finalscore = floor((time * 10) + (numberoftrashcollected * 100));
+
+				array[10] = finalscore;
+
+				input.open("highscores.txt");
+
+				int read = 0;
+
+				if (input.is_open())
+				{
+					while (read < 10)
+					{
+						input >> array[read];
+						read++;
+					}
+				}
+
+				input.close();
+
+				int temp;
+
+				for (int i = 0; i < 11; i++)
+				{
+					for (int j = 0; j < 10 - i; j++)
+					{
+						if (array[j] < array[j + 1])
+						{
+							temp = array[j];
+							array[j] = array[j + 1];
+							array[j + 1] = temp;
+						}
+					}
+				}
+
+				output.open("highscores.txt");
+
+				for (int k = 0; k < 10; k++)
+				{
+					output << array[k] << "\n";
+				}
+
+				output.close();
 
 				//end menu
 				trashyM->Get<Gameplay::Physics::RigidBody>()->IsEnabled = false;
@@ -450,6 +500,58 @@ void DefaultSceneLayer::OnUpdate()
 			}
 			if (Victory)
 			{
+				int numberoftrashcollected = _currentScene->score;
+				int time = timelevelt;
+				int finalscore;
+
+				int array[11];
+
+				std::ifstream input;
+				std::ofstream output;
+
+				finalscore = floor((time * 10) + (numberoftrashcollected * 100));
+
+				array[10] = finalscore;
+
+				input.open("highscores.txt");
+
+				int read = 0;
+
+				if (input.is_open())
+				{
+					while (read < 10)
+					{
+						input >> array[read];
+						read++;
+					}
+				}
+
+				input.close();
+
+				int temp;
+
+				for (int i = 0; i < 11; i++)
+				{
+					for (int j = 0; j < 10 - i; j++)
+					{
+						if (array[j] < array[j + 1])
+						{
+							temp = array[j];
+							array[j] = array[j + 1];
+							array[j + 1] = temp;
+						}
+					}
+				}
+
+				output.open("highscores.txt");
+
+				for (int k = 0; k < 10; k++)
+				{
+					output << array[k] << "\n";
+				}
+
+				output.close();
+
 				//winMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
 				trashyM->Get<Gameplay::Physics::RigidBody>()->IsEnabled = false;
 				winMenu->Get<GuiPanel>()->IsEnabled = true;
