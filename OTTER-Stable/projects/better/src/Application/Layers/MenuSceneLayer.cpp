@@ -183,4 +183,5 @@ void MenuSceneLayer::_CreateScene()
 
 		//LOAD OBJECTS
 
+	}
 }
