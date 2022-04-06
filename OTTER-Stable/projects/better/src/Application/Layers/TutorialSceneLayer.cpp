@@ -432,6 +432,12 @@ void TutorialSceneLayer::_CreateScene()
 			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forward.glsl" }
 		});
 		deferredForward->SetDebugName("Deferred - GBuffer Generation");
+		//shader for trash outline
+		ShaderProgram::Sptr deferredTrash = ResourceManager::CreateAsset<ShaderProgram>(std::unordered_map<ShaderPartType, std::string>{
+			{ ShaderPartType::Vertex, "shaders/vertex_shaders/basic.glsl" },
+			{ ShaderPartType::Fragment, "shaders/fragment_shaders/deferred_forwardTRASH.glsl" }
+		});
+		
 
 #pragma region Basic Texture Creation
 		Texture2DDescription singlePixelDescriptor;
@@ -727,24 +733,39 @@ void TutorialSceneLayer::_CreateScene()
 		Gameplay::MeshResource::Sptr trashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/cup.obj");
 		Texture2D::Sptr trashTex = ResourceManager::CreateAsset<Texture2D>("textures/cup.jpg");
 		// Create our material
-		Gameplay::Material::Sptr trashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		Gameplay::Material::Sptr trashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredTrash);
 		{
 			trashMaterial->Name = "Trash";
 			trashMaterial->Set("u_Material.AlbedoMap", trashTex);
 			trashMaterial->Set("u_Material.Shininess", 0.3f);
 			trashMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			trashMaterial->Set("u_Material.s_Depth", normalMapDefault);
+			trashMaterial->Set("u_OutlineColor",glm::vec4(0.0, 0.0, 1.0, 1.0));
+			trashMaterial->Set("u_Scale", 3.0f);
+			trashMaterial->Set("u_DepthThreshold", 0.1f);
+			trashMaterial->Set("u_NormalThreshold", 0.4f);
+			trashMaterial->Set("u_DepthNormThreshold", 0.4f);
+			trashMaterial->Set("u_DepthNormThresholdScale", 4.0f);
+			trashMaterial->Set("u_PixelSize", glm::vec2(1.0f) / glm::vec2(128.0f, 128.0f));
 
 		}
 
 		bagtrashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/Trashbag.obj");
 		Texture2D::Sptr bagtrashTex = ResourceManager::CreateAsset<Texture2D>("textures/TrashBagTex.jpg");
 		
-		bagtrashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		bagtrashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredTrash);
 		{
 			bagtrashMaterial->Name = "Bag Trash";
 			bagtrashMaterial->Set("u_Material.AlbedoMap", bagtrashTex);
 			bagtrashMaterial->Set("u_Material.Shininess", 0.3f);
-			bagtrashMaterial->Set("u_Material.NormalMap", normalMapDefault);
+			bagtrashMaterial->Set("u_Material.s_Depth", normalMapDefault);
+			bagtrashMaterial->Set("u_OutlineColor", glm::vec4(0.0, 0.0,0.0, 1.0));
+			bagtrashMaterial->Set("u_Scale", 3.0f);
+			bagtrashMaterial->Set("u_DepthThreshold", 0.1f);
+			bagtrashMaterial->Set("u_NormalThreshold", 0.4f);
+			bagtrashMaterial->Set("u_DepthNormThreshold", 0.4f);
+			bagtrashMaterial->Set("u_DepthNormThresholdScale", 4.0f);
+			bagtrashMaterial->Set("u_PixelSize", glm::vec2(1.0f) / glm::vec2(128.0f, 128.0f));
 		}
 		
 

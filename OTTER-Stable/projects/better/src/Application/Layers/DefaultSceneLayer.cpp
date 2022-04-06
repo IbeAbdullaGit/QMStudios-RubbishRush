@@ -3851,30 +3851,6 @@ void DefaultSceneLayer::_CreateScene()
 			physics->AddCollider(box);
 		}
 		*/
-		Gameplay::MeshResource::Sptr recMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/RecOBJ.obj");
-		Texture2D::Sptr recTex = ResourceManager::CreateAsset<Texture2D>("textures/Rec1.png");
-		// Create our material
-		Gameplay::Material::Sptr recMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-		{
-			recMaterial->Name = "Rec";
-			recMaterial->Set("u_Material.AlbedoMap", recTex);
-			recMaterial->Set("u_Material.Shininess", 1.0f);
-			recMaterial->Set("u_Material.NormalMap", normalMapDefault);
-
-		}
-		Gameplay::GameObject::Sptr recE = scene->CreateGameObject("Rec");
-		{
-			recE->SetPostion(glm::vec3(-1.36f, 1.22f, 7.0f));
-			recE->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-			recE->SetScale(glm::vec3(1.0f, 5.8f, 4.8f));
-			// Add a render component
-			RenderComponent::Sptr renderer = recE->Add<RenderComponent>();
-
-			renderer->SetMesh(recMesh);
-			renderer->SetMaterial(recMaterial);
-			//Gameplay::Physics::RigidBody::Sptr physics = recE->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-
-		}
 		
 		/*//Modelling Static objects
 		{
