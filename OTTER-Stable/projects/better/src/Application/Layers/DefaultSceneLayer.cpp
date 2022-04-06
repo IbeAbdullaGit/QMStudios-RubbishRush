@@ -203,7 +203,7 @@ void DefaultSceneLayer::OnUpdate()
 			//startMenu->GetScene()->DeleteGameObject
 			playMenu = true;
 			spressed = false;
-			AudioEngine::playEventS("event:/Music Fast");
+			AudioEngine::playEventS("event:/Sounds/Music/Main/MainMusicEvent");
 
 			_currentScene->FindObjectByName("Inventory UI")->Get<GuiPanel>()->IsEnabled = true;
 			//CREATE THE TRASH AHHHH
@@ -221,30 +221,30 @@ void DefaultSceneLayer::OnUpdate()
 		//custom function
 		//CheckTrash();	
 
-		if (_currentScene->playrecyclesound) {
-			AudioEngine::playEventS("event:/Plastic trash crush");
-			_currentScene->playrecyclesound = false;
-		}
+		//if (_currentScene->playrecyclesound) { //I put these in the behavior.cpp - Nate
+		//	AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/PickUpCup");
+		//	_currentScene->playrecyclesound = false;
+		//}
 
-		if (_currentScene->playtrashsound) {
-			//	test.PlayEvent("event:/Can Crush");
-			AudioEngine::playEventS("event:/Can Crush");
-			_currentScene->playtrashsound = false;
-		}
+		//if (_currentScene->playtrashsound) {
+		//	//	test.PlayEvent("event:/Can Crush");
+		//	AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/PickUpTrash");
+		//	_currentScene->playtrashsound = false;
+		//}
 
-		if (_currentScene->playmulti) {
-			//test.SetEventParameter("event:/Trash multi", "parameter:/Pitch", glm::linearRand(0.f, 1.f));
-			AudioEngine::playEventS("event:/Trash multi");
-			_currentScene->playmulti = false;
-		}
+		//if (_currentScene->playmulti) {
+		//	//test.SetEventParameter("event:/Trash multi", "parameter:/Pitch", glm::linearRand(0.f, 1.f));
+		//	AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/DepositTrash");
+		//	_currentScene->playmulti = false;
+		//}
 
 		if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.3f && _currentScene->walk) {
-			AudioEngine::playEventS("event:/Footsteps");
+			AudioEngine::playEventS("event:/Sounds/SoundEffects/Footstep");
 			currentTime = Timing::Current().TimeSinceAppLoad();
 		}
 
 		if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.5f && _currentScene->walk == false || trashyM->Get<JumpBehaviour>()->in_air) {
-			AudioEngine::stopEventS("event:/Footsteps");
+			AudioEngine::stopEventS("event:/Sounds/SoundEffects/Footstep");
 		}
 
 
@@ -284,6 +284,7 @@ void DefaultSceneLayer::OnUpdate()
 				//trashRemainder->Get<GuiText>()->SetText(3 - _currentScene->score);
 				timeleveltDone = true;
 				Victory = true;
+				
 			}
 			else
 			{
@@ -316,6 +317,8 @@ void DefaultSceneLayer::OnUpdate()
 				else if (timelevelt <= 0)
 				{
 					timeleveltDone = true;
+					AudioEngine::stopEventS("event:/Sounds/Music/Main/MainMusicEvent");
+					AudioEngine::playEventS("event:/Sounds/Music/Lose/LoseMusicEvent");
 					lose = true;
 
 				}
@@ -401,12 +404,14 @@ void DefaultSceneLayer::OnUpdate()
 					failMenu->Get<GuiPanel>()->IsEnabled = false; //dont show lose menu
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
 
+					AudioEngine::stopEventS("event:/Sounds/Music/Lose/LoseMusicEvent");
+
 					//reset variables
 					lose = false;
 					start = false;
 					playMenu = false;
 					timeLoop = 7.0f;
-					timelevelt = 300.f;
+					timelevelt = roundTime;
 					timerDone = false;
 					timeleveltDone = false;
 					trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f)); //reset position to start
@@ -440,6 +445,11 @@ void DefaultSceneLayer::OnUpdate()
 			}
 			if (Victory)
 			{
+				if (!victoryMusicPlayed) {
+					AudioEngine::stopEventS("event:/Sounds/Music/Main/MainMusicEvent");
+					AudioEngine::playEventS("event:/Sounds/Music/Victory/VictoryMusicEvent");
+					victoryMusicPlayed = true;
+				}
 				int numberoftrashcollected = _currentScene->score;
 				int time = timelevelt;
 				int finalscore;
@@ -512,10 +522,11 @@ void DefaultSceneLayer::OnUpdate()
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
 					//reset variables
 					Victory = false;
+					victoryMusicPlayed = false;
 					start = false;
 					playMenu = false;
 					timeLoop = 7.0f;
-					timelevelt = 300.f;
+					timelevelt = roundTime;
 					timerDone = false;
 					timeleveltDone = false;
 					trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f)); //reset position to start

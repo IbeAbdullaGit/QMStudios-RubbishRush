@@ -11,6 +11,7 @@
 #include "Application/Application.h"
 #include "Application/Layers/DefaultSceneLayer.h"
 #include "Gameplay/InputEngine.h"
+#include "AudioEngine.h"
 
 
 CollectTrashBehaviour::CollectTrashBehaviour() :
@@ -59,16 +60,17 @@ void CollectTrashBehaviour::Update(float deltatime)
 				if (type == "Normal")
 				{
 					_scene->held_normal += 1;
-					_scene->playtrashsound = true;
+					AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/PickUpTrash");
 				}
 				else if (_scene->held_recycle < 1) //we are type recycle, now we need to check how many recycle we're holding
 				{
 					_scene->held_recycle += 1;
-					_scene->playrecyclesound = true;
+					AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/PickUpCup");
 				}
 				else //we are recycle but recycle inv is full
 				{
 					std::cout << "We're already holding a recycle item\n";
+					AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
 					return;
 				}
 				//delete trash from scene
@@ -92,7 +94,9 @@ void CollectTrashBehaviour::Update(float deltatime)
 				ui->Get<GuiText>()->IsEnabled = false;
 
 			}
-			
+			else {
+				AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
+			}
 		}
 		/*Gameplay::IComponent::Sptr ptr = Panel.lock();
 		if (ptr != nullptr)

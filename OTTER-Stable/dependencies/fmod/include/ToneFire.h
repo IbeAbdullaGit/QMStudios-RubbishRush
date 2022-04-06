@@ -177,7 +177,7 @@ namespace ToneFire {
 		friend StudioSound;
 	public:
 		FMODStudio(int maxChannels = 512,
-			const std::string& defaultPath = "./",
+			const std::string& defaultPath = "./audio/",
 			const Listener& listener = Listener());
 		~FMODStudio();
 

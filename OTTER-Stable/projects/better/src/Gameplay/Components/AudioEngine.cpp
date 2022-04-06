@@ -28,7 +28,7 @@ int AudioEngine::ErrorCheck(FMOD_RESULT result)
 void AudioEngine::studioinit()
 {
 	
-	
+	return;
 }
 
 
@@ -72,8 +72,9 @@ void AudioEngine::loadBankS()
 {
 	studio.LoadBank("Master.bank");
 	studio.LoadBank("Master.strings.bank");
-	studio.LoadBank("Sound.bank");
-	studio.LoadBank("Music_Background.bank");
+	studio.LoadBank("Music.bank");
+	studio.LoadBank("SoundEffects.bank");
+	studio.LoadBank("Dialog.bank");
 
 }
 
@@ -96,12 +97,23 @@ void AudioEngine::unloadSound(const std::string& soundName)
 
 void AudioEngine::loadEventS()
 {
-	audio.LoadEvent("event:/Music Fast");
-	audio.LoadEvent("event:/Music Regular");
-	audio.LoadEvent("event:/Footsteps");
-	audio.LoadEvent("event:/Can Crush");
-	audio.LoadEvent("event:/Plastic trash crush");
-	audio.LoadEvent("event:/Trash multi");
+	audio.LoadEvent("event:/Sounds/Music/Loading/LoadingMusicEvent");
+	audio.LoadEvent("event:/Sounds/Music/Lose/LoseMusicEvent");
+	audio.LoadEvent("event:/Sounds/Music/Main/MainMusicEvent");
+	audio.LoadEvent("event:/Sounds/Music/Menu/MenuMusicEvent");
+	audio.LoadEvent("event:/Sounds/Music/Tutorial/TutorialMusicEvent");
+	audio.LoadEvent("event:/Sounds/Music/Victory/VictoryMusicEvent");
+	audio.LoadEvent("event:/Sounds/SoundEffects/Footstep");
+	audio.LoadEvent("event:/Sounds/SoundEffects/Pickups interactions/DepositTrash");
+	audio.LoadEvent("event:/Sounds/SoundEffects/Pickups interactions/PickUpCup");
+	audio.LoadEvent("event:/Sounds/SoundEffects/Pickups interactions/PickUpTrash");
+	audio.LoadEvent("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
+	audio.LoadEvent("event:/Sounds/SoundEffects/Pickups interactions/TrashyFull");
+	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1 (Intro)");
+	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice2 (Youre a natural)");
+	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3 (Remember blue)");
+	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4 (Bothering)");
+	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5 (Stuck)"); 
 }
 
 
