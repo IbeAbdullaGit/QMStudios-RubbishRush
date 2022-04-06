@@ -1426,7 +1426,7 @@ void DefaultSceneLayer::_CreateScene()
 
 		//layout
 		Gameplay::MeshResource::Sptr layoutMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/malllayoutwall.obj");
-		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/mall.png");
+		Texture2D::Sptr layoutTex = ResourceManager::CreateAsset<Texture2D>("textures/mall2.png");
 		Gameplay::Material::Sptr layoutMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
 			layoutMaterial->Name = "Layout";
