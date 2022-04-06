@@ -109,7 +109,9 @@ void TutorialSceneLayer::OnSceneUnload()
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Plane"));
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Trash1"));
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Trash2"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Trash3"));
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout2"));
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Front"));
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Back"));
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Right Bottom"));
@@ -124,6 +126,17 @@ void TutorialSceneLayer::OnSceneUnload()
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Submit Feedback"));
 
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Load"));
+
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Bench1"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Bench2"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Bench3"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Bench5"));
+
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 1"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 2"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 3"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 4"));
+	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 5"));
 	
 }
 
@@ -221,20 +234,22 @@ void TutorialSceneLayer::OnUpdate()
 				if (hallwayLoaded)
 				{
 					//dialogue
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 3.5f && !play4)
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 2.5f && !play4)
 					{
+						std::cout << "ok";
 						play4 = true;
 						dialogue3->Get<GuiPanel>()->IsEnabled = false;
 						dialogue4->Get<GuiPanel>()->IsEnabled = true;
 						currentTime = Timing::Current().TimeSinceAppLoad();
 					}
 					
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 3.5f && Timing::Current().TimeSinceAppLoad() - currentTime <= 7.f && play4)
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 4.f && play4)
 					{
 						dialogue4->Get<GuiPanel>()->IsEnabled = false;
 						dialogue5->Get<GuiPanel>()->IsEnabled = true;
+						play5 = true;
 					}
-					else {
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 7.0f && play5) {
 						dialogue5->Get<GuiPanel>()->IsEnabled = false;
 					}
 					
@@ -362,12 +377,12 @@ void TutorialSceneLayer::OnUpdate()
 		// Grab shorthands to the camera and shader from the _currentScene
 		Gameplay::Camera::Sptr camera = _tutcurrentScene->MainCamera;
 
-		if (!camera->GetComponent<SimpleCameraControl>()->moving)
-		{
+		//if (!camera->GetComponent<SimpleCameraControl>()->moving)
+		//{
 			//Set Camera position
 			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.0f, 6.f));
 			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -3.9f, -2.0f));
-		}
+		//}
 
 		// Store timing for next loop
 		tutlastFrame = thisFrame;
@@ -525,7 +540,7 @@ void TutorialSceneLayer::_CreateScene()
 			//cam->SetOrthoVerticalScale(10.0f);
 			// Make sure that the camera is set as the scene's main camera!
 			//scene->MainCamera = cam;
-			camera->Add<SimpleCameraControl>();
+			//camera->Add<SimpleCameraControl>();
 		}
 	
 		Gameplay::GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");

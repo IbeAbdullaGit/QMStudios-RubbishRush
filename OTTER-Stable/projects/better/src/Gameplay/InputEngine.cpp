@@ -38,7 +38,7 @@ bool InputEngine::IsMouseButtonDown(int button) {
 	return (button <= GLFW_MOUSE_BUTTON_LAST) ? *__mouseState[button] & 0b01 : false;
 }
 
-const glm::dvec2& InputEngine::GetMousePos() {
+glm::dvec2 InputEngine::GetMousePos() {
 	Application& app = Application::Get();
 	glm::vec4 viewport = app.GetPrimaryViewport();
 	return (__mousePos - glm::dvec2(viewport.x, viewport.y));

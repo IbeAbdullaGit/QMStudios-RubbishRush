@@ -37,7 +37,7 @@ void PlayerMovementBehavior::Awake()
 	if (_body == nullptr) {
 		IsEnabled = false;
 	}
-	
+
 	/*_body->SetLinearDamping(0.9f);
 	_body->SetAngularDamping(1.f);*/
 }
@@ -77,7 +77,7 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 	Application& app = Application::Get();
 	//not moving
 	is_moving = false;
-	input = false;
+	//input = false;
 
 	if (in_spill)
 	{
@@ -130,7 +130,7 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 		}
 	}
 
-	if (glfwGetKey(app.GetWindow(), GLFW_KEY_A)|| glfwGetKey(app.GetWindow(), GLFW_KEY_LEFT)) {
+	if (glfwGetKey(app.GetWindow(), GLFW_KEY_A) || glfwGetKey(app.GetWindow(), GLFW_KEY_LEFT)) {
 		if (_body->GetLinearVelocity().x <= 5.0f) {
 			_body->ApplyImpulse(glm::vec3(_impulse, 0.0f, 0.0f));
 
@@ -144,8 +144,8 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 			}
 		}
 	}
-	
-	if (glfwGetKey(app.GetWindow(), GLFW_KEY_D)|| glfwGetKey(app.GetWindow(), GLFW_KEY_RIGHT)) {
+
+	if (glfwGetKey(app.GetWindow(), GLFW_KEY_D) || glfwGetKey(app.GetWindow(), GLFW_KEY_RIGHT)) {
 		if (_body->GetLinearVelocity().x >= -5.0f) {
 			_body->ApplyImpulse(glm::vec3(-_impulse, 0.0f, 0.0f));
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
@@ -180,69 +180,34 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 	}
 
 	//Rotate when the key is pressed
-	
+
+	//Rotate when the key is pressed
 	if (InputEngine::GetKeyState(GLFW_KEY_W) == ButtonState::Down) {
 		currentRotation = GetGameObject()->GetRotation();
-		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, directions[2])));
-		//direction = glm::vec3(0.0f, 5.0f, 0.0f);
-		input = true;
-		targetAngle = directions[2];
-		
+		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 180.0f)));
+		currentRotation = glm::slerp(currentRotation, targetRotation, turnspeed * deltaTime);
+		GetGameObject()->SetRotation(currentRotation);
+
 	}
 	if (InputEngine::GetKeyState(GLFW_KEY_A) == ButtonState::Down) {
 		currentRotation = GetGameObject()->GetRotation();
-		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, directions[3])));
-		//direction = glm::vec3(5.0f, 0.0f, 0.0f);
-		input = true;
-		targetAngle = directions[3];
+		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 270.0f)));
+		currentRotation = glm::slerp(currentRotation, targetRotation, turnspeed * deltaTime);
+		GetGameObject()->SetRotation(currentRotation);
 	}
 
 	if (InputEngine::GetKeyState(GLFW_KEY_S) == ButtonState::Down) {
 		currentRotation = GetGameObject()->GetRotation();
-		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, directions[0])));
-		//direction = glm::vec3(0.0f, -5.0f, 0.0f);
-		input = true;
-		targetAngle = directions[0];
-		
+		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 0.0f)));
+		currentRotation = glm::slerp(currentRotation, targetRotation, turnspeed * deltaTime);
+		GetGameObject()->SetRotation(currentRotation);
 	}
 	if (InputEngine::GetKeyState(GLFW_KEY_D) == ButtonState::Down) {
 		currentRotation = GetGameObject()->GetRotation();
-		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, directions[1])));
-		//direction = glm::vec3(-5.0f, 0.0f, 0.0f);
-		input = true;
-		targetAngle = directions[1];
-	}
-	
-	angle = GetGameObject()->GetRotationEuler().z;
-	if (input)
-	{
-		
-		//rot calculation
-		float diff = targetAngle - angle;
-		//std::cout << diff << std::endl;
-		if (diff > 180.0f)//large target small angle
-		{
-			angle += 360.0f;
-		}
-		if (diff < 180.0f) //large angle small target
-		{
-			angle -= 360.0f;
-		}
-
-		
+		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 90.0f)));
+		currentRotation = glm::slerp(currentRotation, targetRotation, turnspeed * deltaTime);
+		GetGameObject()->SetRotation(currentRotation);
 	}
 
-
-	currentRotation = glm::mix(currentRotation, targetRotation, speed * deltaTime); //movetowards
-	//currentRotation = MoveTowards(currentRotation, targetRotation, speed * deltaTime);
-	//currentRotation.z = MoveTowards2(currentRotation.z, targetRotation.z, speed * deltaTime);
-	
-	//angle = MoveTowards2(angle, targetAngle, deltaTime * speed);
-	//angle = glm::mix(angle, targetAngle, speed * deltaTime); //movetowards
-	//std::cout << angle << std::endl;
-	GetGameObject()->SetRotation(currentRotation);
-	//GetGameObject()->SetRotation(glm::quat(glm::radians((glm::vec3(GetGameObject()->GetRotationEuler().x, GetGameObject()->GetRotationEuler().y, angle)))));
-
-	
 }
 

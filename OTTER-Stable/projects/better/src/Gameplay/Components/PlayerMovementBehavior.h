@@ -28,30 +28,30 @@ public:
 	void SetSpill(bool state);
 	bool is_moving = false;
 	bool is_running = false;
-	
+
 protected:
-	
+
 	float _impulse;
 	bool in_spill = false;
-	
+
 	Gameplay::Physics::RigidBody::Sptr _body;
-	
+
 	std::vector<Gameplay::GameObject::Sptr> particles_store;
 	bool created = false;
 
 	glm::quat currentRotation;
 	glm::quat targetRotation;
-	float speed = 5.0f;
+	float turnspeed = 6.0f;
 	Gameplay::Scene* _scene;
 	glm::vec3 direction;
 	int count = 0;
 
-	float max_speed = 0.15f;
+	float max_speed = 0.1f;
 	float acceleration = 0.02f;
 
-	const float directions[4] = { 0.0f, 90.0f, 180.0f, 270.0f };
+	/*const float directions[4] = { 0.0f, 90.0f, 180.0f, 270.0f };
 	float angle;
 	float targetAngle = 0.0f;
-	bool input = false;
+	bool input = false;*/
 
 };
