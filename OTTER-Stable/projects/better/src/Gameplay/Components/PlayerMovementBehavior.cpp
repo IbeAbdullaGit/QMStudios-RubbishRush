@@ -4,7 +4,32 @@
 #include "Gameplay/Scene.h"
 #include "Utils/ImGuiHelper.h"
 #include "Application/Application.h"
+#include "Application/Layers/PostProcessingLayer.h"
+#include "Gameplay/InputEngine.h"
 
+//create movetowards function
+glm::quat MoveTowards(glm::quat current, glm::quat target, float maxDistanceDelta)
+{
+	glm::quat a = glm::quat(glm::vec3(target.x - current.x, target.y - current.y, target.z - current.z));
+	//a.x = target.x - current.x;
+	//a.y = target.y - current.y;
+	//a.z = target.z - current.z;
+	glm::vec3 magnitude2 = glm::vec3(a.x, a.y, a.z);
+	float magnitude = magnitude2.length();
+	if (magnitude <= maxDistanceDelta || magnitude == 0.0f)
+	{
+		return target;
+	}
+	return current + a / magnitude * maxDistanceDelta;
+}
+float MoveTowards2(float current, float target, float maxDelta)
+{
+	if (glm::abs(target - current) <= maxDelta)
+	{
+		return target;
+	}
+	return current + glm::sign(target - current) * maxDelta;
+}
 
 void PlayerMovementBehavior::Awake()
 {
@@ -52,14 +77,17 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 	Application& app = Application::Get();
 	//not moving
 	is_moving = false;
-	
+	input = false;
+
 	if (in_spill)
 	{
-		_impulse = _impulse / 2.0f;
+		_impulse = _impulse / 1.7f;
+		app.GetLayer<PostProcessingLayer>()->SetSlime(true);
 	}
 	else
 	{
 		//_impulse = 0.0f;
+		app.GetLayer<PostProcessingLayer>()->SetSlime(false);
 	}
 
 	////running
@@ -152,77 +180,69 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 	}
 
 	//Rotate when the key is pressed
-	if (glfwGetKey(app.GetWindow(), GLFW_KEY_W) && GLFW_PRESS) {
+	
+	if (InputEngine::GetKeyState(GLFW_KEY_W) == ButtonState::Down) {
 		currentRotation = GetGameObject()->GetRotation();
-		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 180.0f)));
-		direction = glm::vec3(0.0f, 5.0f, 0.0f);
+		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, directions[2])));
+		//direction = glm::vec3(0.0f, 5.0f, 0.0f);
+		input = true;
+		targetAngle = directions[2];
 		
 	}
-	if (glfwGetKey(app.GetWindow(), GLFW_KEY_A) && GLFW_PRESS) {
+	if (InputEngine::GetKeyState(GLFW_KEY_A) == ButtonState::Down) {
 		currentRotation = GetGameObject()->GetRotation();
-		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 270.0f)));
-		direction = glm::vec3(5.0f, 0.0f, 0.0f);
+		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, directions[3])));
+		//direction = glm::vec3(5.0f, 0.0f, 0.0f);
+		input = true;
+		targetAngle = directions[3];
 	}
 
-	if (glfwGetKey(app.GetWindow(), GLFW_KEY_S) && GLFW_PRESS) {
+	if (InputEngine::GetKeyState(GLFW_KEY_S) == ButtonState::Down) {
 		currentRotation = GetGameObject()->GetRotation();
-		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 0.0f)));
-		direction = glm::vec3(0.0f, -5.0f, 0.0f);
+		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, directions[0])));
+		//direction = glm::vec3(0.0f, -5.0f, 0.0f);
+		input = true;
+		targetAngle = directions[0];
 		
 	}
-	if (glfwGetKey(app.GetWindow(), GLFW_KEY_D) && GLFW_PRESS) {
+	if (InputEngine::GetKeyState(GLFW_KEY_D) == ButtonState::Down) {
 		currentRotation = GetGameObject()->GetRotation();
-		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 90.0f)));
-		direction = glm::vec3(-5.0f, 0.0f, 0.0f);
+		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, directions[1])));
+		//direction = glm::vec3(-5.0f, 0.0f, 0.0f);
+		input = true;
+		targetAngle = directions[1];
+	}
+	
+	angle = GetGameObject()->GetRotationEuler().z;
+	if (input)
+	{
+		
+		//rot calculation
+		float diff = targetAngle - angle;
+		//std::cout << diff << std::endl;
+		if (diff > 180.0f)//large target small angle
+		{
+			angle += 360.0f;
+		}
+		if (diff < 180.0f) //large angle small target
+		{
+			angle -= 360.0f;
+		}
+
+		
 	}
 
-	currentRotation = glm::mix(currentRotation, targetRotation, speed * deltaTime);
+
+	currentRotation = glm::mix(currentRotation, targetRotation, speed * deltaTime); //movetowards
+	//currentRotation = MoveTowards(currentRotation, targetRotation, speed * deltaTime);
+	//currentRotation.z = MoveTowards2(currentRotation.z, targetRotation.z, speed * deltaTime);
+	
+	//angle = MoveTowards2(angle, targetAngle, deltaTime * speed);
+	//angle = glm::mix(angle, targetAngle, speed * deltaTime); //movetowards
+	//std::cout << angle << std::endl;
 	GetGameObject()->SetRotation(currentRotation);
+	//GetGameObject()->SetRotation(glm::quat(glm::radians((glm::vec3(GetGameObject()->GetRotationEuler().x, GetGameObject()->GetRotationEuler().y, angle)))));
 
-	////test creating particles
-	//if (glfwGetKey(app.GetWindow(), GLFW_KEY_1) && GLFW_PRESS)
-	//{
-	//	count += 1;
-	//	Gameplay::GameObject::Sptr particles = app.CurrentScene()->CreateGameObject("Particles"+ std::to_string(count));
-	//	ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
-	//	particleManager->AddEmitter(GetGameObject()->GetPosition(), direction, 5.0f, glm::vec4(1.0f, 0.8f, 0.3f, 1.0f));
-	//	//particles_store.push_back(particles);
-	//}
-	////test creating particles
-	//if (glfwGetKey(app.GetWindow(), GLFW_KEY_2) && GLFW_PRESS)
-	//{
-	//	Gameplay::GameObject::Sptr particles = app.CurrentScene()->FindObjectByName("Particles" + std::to_string(count));
-	//	app.CurrentScene()->RemoveGameObject(particles);
-	//}
-
-	////update particles at feet
-	//if (is_moving)
-	//{
-	//	if (!created)
-	//	{//keep creating particles as we move?
-	//	// 
-	//	//particleManager->IsEnabled = true;
-	//		Gameplay::GameObject::Sptr particles = app.CurrentScene()->CreateGameObject("Particles 2");
-	//		ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
-	//		particleManager->AddEmitter(GetGameObject()->GetPosition(), direction, 5.0f, glm::vec4(1.0f, 0.8f, 0.3f, 1.0f));
-	//		particles_store.push_back(particles);
-
-	//		created = true;
-	//	}
-	//}
-	//else
-	//{
-	//	//particleManager->IsEnabled = false;
-	//	//delete all the particles we created
-	//	for (int i = 0; i < particles_store.size(); i++)
-	//	{
-	//		app.CurrentScene()->RemoveGameObject(particles_store[i]);
-	//	}
-
-	//	particles_store.clear();
-	//	created = false;
-	//	
-	//}
 	
 }
 

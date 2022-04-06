@@ -46,10 +46,10 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	//_effects.push_back(std::make_shared<BloomEffect>());
 	//_effects.push_back(std::make_shared<FilmGrain>());
 	//_effects.push_back(std::make_shared<Pixelate>());
-	//_effects.push_back(std::make_shared<SlimeVignette>());
+	_effects.push_back(std::make_shared<SlimeVignette>());
 	//_effects.push_back(std::make_shared<NightVision>());
 	//pl
-	
+	_effects[2]->Enabled = false;
 
 	Application& app = Application::Get();
 	const glm::uvec4& viewport = app.GetPrimaryViewport();
@@ -82,6 +82,12 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	cool_lut = ResourceManager::CreateAsset<Texture3D>("luts/RRCoolLUT.CUBE");
 	warm_lut = ResourceManager::CreateAsset<Texture3D>("luts/RRWarmLUT.CUBE");
 	other_lut = ResourceManager::CreateAsset<Texture3D>("luts/RRDarkenedLUT.CUBE");
+}
+
+void PostProcessingLayer::SetSlime(bool state)
+{
+	//slime effect
+	_effects[2]->Enabled = state;
 }
 
 void PostProcessingLayer::OnPostRender()

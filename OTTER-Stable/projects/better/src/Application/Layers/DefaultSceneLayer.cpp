@@ -150,8 +150,6 @@ void DefaultSceneLayer::OnUpdate()
 		
 		trashyM = _currentScene->FindObjectByName("Trashy");
 		binM = _currentScene->FindObjectByName("Bin");
-		RectangleE = _currentScene->FindObjectByName("Rec");
-		TrashyE = _currentScene->FindObjectByName("TrashyE");
 		//limit rotation
 		trashyM->Get<Gameplay::Physics::RigidBody>()->SetAngularFactor(glm::vec3(0.0f, 0.0f, 0.0f));
 		trashyM->Get<Gameplay::Physics::RigidBody>()->SetLinearDamping(0.9f);
@@ -262,71 +260,17 @@ void DefaultSceneLayer::OnUpdate()
 			else {
 				timerDone = true;
 			}
-
-			if (RectangleE->GetPosition().z > 3.3f)
-			{
-				RectangleE->UpdateLerp(pointsPos, dt);
-			}
-			else
-			{
-				if (TrashyE->GetPosition().x >= -1.22f)
-				{
-					TrashyE->UpdateCAT(pointsPos2, dt);
-				}
-				else
-				{
-					TrashyE->UpdateScale(pointsS, pointsR, dt);
-				}
-			}
-			//FREEZE TRASHY
-			if (trashyM->GetPosition().z < 1.0f)
-			{
-				trashyM->Get<Gameplay::Physics::RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
-			}
-			//trashyM->Get<RigidBody>()->IsEnabled = false;
-			//trashyM->Get<RigidBody>()->SetMass(0.0f);
+			trashyM->Get<Gameplay::Physics::RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
+			//trashyM->Get<Gameplay::Physics
+			
 		}
 		else if (_currentScene->IsPlaying && timerDone && playMenu && start)
 		{
-			if (TrashyE->GetPosition().x < 1.5f)
-			{
-				TrashyE->UpdateCAT(pointsPos2, dt);
-				TrashyE->UpdateScale(pointsS2, pointsR2, dt);
-			}
-			else
-			{
-				if (RectangleE->GetPosition().z < 7.0f)
-				{
-					RectangleE->UpdateLerp(pointsPos, dt);
-				}
-			}
-			//FREEZE TRASHY
-			if (trashyM->GetPosition().z < 1.0f)
-			{
-				trashyM->Get<Gameplay::Physics::RigidBody>()->SetLinearVelocity(glm::vec3(0.0f));
-			}
-			if (TrashyE->GetPosition().x >= 0.4f && RectangleE->GetPosition().z >= 6.9f)
-			{
-				TrashyE->SetPostionZ(-10.0f);
-				RectangleE->SetPostionZ(-10.0f);
-				//TrashyE->SetDirty(true);
-				//RectangleE->SetDirty(true);
-				//TrashyE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(TrashyE->GUID));
-				//RectangleE->GetScene()->DeleteGameObject(TrashyE->GetScene()->FindObjectByGUID(RectangleE->GUID));
-				TrashyE->Get<RenderComponent>()->IsEnabled = false;
-				RectangleE->Get<RenderComponent>()->IsEnabled = false;
-				//_currentScene->RemoveGameObject(TrashyE); //DONT DELETE WE NEED TO REUSE
-				//_currentScene->RemoveGameObject(RectangleE); //DONT DELETE WE NEED TO REUSE
-				std::cout << "should be deleted\n";
-				playMenu = false;
-				//trashyM->Get<RigidBody>()->IsEnabled = true;
-				//trashyM->SetDirty(true);
-
-				//enable timer stuff
-				UIText->Get<GuiText>()->IsEnabled = true;
-				trashRemainder->Get<GuiText>()->IsEnabled = true;
-				objective->Get<GuiPanel>()->IsEnabled = true;
-			}
+			playMenu = false;
+			//enable timer stuff
+			UIText->Get<GuiText>()->IsEnabled = true;
+			trashRemainder->Get<GuiText>()->IsEnabled = true;
+			objective->Get<GuiPanel>()->IsEnabled = true;
 		}
 		
 		else if (_currentScene->IsPlaying && !playMenu && !timeleveltDone && start)
@@ -484,11 +428,7 @@ void DefaultSceneLayer::OnUpdate()
 					//_CreateTrash();
 					//randomize again
 					//RandomizePositions();
-					//put menus back in
-					TrashyE->Get<RenderComponent>()->IsEnabled = true;
-					RectangleE->Get<RenderComponent>()->IsEnabled = true;
-					TrashyE->SetPostion(glm::vec3(0.5f, 1.49f, 3.3f));
-					RectangleE->SetPostion(glm::vec3(-1.36f, 1.22f, 7.0f));
+					
 					AudioEngine::stopEventS("event:/Music Fast");
 
 				}
@@ -589,11 +529,6 @@ void DefaultSceneLayer::OnUpdate()
 					//_CreateTrash();
 					//randomize again
 					//RandomizePositions();
-					//put menus back in
-					TrashyE->Get<RenderComponent>()->IsEnabled = true;
-					RectangleE->Get<RenderComponent>()->IsEnabled = true;
-					TrashyE->SetPostion(glm::vec3(0.5f, 1.49f, 3.3f));
-					RectangleE->SetPostion(glm::vec3(-1.36f, 1.22f, 7.0f));
 					AudioEngine::stopEventS("event:/Music Fast");
 
 				}
@@ -672,27 +607,6 @@ void DefaultSceneLayer::_CreateScene()
 	audio.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });*/
 
 
-
-	pointsPos.push_back(glm::vec3(-1.36f, 1.22f, 7.1f));
-	pointsPos.push_back(glm::vec3(-1.36f, 1.22f, 3.27f));
-
-	pointsPos2.push_back(glm::vec3(1.5f, 1.49f, 3.29f));
-	pointsPos2.push_back(glm::vec3(0.5f, 1.49f, 3.29f));
-	pointsPos2.push_back(glm::vec3(-0.5f, 1.49f, 3.29f));
-	pointsPos2.push_back(glm::vec3(-1.0f, 1.49f, 3.29f));
-	pointsPos2.push_back(glm::vec3(-1.18f, 1.49f, 3.29f));
-
-	pointsS.push_back(glm::vec3(1.0f, 0.8f, 0.8f));
-	pointsS.push_back(glm::vec3(1.0f, 1.8f, 1.4f));
-
-	pointsR.push_back(glm::vec3(62.0f, 0.0f, 90.0f));
-	pointsR.push_back(glm::vec3(100.0f, 0.0f, 90.0f));
-
-	pointsS2.push_back(glm::vec3(1.0f, 1.46f, 1.0f));
-	pointsS2.push_back(glm::vec3(1.0f, 1.0f, 0.4f));
-
-	pointsR2.push_back(glm::vec3(90.0f, 0.0f, 90.0f));
-	pointsR2.push_back(glm::vec3(90.0f, 0.0f, 90.0f));
 	//using namespace Gameplay;
 	//using namespace Gameplay::Physics;
 
@@ -1269,7 +1183,7 @@ void DefaultSceneLayer::_CreateScene()
 		
 		Gameplay::GameObject::Sptr trashyM = scene->CreateGameObject("Trashy"); //SEARCHBAR TAGS: PLAYERENTITY, PLAYER, TRASHYENTITY, TRASHYOBJECT
 		{
-			trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f));
+			trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 0.1f));
 			trashyM->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 			trashyM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
@@ -1408,7 +1322,6 @@ void DefaultSceneLayer::_CreateScene()
 			renderer->SetMesh(layoutMesh);
 			renderer->SetMaterial(planeMaterial);*/
 
-			// Attach a plane collider that extends infinitely along the X/Y axis
 			Gameplay::Physics::RigidBody::Sptr physics = plane->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
@@ -1417,7 +1330,7 @@ void DefaultSceneLayer::_CreateScene()
 			Gameplay::Physics::TriggerVolume::Sptr volume = plane->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 			//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-			box2->SetScale(glm::vec3(50.0f, 1.0f, 50.0f));
+			box2->SetScale(glm::vec3(50.0f, -0.12f, 50.0f));
 			volume->AddCollider(box2);
 			//give to our floor tiles to tag them
 			GroundBehaviour::Sptr behaviour = plane->Add<GroundBehaviour>();
@@ -3960,29 +3873,6 @@ void DefaultSceneLayer::_CreateScene()
 			renderer->SetMesh(recMesh);
 			renderer->SetMaterial(recMaterial);
 			//Gameplay::Physics::RigidBody::Sptr physics = recE->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-
-		}
-		Gameplay::MeshResource::Sptr trashyEMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/trashy2OBJ.obj");
-		Texture2D::Sptr trashyETex = ResourceManager::CreateAsset<Texture2D>("textures/Trashy2.png");
-		// Create our material
-		Gameplay::Material::Sptr trashyEMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-		{
-			trashyEMaterial->Name = "trashyE";
-			trashyEMaterial->Set("u_Material.AlbedoMap", trashyETex);
-			trashyEMaterial->Set("u_Material.Shininess", 1.0f);
-			trashyEMaterial->Set("u_Material.NormalMap", normalMapDefault);
-
-		}
-		Gameplay::GameObject::Sptr trashyE = scene->CreateGameObject("TrashyE");
-		{
-			trashyE->SetPostion(glm::vec3(0.8f, 1.49f, 3.3f));
-			trashyE->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-			trashyE->SetScale(glm::vec3(1.0f, 1.46f, 1.090f));
-			// Add a render component
-			RenderComponent::Sptr renderer = trashyE->Add<RenderComponent>();
-			renderer->SetMesh(trashyEMesh);
-			renderer->SetMaterial(trashyEMaterial);
-			//Gameplay::Physics::RigidBody::Sptr physics = trashyE->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
 
 		}
 		

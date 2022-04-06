@@ -39,8 +39,7 @@ protected:
 
 	Gameplay::GameObject::Sptr trashyM;
 	Gameplay::GameObject::Sptr binM;
-	Gameplay::GameObject::Sptr RectangleE;
-	Gameplay::GameObject::Sptr TrashyE;
+	
 	//Gameplay::MeshResource::Sptr trashMesh;
 	//Gameplay::Material::Sptr trashMaterial;
 
@@ -60,21 +59,6 @@ protected:
 
 
 
-	//create points we need for lerping
-	std::vector<glm::vec3> pointsPos; //rec
-	
-
-	std::vector<glm::vec3> pointsPos2; //trashy
-	
-	std::vector<glm::vec3> pointsS;
-	
-	std::vector<glm::vec3> pointsR;
-	
-
-	std::vector<glm::vec3> pointsS2;
-	
-	std::vector<glm::vec3> pointsR2;
-	
 	//all conditions to change between in-game conditions and menus
 	//bool isPressed = false;
 	bool timerDone = false;
@@ -86,7 +70,7 @@ protected:
 	bool playtrashsound = false;
 	bool playmulti = false;
 	//Variables for changing stuff in the game
-	float timeLoop = 7.0f; //The seconds between start time and the menu that plays in the beginning
+	float timeLoop = 3.0f; //The seconds between start time and the menu that plays in the beginning
 	float timelevelt = 300.f; //The time needed to collect all trash
 	bool playMenu = true;
 
