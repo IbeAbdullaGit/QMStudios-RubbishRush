@@ -203,22 +203,22 @@ void TutorialSceneLayer::OnUpdate()
 				musicstart = true;
 			}
 
-			if (_tutcurrentScene->playrecyclesound) {
-				AudioEngine::playEventS("event:/Plastic trash crush");
-				_tutcurrentScene->playrecyclesound = false;
-			}
+			//if (_tutcurrentScene->playrecyclesound) {
+			//	AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/PickUpCup");
+			//	_tutcurrentScene->playrecyclesound = false;
+			//}
 
-			if (_tutcurrentScene->playtrashsound) {
-			//	test.PlayEvent("event:/Can Crush");
-				AudioEngine::playEventS("event:/Can Crush");
-				_tutcurrentScene->playtrashsound = false;
-			}
+			//if (_tutcurrentScene->playtrashsound) {
+			////	test.PlayEvent("event:/Can Crush");
+			//	AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/PickUpTrash");
+			//	_tutcurrentScene->playtrashsound = false;
+			//}
 
-			if (_tutcurrentScene->playmulti) {
-				//test.SetEventParameter("event:/Trash multi", "parameter:/Pitch", glm::linearRand(0.f, 1.f));
-				AudioEngine::playEventS("event:/Trash multi");
-				_tutcurrentScene->playmulti = false;
-			}
+			//if (_tutcurrentScene->playmulti) {
+			//	//test.SetEventParameter("event:/Trash multi", "parameter:/Pitch", glm::linearRand(0.f, 1.f));
+			//	AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/DepositTrash");
+			//	_tutcurrentScene->playmulti = false;
+			//}
 
 			if (_tutcurrentScene->IsPlaying && !done)
 			{
@@ -316,12 +316,12 @@ void TutorialSceneLayer::OnUpdate()
 			
 			
 			if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.3f && _tutcurrentScene->walk) {
-				AudioEngine::playEventS("event:/Footsteps");
+				AudioEngine::playEventS("event:/Sounds/SoundEffects/Footstep");
 				currentTime = Timing::Current().TimeSinceAppLoad();
 			}
 
 			if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.5f && _tutcurrentScene->walk == false || trashyM->Get<JumpBehaviour>()->in_air) {
-				AudioEngine::stopEventS("event:/Footsteps");
+				AudioEngine::stopEventS("event:/Sounds/SoundEffects/Footstep");
 			}
 
 

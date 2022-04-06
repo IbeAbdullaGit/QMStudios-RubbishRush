@@ -10,6 +10,7 @@
 #include "MorphAnimator.h"
 #include "Application/Application.h"
 #include "Gameplay/InputEngine.h"
+#include "AudioEngine.h"
 
 
 SubmittingTrashBehaviour::SubmittingTrashBehaviour() :
@@ -102,7 +103,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 				std::cout << "No trash to submit!\n";
 			}
 			ui->Get<GuiText>()->IsEnabled = false;
-			_scene->playmulti = true;
+			AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/DepositTrash");
 		}
 
 	}
