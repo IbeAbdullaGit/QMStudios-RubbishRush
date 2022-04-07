@@ -32,7 +32,6 @@ void CollectTrashBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Gamepla
 		//std::cout << "Current trash collected: " << _scene->trash << std::endl;
 		activated = true;
 		ui->Get<GuiText>()->IsEnabled = true;
-		CheckTrash();
 		
 	}
 	LOG_INFO("Entered trigger: {}", body->GetGameObject()->Name);
@@ -44,7 +43,7 @@ void CollectTrashBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Gamepla
 	activated = false;
 	ui->Get<GuiText>()->IsEnabled = false;
 }
-void CollectTrashBehaviour::CheckTrash()
+void CollectTrashBehaviour::Update(float deltatime)
 {
 	Application& app = Application::Get();
 	//auto& scene = app.CurrentScene();
