@@ -292,6 +292,7 @@ void TutorialSceneLayer::OnUpdate()
 					//pickupUI->Get<GuiPanel>()->IsEnabled = false;
 					AudioEngine::stopEventS("event:/Sounds/Music/Tutorial/TutorialMusicEvent");
 					AudioEngine::playEventS("event:/Sounds/Music/Loading/LoadingMusicEvent");
+				    AudioEngine::EventPosChangeS("event:/Sounds/Music/Loading/LoadingMusicEvent", 0.0f, 0.f, 1.f);
 					//make loading screen
 					Gameplay::GameObject::Sptr loading = _tutcurrentScene->CreateGameObject("Load");
 					{

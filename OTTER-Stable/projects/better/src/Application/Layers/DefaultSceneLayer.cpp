@@ -174,7 +174,7 @@ void DefaultSceneLayer::OnUpdate()
 	
 	if (!start)
 	{
-
+		AudioEngine::stopEventS("event:/Sounds/Music/Loading/LoadingMusicEvent");
 		if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed)
 		{
 			spressed = true;
@@ -202,7 +202,7 @@ void DefaultSceneLayer::OnUpdate()
 			//startMenu->GetScene()->DeleteGameObject
 			playMenu = true;
 			spressed = false;
-			AudioEngine::stopEventS("event:/Sounds/Music/Loading/LoadingMusicEvent");
+			
 			AudioEngine::playEventS("event:/Sounds/Music/Main/MainMusicEvent");
 
 			_currentScene->FindObjectByName("Inventory UI")->Get<GuiPanel>()->IsEnabled = true;

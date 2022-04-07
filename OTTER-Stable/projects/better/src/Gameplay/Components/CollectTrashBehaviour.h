@@ -47,6 +47,7 @@ public:
 	std::string type = "Normal";
 	bool tutorial = false;
 	bool activated = false;
+	bool full = false;
 
 protected:
 
