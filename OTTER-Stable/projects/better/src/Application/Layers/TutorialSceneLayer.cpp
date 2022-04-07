@@ -198,7 +198,7 @@ void TutorialSceneLayer::OnUpdate()
 			//MENU ANIMATED UPDATED
 			if (_tutcurrentScene->IsPlaying && !done &&!musicstart) {
 				
-				AudioEngine::playEventS("event:/Music Regular");
+				AudioEngine::playEventS("event:/Sounds/Music/Tutorial/TutorialMusicEvent");
 				
 				musicstart = true;
 			}
@@ -290,7 +290,8 @@ void TutorialSceneLayer::OnUpdate()
 
 					//dumpUI->Get<RenderComponent>()->IsEnabled = false;
 					//pickupUI->Get<GuiPanel>()->IsEnabled = false;
-					AudioEngine::stopEventS("event:/Music Regular");
+					AudioEngine::stopEventS("event:/Sounds/Music/Tutorial/TutorialMusicEvent");
+					AudioEngine::playEventS("event:/Sounds/Music/Loading/LoadingMusicEvent");
 					//make loading screen
 					Gameplay::GameObject::Sptr loading = _tutcurrentScene->CreateGameObject("Load");
 					{
@@ -1018,7 +1019,7 @@ void TutorialSceneLayer::_CreateScene()
 				Gameplay::Physics::RigidBody::Sptr wall8Phys = layoutwall8->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall8 = Gameplay::Physics::BoxCollider::Create();
 				wall8->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall8->SetScale(glm::vec3(0.310, 3.50f, 2.02f));
+				wall8->SetScale(glm::vec3(0.310, 5.22f, 2.02f));
 				wall8->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall8Phys->AddCollider(wall8);
 			}

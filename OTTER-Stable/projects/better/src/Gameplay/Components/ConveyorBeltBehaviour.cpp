@@ -3,6 +3,7 @@
 #include "Utils/GlmBulletConversions.h"
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Physics/RigidBody.h"
+#include "Utils/ImGuiHelper.h"
 
 //using namespace Gameplay::Physics;
 ConveyorBeltBehaviour::ConveyorBeltBehaviour() :
@@ -53,7 +54,9 @@ void ConveyorBeltBehaviour::Update(float deltatime)
 	}
 
 }
-void ConveyorBeltBehaviour::RenderImGui() { }
+void ConveyorBeltBehaviour::RenderImGui() {
+	LABEL_LEFT(ImGui::DragFloat, "Speed", &speed, 1.0f);
+}
 
 nlohmann::json ConveyorBeltBehaviour::ToJson() const {
 	return { {"scroll", currentScroll}, {"speed2", speed}, {"visualspeed", visualSpeedScalar} };
