@@ -72,7 +72,7 @@ protected:
 	bool victoryMusicPlayed = false;
 	//Variables for changing stuff in the game
 	float timeLoop = 3.0f; //The seconds between start time and the menu that plays in the beginning
-	float roundTime = 210.f; //The time needed to collect all trash
+	float roundTime = 1000.f; //210.f; //The time needed to collect all trash
 	float timelevelt = roundTime;
 	bool playMenu = true;
 
