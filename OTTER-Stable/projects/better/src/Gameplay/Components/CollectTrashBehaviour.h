@@ -27,12 +27,14 @@ public:
 	//Gameplay::IComponent::Wptr Panel;
 	// Inherited from IComponent
 
-	virtual void OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) override;
-	virtual void OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) override;
+	//virtual void OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) override;
+	virtual void OnEnteredTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>& trigger) override;
+	virtual void OnLeavingTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>& trigger) override;
+	//virtual void OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) override;
 	virtual void Awake() override;
-	//virtual void Update(float deltaTime) override;
+	virtual void Update(float deltaTime) override;
 
-	void CheckTrash();
+	//void CheckTrash();
 
 
 	virtual void RenderImGui() override;
@@ -48,6 +50,8 @@ public:
 	bool activated = false;
 
 protected:
+
+	Guid to_be_deleted;
 
 	RenderComponent::Sptr _renderer;
 	Gameplay::Scene* _scene;

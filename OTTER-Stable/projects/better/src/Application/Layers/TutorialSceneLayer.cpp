@@ -609,6 +609,9 @@ void TutorialSceneLayer::_CreateScene()
 
 			PlayerMovementBehavior::Sptr movement = trashyM->Add<PlayerMovementBehavior>();
 
+			CollectTrashBehaviour::Sptr behaviour3 = trashyM->Add<CollectTrashBehaviour>();
+			behaviour3->tutorial = true;
+
 			//ANIMATION STUFF////
 			MorphMeshRenderer::Sptr morph1 = trashyM->Add<MorphMeshRenderer>();
 			morph1->SetMorphMeshRenderer(trashyMesh, trashyMaterial);
@@ -798,7 +801,7 @@ void TutorialSceneLayer::_CreateScene()
 		//}
 
 		{
-			Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Trash1"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
+			Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Recycling"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
 			{
 				trashM->SetPostion(glm::vec3(8.80f, -8.53f, 0.06f));
 				trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
@@ -824,9 +827,9 @@ void TutorialSceneLayer::_CreateScene()
 				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
 				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
 				volume->AddCollider(box2);
-				CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
+				/*CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
 				behaviour2->type = "Recycle";
-				behaviour2->tutorial = true;
+				behaviour2->tutorial = true;*/
 			}
 
 			/*Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
@@ -856,7 +859,7 @@ void TutorialSceneLayer::_CreateScene()
 				CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
 			}*/
 
-			Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash2");
+			Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash");
 			{
 				trash2->SetPostion(glm::vec3(4.140f, -8.530f, 0.0f));
 				trash2->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
@@ -879,8 +882,8 @@ void TutorialSceneLayer::_CreateScene()
 				box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
 				volume->AddCollider(box2);
 
-				CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
-				behaviour2->tutorial = true;
+				/*CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
+				behaviour2->tutorial = true;*/
 			}
 
 		}
@@ -1565,7 +1568,7 @@ void TutorialSceneLayer::_CreateHallway() {
 		physics->AddCollider(boxCollider);
 	}
 
-	Gameplay::GameObject::Sptr trash3 = _tutcurrentScene->CreateGameObject("Trash3");
+	Gameplay::GameObject::Sptr trash3 = _tutcurrentScene->CreateGameObject("Trash");
 	{
 		trash3->SetPostion(glm::vec3(-10.85f, -15.0f, 0.0f));
 		trash3->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
@@ -1588,8 +1591,7 @@ void TutorialSceneLayer::_CreateHallway() {
 		box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
 		volume->AddCollider(box2);
 
-		CollectTrashBehaviour::Sptr behaviour3 = trash3->Add<CollectTrashBehaviour>();
-		behaviour3->tutorial = true;
+		
 	}
 
 

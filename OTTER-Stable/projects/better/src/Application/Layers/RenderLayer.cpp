@@ -341,7 +341,7 @@ void RenderLayer::_Composite()
 	_outputBuffer->Bind();
 	glViewport(0, 0, _outputBuffer->GetWidth(), _outputBuffer->GetHeight());
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	// Disable blending, we want to override any existing colors
 	glDisable(GL_BLEND);
@@ -394,6 +394,10 @@ void RenderLayer::_ClearFramebuffer(Framebuffer::Sptr & buffer, const glm::vec4 
 
 	// Reset depth test function to default
 	glDepthFunc(GL_LESS);
+
+	glEnable(GL_STENCIL_TEST);
+	glStencilFunc(GL_NOTEQUAL, 1, 0XFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 }
 
 void RenderLayer::OnWindowResize(const glm::ivec2 & oldSize, const glm::ivec2 & newSize)
@@ -530,6 +534,9 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
+	glEnable(GL_STENCIL_TEST);
+	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
 	// Create a new descriptor for our FBO
 	FramebufferDescriptor fboDescriptor;
@@ -538,6 +545,8 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 
 	// We want to use a 32 bit depth buffer, we'll ignore the stencil buffer for now
 	fboDescriptor.RenderTargets[RenderTargetAttachment::Depth] = RenderTargetDescriptor(RenderTargetType::Depth32);
+	//stencil buffer?
+	//fboDescriptor.RenderTargets[RenderTargetAttachment::Stencil] = RenderTargetDescriptor(RenderTargetType::Stencil8);
 	// Color layer 0 (albedo, specular)
 	fboDescriptor.RenderTargets[RenderTargetAttachment::Color0] = RenderTargetDescriptor(RenderTargetType::ColorRgba8);
 	// Color layer 1 (normals, metallic)
@@ -559,6 +568,8 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	// Create an FBO to store final output
 	fboDescriptor.RenderTargets.clear();
 	fboDescriptor.RenderTargets[RenderTargetAttachment::Depth] = RenderTargetDescriptor(RenderTargetType::Depth32);
+	//stencil buffer?
+	//fboDescriptor.RenderTargets[RenderTargetAttachment::Stencil] = RenderTargetDescriptor(RenderTargetType::Stencil8);
 	fboDescriptor.RenderTargets[RenderTargetAttachment::Color0] = RenderTargetDescriptor(RenderTargetType::ColorRgba8);
 
 	_outputBuffer = std::make_shared<Framebuffer>(fboDescriptor);
@@ -597,6 +608,11 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	_shadowShader->LoadShaderPartFromFile("shaders/vertex_shaders/fullscreen_quad.glsl", ShaderPartType::Vertex);
 	_shadowShader->LoadShaderPartFromFile("shaders/fragment_shaders/shadow_composite.glsl", ShaderPartType::Fragment);
 	_shadowShader->Link();
+
+	_outlineShader = ShaderProgram::Create();
+	_outlineShader->LoadShaderPartFromFile("shaders/vertex_shaders/basic.glsl", ShaderPartType::Vertex);
+	_outlineShader->LoadShaderPartFromFile("shaders/fragment_shaders/deferred_forwardTRASH.glsl", ShaderPartType::Fragment);
+	_outlineShader->Link();
 	
 	// We need a mesh for drawing fullscreen quads
 
@@ -689,6 +705,12 @@ void RenderLayer::_InitFrameUniforms()
 
 void RenderLayer::_RenderScene(const glm::mat4& view, const glm::mat4& projection)
 {
+	glEnable(GL_STENCIL_TEST);
+	//glEnable(GL_DEPTH_TEST);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
+	glClear(GL_STENCIL_BUFFER_BIT);
+
 	using namespace Gameplay;
 
 	Application& app = Application::Get();
@@ -739,6 +761,17 @@ void RenderLayer::_RenderScene(const glm::mat4& view, const glm::mat4& projectio
 		// Grab the game object so we can do some stuff with it
 		GameObject* object = renderable->GetGameObject();
 
+		//stencil test stuff
+		if (object->Name == "Trash" || object->Name == "Recycling")
+		{
+			glStencilFunc(GL_ALWAYS, 1, 0xFF);
+			glStencilMask(0xFF);
+		}
+		else //not trash, dont write to stencil buffer
+		{
+			glStencilMask(0x00);
+		}
+
 		// Use our uniform buffer for our instance level uniforms
 		auto& instanceData = _instanceUniforms->GetData();
 		instanceData.u_Model = object->GetTransform();
@@ -749,6 +782,35 @@ void RenderLayer::_RenderScene(const glm::mat4& view, const glm::mat4& projectio
 
 		// Draw the object
 		renderable->GetMesh()->Draw();
+
+		//2nd draw pass if the trash
+		if (object->Name == "Trash" || object->Name == "Recycling")
+		{
+			glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+			glStencilMask(0x00);
+			glDisable(GL_DEPTH_TEST);
+			_outlineShader->Bind(); //use it
+			currentMat->Apply(); //apply uniforms and such
+
+			float scale = 1.2f;
+
+			// Use our uniform buffer for our instance level uniforms
+			auto& instanceData = _instanceUniforms->GetData();
+			instanceData.u_Model = object->GetTransform();
+			//scale model
+			instanceData.u_Model = glm::scale(instanceData.u_Model, glm::vec3(scale));
+			instanceData.u_ModelViewProjection = viewProj * instanceData.u_Model;
+			instanceData.u_ModelView = view * instanceData.u_Model;
+			instanceData.u_NormalMatrix = glm::mat3(glm::transpose(glm::inverse(instanceData.u_Model)));
+			_instanceUniforms->Update();
+
+			// Draw the object
+			renderable->GetMesh()->Draw();
+
+			glStencilMask(0xFF);
+			glStencilFunc(GL_ALWAYS, 0, 0xFF); //1 or 0?
+			glEnable(GL_DEPTH_TEST);
+		}
 
 		});
 

@@ -139,6 +139,8 @@ protected:
 	ShaderProgram::Sptr _SlimeShader;
 	VertexArrayObject::Sptr _fullscreenQuad;
 
+	ShaderProgram::Sptr _outlineShader;
+
 	bool              _blitFbo;
 	glm::vec4         _clearColor;
 	RenderFlags       _renderFlags;

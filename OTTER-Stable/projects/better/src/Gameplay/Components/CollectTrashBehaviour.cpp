@@ -19,9 +19,9 @@ CollectTrashBehaviour::CollectTrashBehaviour() :
 { }
 CollectTrashBehaviour::~CollectTrashBehaviour() = default;
 
-void CollectTrashBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) {
+void CollectTrashBehaviour::OnEnteredTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>& trigger) {
 	//press e to collect, and only collide with trash
-	if (body->GetGameObject()->Name == "Trashy" /* && glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E)*/) {
+	if (trigger->GetGameObject()->Name == "Trash" || trigger->GetGameObject()->Name == "Recycling"  /* && glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E)*/) {
 		
 		////get our scene, delete this line later
 		//_scene = GetGameObject()->GetScene();
@@ -32,25 +32,35 @@ void CollectTrashBehaviour::OnTriggerVolumeEntered(const std::shared_ptr<Gamepla
 		//std::cout << "Current trash collected: " << _scene->trash << std::endl;
 		activated = true;
 		ui->Get<GuiText>()->IsEnabled = true;
-		CheckTrash();
+		if (trigger->GetGameObject()->Name == "Trash")
+		{
+			type = "Normal";
+		}
+		else
+		{
+			type = "Recycling";
+		}
+		to_be_deleted = trigger->GetGameObject()->GetGUID();
+		
 		
 	}
-	LOG_INFO("Entered trigger: {}", body->GetGameObject()->Name);
+	LOG_INFO("Entered trigger: {}", trigger->GetGameObject()->Name);
 }
 
-void CollectTrashBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Gameplay::Physics::RigidBody>& body) {
+void CollectTrashBehaviour::OnLeavingTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>& trigger) {
 	
-	LOG_INFO("Left trigger: {}", body->GetGameObject()->Name);
+	LOG_INFO("Left trigger: {}", trigger->GetGameObject()->Name);
 	activated = false;
 	ui->Get<GuiText>()->IsEnabled = false;
+	to_be_deleted.Clear();
 }
-void CollectTrashBehaviour::CheckTrash()
+void CollectTrashBehaviour::Update(float deltaTime)
 {
 	Application& app = Application::Get();
 	//auto& scene = app.CurrentScene();
 	//ui = scene->FindObjectByName("Pickup Feedback");
 
-	if (activated && GetGameObject() !=nullptr)
+	if (activated && to_be_deleted.isValid())
 	{
 		if (InputEngine::GetKeyState(GLFW_KEY_E) == ButtonState::Pressed)
 		{
@@ -75,7 +85,7 @@ void CollectTrashBehaviour::CheckTrash()
 					return;
 				}
 				//delete trash from scene
-				Gameplay::GameObject::Sptr trash = _scene->FindObjectByName(GetGameObject()->Name);
+				Gameplay::GameObject::Sptr trash = _scene->FindObjectByGUID(to_be_deleted);
 				if (!tutorial)
 				{
 					auto& all_trash = app.GetLayer<DefaultSceneLayer>()->all_trash;
@@ -87,6 +97,7 @@ void CollectTrashBehaviour::CheckTrash()
 					
 				}
 				_scene->RemoveGameObject(trash);
+				//to_be_deleted = nullptr;
 				//total held
 				_scene->held += 1;
 				std::cout << "Current trash collected: " << _scene->held << std::endl;
