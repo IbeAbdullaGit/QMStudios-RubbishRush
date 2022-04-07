@@ -1,6 +1,7 @@
 #pragma once
 #include "IComponent.h"
 #include "Gameplay/Physics/RigidBody.h"
+#include "Application/Timing.h"
 
 /// <summary>
 /// A simple behaviour that applies an impulse along the Z axis to the 
@@ -31,5 +32,7 @@ protected:
 	bool activated = false;
 	bool _isPressed = false;
 	Gameplay::Physics::RigidBody::Sptr _body;
+
+	float jumpResetTimer = Timing::Current().TimeSinceAppLoad();
 	
 };

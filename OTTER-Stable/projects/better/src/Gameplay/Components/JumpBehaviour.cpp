@@ -75,6 +75,13 @@ void JumpBehaviour::Update(float deltaTime) {
 			}*/
 
 			activated = false; //single jump
+			jumpResetTimer = Timing::Current().TimeSinceAppLoad();
+		}
+	}
+	else {
+		if (_body->GetGameObject()->GetPosition().z > 0.107f && (Timing::Current().TimeSinceAppLoad() - jumpResetTimer) >= 4.0f) {
+			activated = true;
+			in_air = false;
 		}
 	}
 }
