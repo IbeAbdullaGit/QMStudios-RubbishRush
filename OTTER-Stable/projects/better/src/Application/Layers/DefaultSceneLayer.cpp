@@ -147,7 +147,6 @@ void DefaultSceneLayer::OnUpdate()
 	if (!activated)
 	{		
 		
-		
 		trashyM = _currentScene->FindObjectByName("Trashy");
 		binM = _currentScene->FindObjectByName("Bin");
 		//limit rotation
@@ -203,6 +202,7 @@ void DefaultSceneLayer::OnUpdate()
 			//startMenu->GetScene()->DeleteGameObject
 			playMenu = true;
 			spressed = false;
+			AudioEngine::stopEventS("event:/Sounds/Music/Loading/LoadingMusicEvent");
 			AudioEngine::playEventS("event:/Sounds/Music/Main/MainMusicEvent");
 
 			_currentScene->FindObjectByName("Inventory UI")->Get<GuiPanel>()->IsEnabled = true;
