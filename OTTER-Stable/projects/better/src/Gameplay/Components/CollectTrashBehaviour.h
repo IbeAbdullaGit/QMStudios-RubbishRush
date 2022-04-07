@@ -36,7 +36,6 @@ public:
 
 	//void CheckTrash();
 
-
 	virtual void RenderImGui() override;
 	virtual nlohmann::json ToJson() const override;
 	static CollectTrashBehaviour::Sptr FromJson(const nlohmann::json& blob);
