@@ -1220,8 +1220,7 @@ void DefaultSceneLayer::_CreateScene()
 			//box2->SetExtents(glm::vec3(0.8, 2.68, 0.83));
 			volume->AddCollider(box2);
 			JumpBehaviour::Sptr behaviour = trashyM->Add<JumpBehaviour>();
-			//CollectTrashBehaviour::Sptr behaviour2 = trashyM->Add<CollectTrashBehaviour>();
-
+			
 			PlayerMovementBehavior::Sptr movement = trashyM->Add<PlayerMovementBehavior>();
 			trashyM->Add<InventoryUI>();
 

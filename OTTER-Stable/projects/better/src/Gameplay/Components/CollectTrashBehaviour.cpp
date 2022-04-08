@@ -21,7 +21,7 @@ CollectTrashBehaviour::~CollectTrashBehaviour() = default;
 
 void CollectTrashBehaviour::OnEnteredTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>& trigger) {
 	//press e to collect, and only collide with trash
-	if (trigger->GetGameObject()->Name == "Trash" || trigger->GetGameObject()->Name == "Recycling"  /* && glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E)*/) {
+	if (trigger->GetGameObject()->Name == "Trash" || trigger->GetGameObject()->Name == "Recycling" && _scene->held != inventory  /* && glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E)*/) {
 		
 		////get our scene, delete this line later
 		//_scene = GetGameObject()->GetScene();
@@ -49,10 +49,13 @@ void CollectTrashBehaviour::OnEnteredTrigger(const std::shared_ptr<Gameplay::Phy
 
 void CollectTrashBehaviour::OnLeavingTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>& trigger) {
 	
+	if (trigger->GetGameObject()->Name == "Trash" || trigger->GetGameObject()->Name == "Recycling")
+	{
+		activated = false;
+		ui->Get<GuiText>()->IsEnabled = false;
+		to_be_deleted.Clear();
+	}
 	LOG_INFO("Left trigger: {}", trigger->GetGameObject()->Name);
-	activated = false;
-	ui->Get<GuiText>()->IsEnabled = false;
-	to_be_deleted.Clear();
 }
 void CollectTrashBehaviour::Update(float deltaTime)
 {
@@ -97,7 +100,7 @@ void CollectTrashBehaviour::Update(float deltaTime)
 					
 				}
 				_scene->RemoveGameObject(trash);
-				//to_be_deleted = nullptr;
+				to_be_deleted.Clear();
 				//total held
 				_scene->held += 1;
 				std::cout << "Current trash collected: " << _scene->held << std::endl;
