@@ -56,6 +56,9 @@ void SubmittingTrashBehaviour::OnTriggerVolumeLeaving(const std::shared_ptr<Game
 	}
 	ui->Get<GuiText>()->IsEnabled = false;
 }
+void SubmittingTrashBehaviour::OnLeavingTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>& trigger)
+{
+}
 void SubmittingTrashBehaviour::Update(float deltatime)
 {
 	Application& app = Application::Get();
