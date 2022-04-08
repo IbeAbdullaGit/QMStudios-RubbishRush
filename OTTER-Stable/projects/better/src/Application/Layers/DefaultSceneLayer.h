@@ -85,6 +85,8 @@ protected:
 	int inventory = 4; //DEFAULT INVENTORY COUNT
 	int max_trash = 15; //DEFAULT FOR NOW
 
+	bool highscoreloop = false;
+
 	bool press_once = false;
 
 	//save trash resources
