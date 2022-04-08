@@ -110,12 +110,12 @@ void CollectTrashBehaviour::Update(float deltaTime)
 
 			}
 			if (_scene->held == inventory && full){
-				AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashyFull");
+				AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
 			}
 		}
 
 		if (_scene->held == inventory && !full) {
-			AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
+			AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashyFull");
 			full = true;
 		}
 
