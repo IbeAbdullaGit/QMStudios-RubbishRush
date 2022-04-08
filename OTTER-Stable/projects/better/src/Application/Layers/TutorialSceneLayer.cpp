@@ -245,7 +245,7 @@ void TutorialSceneLayer::OnUpdate()
 				if (hallwayLoaded)
 				{
 					//dialogue
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 2.5f && !play4)
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 2.5f && Timing::Current().TimeSinceAppLoad() - currentTime <= 7.5f && !play4 && play3)
 					{
 						std::cout << "ok";
 						play4 = true;
