@@ -233,34 +233,36 @@ void TutorialSceneLayer::OnUpdate()
 
 			if (_tutcurrentScene->IsPlaying && !done)
 			{
-				if (_tutcurrentScene->score == 2 && hallwayLoaded == false) {
+				if (_tutcurrentScene->score == 2 && hallwayLoaded == false && play3 == false) {
 					hallwayLoaded = true;
 					_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Top Right Barrier"));
 					dumpUI->Get<GuiPanel>()->IsEnabled = false;
 					dialogue3->Get<GuiPanel>()->IsEnabled = true;
-					play3 = true;
+					AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3 (Remember blue)");
 					currentTime = Timing::Current().TimeSinceAppLoad();
 					_CreateHallway(); //Create the second part of the level
 				}
 				if (hallwayLoaded)
 				{
 					//dialogue
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 2.5f && Timing::Current().TimeSinceAppLoad() - currentTime <= 7.5f && !play4 && play3)
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 6.5f && play4 == false)
 					{
 						std::cout << "ok";
 						play4 = true;
 						dialogue3->Get<GuiPanel>()->IsEnabled = false;
 						dialogue4->Get<GuiPanel>()->IsEnabled = true;
+						AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4 (Bothering)");
 						currentTime = Timing::Current().TimeSinceAppLoad();
 					}
 					
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 4.f && play4)
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 6.f && play4 == true && play5 == false)
 					{
 						dialogue4->Get<GuiPanel>()->IsEnabled = false;
 						dialogue5->Get<GuiPanel>()->IsEnabled = true;
 						play5 = true;
+						AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5 (Stuck)");
 					}
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 7.0f && play5) {
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 9.0f && play5) {
 						dialogue5->Get<GuiPanel>()->IsEnabled = false;
 					}
 					
@@ -349,20 +351,25 @@ void TutorialSceneLayer::OnUpdate()
 
 
 			//dialogue 1
-			if (trashyM->GetPosition().y >= -2.5f)
+			if (trashyM->GetPosition().y >= -2.5f && _tutcurrentScene->score == 0 && diag1 == false)
 			{
 				dialogue1->Get<GuiPanel>()->IsEnabled = true;
+				AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1 (Intro)");
+				diag1 = true;
 			}
-			else if (trashyM->GetPosition().y <= -4.0f)
+			else if (trashyM->GetPosition().y <= -4.0f )
 			{
 				dialogue1->Get<GuiPanel>()->IsEnabled = false;
+				AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1 (Intro)");
 			}
 
-			if (trashyM->GetPosition().y < -5.0f   &&  (_tutcurrentScene->held < 1) && hasCollected == false) { //Pick up Trash tutorial stuff
+			if (trashyM->GetPosition().y < -5.0f &&  (_tutcurrentScene->held == 0) && hasCollected == false && diag2 == false) { //Pick up Trash tutorial stuff
 				
 				if(!hallwayLoaded){
 					pickupUI->Get<GuiPanel>()->IsEnabled = true;
 					dialogue2->Get<GuiPanel>()->IsEnabled = true;
+					diag2 = true;
+					AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice2 (Youre a natural)");
 				}
 				
 			}

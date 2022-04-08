@@ -57,6 +57,9 @@ protected:
 	bool play4 = false;
 	bool play5 = false;
 
+	bool diag1 = false;
+	bool diag2 = false;
+
 	
 	bool hasMoved = false;
 	bool hasCollected = false;
