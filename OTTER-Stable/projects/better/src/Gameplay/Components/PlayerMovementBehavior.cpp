@@ -79,7 +79,7 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 	//input = false;
 	if (in_spill)
 	{
-		_impulse = _impulse / 1.65f;
+		_impulse = abs(_impulse - .8f);
 		app.GetLayer<PostProcessingLayer>()->SetSlime(true);
 	}
 	else

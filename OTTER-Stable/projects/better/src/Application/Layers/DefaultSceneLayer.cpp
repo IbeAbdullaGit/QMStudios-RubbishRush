@@ -4402,7 +4402,7 @@ void DefaultSceneLayer::_CreateScene()
 			transform->SetSize(glm::vec2(25.f, 40.f));
 
 			GuiPanel::Sptr invPanel = inventoryUI->Add<GuiPanel>();
-			//invPanel->IsEnabled = false;
+			invPanel->IsEnabled = false;
 
 		}
 

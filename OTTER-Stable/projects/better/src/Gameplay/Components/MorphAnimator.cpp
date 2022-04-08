@@ -78,6 +78,7 @@ void MorphAnimator::Update(float deltaTime)
 			_scene->walk = true;
 			//skip
 		}
+		//Check if they're pressing any button that makes them walk (because the old method caused it to bug out a lil
 		else if (glfwGetKey(app.GetWindow(), GLFW_KEY_W) || glfwGetKey(app.GetWindow(), GLFW_KEY_A) || glfwGetKey(app.GetWindow(), GLFW_KEY_S) || glfwGetKey(app.GetWindow(), GLFW_KEY_D) || 
 			glfwGetKey(app.GetWindow(), GLFW_KEY_UP) || glfwGetKey(app.GetWindow(), GLFW_KEY_DOWN) || glfwGetKey(app.GetWindow(), GLFW_KEY_LEFT) || glfwGetKey(app.GetWindow(), GLFW_KEY_RIGHT)) //normal walking
 		{

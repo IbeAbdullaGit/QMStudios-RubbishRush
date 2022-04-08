@@ -121,9 +121,7 @@ void TutorialSceneLayer::OnSceneUnload()
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Top Right"));
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Top Left"));
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Bin"));
-	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Feedback UI"));
-	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Pickup Feedback"));
-	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Submit Feedback"));
+	
 
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Load"));
 
@@ -132,11 +130,7 @@ void TutorialSceneLayer::OnSceneUnload()
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Bench3"));
 	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Bench5"));
 
-	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 1"));
-	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 2"));
-	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 3"));
-	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 4"));
-	_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 5"));
+	
 	
 }
 
@@ -156,6 +150,23 @@ void TutorialSceneLayer::OnUpdate()
 		//put this at the top to create a delay affect, creates time for the loading screen to render
 		if (done) //LOAD NEXT SCENE
 		{
+			_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 1"));
+			_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 2"));
+			_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 3"));
+			_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 4"));
+			_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dialogue 5"));
+
+			_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Feedback UI"));
+			_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Pickup Feedback"));
+			_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Submit Feedback"));
+
+			_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Walk Tutorial UI"));
+			_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Jump Tutorial UI"));
+			_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Pickup Trash Tutorial UI"));
+			_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Dump Tutorial UI"));
+			_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Spill Tutorial UI"));
+
+
 			_tutcurrentScene->should_switch = true; //maybe add some delay here
 			//studio.~FMODStudio();
 		}
