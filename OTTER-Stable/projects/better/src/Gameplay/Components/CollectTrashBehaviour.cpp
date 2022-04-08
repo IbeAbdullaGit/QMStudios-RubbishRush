@@ -105,20 +105,20 @@ void CollectTrashBehaviour::Update(float deltaTime)
 				activated = false;
 				ui->Get<GuiText>()->IsEnabled = false;
 
-			}	
+			}
+			if (_scene->held == inventory && full){
+				AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashyFull");
+			}
 		}
 
 		if (_scene->held == inventory && !full) {
 			AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashyFull");
 			full = true;
-
-			
 		}
 
 		if (InputEngine::GetKeyState(GLFW_KEY_E) == ButtonState::Pressed && full)
 		{
 			std::cout << "We're already holding a recycle item\n";
-			AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
 		}
 		/*Gameplay::IComponent::Sptr ptr = Panel.lock();
 		if (ptr != nullptr)

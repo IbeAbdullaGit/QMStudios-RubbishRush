@@ -183,27 +183,27 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 	//Rotate when the key is pressed
 
 	//Rotate when the key is pressed
-	if (InputEngine::GetKeyState(GLFW_KEY_W) == ButtonState::Down || InputEngine::GetKeyState(GLFW_KEY_UP) == ButtonState::Down) {
+	if (InputEngine::GetKeyState(GLFW_KEY_W) == ButtonState::Down) {
 		currentRotation = GetGameObject()->GetRotation();
 		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 180.0f)));
 		currentRotation = glm::slerp(currentRotation, targetRotation, turnspeed * deltaTime);
 		GetGameObject()->SetRotation(currentRotation);
 
 	}
-	if (InputEngine::GetKeyState(GLFW_KEY_A) == ButtonState::Down || InputEngine::GetKeyState(GLFW_KEY_LEFT) == ButtonState::Down) {
+	if (InputEngine::GetKeyState(GLFW_KEY_A) == ButtonState::Down) {
 		currentRotation = GetGameObject()->GetRotation();
 		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 270.0f)));
 		currentRotation = glm::slerp(currentRotation, targetRotation, turnspeed * deltaTime);
 		GetGameObject()->SetRotation(currentRotation);
 	}
 
-	if (InputEngine::GetKeyState(GLFW_KEY_S) == ButtonState::Down || InputEngine::GetKeyState(GLFW_KEY_DOWN) == ButtonState::Down) {
+	if (InputEngine::GetKeyState(GLFW_KEY_S) == ButtonState::Down) {
 		currentRotation = GetGameObject()->GetRotation();
 		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 0.0f)));
 		currentRotation = glm::slerp(currentRotation, targetRotation, turnspeed * deltaTime);
 		GetGameObject()->SetRotation(currentRotation);
 	}
-	if (InputEngine::GetKeyState(GLFW_KEY_D) == ButtonState::Down || InputEngine::GetKeyState(GLFW_KEY_RIGHT) == ButtonState::Down) {
+	if (InputEngine::GetKeyState(GLFW_KEY_D) == ButtonState::Down) {
 		currentRotation = GetGameObject()->GetRotation();
 		targetRotation = glm::quat(glm::radians(glm::vec3(90.0f, 0.0f, 90.0f)));
 		currentRotation = glm::slerp(currentRotation, targetRotation, turnspeed * deltaTime);
