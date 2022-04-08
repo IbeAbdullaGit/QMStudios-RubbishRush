@@ -333,7 +333,7 @@ void DefaultSceneLayer::OnUpdate()
 		{
 			if (lose)
 			{
-				if (highscoreloop = false)
+				if (highscoreloop == false)
 				{
 					int numberoftrashcollected = _currentScene->score;
 					int time = timelevelt;
@@ -457,7 +457,7 @@ void DefaultSceneLayer::OnUpdate()
 					victoryMusicPlayed = true;
 				}
 
-				if (highscoreloop = false)
+				if (highscoreloop == false)
 				{
 					int numberoftrashcollected = _currentScene->score;
 					int time = timelevelt;
