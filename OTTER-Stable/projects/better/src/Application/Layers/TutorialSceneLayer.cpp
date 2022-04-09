@@ -736,7 +736,7 @@ void TutorialSceneLayer::_CreateScene()
 			//renderer->SetMaterial(planeMaterial);
 
 			// Attach a plane collider that extends infinitely along the X/Y axis
-			Gameplay::Physics::RigidBody::Sptr physics = plane->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::RigidBody::Sptr physics = plane->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
 			box->SetScale(glm::vec3(50.0f, -0.12f, 50.0f));

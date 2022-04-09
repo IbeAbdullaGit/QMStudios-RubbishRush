@@ -98,9 +98,9 @@ namespace Gameplay {
 			union {
 				// A space to store non-array values, can store up to a dmat4
 				uint8_t        Value[128];
-
+				
 				// A space to store arrays of values
-				void* ArrayBlock = nullptr;
+				void*          ArrayBlock = nullptr;
 
 				// For when the uniform is a texture
 				ITexture::Sptr TextureAsset;
@@ -111,14 +111,14 @@ namespace Gameplay {
 
 			// The type of uniform
 			ShaderDataType Type = ShaderDataType::None;
-
+			
 			UniformData() :
 				Name("<unknown>"),
 				Location(-2),
 				TextureAsset(nullptr),
 				ArraySize(0),
 				BindingSlot(-1),
-				Type(ShaderDataType::None)
+				Type(ShaderDataType::None) 
 			{ }
 			UniformData(const UniformData& other);
 			UniformData(UniformData&& other);
@@ -148,8 +148,7 @@ namespace Gameplay {
 				LOG_ASSERT(tType == Type, "Type mismatch");
 				if constexpr (std::is_base_of<ITexture, T>::value) {
 					return TextureAsset;
-				}
-				else {
+				} else {
 					return *reinterpret_cast<T*>(Value);
 				}
 			}
@@ -166,7 +165,7 @@ namespace Gameplay {
 				return GetShaderDataTypeCode(Type) == ShaderDataTypecode::Texture;
 			}
 		};
-
+	
 		/// <summary>
 		/// The shader that the material is using
 		/// </summary>

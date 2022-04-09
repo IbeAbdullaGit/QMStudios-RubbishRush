@@ -16,7 +16,7 @@
 #include "Gameplay/Physics/Colliders/ConvexMeshCollider.h"
 
 namespace Gameplay::Physics {
-	const char* ColliderTypeComboNames = "Plane\0Box\0Sphere\0Capsule\0Cone\0Cylinder\0Convex Mesh\0Concave Mesh\0Terrain\0";
+	const char* ColliderTypeComboNames = "Plane\0Box\0Sphere\0Capsule\0Cone\0Cylinder\0Convex Mesh\0\0Concave Mesh\0Terrain\0";
 
 	ICollider::ICollider(ColliderType type) :
 		_type(type),

@@ -34,6 +34,11 @@ void HierarchyWindow::Render()
 
 void HierarchyWindow::_RenderObjectNode(Gameplay::GameObject::Sptr object, int depth) {
 	using namespace Gameplay;
+	if (object == nullptr) {
+		return;
+	}
+
+	object->_PurgeDeletedChildren();
 
 	if (object->HideInHierarchy) {
 		return;
@@ -45,13 +50,13 @@ void HierarchyWindow::_RenderObjectNode(Gameplay::GameObject::Sptr object, int d
 	}
 
 	Application& app = Application::Get();
-	Gameplay::Scene::Sptr& scene = app.CurrentScene();
+	Scene::Sptr& scene = app.CurrentScene();
 
 	ImGui::PushID(object->GetGUID().str().c_str());
 
 	// Figure out how the object node should be displayed
 	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
-	Gameplay::GameObject::Sptr selectedObject = app.EditorState.SelectedObject.lock();
+	GameObject::Sptr selectedObject = app.EditorState.SelectedObject.lock();
 
 	if (selectedObject != nullptr && selectedObject == object) {
 		flags |= ImGuiTreeNodeFlags_Selected;
@@ -62,11 +67,11 @@ void HierarchyWindow::_RenderObjectNode(Gameplay::GameObject::Sptr object, int d
 		rot = glm::mat3(object->GetTransform());
 
 		glm::vec3 forward = glm::normalize(rot * glm::vec3(1.0f, 0.0f, 0.0f));
-		glm::vec3 right = glm::normalize(rot * glm::vec3(0.0f, 1.0f, 0.0f));
-		glm::vec3 up = glm::normalize(rot * glm::vec3(0.0f, 0.0f, 1.0f));
+		glm::vec3 right   = glm::normalize(rot * glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::vec3 up      = glm::normalize(rot * glm::vec3(0.0f, 0.0f, 1.0f));
 
 		DebugDrawer::Get().DrawLine(
-			object->GetWorldPosition(),
+			object->GetWorldPosition(), 
 			object->GetWorldPosition() + (glm::vec3)forward,
 			glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)
 		);

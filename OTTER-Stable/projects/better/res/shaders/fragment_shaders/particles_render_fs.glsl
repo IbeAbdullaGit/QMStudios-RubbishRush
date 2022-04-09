@@ -1,25 +1,17 @@
 #version 450
 
 layout (location = 0) in vec4 fragColor;
-layout (location = 1) in flat uint outType;
-layout (location = 2) in vec3 viewPos;
+layout (location = 1) in vec2 inUv;
+layout (location = 2) in flat uint inTexId;
 
-layout(location = 0) out vec4 albedo_specPower;
-layout(location = 1) out vec4 normal_metallic;
-layout(location = 2) out vec4 emissive;
-layout(location = 3) out vec3 view_pos;
+layout(location = 0) out vec4 outColor;
 
-#define TYPE_EMITTER 0
-#define TYPE_PARTICLE 1
+uniform layout(location = 0) sampler2DArray s_Textures;
 
 void main() { 
-	if (outType == TYPE_EMITTER) {
+	outColor = fragColor * texture(s_Textures, vec3(inUv, inTexId));
+	if (outColor.a < 0.5) {
 		discard;
 	}
-
-	albedo_specPower = fragColor;
-	normal_metallic = vec4(0.5, 0.5, 1, 0);
-	emissive = vec4(0);
-	view_pos = viewPos;
 }
 

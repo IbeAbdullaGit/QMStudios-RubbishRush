@@ -151,27 +151,9 @@ namespace Gameplay {
 		void Update(float dt);
 
 		/// <summary>
-		/// Performs setup before rendering
-		/// </summary>
-		void PreRender();
-
-		/// <summary>
 		/// Draws all GUI objects in the scene
 		/// </summary>
 		void RenderGUI();
-
-		/// <summary>
-		/// Handles setting the shader uniforms for our light structure in our array of lights
-		/// </summary>
-		/// <param name="shader">The pointer to the shader</param>
-		/// <param name="uniformName">The name of the uniform (ex: u_Lights)</param>
-		/// <param name="index">The index of the light to set</param>
-		/// <param name="light">The light data to copy over</param>
-		void SetShaderLight(int index, bool update = true);
-		/// <summary>
-		/// Creates the shader and sets up all the lights
-		/// </summary>
-		void SetupShaderAndLights();
 
 		/// <summary>
 		/// Draws ImGui stuff for all gameobjects in the scene
@@ -269,36 +251,6 @@ namespace Gameplay {
 
 		glm::vec3                     _ambientLight;
 
-		/// <summary>
-		/// Represents a c++ struct layout that matches that of
-		/// our multiple light uniform buffer
-		/// 
-		/// Note that we have to do some weirdness since OpenGl has a
-		/// thing for packing structures to sizeof(vec4)
-		/// </summary>
-		//struct LightingUboStruct {
-		//	struct Light {
-		//		// This lets us continue to access Position as a vec3, but also allocates space for the
-		//		// pack at the end (since objects are vec4 aligned)
-		//		union {
-		//			glm::vec3 Position;
-		//			glm::vec4 Position4;
-		//		};
-		//		// Since these are tightly packed, will match the vec4 in light
-		//		glm::vec3 Color;
-		//		float     Attenuation;
-		//	};
-
-		//	// Since these are tightly packed, will match the vec4 in the UBO
-		//	glm::vec3 AmbientCol;
-		//	float     NumLights;
-
-		//	Light     Lights[MAX_LIGHTS];
-		//	// NOTE: our shaders expect a mat3, but due to the STD140 layout, each column of the
-		//	// vec3 needs to be padded to the size of a vec4, hence the use of a mat4 here
-		//	glm::mat4 EnvironmentRotation;
-		//};
-		//UniformBuffer<LightingUboStruct>::Sptr _lightingUbo;
 
 		bool                       _isAwake;
 

@@ -5,14 +5,14 @@
 
 
 RenderComponent::RenderComponent(const Gameplay::MeshResource::Sptr& mesh, const Gameplay::Material::Sptr& material) :
-	_mesh(mesh),
-	_material(material),
-	_meshBuilderParams(std::vector<MeshBuilderParam>())
+	_mesh(mesh), 
+	_material(material), 
+	_meshBuilderParams(std::vector<MeshBuilderParam>()) 
 { }
 
-RenderComponent::RenderComponent() :
-	_mesh(nullptr),
-	_material(nullptr),
+RenderComponent::RenderComponent() : 
+	_mesh(nullptr), 
+	_material(nullptr), 
 	_meshBuilderParams(std::vector<MeshBuilderParam>())
 { }
 

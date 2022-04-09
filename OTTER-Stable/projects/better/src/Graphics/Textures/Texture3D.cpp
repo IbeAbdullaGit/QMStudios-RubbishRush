@@ -12,7 +12,7 @@ inline int CalcRequiredMipLevels(int width, int height, int depth) {
 	return (1 + floor(log2(std::max(width, std::max(height, depth)))));
 }
 
-Texture3D::Texture3D(const std::string& filePath) :
+Texture3D::Texture3D(const std::string& filePath) : 
 	ITexture(TextureType::_3D),
 	_description(Texture3DDescription()),
 	_pixelType(PixelType::Unknown)
@@ -61,7 +61,7 @@ void Texture3D::LoadData(uint32_t width, uint32_t height, uint32_t depth, PixelF
 
 	// If requested, generate mip-maps for our texture
 	if (_description.GenerateMipMaps) {
-		glGenerateTextureMipmap(_rendererId);
+		glGenerateTextureMipmap(_rendererId); 
 	}
 }
 
@@ -102,13 +102,13 @@ Texture3D::Sptr Texture3D::FromJson(const nlohmann::json& data)
 	Texture3DDescription description = Texture3DDescription();
 	description.Filename = JsonGet<std::string>(data, "filename", "");
 
-	description.Width = JsonGet(data, "size_x", description.Width);
+	description.Width  = JsonGet(data, "size_x", description.Width);
 	description.Height = JsonGet(data, "size_y", description.Height);
-	description.Depth = JsonGet(data, "size_z", description.Depth);
+	description.Depth  = JsonGet(data, "size_z", description.Depth);
 
-	description.WrapS = JsonParseEnum(WrapMode, data, "wrap_s", description.WrapS);
-	description.WrapT = JsonParseEnum(WrapMode, data, "wrap_t", description.WrapT);
-	description.WrapR = JsonParseEnum(WrapMode, data, "wrap_r", description.WrapR);
+	description.WrapS  = JsonParseEnum(WrapMode, data, "wrap_s", description.WrapS);
+	description.WrapT  = JsonParseEnum(WrapMode, data, "wrap_t", description.WrapT);
+	description.WrapR  = JsonParseEnum(WrapMode, data, "wrap_r", description.WrapR);
 
 	description.MinificationFilter = JsonParseEnum(MinFilter, data, "filter_min", MinFilter::NearestMipNearest);
 	description.MagnificationFilter = JsonParseEnum(MagFilter, data, "filter_mag", MagFilter::Linear);
@@ -159,7 +159,7 @@ void Texture3D::_LoadCubeFile()
 	glm::u8vec3* textureData = nullptr;
 	uint32_t lutSize{ 0 };
 	uint32_t ix{ 0 };
-	glm::vec3 rgb{ 0, 0, 0 };
+	glm::vec3 rgb { 0, 0, 0 };
 
 	std::string line;
 	// Iterate as long as we have lines from the file
@@ -193,7 +193,7 @@ void Texture3D::_LoadCubeFile()
 				// If we had data already, delete it
 				if (textureData != nullptr) {
 					delete[] textureData;
-				}
+				} 
 
 				// Allocate data to store texels in
 				textureData = new glm::u8vec3[(size_t)lutSize * lutSize * lutSize];
@@ -215,16 +215,13 @@ void Texture3D::_LoadCubeFile()
 		}
 
 		else if (line.find("DOMAIN_MIN") != std::string::npos)
-		{ /* ignore for now */
-		}
+		{ /* ignore for now */ }
 
 		else if (line.find("DOMAIN_MAX") != std::string::npos)
-		{ /* ignore for now */
-		}
+		{ /* ignore for now */ }
 
 		else if (line.find("LUT_1D_SIZE") != std::string::npos)
-		{ /* ignore for now */
-		}
+		{ /* ignore for now */ }
 
 		// Reading data lines
 		else if (!line.empty() && textureData != nullptr) {
@@ -248,7 +245,7 @@ void Texture3D::_LoadCubeFile()
 			// Move to the next texel
 			ix++;
 		}
-	}
+	} 
 
 	if (textureData != nullptr) {
 		// Set the pixel format

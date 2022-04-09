@@ -15,6 +15,7 @@
 #include "PostProcessing/Pixelate.h"
 #include "PostProcessing/RimLightEffect.h"
 #include "PostProcessing/NightVision.h"
+#include "PostProcessing/DepthOfField.h"
 
 
 PostProcessingLayer::PostProcessingLayer() :
@@ -49,6 +50,7 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	_effects.push_back(std::make_shared<SlimeVignette>());
 	//_effects.push_back(std::make_shared<NightVision>());
 	//pl
+	//_effects.push_back(std::make_shared<DepthOfField>());
 	_effects[2]->Enabled = false;
 
 	Application& app = Application::Get();
@@ -123,7 +125,7 @@ void PostProcessingLayer::OnPostRender()
 			current->BindAttachment(RenderTargetAttachment::Color0, 0);
 
 			// Apply the effect and render the fullscreen quad
-			effect->Apply(gBuffer, _quadVAO);
+			effect->Apply(gBuffer);
 			_quadVAO->Draw();
 
 			// Unbind output and set it as input for next pass
@@ -148,7 +150,15 @@ void PostProcessingLayer::OnPostRender()
 		MagFilter::Linear
 	);
 
-	current->Unbind();
+	gBuffer->Bind(FramebufferBinding::Read);
+	current->Blit(
+		{ 0, 0, gBuffer->GetWidth(), gBuffer->GetHeight() },
+		{ viewport.x, viewport.y, viewport.x + viewport.z, viewport.y + viewport.w },
+		BufferFlags::Depth,
+		MagFilter::Nearest
+	);
+
+	gBuffer->Unbind();
 }
 
 void PostProcessingLayer::OnSceneLoad()

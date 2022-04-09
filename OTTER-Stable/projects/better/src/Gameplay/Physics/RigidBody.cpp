@@ -77,7 +77,7 @@ namespace Gameplay::Physics {
 		_linearVelocityDirty = true;
 	}
 
-	const glm::vec3& RigidBody::GetLinearVelocity() const {
+	glm::vec3 RigidBody::GetLinearVelocity() const {
 		return ToGlm(_linearVelocity);
 	}
 
@@ -134,15 +134,18 @@ namespace Gameplay::Physics {
 			// Set appropriate flags
 			if (_type == RigidBodyType::Kinematic) {
 				_body->setCollisionFlags(flags | btCollisionObject::CF_KINEMATIC_OBJECT);
+				_body->setActivationState(WANTS_DEACTIVATION);
 			}
 			// If the object is static, disable it's gravity and notify bullet
 			else if (_type == RigidBodyType::Static) {
 				_body->setCollisionFlags(flags | btCollisionObject::CF_KINEMATIC_OBJECT);
+				_body->setActivationState(DISABLE_DEACTIVATION);
 				_body->setGravity(btVector3(0.0f, 0.0f, 0.0f));
 			} else {
 				// If dynamic, we need to restore gravity from the scene
 				_body->setCollisionFlags(flags);
 				_body->setGravity(_scene->GetPhysicsWorld()->getGravity());
+				_body->setActivationState(WANTS_DEACTIVATION);
 			}
 		}
 	}
@@ -164,14 +167,14 @@ namespace Gameplay::Physics {
 				_body->setWorldTransform(transform);
 			} else {
 				// Kinematics prefer to be driven my motion state for some reason :|
-				_body->getMotionState()->setWorldTransform(transform);
+				_body->getMotionState()->setWorldTransform(transform); 
 			}
 		}
 	}
 
 	void RigidBody::PhysicsPostStep(float dt) {
 		// Kinematics are driven externally and statics don't move, so only need to get data out for dynamics!
-		if (_type == RigidBodyType::Dynamic) {
+		if (_type == RigidBodyType::Dynamic && _body->isActive()) {
 			btTransform transform = _body->getWorldTransform();
 			_CopyGameobjectTransformFrom(transform);
 
@@ -231,7 +234,12 @@ namespace Gameplay::Physics {
 			_body->setCollisionFlags(_body->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
 		}
 	
-		_body->setActivationState(DISABLE_DEACTIVATION);
+		if (_type == RigidBodyType::Static) {
+			_body->setActivationState(DISABLE_DEACTIVATION);
+		}
+
+		_body->setFriction(1.0f);
+
 
 		// Copy over group and mask info
 		_body->getBroadphaseProxy()->m_collisionFilterGroup = _collisionGroup;
@@ -241,6 +249,22 @@ namespace Gameplay::Physics {
 	void RigidBody::RenderImGui()
 	{
 		_isMassDirty |= LABEL_LEFT(ImGui::DragFloat, "Mass", &_mass, 0.1f, 0.0f);
+		if (LABEL_LEFT(ImGui::BeginCombo, "Type", (~_type).c_str())) {
+			bool selected = _type == RigidBodyType::Static;
+			if (ImGui::Selectable("Static", &selected)) {
+				SetType(RigidBodyType::Static);
+			}
+			selected = _type == RigidBodyType::Dynamic;
+			if (ImGui::Selectable("Dynamic", &selected)) {
+				SetType(RigidBodyType::Dynamic);
+			}
+			selected = _type == RigidBodyType::Kinematic;
+			if (ImGui::Selectable("Kinematic", &selected)) {
+				SetType(RigidBodyType::Kinematic);
+			}
+
+			ImGui::EndCombo();
+		}
 		_RenderImGuiBase();
 	}
 

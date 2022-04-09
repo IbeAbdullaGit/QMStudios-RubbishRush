@@ -118,5 +118,6 @@ GuiText::Sptr GuiText::FromJson(const nlohmann::json& blob) {
 	result->_textScale = JsonGet(blob, "scale", 1.0f);
 	result->_text      = JsonGet<std::wstring>(blob, "text", LR"()");
 	result->_font      = ResourceManager::Get<Font>(Guid(JsonGet<std::string>(blob, "font", "null")));
+	result->SetFont(result->_font);
 	return result;
 }

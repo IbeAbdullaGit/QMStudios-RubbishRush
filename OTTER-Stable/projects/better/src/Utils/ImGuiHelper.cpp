@@ -18,6 +18,7 @@
 GLFWwindow* ImGuiHelper::_window = nullptr;
 
 ShaderProgram::Sptr ImGuiHelper::_linearDepthShader = nullptr;
+ShaderProgram::Sptr ImGuiHelper::_arraySliceShader = nullptr;
 
 bool CheckboxEx(ImGuiID id, ImVec2 pos, bool* value) {
 	ImGuiWindow* window = ImGui::GetCurrentWindow();
@@ -80,7 +81,7 @@ void ImGuiHelper::Init(GLFWwindow* window) {
 
 	_linearDepthShader = ShaderProgram::Create();
 	_linearDepthShader->LoadShaderPartFromFile("shaders/vertex_shaders/imgui_vs.glsl", ShaderPartType::Vertex);
-	const char* fs =
+	const char* fs = 
 		"#version 450\n"
 		"in vec2 Frag_UV;\n"
 		"in vec4 Frag_Color;\n"
@@ -89,13 +90,29 @@ void ImGuiHelper::Init(GLFWwindow* window) {
 		"layout (location = 0) out vec4 Out_Color;\n"
 		"void main()\n"
 		"{\n"
-		"	float ndc = texture(Texture, Frag_UV.st).r * 2.0 - 1.0;\n"
+		"	float ndc = texelFetch(Texture, ivec2(textureSize(Texture, 9) * Frag_UV.st), 0).r * 2.0 - 1.0;\n"
 		"   float depth = (2 * DepthPlanes.x * DepthPlanes.y) / (DepthPlanes.y + DepthPlanes.x - ndc * (DepthPlanes.y - DepthPlanes.x));\n"
 		"   depth = (depth - DepthPlanes.x) / (DepthPlanes.y - DepthPlanes.x);\n"
 		"   Out_Color = vec4(depth, depth, depth, 1.0);\n"
 		"}\n";
 	_linearDepthShader->LoadShaderPart(fs, ShaderPartType::Fragment);
 	_linearDepthShader->Link();
+
+	_arraySliceShader = ShaderProgram::Create();
+	_arraySliceShader->LoadShaderPartFromFile("shaders/vertex_shaders/imgui_vs.glsl", ShaderPartType::Vertex);
+	const char* fs2 =
+		"#version 450\n"
+		"in vec2 Frag_UV;\n"
+		"in vec4 Frag_Color;\n"
+		"layout (binding = 1) uniform sampler2DArray Texture;\n"
+		"layout (location = 1) uniform uint Slice;\n"
+		"layout (location = 0) out vec4 Out_Color;\n"
+		"void main()\n"
+		"{\n"
+		"   Out_Color = texture(Texture, vec3(Frag_UV, Slice));\n"
+		"}\n";
+	_arraySliceShader->LoadShaderPart(fs2, ShaderPartType::Fragment);
+	_arraySliceShader->Link();
 }
 
 void ImGuiHelper::Cleanup() {
@@ -144,6 +161,53 @@ void ImGuiHelper::HeaderCheckbox(ImGuiID headerId, bool* value)
 	last_item_backup.Restore();
 }
 
+bool VertArrowEx(ImGuiID id, ImVec2 pos, bool positive, int* value) {
+	ImGuiWindow* window = ImGui::GetCurrentWindow();
+	ImGuiContext& g = *GImGui;
+	ImGuiStyle& style = g.Style;
+
+	const float square_sz = ImGui::GetFrameHeight();
+	const ImRect total_bb(pos, ImVec2(pos.x + square_sz, pos.y + square_sz));
+
+	bool hovered, held;
+	bool pressed = ImGui::ButtonBehavior(total_bb, id, &hovered, &held);
+	if (pressed)
+	{
+		*value = positive ? -1 : 1;
+		ImGui::MarkItemEdited(id);
+	}
+
+	ImGui::RenderNavHighlight(total_bb, id);
+	ImGui::RenderFrame(total_bb.Min, total_bb.Max, ImGui::GetColorU32((held && hovered) ? ImGuiCol_FrameBgActive : hovered ? ImGuiCol_FrameBgHovered : ImGuiCol_FrameBg), true, style.FrameRounding);
+	ImU32 check_col = ImGui::GetColorU32(ImGuiCol_CheckMark);
+
+	const float pad = ImMax(1.0f, (float)(int)(square_sz / 6.0f));
+	ImGui::RenderArrow(ImVec2(pos.x + pad, pos.y + pad), positive ? ImGuiDir_::ImGuiDir_Up : ImGuiDir_Down);
+
+	return pressed;
+}
+
+bool ImGuiHelper::HeaderMoveButtons(ImGuiID headerId, int* delta)
+{
+	if (delta != nullptr) {
+		*delta = 0;
+	}
+
+	bool result = false;
+
+	ImGuiWindow* window = ImGui::GetCurrentWindow();
+	ImGuiContext& g = *GImGui;
+	ImGuiItemHoveredDataBackup last_item_backup;
+	float button_size = g.FontSize;
+	float button_x = ImMax(window->DC.LastItemRect.Min.x, window->DC.LastItemRect.Max.x - g.Style.FramePadding.x * 2.0f - (button_size * 2.0f));
+	float button_y = window->DC.LastItemRect.Min.y;
+	result |= VertArrowEx(window->GetID((void*)((intptr_t)headerId + 1)), ImVec2(button_x, button_y), true, delta);
+	result |= VertArrowEx(window->GetID((void*)((intptr_t)headerId + 2)), ImVec2(button_x + button_size, button_y), false, delta);
+	last_item_backup.Restore();
+
+	return result;
+}
+
 bool ImGuiHelper::DrawTextureDrop(Texture2D::Sptr& image, ImVec2 size)
 {
 	if (image != nullptr) {
@@ -185,15 +249,91 @@ void ImGuiHelper::DrawLinearDepthTexture(const Texture2D::Sptr& image, const glm
 		glGetIntegerv(GL_CURRENT_PROGRAM, &data->restoreProgram);
 		glUseProgram(data->programId);
 		glUniform2fv(1, 1, &data->nearFar.x);
-		}, temp);
+	}, temp);
 	ImGui::Image((ImTextureID)image->GetHandle(), ImVec2(size.x, size.y), ImVec2(0, 1), ImVec2(1, 0));
 	drawList->AddCallback([](const ImDrawList* parent_list, const ImDrawCmd* cmd) {
 		Data* data = static_cast<Data*>(cmd->UserCallbackData);
-		glUseProgram(data->restoreProgram);
+		glUseProgram(data->restoreProgram); 
 		delete cmd->UserCallbackData;
-		}, temp);
+	}, temp);
 
 	ImGui::PopStyleVar();
+}
+
+void ImGuiHelper::DrawTextureArraySlice(const Texture2DArray::Sptr& image, uint32_t slice , const glm::ivec2& size, const ImVec4& border)
+{
+	if (image != nullptr) {
+
+		struct Data {
+			int programId;
+			int restoreProgram;
+			int texId;
+			int restoreTexId;
+			uint32_t slice;
+			ImVec2 dispPos;
+			ImVec2 dispSize;
+		};
+
+		ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+		ImGuiWindow* window = ImGui::GetCurrentWindow();
+		ImVec2 bbSize = ImVec2(size.x, size.y);
+		if (border.w > 0) {
+			bbSize.x += 2;
+			bbSize.y += 2;
+		}
+		ImRect bb(window->DC.CursorPos, ImVec2(window->DC.CursorPos.x + bbSize.x, window->DC.CursorPos.y + bbSize.y));
+
+
+		ImGui::ItemSize(bb);
+		if (!ImGui::ItemAdd(bb, 0))
+			return;
+
+		Data* temp = new Data();
+		temp->programId = _arraySliceShader->GetHandle();
+		temp->dispPos = ImGui::GetWindowViewport()->Pos;
+		temp->dispSize = ImGui::GetWindowViewport()->Size;
+		temp->slice = slice;
+		temp->texId = image->GetHandle();
+
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+		if (border.w > 0) {
+			drawList->AddRect(bb.Min, bb.Max, ImGui::GetColorU32(border), 0.0f);
+			bb.Min.x += 1;
+			bb.Min.y += 1;
+			bb.Max.x -= 1;
+			bb.Max.y -= 1;
+		}
+
+		drawList->AddCallback([](const ImDrawList* parent_list, const ImDrawCmd* cmd) {
+			Data* data = static_cast<Data*>(cmd->UserCallbackData);
+
+			glGetIntegerv(GL_CURRENT_PROGRAM, &data->restoreProgram);
+			glGetIntegeri_v(GL_TEXTURE_BINDING_2D, 0, &data->restoreTexId);
+			glUseProgram(data->programId);
+			glUniform1uiv(1, 1, &data->slice);
+			glBindTextureUnit(1, data->texId);
+		}, temp);
+
+
+		drawList->PrimReserve(6, 4);
+		drawList->PrimRectUV(bb.Min, bb.Max, ImVec2(0, 1), ImVec2(1, 0), 0xFFFFFFFF);
+
+		//ImGui::Image(0, ImVec2(size.x, size.y), ImVec2(0, 1), ImVec2(1, 0));
+		drawList->AddCallback([](const ImDrawList* parent_list, const ImDrawCmd* cmd) {
+			Data* data = static_cast<Data*>(cmd->UserCallbackData);
+			glUseProgram(data->restoreProgram);
+			glBindTextureUnit(1, data->restoreTexId);
+			delete cmd->UserCallbackData;
+		}, temp);
+
+		ImGui::PopStyleVar();
+	}
+	else 
+	{
+		ImGui::BeginChildFrame(ImGui::GetID("img"), ImVec2(size.x, size.y));
+		ImGui::EndChildFrame();
+	}
 }
 
 void ImGuiHelper::StartFrame() {
@@ -232,6 +372,7 @@ void ImGuiHelper::EndFrame() {
 		{ (R + L) / (L - R),  (T + B) / (B - T),  0.0f,   1.0f },
 	};
 	glProgramUniformMatrix4fv(_linearDepthShader->GetHandle(), 0, 1, GL_FALSE, &ortho_projection[0][0]);
+	glProgramUniformMatrix4fv(_arraySliceShader->GetHandle(), 0, 1, GL_FALSE, &ortho_projection[0][0]);
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	// If we have multiple viewports enabled (can drag into a new window)

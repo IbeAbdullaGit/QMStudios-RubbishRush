@@ -57,7 +57,7 @@ public:
 
 		std::vector<UniformInfo> SubUniforms;
 	};
-
+	
 public:
 	/// <summary>
 	/// Creates a new empty shader object
@@ -136,7 +136,7 @@ public:
 	void SetUniform(int location, const glm::uvec3* value, int count = 1);
 	void SetUniform(int location, const glm::uvec4* value, int count = 1);
 	void SetUniform(int location, const bool* value, int count = 1);
-	void SetUniform(int location, const glm::bvec2* value, int count = 1);
+	void SetUniform(int location, const glm::bvec2* value, int count = 1); 
 	void SetUniform(int location, const glm::bvec3* value, int count = 1);
 	void SetUniform(int location, const glm::bvec4* value, int count = 1);
 
@@ -155,8 +155,7 @@ public:
 		int location = __GetUniformLocation(name);
 		if (location != -1) {
 			SetUniform(location, &value, 1);
-		}
-		else {
+		} else {
 			LOG_WARN("Ignoring uniform \"{}\"", name);
 		}
 	}
@@ -165,8 +164,7 @@ public:
 		int location = __GetUniformLocation(name);
 		if (location != -1) {
 			SetUniform(location, values, count);
-		}
-		else {
+		} else {
 			LOG_WARN("Ignoring uniform \"{}\"", name);
 		}
 	}
@@ -175,19 +173,18 @@ public:
 		int location = __GetUniformLocation(name);
 		if (location != -1) {
 			SetUniformMatrix(location, &value, 1, transposed);
-		}
-		else {
+		} else {
 			LOG_WARN("Ignoring uniform \"{}\"", name);
 		}
 	}
-
+	
 	void BindUniformBlockToSlot(const std::string& name, int uboSlot);
 
 protected:
 	// Stores all the handles to our shaders until we
 	// are ready to compile them into a program
 	std::unordered_map<ShaderPartType, int> _handles;
-
+	
 	// Map access to look up uniform locations and blocks
 	std::unordered_map<std::string, UniformInfo> _uniforms;
 	std::unordered_map<std::string, UniformBlockInfo> _uniformBlocks;

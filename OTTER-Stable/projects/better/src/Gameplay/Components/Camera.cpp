@@ -16,7 +16,7 @@ namespace Gameplay {
 
 		if (_isOrtho) {
 			_isProjectionDirty |= LABEL_LEFT(ImGui::DragFloat, "Ortho Scale", &_orthoVerticalScale, 0.01f, 0.01f);
-		}
+		} 
 		else {
 			float fov_deg = glm::degrees(_fovRadians);
 			if (LABEL_LEFT(ImGui::SliderFloat, "FOV (deg) ", &fov_deg, 0.1f, 180.0f)) {
@@ -24,6 +24,10 @@ namespace Gameplay {
 				_isProjectionDirty |= true;
 			}
 		}
+
+		LABEL_LEFT(ImGui::DragFloat, "Focal Depth", &FocalDepth, 0.1f, 0.1f, 100.0f);
+		LABEL_LEFT(ImGui::DragFloat, "Lens Dist. ", &LensDepth, 0.01f, 0.001f, 50.0f);
+		LABEL_LEFT(ImGui::DragFloat, "Aperture   ", &Aperture, 0.1f, 0.1f, 60.0f);
 	}
 
 	nlohmann::json Camera::ToJson() const
@@ -41,13 +45,13 @@ namespace Gameplay {
 	Camera::Sptr Camera::FromJson(const nlohmann::json& data)
 	{
 		Camera::Sptr result = Camera::Create();
-		result->_nearPlane = JsonGet(data, "near_plane", result->_nearPlane);
-		result->_farPlane = JsonGet(data, "far_plane", result->_farPlane);
-		result->_fovRadians = JsonGet(data, "fov_radians", result->_fovRadians);
+		result->_nearPlane          = JsonGet(data, "near_plane", result->_nearPlane);
+		result->_farPlane           = JsonGet(data, "far_plane", result->_farPlane);
+		result->_fovRadians         = JsonGet(data, "fov_radians", result->_fovRadians);
 		result->_orthoVerticalScale = JsonGet(data, "ortho_size", result->_orthoVerticalScale);
-		result->_isOrtho = JsonGet(data, "ortho_enabled", result->_isOrtho);
-		result->_clearColor = JsonGet(data, "clear_color", result->_clearColor);
-		result->_isProjectionDirty = true;
+		result->_isOrtho            = JsonGet(data, "ortho_enabled", result->_isOrtho);
+		result->_clearColor         = JsonGet(data, "clear_color", result->_clearColor);
+		result->_isProjectionDirty  = true;
 		return result;
 	}
 
@@ -144,8 +148,7 @@ namespace Gameplay {
 				float w = (_orthoVerticalScale * _aspectRatio) / 2.0f;
 				float h = (_orthoVerticalScale / 2.0f);
 				_projection = glm::ortho(-w, w, -h, h, _nearPlane, _farPlane);
-			}
-			else {
+			} else {
 				_projection = glm::perspective(_fovRadians, _aspectRatio, _nearPlane, _farPlane);
 			}
 			_isProjectionDirty = false;

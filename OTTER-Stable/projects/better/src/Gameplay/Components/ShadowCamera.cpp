@@ -72,7 +72,7 @@ void ShadowCamera::OnLoad()
 	FramebufferDescriptor desc;
 	desc.Width  = _bufferResolution.x;
 	desc.Height = _bufferResolution.y;
-	desc.RenderTargets[RenderTargetAttachment::Depth] = RenderTargetDescriptor(RenderTargetType::Depth32);
+	desc.RenderTargets[RenderTargetAttachment::Depth] = RenderTargetDescriptor(RenderTargetType::Depth32, true, true);
 
 	_depthBuffer = std::make_shared<Framebuffer>(desc);
 }

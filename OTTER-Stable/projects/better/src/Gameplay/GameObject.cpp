@@ -12,6 +12,8 @@
 #include "Utils/ImGuiHelper.h"
 
 #include "Gameplay/Scene.h"
+#include "Components/GUI/RectTransform.h"
+#include "Graphics/GuiBatcher.h"
 
 namespace Gameplay {
 	GameObject::GameObject() :
@@ -32,137 +34,7 @@ namespace Gameplay {
 		_parent(WeakRef()),
 		_children(std::vector<WeakRef>())
 	{ }
-	void GameObject::SetPostionZ(float val)
-	{
-		_position.y = val;
-		_isLocalTransformDirty = true;
-	}
-	void GameObject::UpdateLerp(std::vector<glm::vec3> points, float deltaTime)
-	{
-		if (points.size() <= m_segmentIndex)
-		{
-			m_segmentTimer = 0;
-			return;
-		}
-		m_segmentTimer += 1.0f * deltaTime;
-		if (m_segmentIndex + 1 >= points.size())
-		{
-			m_segmentIndex = 0;
-		}
 
-		m_segmentTimer *= m_segmentTravelTime;
-
-		if (points.size() < 2) {
-			m_segmentTimer = 0;
-
-			return;
-		}
-
-		_position = glm::vec3(LERP(points[m_segmentIndex], points[m_segmentIndex + 1], m_segmentTimer));
-		_isLocalTransformDirty = true;
-	}
-
-	void GameObject::UpdateScale(std::vector<glm::vec3> points, std::vector<glm::vec3> points2, float deltaTime)
-	{
-		if (points.size() == 0 || m_segmentTravelTime == 0)
-			return;
-
-		else
-		{
-			m_segmentTimer2 += 1.0f * deltaTime;
-
-			//Ensure we are not "over time" and move to the next segment
-				//if necessary.
-			while (m_segmentTimer2 > m_segmentTravelTime)
-			{
-				m_segmentTimer2 -= m_segmentTravelTime;
-
-				m_segmentIndex2 += 1;
-
-				if (m_segmentIndex2 >= points.size())
-					m_segmentIndex2 = 0;
-			}
-
-			float t = m_segmentTimer2 / m_segmentTravelTime;
-
-			// LERP
-
-			// Need at least 2 points for 1 segment
-			if (points.size() < 2)
-			{
-				_scale = points[0];
-				return;
-			}
-
-			glm::vec3 p0, p1;
-			size_t p0_index, p1_index;
-
-			p1_index = m_segmentIndex2;
-			p0_index = (p1_index == 0) ? points.size() - 1 : p1_index - 1;
-
-			p0 = points[p0_index];
-			p1 = points[p1_index];
-
-			_scale = glm::vec3(LERPLINEAR(p0, p1, t));
-			_rotation = glm::quat(LERPLINEAR(glm::radians(points2[p0_index]), glm::radians(points2[p1_index]), t));
-
-		}
-		_isLocalTransformDirty = true;
-	}
-
-	void GameObject::UpdateCAT(std::vector<glm::vec3> points, float deltaTima)
-	{
-		if (points.size() == 0 || m_segmentTravelTime == 0)
-			return;
-		else {
-			m_segmentTimer += 0.05f;
-
-			//Ensure we are not "over time" and move to the next segment
-			//if necessary.
-			while (m_segmentTimer > m_segmentTravelTime)
-			{
-				m_segmentTimer -= m_segmentTravelTime;
-
-				m_segmentIndex += 1;
-
-				if (m_segmentIndex >= points.size())
-					m_segmentIndex = 0;
-			}
-
-			float t = m_segmentTimer / m_segmentTravelTime;
-
-			// Neither Catmull nor Bezier make sense with less than 4 points.
-			if (points.size() < 4)
-			{
-				_position = points[0];
-				return;
-			}
-
-			size_t p0_index, p1_index, p2_index, p3_index;
-			glm::vec3 p0, p1, p2, p3;
-
-			// TODO: Complete this function
-			p1_index = m_segmentIndex;
-
-			if (p1_index == 0) {
-				p0_index = points.size() - 1;
-			}
-			else {
-				p0_index = p1_index - 1;
-			}
-
-			p2_index = (p1_index + 1) % points.size();
-			p3_index = (p2_index + 1) % points.size();
-
-			p0 = points[p0_index];
-			p1 = points[p1_index];
-			p2 = points[p2_index];
-			p3 = points[p3_index];
-
-			_position = CatmullRomm(p0, p1, p2, p3, t);
-		}
-		_isLocalTransformDirty = true;
-	}
 	void GameObject::_RecalcLocalTransform() const
 	{
 		if (_isLocalTransformDirty) {
@@ -309,23 +181,31 @@ namespace Gameplay {
 			_children.erase(it);
 		}
 
-		for (auto& component : _components) {
-			if (component->IsEnabled) {
-				component->StartGUI();
+		RectTransform::Sptr rect = Get<RectTransform>();
+
+		if (rect != nullptr) {
+			GuiBatcher::PushModelTransform(rect->GetLocalTransform());
+
+			for (auto& component : _components) {
+				if (component->IsEnabled) {
+					component->StartGUI();
+				}
 			}
-		}
-		for (auto& component : _components) {
-			if (component->IsEnabled) {
-				component->RenderGUI();
+			for (auto& component : _components) {
+				if (component->IsEnabled) {
+					component->RenderGUI();
+				}
 			}
-		}
-		for (auto& child : _children) {
-			child->RenderGUI();
-		}
-		for (auto& component : _components) {
-			if (component->IsEnabled) {
-				component->FinishGUI();
+			for (auto& child : _children) {
+				child->RenderGUI();
 			}
+			for (auto& component : _components) {
+				if (component->IsEnabled) {
+					component->FinishGUI();
+				}
+			}
+
+			GuiBatcher::PopModelTransform();
 		}
 	}
 

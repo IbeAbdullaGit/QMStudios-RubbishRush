@@ -50,9 +50,11 @@ void GuiPanel::StartGUI() {
 
 	GuiBatcher::PushRect(glm::vec2(0,0), _transform->GetSize(), _color, tex, _borderRadius < 0 ? GuiBatcher::GetDefaultBorderRadius() : _borderRadius);
 
+	GuiBatcher::Flush();
 }
 
 void GuiPanel::FinishGUI() {
+	GuiBatcher::Flush();
 }
 
 void GuiPanel::RenderImGui()

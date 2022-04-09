@@ -174,10 +174,12 @@ void Texture1D::_LoadDataFromFile()
 
 void Texture1D::_SetTextureParams()
 {
-	// Calculate how many layers of storage to allocate based on whether mipmaps are enabled or not
-	int layers = _description.GenerateMipMaps ? CalcRequiredMipLevels(_description.Size) : 1;
-	// Allocates the memory for our texture
-	glTextureStorage1D(_rendererId, layers, (GLenum)_description.Format, _description.Size);
+	if (_description.Size > 0) {
+		// Calculate how many layers of storage to allocate based on whether mipmaps are enabled or not
+		int layers = _description.GenerateMipMaps ? CalcRequiredMipLevels(_description.Size) : 1;
+		// Allocates the memory for our texture
+		glTextureStorage1D(_rendererId, layers, (GLenum)_description.Format, _description.Size);
+	}
 
 	glTextureParameteri(_rendererId, GL_TEXTURE_MIN_FILTER, (GLenum)_description.MinificationFilter);
 	glTextureParameteri(_rendererId, GL_TEXTURE_MAG_FILTER, (GLenum)_description.MagnificationFilter);

@@ -33,14 +33,13 @@ namespace Gameplay {
 				params[ix] = MeshBuilderParams[ix].ToJson();
 			}
 			result["params"] = params;
-		}
-		else {
+		} else {
 			result["filename"] = Filename.empty() ? "null" : Filename;
 		}
 		return result;
 	}
 
-	MeshResource::Sptr MeshResource::FromJson(const nlohmann::json& blob)
+	MeshResource::Sptr MeshResource::FromJson(const nlohmann::json & blob)
 	{
 		MeshResource::Sptr result = std::make_shared<MeshResource>();
 		if (blob.contains("params") && blob["params"].is_array()) {
@@ -53,15 +52,14 @@ namespace Gameplay {
 			}
 			MeshFactory::CalculateTBN(mesh);
 			result->Mesh = mesh.Bake();
-		}
-		else {
+		} else {
 			result->Filename = JsonGet<std::string>(blob, "filename", "null");
 			if (result->Filename != "null" && std::filesystem::exists(result->Filename)) {
-#ifdef OPTIMIZED_OBJ_LOADER
+				#ifdef OPTIMIZED_OBJ_LOADER
 				result->Mesh = OptimizedObjLoader::LoadFromFile(result->Filename);
-#else
+				#else
 				result->Mesh = ObjLoader::LoadFromFile(result->Filename);
-#endif
+				#endif
 
 			}
 		}
@@ -77,7 +75,7 @@ namespace Gameplay {
 		Mesh = mesh.Bake();
 	}
 
-	void MeshResource::AddParam(const MeshBuilderParam& param) {
+	void MeshResource::AddParam(const MeshBuilderParam & param) {
 		MeshBuilderParams.push_back(param);
 	}
 }

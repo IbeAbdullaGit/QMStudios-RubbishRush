@@ -28,7 +28,7 @@ public:
 	static inline void LTrim(std::string& s) {
 		s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) {
 			return !std::isspace(ch);
-			}));
+		}));
 	}
 	/// <summary>
 	/// Trims whitespace characters from the right side of a string, in place
@@ -37,7 +37,7 @@ public:
 	static inline void RTrim(std::string& s) {
 		s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
 			return !std::isspace(ch);
-			}).base(), s.end());
+		}).base(), s.end());
 	}
 	/// <summary>
 	/// Trims whitespace characters from both ends of a string, in place
@@ -56,7 +56,7 @@ public:
 	static inline void LTrim(std::string& s, char toTrim) {
 		s.erase(s.begin(), std::find_if(s.begin(), s.end(), [=](int ch) {
 			return ch != toTrim;
-			}));
+		}));
 	}
 	/// <summary>
 	/// Trims a specified character from the right side of a string, in place
@@ -66,7 +66,7 @@ public:
 	static inline void RTrim(std::string& s, char toTrim) {
 		s.erase(std::find_if(s.rbegin(), s.rend(), [=](int ch) {
 			return ch != toTrim;;
-			}).base(), s.end());
+		}).base(), s.end());
 	}
 	/// <summary>
 	/// Trims a specified character from both sides of a string, in place

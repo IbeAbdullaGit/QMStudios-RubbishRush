@@ -17,3 +17,7 @@ vec3 GetAlbedo(vec2 uv) {
 vec3 GetViewPosition(vec2 uv) {
     return texture(s_Position, uv).rgb;
 }
+
+float GetDepth(vec2 uv) {
+    return texelFetch(s_Depth, ivec2(uv * textureSize(s_Depth, 0)), 0).r;
+}

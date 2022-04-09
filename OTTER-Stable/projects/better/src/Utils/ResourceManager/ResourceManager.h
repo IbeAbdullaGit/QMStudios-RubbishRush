@@ -54,7 +54,7 @@ public:
 	template<typename T, typename = std::enable_if<is_valid_resource<T>()>::type>
 	static std::shared_ptr<T> Get(Guid id) {
 		// Try and grab the asset from the resource pool
-		std::shared_ptr<T> result = std::dynamic_pointer_cast<T>(_resources[std::type_index(typeid(T))][id]);
+		std::shared_ptr<T> result =  std::dynamic_pointer_cast<T>(_resources[std::type_index(typeid(T))][id]);
 
 		// If the asset is null, we can try finding it in the manifest to load it
 		if (result == nullptr) {

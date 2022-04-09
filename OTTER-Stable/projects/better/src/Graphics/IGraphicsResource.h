@@ -14,8 +14,8 @@
  */
 ENUM(GlResourceType, GLenum,
 	 Buffer            = GL_BUFFER,
-	 ShaderProgram            = GL_SHADER,
-	 Program           = GL_PROGRAM,
+	 ShaderProgram     = GL_PROGRAM,
+	 ShaderPart        = GL_SHADER,
 	 VertexArray       = GL_VERTEX_ARRAY,
 	 Query             = GL_QUERY,
 	 ProgramPipeline   = GL_PROGRAM_PIPELINE,

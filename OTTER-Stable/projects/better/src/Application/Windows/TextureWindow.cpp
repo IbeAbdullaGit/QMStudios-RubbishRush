@@ -41,7 +41,7 @@ void TextureWindow::_RenderTexture3D(const Texture1D::Sptr& value, int width)
 void TextureWindow::_RenderTexture2D(const Texture2D::Sptr& value, int width) {
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 	ImGui::BeginChildFrame(ImGui::GetID(value.get()), ImVec2(width, width + ImGui::GetTextLineHeight() + 10));
-	ImGui::Image((ImTextureID)value->GetHandle(), ImVec2(width, width));
+	ImGui::Image((ImTextureID)value->GetHandle(), ImVec2(width, width), ImVec2(0, 1), ImVec2(1, 0));
 	ImGuiHelper::ResourceDragSource(value.get(), value->GetDebugName());
 	ImGui::Text(value->GetDebugName().c_str());
 	ImGui::EndChildFrame();

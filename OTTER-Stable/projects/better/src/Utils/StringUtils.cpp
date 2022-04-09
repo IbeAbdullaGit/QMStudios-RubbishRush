@@ -16,13 +16,13 @@ std::string StringTools::SanitizeClassName(const std::string& name)
 void StringTools::ToLower(std::string& s) {
 	std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) {
 		return std::tolower(c);
-		});
+	});
 }
 
 void StringTools::ToUpper(std::string& s) {
 	std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c) {
 		return std::toupper(c);
-		});
+	});
 }
 
 bool StringTools::EndsWith(const std::string& value, const std::string& token)

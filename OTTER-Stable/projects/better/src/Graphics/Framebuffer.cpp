@@ -119,6 +119,8 @@ void Framebuffer::_AddAttachment(RenderTargetAttachment attachment, const Render
 
 		// Per-attachment parameters
 		descriptor.Format = (InternalFormat)target.Format;
+		
+		descriptor.EnableShadowSampling = target.IsShadow;
 
 		// Common parameters
 		descriptor.GenerateMipMaps    = false;

@@ -21,6 +21,7 @@
 #include "Graphics/Textures/Texture1D.h"
 #include "Graphics/Textures/Texture2D.h"
 #include "Graphics/Textures/Texture3D.h"
+#include "Graphics/Textures/Texture2DArray.h"
 #include "Graphics/Textures/TextureCube.h"
 #include "Graphics/VertexTypes.h"
 #include "Graphics/Font.h"
@@ -31,9 +32,6 @@
 #include "Gameplay/Material.h"
 #include "Gameplay/GameObject.h"
 #include "Gameplay/Scene.h"
-
-
-#include "Gameplay/Physics/Colliders/BoxCollider.h"
 
 // Components
 #include "Gameplay/Components/IComponent.h"
@@ -216,8 +214,8 @@ void Application::_Run()
 	//_layers.push_back(std::make_shared<TutorialSceneLayer>());
 	_layers.push_back(std::make_shared<LogicUpdateLayer>());
 	_layers.push_back(std::make_shared<RenderLayer>());
-	_layers.push_back(std::make_shared<PostProcessingLayer>());
 	_layers.push_back(std::make_shared<ParticleLayer>());
+	_layers.push_back(std::make_shared<PostProcessingLayer>());
 	_layers.push_back(std::make_shared<InterfaceLayer>());
 	//_layers.push_back(std::make_shared<MenuSceneLayer>());
 
@@ -371,6 +369,7 @@ void Application::_RegisterClasses()
 	// Register all our resource types so we can load them from manifest files
 	ResourceManager::RegisterType<Texture1D>();
 	ResourceManager::RegisterType<Texture2D>();
+	ResourceManager::RegisterType<Texture2DArray>();
 	ResourceManager::RegisterType<Texture3D>();
 	ResourceManager::RegisterType<TextureCube>();
 	ResourceManager::RegisterType<ShaderProgram>();
@@ -410,6 +409,7 @@ void Application::_RegisterClasses()
 	Gameplay::ComponentManager::RegisterType<ConveyorBeltBehaviour>();
 	Gameplay::ComponentManager::RegisterType<InventoryUI>();
 }
+
 
 void Application::_Load() {
 	for (const auto& layer : _layers) {

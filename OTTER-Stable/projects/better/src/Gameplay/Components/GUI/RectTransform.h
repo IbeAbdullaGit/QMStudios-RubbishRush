@@ -1,6 +1,5 @@
 #pragma once
 #include "Gameplay/Components/IComponent.h"
-//#include "GLM/detail/type_mat.hpp"
 
 /// <summary>
 /// A rect transform is used by 2D GUI components for positioning within

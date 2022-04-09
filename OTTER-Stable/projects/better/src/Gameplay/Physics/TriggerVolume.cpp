@@ -45,7 +45,7 @@ namespace Gameplay::Physics {
 		btBroadphasePairArray& collisionPairs = _ghost->getOverlappingPairCache()->getOverlappingPairArray();
 
 		// Determine how many objects are intersecting the volume
-		const int numObjects=collisionPairs.size();
+		const int numObjects = collisionPairs.size();
 		thisFrameCollision.reserve(numObjects);
 
 		// Will store our contact manifolds, can be static to be shared between frames and instances
@@ -57,19 +57,20 @@ namespace Gameplay::Physics {
 			m_manifoldArray.resize(0);
 
 			// Get the btCollisionObject that we're colliding with
-			btCollisionObject *obj = _ghost->getOverlappingObject(i);
+			btCollisionObject* obj = _ghost->getOverlappingObject(i);
 
 			// Get the contact pair and resolve contact manifolds
 			btBroadphasePair* pair = &collisionPairs[i];
 			if (pair != nullptr && pair->m_algorithm != nullptr) {
 				pair->m_algorithm->getAllContactManifolds(m_manifoldArray);
-			} else {
+			}
+			else {
 				continue;
 			}
 
 			// Iterate over all the contact manifolds and check if any of them have contacts
 			bool hasCollision = false;
-			for (int j=0; j < m_manifoldArray.size(); j++) {
+			for (int j = 0; j < m_manifoldArray.size(); j++) {
 				btPersistentManifold* manifold = m_manifoldArray[j];
 				if (manifold != nullptr && manifold->getNumContacts() > 0) {
 					hasCollision = true;
@@ -82,7 +83,7 @@ namespace Gameplay::Physics {
 				// Make sure the internal type is a bullet rigid body (no trigger-trigger interactions)
 				if (obj->getInternalType() == btCollisionObject::CO_RIGID_BODY) {
 					// Get the collision object as a btRigidBody
-					const btRigidBody *body = (const btRigidBody *)obj;
+					const btRigidBody* body = (const btRigidBody*)obj;
 
 					// Make sure that the object is not a kinematic or static object (note: you may want
 					// to modify this behaviour depending on your game)
@@ -103,7 +104,7 @@ namespace Gameplay::Physics {
 							// Check to see if the object has been added to our object cache
 							auto& it = std::find_if(_currentCollisions.begin(), _currentCollisions.end(), [&](const std::weak_ptr<RigidBody>& item) {
 								return item.lock() == physicsPtr;
-							});
+								});
 
 							// If the object is NOT in the cache, we invoke all the callbacks
 							if (it == _currentCollisions.end()) {
@@ -116,20 +117,22 @@ namespace Gameplay::Physics {
 
 			}
 		}
-	
+
 		// Compare our current frame list to the previous frame to see if anything has left
 		for (auto& weakPtr : _currentCollisions) {
 			// Search the the current list to see if the item still exists
 			auto& it = std::find_if(thisFrameCollision.begin(), thisFrameCollision.end(), [&](const std::weak_ptr<RigidBody>& item) {
 				return item.lock() == weakPtr.lock();
-			});
+				});
 
 			if (!weakPtr.expired())
-				// If the item no longer exists in the list, we need to invoke exit callbacks
-			{
+			{// If the item no longer exists in the list, we need to invoke exit callbacks
 				if (it == thisFrameCollision.end()) {
-					weakPtr.lock()->GetGameObject()->OnLeavingTrigger(std::dynamic_pointer_cast<TriggerVolume>(SelfRef().lock()));
-					GetGameObject()->OnTriggerVolumeLeaving(weakPtr.lock());
+					RigidBody::Sptr body = weakPtr.lock();
+					if (body != nullptr) {
+						body->GetGameObject()->OnLeavingTrigger(std::dynamic_pointer_cast<TriggerVolume>(SelfRef().lock()));
+						GetGameObject()->OnTriggerVolumeLeaving(body);
+					}
 				}
 			}
 		}
@@ -169,10 +172,10 @@ namespace Gameplay::Physics {
 
 		// Add the object to the scene
 		_scene->GetPhysicsWorld()->addCollisionObject(_ghost);
-		
+
 		// Copy over group and mask info
 		_ghost->getBroadphaseHandle()->m_collisionFilterGroup = _collisionGroup;
-		_ghost->getBroadphaseHandle()->m_collisionFilterMask  = _collisionMask;
+		_ghost->getBroadphaseHandle()->m_collisionFilterMask = _collisionMask;
 	}
 
 	void TriggerVolume::RenderImGui() {

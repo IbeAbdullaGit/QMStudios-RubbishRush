@@ -15,7 +15,7 @@ MaterialsWindow::~MaterialsWindow() = default;
 void MaterialsWindow::Render() {
 	ResourceManager::Each<Gameplay::Material>([&](const Gameplay::Material::Sptr& material) {
 		_RenderMaterial(material);
-	});
+	});  
 }
 
 void MaterialsWindow::_RenderMaterial(Gameplay::Material::Sptr material) {

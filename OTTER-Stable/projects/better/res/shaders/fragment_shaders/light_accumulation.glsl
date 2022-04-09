@@ -7,6 +7,7 @@ layout(location = 1) out vec4 outSpecular;
 uniform layout(binding = 5) sampler1D diffuse_ramp;
 uniform layout(binding = 6) sampler1D spec_ramp;
 
+
 // The maximum number of lights the shader supports, increasing this will lower performance!
 #define MAX_LIGHTS 8
 
@@ -35,7 +36,6 @@ layout (std140, binding = 2) uniform b_LightBlock {
 #include "../fragments/deferred_post_common.glsl"
 
 #include "../fragments/frame_uniforms.glsl"
-//#include "../fragments/light_correction.glsl"
 
 // Calculates the contribution the given point light has 
 // for the current fragment
@@ -83,7 +83,7 @@ void main() {
 
     vec3 diffuse = vec3(0);
     vec3 specular = vec3(0);
-    for (int ix = 0; ix < AmbientColAndNumLights.w && ix < MAX_LIGHTS; ix++) {
+     for (int ix = 0; ix < AmbientColAndNumLights.w && ix < MAX_LIGHTS; ix++) {
         CalcPointLightContribution(viewPos, normal, Lights[ix], specularPow, diffuse, specular);
     }
 

@@ -66,7 +66,7 @@ void InspectorWindow::Render()
 		selection->_isLocalTransformDirty |= LABEL_LEFT(ImGui::DragFloat3, "Scale   ", &selection->_scale.x, 0.01f, 0.0f);
 
 		// For if we're not in play mode
-		selection->_RecalcLocalTransform();
+		selection->_RecalcLocalTransform(); 
 		selection->_RecalcWorldTransform();
 
 		ImGui::Separator();

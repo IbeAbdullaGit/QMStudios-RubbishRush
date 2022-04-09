@@ -68,7 +68,7 @@ public:
 	/// <param name="p1">The first point</param>
 	/// <param name="p2">The second point</param>
 	/// <param name="color">Color for line</param>
-	void DrawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& color = glm::vec3(1.0f));
+	void DrawLine(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& color);
 	/// <summary>
 	/// Draws a line between 2 points using 2 different colors
 	/// </summary>
@@ -114,6 +114,10 @@ public:
 	/// Flushes all triangles to the screen, resetting our triangle count to 0s
 	/// </summary>
 	void FlushTris();
+
+	void DrawWireCircle(const glm::vec3& pos, const glm::vec3 & n, float radius, int segments = 24);
+	void DrawWireCube(const glm::vec3 & center, const glm::vec3 & halfExtents);
+	void DrawWireCone(const glm::vec3 & origin, const glm::vec3 & extents, float angleDeg, int segments = 24);
 
 	/// <summary>
 	/// Flushes any remaining triangles and lines, drawing them to the screen and resetting their counters

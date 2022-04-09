@@ -25,11 +25,14 @@ struct RenderTargetDescriptor {
 	/**
 	 * The format that the rendertarget should use
 	 */
-	RenderTargetType       Format;
+	RenderTargetType       Format = RenderTargetType::Unknown;
 
-	RenderTargetDescriptor(RenderTargetType format = RenderTargetType::ColorRgba8, bool useTexture = true) :
+	bool                   IsShadow = false;
+
+	RenderTargetDescriptor(RenderTargetType format = RenderTargetType::ColorRgba8, bool useTexture = true, bool isShadow = false) :
 		UseTexture(useTexture),
-		Format(format) 
+		Format(format),
+		IsShadow(isShadow)
 	{ }
 };
 

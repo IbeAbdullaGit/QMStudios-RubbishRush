@@ -16,7 +16,7 @@ GBufferPreviews::~GBufferPreviews() = default;
 
 void GBufferPreviews::Render()
 {
-	//using namespace Gameplay;
+	using namespace Gameplay;
 	Application& app = Application::Get();
 
 	RenderLayer::Sptr& renderLayer = app.GetLayer<RenderLayer>();
@@ -52,8 +52,8 @@ void GBufferPreviews::Render()
 	_RenderTexture2D(normals, size, "normals");
 	ImGui::NextColumn();
 
-	_RenderTexture2D(emissive, size, "emissive");
-	ImGui::NextColumn();
+	_RenderTexture2D(emissive, size, "emissive"); 
+	ImGui::NextColumn();  
 
 	_RenderTexture2D(viewspace, size, "position (viewspace)");
 	ImGui::NextColumn();
@@ -62,23 +62,23 @@ void GBufferPreviews::Render()
 	ImGui::NextColumn();
 
 	_RenderTexture2D(specular, size, "Specular Lighting");
-	ImGui::NextColumn();
+	ImGui::NextColumn(); 
 
 	ImGui::Columns(1);
 }
 
-void GBufferPreviews::_RenderTexture2D(const Texture2D::Sptr & value, const ImVec2 & size, const char* name) {
+void GBufferPreviews::_RenderTexture2D(const Texture2D::Sptr & value, const ImVec2& size, const char* name) {
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
 	ImGui::BeginChildFrame(ImGui::GetID(value.get()), ImVec2(size.x, size.y + ImGui::GetTextLineHeight() + 10));
 	ImDrawList* drawList = ImGui::GetWindowDrawList();
 
 	drawList->AddCallback([](const ImDrawList* parent_list, const ImDrawCmd* cmd) {
 		glDisable(GL_BLEND);
-		}, nullptr);
+	}, nullptr);
 	ImGui::Image((ImTextureID)value->GetHandle(), size, ImVec2(0, 1), ImVec2(1, 0));
 	drawList->AddCallback([](const ImDrawList* parent_list, const ImDrawCmd* cmd) {
 		glEnable(GL_BLEND);
-		}, nullptr);
+	}, nullptr);
 
 	ImGui::Text(name);
 	ImGui::EndChildFrame();

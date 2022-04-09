@@ -17,6 +17,7 @@
 #include "Graphics/ShaderProgram.h"
 #include "Graphics/Textures/Texture2D.h"
 #include "Graphics/Textures/TextureCube.h"
+#include "Graphics/Textures/Texture2DArray.h"
 #include "Graphics/VertexTypes.h"
 #include "Graphics/Font.h"
 #include "Graphics/GuiBatcher.h"
@@ -715,6 +716,8 @@ void DefaultSceneLayer::_CreateScene()
 
 #pragma endregion 
 
+		Texture2DArray::Sptr particleTex = ResourceManager::CreateAsset<Texture2DArray>("textures/particles.png", 2, 2);
+
 		//LOAD OBJECTS
 
 		//CUP
@@ -1303,6 +1306,43 @@ void DefaultSceneLayer::_CreateScene()
 			jumping.push_back(trashyJump11);
 
 			morph2->SetJumping(jumping);
+
+			//add particles to trashy
+			Gameplay::GameObject::Sptr particles = scene->CreateGameObject("Particles");
+			trashyM->AddChild(particles);
+			particles->SetPostion({ 0.0f, -7.0f, 0.0f });
+
+			ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
+			particleManager->Atlas = particleTex;
+
+			particleManager->_gravity = glm::vec3(0.0f);
+
+			ParticleSystem::ParticleData emitter;
+			emitter.Type = ParticleType::SphereEmitter;
+			emitter.TexID = 2;
+			emitter.Position = glm::vec3(0.0f);
+			emitter.Color = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+			emitter.Lifetime = 1.0f / 50.0f;
+			emitter.SphereEmitterData.Timer = 1.0f / 50.0f;
+			emitter.SphereEmitterData.Velocity = 0.5f;
+			emitter.SphereEmitterData.LifeRange = { 1.0f, 3.0f };
+			emitter.SphereEmitterData.Radius = 0.5f;
+			emitter.SphereEmitterData.SizeRange = { 0.5f, 1.0f };
+
+			ParticleSystem::ParticleData emitter2;
+			emitter2.Type = ParticleType::SphereEmitter;
+			emitter2.TexID = 2;
+			emitter2.Position = glm::vec3(0.0f);
+			emitter2.Color = glm::vec4(1.0f, 0.5f, 0.0f, 1.0f);
+			emitter2.Lifetime = 1.0f / 40.0f;
+			emitter2.SphereEmitterData.Timer = 1.0f / 40.0f;
+			emitter2.SphereEmitterData.Velocity = 0.1f;
+			emitter2.SphereEmitterData.LifeRange = { 0.5f, 1.0f };
+			emitter2.SphereEmitterData.Radius = 0.25f;
+			emitter2.SphereEmitterData.SizeRange = { 0.25f, 0.5f };
+
+			particleManager->AddEmitter(emitter);
+			particleManager->AddEmitter(emitter2);
 		}
 
 
@@ -1334,7 +1374,7 @@ void DefaultSceneLayer::_CreateScene()
 			renderer->SetMesh(layoutMesh);
 			renderer->SetMaterial(planeMaterial);*/
 
-			Gameplay::Physics::RigidBody::Sptr physics = plane->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::RigidBody::Sptr physics = plane->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
 			box->SetScale(glm::vec3(50.0f, -0.12f, 50.0f));
@@ -3650,595 +3690,6 @@ void DefaultSceneLayer::_CreateScene()
 
 
 		}
-		//Shelf object
-		/*Gameplay::MeshResource::Sptr shelfMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("shelf.obj");
-		Texture2D::Sptr shelfTex = ResourceManager::CreateAsset <Texture2D>("textures/shelf.png");
-		//Create Material
-		Gameplay::Material::Sptr shelfMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-		{
-			shelfMaterial->Name = "Shelf";
-			shelfMaterial->Set("u_Material.AlbedoMap", shelfTex);
-			shelfMaterial->Set("u_Material.Shininess", 0.2f);
-			shelfMaterial->Set("u_Material.NormalMap", normalMapDefault);
-		}
-		//shelf collection
-		{
-			Gameplay::GameObject::Sptr shelf = scene->CreateGameObject("Shelf1");
-			{
-				shelf->SetPostion(glm::vec3(4.250f, -4.690f, 0.0f));
-				shelf->SetRotation(glm::vec3(90.0, 0.0f, 0.0f));
-				shelf->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
-				RenderComponent::Sptr renderer = shelf->Add<RenderComponent>();
-				renderer->SetMesh(shelfMesh);
-				renderer->SetMaterial(shelfMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = shelf->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(1.04f, 1.62f, 1.54f));
-				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-			}
-			Gameplay::GameObject::Sptr shelf2 = scene->CreateGameObject("Shelf2");
-			{
-				shelf2->SetPostion(glm::vec3(6.20f, -5.69f, 0.0f));
-				shelf2->SetRotation(glm::vec3(90.0, 0.0f, -90.0f));
-				shelf2->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
-				RenderComponent::Sptr renderer = shelf2->Add<RenderComponent>();
-				renderer->SetMesh(shelfMesh);
-				renderer->SetMaterial(shelfMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = shelf2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(1.04f, 1.62f, 1.54f));
-				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-			}
-			Gameplay::GameObject::Sptr shelf3 = scene->CreateGameObject("Shelf3");
-			{
-				shelf3->SetPostion(glm::vec3(9.26f, -5.69f, 0.0f));
-				shelf3->SetRotation(glm::vec3(90.0, 0.0f, -90.0f));
-				shelf3->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
-				RenderComponent::Sptr renderer = shelf3->Add<RenderComponent>();
-				renderer->SetMesh(shelfMesh);
-				renderer->SetMaterial(shelfMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = shelf3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(1.04f, 1.62f, 1.54f));
-				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-			}
-			Gameplay::GameObject::Sptr shelf4 = scene->CreateGameObject("Shelf4");
-			{
-				shelf4->SetPostion(glm::vec3(7.9f, 0.1f, 0.0f));
-				shelf4->SetRotation(glm::vec3(90.0, 0.0f, 0.0f));
-				shelf4->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
-				RenderComponent::Sptr renderer = shelf4->Add<RenderComponent>();
-				renderer->SetMesh(shelfMesh);
-				renderer->SetMaterial(shelfMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = shelf4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(1.04f, 1.62f, 1.54f));
-				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-			}
-			Gameplay::GameObject::Sptr shelf5 = scene->CreateGameObject("Shelf5");
-			{
-				shelf5->SetPostion(glm::vec3(8.910f, 0.1f, 0.0f));
-				shelf5->SetRotation(glm::vec3(90.0, 0.0f, -180.0f));
-				shelf5->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
-				RenderComponent::Sptr renderer = shelf5->Add<RenderComponent>();
-				renderer->SetMesh(shelfMesh);
-				renderer->SetMaterial(shelfMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = shelf5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(1.04f, 1.62f, 1.54f));
-				box->SetExtents(glm::vec3(0.5f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-			}
-		}
-		//tv box object
-		Gameplay::MeshResource::Sptr tvboxMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tvbox2.obj");
-		Texture2D::Sptr tvboxTex = ResourceManager::CreateAsset<Texture2D>("textures/tvbox.png");
-		//Create Material
-		Gameplay::Material::Sptr tvboxMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-		{
-			tvboxMaterial->Name = "TvBox";
-			tvboxMaterial->Set("u_Material.AlbedoMap", tvboxTex);
-			tvboxMaterial->Set("u_Material.Shininess", 0.0f);
-			tvboxMaterial->Set("u_Material.NormalMap", normalMapDefault);
-		}
-		//tv box collection
-		{
-			Gameplay::GameObject::Sptr tvbox1 = scene->CreateGameObject("tvbox1");
-			{
-				tvbox1->SetPostion(glm::vec3(8.37f, 2.1f, 0.0f));
-				tvbox1->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-				tvbox1->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox1->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = tvbox1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
-				box->SetExtents(glm::vec3(1.7f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-
-			}
-			Gameplay::GameObject::Sptr tvbox2 = scene->CreateGameObject("tvbox2");
-			{
-				tvbox2->SetPostion(glm::vec3(8.37f, 2.51f, 0.0f));
-				tvbox2->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-				tvbox2->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox2->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = tvbox2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
-				box->SetExtents(glm::vec3(1.7f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-			}
-			Gameplay::GameObject::Sptr tvbox3 = scene->CreateGameObject("tvbox3");
-			{
-				tvbox3->SetPostion(glm::vec3(8.37f, 2.92f, 0.0f));
-				tvbox3->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-				tvbox3->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox3->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = tvbox3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
-				box->SetExtents(glm::vec3(1.7f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-
-			}
-			Gameplay::GameObject::Sptr tvbox4 = scene->CreateGameObject("tvbox4");
-			{
-				tvbox4->SetPostion(glm::vec3(5.09f, -0.76f, 0.0f));
-				tvbox4->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				tvbox4->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox4->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = tvbox4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
-				box->SetExtents(glm::vec3(1.7f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-			}
-			Gameplay::GameObject::Sptr tvbox5 = scene->CreateGameObject("tvbox5");
-			{
-				tvbox5->SetPostion(glm::vec3(5.09f, 0.98f, 0.0f));
-				tvbox5->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
-				tvbox5->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox5->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = tvbox5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
-				box->SetExtents(glm::vec3(1.7f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-			}
-			Gameplay::GameObject::Sptr tvbox6 = scene->CreateGameObject("tvbox6");
-			{
-				tvbox6->SetPostion(glm::vec3(9.97f, -3.45f, 0.0f));
-				tvbox6->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-				tvbox6->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox6->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = tvbox6->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
-				box->SetExtents(glm::vec3(1.7f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-			}
-			Gameplay::GameObject::Sptr tvbox7 = scene->CreateGameObject("tvbox7");
-			{
-				tvbox7->SetPostion(glm::vec3(8.31f, -3.45f, 0.0f));
-				tvbox7->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
-				tvbox7->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox7->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = tvbox7->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
-				box->SetExtents(glm::vec3(1.7f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-			}
-		}
-		//tv object
-		Gameplay::MeshResource::Sptr tvMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("TV.obj");
-		Texture2D::Sptr tvTex = ResourceManager::CreateAsset<Texture2D>("textures/tvtex.jpg");
-		//Create Material
-		Gameplay::Material::Sptr tvMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-		{
-			tvMaterial->Name = "Tv";
-			tvMaterial->Set("u_Material.AlbedoMap", tvTex);
-			tvMaterial->Set("u_Material.Shininess", 0.75f);
-			tvMaterial->Set("u_Material.NormalMap", normalMapDefault);
-		}
-		//tv collection
-		{
-			Gameplay::GameObject::Sptr tv1 = scene->CreateGameObject("tv1");
-			{
-				tv1->SetPostion(glm::vec3(2.47f, 0.91f, 0.0f));
-				tv1->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
-				tv1->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-
-				RenderComponent::Sptr renderer = tv1->Add<RenderComponent>();
-				renderer->SetMesh(tvMesh);
-				renderer->SetMaterial(tvMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = tv1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.15f, 1.01f, 0.84f));
-				physics->AddCollider(box);
-			}
-			Gameplay::GameObject::Sptr tv2 = scene->CreateGameObject("tv2");
-			{
-				tv2->SetPostion(glm::vec3(4.27f, -2.89f, 0.0f));
-				tv2->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-				tv2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-
-				RenderComponent::Sptr renderer = tv2->Add<RenderComponent>();
-				renderer->SetMesh(tvMesh);
-				renderer->SetMaterial(tvMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = tv2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.15f, 1.01f, 0.84f));
-				physics->AddCollider(box);
-			}
-			Gameplay::GameObject::Sptr tv3 = scene->CreateGameObject("tv3");
-			{
-				tv3->SetPostion(glm::vec3(13.31f, 2.27f, 0.0f));
-				tv3->SetRotation(glm::vec3(90.0f, 0.0f, -152.0f));
-				tv3->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-
-				RenderComponent::Sptr renderer = tv3->Add<RenderComponent>();
-				renderer->SetMesh(tvMesh);
-				renderer->SetMaterial(tvMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = tv3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.15f, 1.01f, 0.84f));
-				physics->AddCollider(box);
-			}
-		}
-		//rectangle and trashy images for menu
-		//cash counter
-		Gameplay::MeshResource::Sptr cashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("cashcounter.obj");
-		Texture2D::Sptr cashTex = ResourceManager::CreateAsset<Texture2D>("textures/cash.png");
-		//create Material
-		Gameplay::Material::Sptr cashMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-		{
-			cashMaterial->Name = "Cash";
-			cashMaterial->Set("u_Material.AlbedoMap", cashTex);
-			cashMaterial->Set("u_Material.Shininess", 0.75f);
-			cashMaterial->Set("u_Material.NormalMap", normalMapDefault);
-		}
-		//cash counter
-		Gameplay::GameObject::Sptr cashcounter = scene->CreateGameObject("CashCounter");
-		{
-			cashcounter->SetPostion(glm::vec3(12.3f, -1.79f, 0.0f));
-			cashcounter->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
-			cashcounter->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
-			RenderComponent::Sptr renderer = cashcounter->Add<RenderComponent>();
-			renderer->SetMesh(cashMesh);
-			renderer->SetMaterial(cashMaterial);
-
-			Gameplay::Physics::RigidBody::Sptr physics = cashcounter->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-			box->SetScale(glm::vec3(0.520f, 0.740f, 1.210f));
-			physics->AddCollider(box);
-		}
-		*/
-		
-		/*//Modelling Static objects
-		{
-			//Bench
-			Gameplay::MeshResource::Sptr benchMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("bench.obj");
-			Texture2D::Sptr benchTex = ResourceManager::CreateAsset<Texture2D>("textures/bench.jpg");
-			Gameplay::Material::Sptr benchMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-			{
-				benchMaterial->Name = "Bench";
-				benchMaterial->Set("u_Material.AlbedoMap", benchTex);
-				benchMaterial->Set("u_Material.Shininess", 0.0f);
-				benchMaterial->Set("u_Material.NormalMap", normalMapDefault);
-			}
-			Gameplay::GameObject::Sptr bench = scene->CreateGameObject("Bench");
-			{
-				bench->SetPostion(glm::vec3(-0.02f, -2.23f, 0.0f));
-				bench->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
-				bench->SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
-
-				RenderComponent::Sptr renderer = bench->Add<RenderComponent>();
-				renderer->SetMesh(benchMesh);
-				renderer->SetMaterial(benchMaterial);
-			}
-			//Cash Counter
-			Gameplay::GameObject::Sptr cashModel = scene->CreateGameObject("cash Modelling");
-			{
-				cashModel->SetPostion(glm::vec3(-6.34f, -1.61f, 0.0f));
-				cashModel->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
-				cashModel->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
-				RenderComponent::Sptr renderer = cashModel->Add<RenderComponent>();
-				renderer->SetMesh(cashMesh);
-				renderer->SetMaterial(cashMaterial);
-
-			}
-			//Computer
-			Gameplay::MeshResource::Sptr computerMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Computer.obj");
-			Texture2D::Sptr computerTex = ResourceManager::CreateAsset<Texture2D>("textures/desktoptex.jpg");
-			Gameplay::Material::Sptr computerMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-			{
-				computerMaterial->Name = "Computer";
-				computerMaterial->Set("u_Material.AlbedoMap", computerTex);
-				computerMaterial->Set("u_Material.Shininess", 0.3f);
-				computerMaterial->Set("u_Material.NormalMap", normalMapDefault);
-			}
-			Gameplay::GameObject::Sptr computer = scene->CreateGameObject("Desktop");
-			{
-				computer->SetPostion(glm::vec3(-2.61f, -1.08f, 0.0f));
-				computer->SetRotation(glm::vec3(90.0f, 0.0f, 59.0f));
-				computer->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
-
-				RenderComponent::Sptr renderer = computer->Add<RenderComponent>();
-				renderer->SetMesh(computerMesh);
-				renderer->SetMaterial(computerMaterial);
-			}
-			//Conveyor
-			Gameplay::MeshResource::Sptr conveyorMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("conveyor.obj");
-			Texture2D::Sptr conveyorTex = ResourceManager::CreateAsset<Texture2D>("textures/conayortex.png");
-			Gameplay::Material::Sptr conveyorMaterial = ResourceManager::CreateAsset<Gameplay::Material>(conveyorShader);
-			{
-				conveyorMaterial->Name = "Conveyor";
-				conveyorMaterial->Set("u_Material.AlbedoMap", conveyorTex);
-				conveyorMaterial->Set("u_Material.Shininess", 0.2f);
-				conveyorMaterial->Set("u_Material.NormalMap", normalMapDefault);
-				
-			}
-			Gameplay::GameObject::Sptr conveyor = scene->CreateGameObject("Conveyor");
-			{
-				conveyor->SetPostion(glm::vec3(-5.0f, 0.01f, 0.0f));
-				conveyor->SetRotation(glm::vec3(90.0f, 0.0f, -75.0f));
-				conveyor->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
-
-				RenderComponent::Sptr renderer = conveyor->Add<RenderComponent>();
-				renderer->SetMesh(conveyorMesh);
-				renderer->SetMaterial(conveyorMaterial);
-				// Add a dynamic rigid body to this monkey
-				Gameplay::Physics::RigidBody::Sptr physics = conveyor->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.28f, 0.151f, 1.52f));
-				physics->AddCollider(box);
-				Gameplay::Physics::TriggerVolume::Sptr volume = conveyor->Add<Gameplay::Physics::TriggerVolume>();
-				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				box2->SetScale(glm::vec3(0.28f, 0.041f, 1.52f));
-				box2->SetPosition(glm::vec3(0.0f, 0.13f, 0.0f));
-				volume->AddCollider(box2);
-				ConveyorBeltBehaviour::Sptr behaviour2 = conveyor->Add<ConveyorBeltBehaviour>();
-			}
-			//Cup
-			Gameplay::GameObject::Sptr cupModel = scene->CreateGameObject("cup Modelling");
-			{
-				cupModel->SetPostion(glm::vec3(-3.76f, -1.52f, 0.0f));
-				cupModel->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
-				cupModel->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-
-				RenderComponent::Sptr renderer = cupModel->Add<RenderComponent>();
-				renderer->SetMesh(trashMesh);
-				renderer->SetMaterial(trashMaterial);
-			}
-			//Mirror
-			Gameplay::MeshResource::Sptr mirrorMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Mirror.obj");
-			Texture2D::Sptr mirrorTex = ResourceManager::CreateAsset<Texture2D>("textures/mirror.jpg");
-			Gameplay::Material::Sptr mirrorMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-			{
-				mirrorMaterial->Name = "Mirror";
-				mirrorMaterial->Set("u_Material.AlbedoMap", mirrorTex);
-				mirrorMaterial->Set("u_Material.Shininess", 0.6f);
-				mirrorMaterial->Set("u_Material.NormalMap", normalMapDefault);
-			}
-			Gameplay::GameObject::Sptr mirror = scene->CreateGameObject("Mirror");
-			{
-				mirror->SetPostion(glm::vec3(-12.1f, -2.65f, 0.0f));
-				mirror->SetRotation(glm::vec3(90.0f, -2.0f, 93.0f));
-				mirror->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-
-				RenderComponent::Sptr renderer = mirror->Add<RenderComponent>();
-				renderer->SetMesh(mirrorMesh);
-				renderer->SetMaterial(mirrorMaterial);
-			}
-			//Plant
-			Gameplay::MeshResource::Sptr plantMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("plant.obj");
-			Texture2D::Sptr plantTex = ResourceManager::CreateAsset<Texture2D>("textures/planttex.png");
-			Gameplay::Material::Sptr plantMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-			{
-				plantMaterial->Name = "Plant";
-				plantMaterial->Set("u_Material.AlbedoMap", plantTex);
-				plantMaterial->Set("u_Material.Shininess", 0.0f);
-				plantMaterial->Set("u_Material.NormalMap", normalMapDefault);
-			}
-			Gameplay::GameObject::Sptr plant = scene->CreateGameObject("Plant");
-			{
-				plant->SetPostion(glm::vec3(-3.17f, -1.51f, 0.0f));
-				plant->SetRotation(glm::vec3(90.0f, 0.0f, 72.0f));
-				plant->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
-				RenderComponent::Sptr renderer = plant->Add<RenderComponent>();
-				renderer->SetMesh(plantMesh);
-				renderer->SetMaterial(plantMaterial);
-			}
-			//Rack
-			Gameplay::MeshResource::Sptr rackMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("rack.obj");
-			Texture2D::Sptr rackTex = ResourceManager::CreateAsset<Texture2D>("textures/rack.png");
-			Gameplay::Material::Sptr rackMaterial = ResourceManager::CreateAsset<Gameplay::Material>(rackShader); //CHANGE THIS SHADER
-			{
-				rackMaterial->Name = "Rack";
-				rackMaterial->Set("u_Material.AlbedoMap", rackTex);
-				rackMaterial->Set("u_Material.Shininess", 0.2f);
-				rackMaterial->Set("u_Material.NormalMap", normalMapDefault);
-			}
-			Gameplay::GameObject::Sptr rack = scene->CreateGameObject("Rack");
-			{
-				rack->SetPostion(glm::vec3(-1.64f, -1.97f, 0.0f));
-				rack->SetRotation(glm::vec3(90.0f, 0.0f, 63.0f));
-				rack->SetScale(glm::vec3(0.3f, 0.3f, 0.3f));
-
-				RenderComponent::Sptr renderer = rack->Add<RenderComponent>();
-				renderer->SetMesh(rackMesh);
-				renderer->SetMaterial(rackMaterial);
-			}
-			//Shelf
-			Gameplay::GameObject::Sptr shelfModel = scene->CreateGameObject("Shelf Modelling");
-			{
-				shelfModel->SetPostion(glm::vec3(-9.54f, -1.87f, 0.0f));
-				shelfModel->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
-				shelfModel->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
-				RenderComponent::Sptr renderer = shelfModel->Add<RenderComponent>();
-				renderer->SetMesh(shelfMesh);
-				renderer->SetMaterial(shelfMaterial);
-			}
-			//Shower
-			Gameplay::MeshResource::Sptr showerMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("shower.obj");
-			Texture2D::Sptr showerTex = ResourceManager::CreateAsset<Texture2D>("textures/shower.png");
-			Gameplay::Material::Sptr showerMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-			{
-				showerMaterial->Name = "Shower";
-				showerMaterial->Set("u_Material.AlbedoMap", showerTex);
-				showerMaterial->Set("u_Material.Shininess", 0.5f);
-				showerMaterial->Set("u_Material.NormalMap", normalMapDefault);
-			}
-			Gameplay::GameObject::Sptr shower = scene->CreateGameObject("Shower");
-			{
-				shower->SetPostion(glm::vec3(-4.5f, -1.84f, 0.0f));
-				shower->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
-				shower->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-
-				RenderComponent::Sptr renderer = shower->Add<RenderComponent>();
-				renderer->SetMesh(showerMesh);
-				renderer->SetMaterial(showerMaterial);
-			}
-			//Sink
-			Gameplay::MeshResource::Sptr sinkMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("Sink.obj");
-			Texture2D::Sptr sinkTex = ResourceManager::CreateAsset<Texture2D>("textures/sinktex.png");
-			Gameplay::Material::Sptr sinkMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-			{
-				sinkMaterial->Name = "Sink";
-				sinkMaterial->Set("u_Material.AlbedoMap", sinkTex);
-				sinkMaterial->Set("u_Material.Shininess", 0.5f);
-				sinkMaterial->Set("u_Material.NormalMap", normalMapDefault);
-			}
-			Gameplay::GameObject::Sptr sink = scene->CreateGameObject("Sink");
-			{
-				sink->SetPostion(glm::vec3(-3.47f, -3.14f, 0.0f));
-				sink->SetRotation(glm::vec3(90.0f, 0.0f, -34.0f));
-				sink->SetScale(glm::vec3(0.25f, 0.25, 0.25f));
-
-				RenderComponent::Sptr renderer = sink->Add<RenderComponent>();
-				renderer->SetMesh(sinkMesh);
-				renderer->SetMaterial(sinkMaterial);
-			}
-			//Tub
-			Gameplay::MeshResource::Sptr tubMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("tub.obj");
-			Texture2D::Sptr tubTex = ResourceManager::CreateAsset<Texture2D>("textures/tub.png");
-			Gameplay::Material::Sptr tubMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-			{
-				tubMaterial->Name = "Tub";
-				tubMaterial->Set("u_Material.AlbedoMap", tubTex);
-				tubMaterial->Set("u_Material.Shininess", 0.5f);
-				tubMaterial->Set("u_Material.NormalMap", normalMapDefault);
-			}
-			Gameplay::GameObject::Sptr tub = scene->CreateGameObject("Tub");
-			{
-				tub->SetPostion(glm::vec3(-12.25f, -1.78f, 0.0f));
-				tub->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-				tub->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-
-				RenderComponent::Sptr renderer = tub->Add<RenderComponent>();
-				renderer->SetMesh(tubMesh);
-				renderer->SetMaterial(tubMaterial);
-				Gameplay::Physics::Rigidbody::Sptr physics = tub->Add<Gameplay::Physics::RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(1.0f,1.0f,1.0f);
-				box->SetExtents(glm::vec3(1.0f,1.0f,1.0f));
-				physics->AdCollider(box);
-			}
-			//Tv
-			Gameplay::GameObject::Sptr tvModel = scene->CreateGameObject("Tv Modelling");
-			{
-				tvModel->SetPostion(glm::vec3(-14.07f, -1.9f, 0.0f));
-				tvModel->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
-				tvModel->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-
-				RenderComponent::Sptr renderer = tvModel->Add<RenderComponent>();
-				renderer->SetMesh(tvMesh);
-				renderer->SetMaterial(tvMaterial);
-			}
-			//Tv Box
-			Gameplay::GameObject::Sptr tvboxModel = scene->CreateGameObject("Tv Box Modelling");
-			{
-				tvboxModel->SetPostion(glm::vec3(-15.69f, -1.68f, 0.0f));
-				tvboxModel->SetRotation(glm::vec3(90.0f, 0.0f, 37.0f));
-				tvboxModel->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvboxModel->Add <RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-			}
-			//Wolf statue object
-			Gameplay::MeshResource::Sptr statueMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("wolfstatue.obj");
-			Texture2D::Sptr statueTex = ResourceManager::CreateAsset <Texture2D>("textures/statue.jpg");
-			//Create Material
-			Gameplay::Material::Sptr statueMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
-			{
-				statueMaterial->Name = "Statue";
-				statueMaterial->Set("u_Material.AlbedoMap", statueTex);
-				statueMaterial->Set("u_Material.Shininess", 1.0f);
-				statueMaterial->Set("u_Material.NormalMap", normalMapDefault);
-			}
-			Gameplay::GameObject::Sptr wolfstatue = scene->CreateGameObject("Wolf Statue");
-			{
-				wolfstatue->SetPostion(glm::vec3(1.01f, -2.63f, 0.0f));
-				wolfstatue->SetRotation(glm::vec3(90.0, 0.0f, -180.f));
-				wolfstatue->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
-				RenderComponent::Sptr renderer = wolfstatue->Add<RenderComponent>();
-				renderer->SetMesh(statueMesh);
-				renderer->SetMaterial(statueMaterial);
-			}
-		}*/
-
 		/////////////////////////// UI //////////////////////////////
 		//Font: Junk Dog
 		Font::Sptr junkDogFont = ResourceManager::CreateAsset<Font>("fonts/JunkDog.otf", 35.f); //Font path, font size
@@ -4405,12 +3856,27 @@ void DefaultSceneLayer::_CreateScene()
 
 		}
 
-		Gameplay::GameObject::Sptr LfountainParticles1 = scene->CreateGameObject("Long Foutain Particles 1");
-		{
-			ParticleSystem::Sptr particleManager = LfountainParticles1->Add<ParticleSystem>();
-			particleManager->AddEmitter(glm::vec3(0.0f), glm::vec3(0.0f, -1.0f, 10.0f), 10.0f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-			particleManager->Render();
-		}
+		//Gameplay::GameObject::Sptr particles = scene->CreateGameObject("Particles");
+		//{
+		//	particles->SetPostion({ -2.0f, 0.0f, 2.0f });
+
+		//	ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
+		//	particleManager->Atlas = particleTex;
+
+		//	ParticleSystem::ParticleData emitter;
+		//	emitter.Type = ParticleType::SphereEmitter;
+		//	emitter.TexID = 2;
+		//	emitter.Position = glm::vec3(0.0f);
+		//	emitter.Color = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+		//	emitter.Lifetime = 0.0f;
+		//	emitter.SphereEmitterData.Timer = 1.0f / 50.0f;
+		//	emitter.SphereEmitterData.Velocity = 0.5f;
+		//	emitter.SphereEmitterData.LifeRange = { 1.0f, 4.0f };
+		//	emitter.SphereEmitterData.Radius = 1.0f;
+		//	emitter.SphereEmitterData.SizeRange = { 0.5f, 1.5f };
+
+		//	particleManager->AddEmitter(emitter);
+		//}
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);

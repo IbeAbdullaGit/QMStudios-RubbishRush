@@ -13,7 +13,7 @@ class GLAppLayer final : public ApplicationLayer {
 public:
 	MAKE_PTRS(GLAppLayer)
 
-	GLAppLayer();
+		GLAppLayer();
 	virtual ~GLAppLayer();
 
 	// Inherited from ApplicationLayer

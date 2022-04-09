@@ -71,6 +71,7 @@ std::string FileHelpers::ReadResolveIncludes(const std::string& filename, std::v
 		}
 		// Get a lexically normal path (ie with the ../ parts resolved)
 		target = target.lexically_normal();
+		target = std::filesystem::relative(target);
 
 		// If we haven't included the file yet, include it now
 		if (std::find(resolvedPaths.begin(), resolvedPaths.end(), target.string()) == resolvedPaths.end()) {

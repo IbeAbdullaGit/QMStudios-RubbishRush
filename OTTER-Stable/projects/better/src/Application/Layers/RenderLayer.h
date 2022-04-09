@@ -32,6 +32,8 @@ public:
 		glm::mat4 u_View;
 		// The camera's projection matrix
 		glm::mat4 u_Projection;
+		// Inverse of the camera's projection
+		glm::mat4 u_InvProjection;
 		// The combined viewProject matrix
 		glm::mat4 u_ViewProjection;
 		// The camera's position in world space
@@ -44,6 +46,17 @@ public:
 		RenderFlags u_RenderFlags;
 		float u_ZNear;
 		float u_ZFar;
+
+		// NEW FOR DOF
+		// 
+		// Distance to focus camera to in world units
+		float u_FocalDepth = 5.0f;
+		// Distance from lense to sensor in world units
+		float u_LensDepth = 0.1f;
+		// Aperture (inverse of F-Stop)
+		float u_Aperture = 20.0f;
+
+		glm::vec4 u_Viewport;
 	};
 
 	// Structure for our instance-level uniforms, matches layout from
@@ -107,6 +120,8 @@ public:
 	const Framebuffer::Sptr& GetRenderOutput() const;
 	const Framebuffer::Sptr& GetGBuffer() const;
 
+	const UniformBuffer<FrameLevelUniforms>::Sptr& GetFrameUniforms() const;
+
 	// Inherited from ApplicationLayer
 	virtual void OnUpdate() override;
 
@@ -154,7 +169,7 @@ protected:
 	const int LIGHTING_UBO_BINDING = 2;
 	UniformBuffer<LightingUboStruct>::Sptr _lightingUbo;
 	void _InitFrameUniforms();
-	void _RenderScene(const glm::mat4& view, const glm::mat4& Projection);
+	void _RenderScene(const glm::mat4& view, const glm::mat4& Projection, const glm::ivec2& screenSize);
 
 	void _AccumulateLighting();
 	void _Composite();

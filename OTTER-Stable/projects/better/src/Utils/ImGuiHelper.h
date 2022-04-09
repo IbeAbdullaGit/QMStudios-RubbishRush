@@ -8,6 +8,7 @@
 #include <EnumToString.h>
 #include "Graphics/ShaderProgram.h"
 #include "Graphics/Textures/Texture2D.h"
+#include "Graphics/Textures/Texture2DArray.h"
 
 // Will be included in the CPP to avoid header bloat
 struct GLFWwindow;
@@ -84,7 +85,9 @@ public:
 	static bool DrawTextureDrop(Texture2D::Sptr& image, ImVec2 size);
 
 	static void DrawLinearDepthTexture(const Texture2D::Sptr& image, const glm::ivec2& size, float zNear, float zFar);
-	
+
+	static void DrawTextureArraySlice(const Texture2DArray::Sptr& image, uint32_t slice, const glm::ivec2& size, const ImVec4& border = ImVec4(0,0,0,0));
+
 	/// <summary>
 	/// Notifies ImGui that a new frame has begun
 	/// Call at start of render loop
@@ -99,10 +102,13 @@ public:
 
 	static void HeaderCheckbox(ImGuiID headerId, bool* value);
 
+	static bool HeaderMoveButtons(ImGuiID headerId, int* delta);
+
 protected:
 	ImGuiHelper() = default;
 
 	static GLFWwindow* _window;
 
 	static ShaderProgram::Sptr _linearDepthShader;
+	static ShaderProgram::Sptr _arraySliceShader;
 };

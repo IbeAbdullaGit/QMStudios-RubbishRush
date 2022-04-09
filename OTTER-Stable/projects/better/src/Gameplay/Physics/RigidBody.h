@@ -80,7 +80,7 @@ namespace Gameplay::Physics {
 		/// <summary>
 		/// Gets the bodies linear velocity, in m/s
 		/// </summary>
-		const glm::vec3& GetLinearVelocity() const;
+		glm::vec3 GetLinearVelocity() const;
 
 		/// <summary>
 		/// Sets the angular velocity for this body. If called before Awake,

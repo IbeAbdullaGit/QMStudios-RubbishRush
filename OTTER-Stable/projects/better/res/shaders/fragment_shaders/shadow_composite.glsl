@@ -1,6 +1,7 @@
 #version 450
 
 layout(location = 0) in vec2 inUV;
+
 layout(location = 0) out vec4 outDiffuse;
 layout(location = 1) out vec4 outSpecular;
 
@@ -55,7 +56,7 @@ struct Light {
 // Showing off another way to extract view pos from depth
 vec4 GetViewPos(vec2 uv) {
 	// Get the depth buffer value at this pixel, map from [0,1] to [-1,1]    
-	float zOverW = texelFetch(s_Depth, ivec2(inUV * textureSize(s_Depth, 0)), 0).r * 2 - 1;
+	float zOverW = GetDepth(uv) * 2 - 1;
 	// We convert the range [0,1] to [-1,1], create a point to inverse project    
 	vec4 currentPos = vec4(uv.xy * 2 - 1, zOverW, 1);
 	// Transform by the view-projection inverse    

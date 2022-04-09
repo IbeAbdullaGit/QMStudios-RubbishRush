@@ -92,4 +92,11 @@ T JsonGet(const nlohmann::json& blob, const std::string& key, const T& defaultRe
 	}
 }
 
+template <typename T>
+void JsonGetInPlace(const nlohmann::json& blob, const std::string& key, T& value) {
+	if (blob.find(key) != blob.end()) {
+		value = blob[key].get<T>();
+	}
+}
+
 #define JsonParseEnum(typeName, blob, key, defaultVal) (blob.contains(key) ? Parse##typeName(blob[key].get<std::string>(), defaultVal) : defaultVal)

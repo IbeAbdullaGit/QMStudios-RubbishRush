@@ -29,7 +29,7 @@ ITexture::~ITexture() {
 void ITexture::Bind(int slot) {
 	if (_rendererId != 0) {
 		// Instead of glActiveTexture + glBindTexture, we can one line it now :D
-		glBindTextureUnit(slot, _rendererId);
+		glBindTextureUnit(slot, _rendererId); 
 	}
 }
 

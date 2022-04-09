@@ -17,6 +17,8 @@ void ParticleLayer::OnUpdate()
 {
 	Application& app = Application::Get();
 
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+
 	// Only update the particle systems when the game is playing, so we can edit them in
 	// the inspector
 	if (app.CurrentScene()->IsPlaying) {
@@ -24,7 +26,7 @@ void ParticleLayer::OnUpdate()
 			if (system->IsEnabled) {
 				system->Update();
 			}
-			});
+		});
 	}
 }
 
@@ -34,7 +36,6 @@ void ParticleLayer::OnPostRender()
 	const glm::uvec4& viewport = app.GetPrimaryViewport();
 
 	// Restore viewport to game viewport
-
 	RenderLayer::Sptr renderer = app.GetLayer<RenderLayer>();
 	const Framebuffer::Sptr renderOutput = renderer->GetRenderOutput();
 	renderOutput->Bind();
@@ -42,9 +43,9 @@ void ParticleLayer::OnPostRender()
 
 	Application::Get().CurrentScene()->Components().Each<ParticleSystem>([](const ParticleSystem::Sptr& system) {
 		if (system->IsEnabled) {
-			system->Render();
+			system->Render(); 
 		}
-		});
+	});
 
-	renderer->GetRenderOutput()->Unbind();
+	//renderer->GetRenderOutput()->Unbind();
 }

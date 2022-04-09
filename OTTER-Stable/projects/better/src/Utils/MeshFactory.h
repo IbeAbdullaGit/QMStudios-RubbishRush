@@ -10,13 +10,13 @@
 /// <summary>
 /// Represent the type of object added by a MeshBuilderParam
 /// </summary>
-ENUM(MeshBuilderType, int,
-	Unknown = 0,
-	Plane = 1,
-	Cube = 2,
-	IcoShere = 3,
-	UvSphere = 4,
-	FaceInvert = 5
+ENUM(MeshBuilderType, int, 
+	 Unknown    = 0,
+	 Plane      = 1,
+	 Cube       = 2,
+	 IcoShere   = 3,
+	 UvSphere   = 4,
+	 FaceInvert = 5
 );
 
 /// <summary>
@@ -130,7 +130,7 @@ public:
 	/// <param name="col">The color of the plane</param>
 	template <typename Vertex>
 	static void AddPlane(MeshBuilder<Vertex>& mesh, const glm::vec3& pos, const glm::vec3& normal, const glm::vec3& tangent, const glm::vec2& scale, const glm::vec2& uvScale = glm::vec2(1.0f), const glm::vec4& col = glm::vec4(1.0f));
-
+	
 	/// <summary>
 	/// Adds a MeshBuilderParam instance to the given mesh
 	/// </summary>
@@ -156,7 +156,7 @@ public:
 	template <typename Vertex>
 	static void CalculateTBN(MeshBuilder<Vertex>& mesh);
 
-protected:
+protected:	
 	MeshFactory() = default;
 	~MeshFactory() = default;
 

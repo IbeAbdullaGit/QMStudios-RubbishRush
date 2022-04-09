@@ -28,7 +28,7 @@ ImGuiDebugLayer::ImGuiDebugLayer() :
 
 ImGuiDebugLayer::~ImGuiDebugLayer() = default;
 
-void ImGuiDebugLayer::OnAppLoad(const nlohmann::json & config)
+void ImGuiDebugLayer::OnAppLoad(const nlohmann::json& config)
 {
 	Application& app = Application::Get();
 
@@ -52,7 +52,7 @@ void ImGuiDebugLayer::OnPreRender()
 
 }
 
-void ImGuiDebugLayer::OnRender(const Framebuffer::Sptr & prevLayer)
+void ImGuiDebugLayer::OnRender(const Framebuffer::Sptr& prevLayer)
 {
 	using namespace Gameplay;
 	Application& app = Application::Get();
@@ -82,7 +82,7 @@ void ImGuiDebugLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 
 		// Our primary dock window (which will be hidden)
 		ImGui::Begin("Docker Window", nullptr, window_flags);
-
+		
 		// Pop styling variables so they don't effect other resources
 		ImGui::PopStyleVar(3);
 		ImGui::PopStyleColor();
@@ -123,7 +123,7 @@ void ImGuiDebugLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 					ImGuiDir direction = window->SplitDirection;
 					float    dist = window->SplitDepth;
 					ImGuiID& parentDock = _FindOpenParentWindow(window, dock_main_id, &direction, &dist);
-
+					
 					if (direction != ImGuiDir_None) {
 						// Split the parent node, store the ID in the window
 						ImGuiID dockId = ImGui::DockBuilderSplitNode(parentDock, direction, dist, nullptr, &parentDock);
@@ -252,7 +252,7 @@ void ImGuiDebugLayer::OnPostRender()
 	Application& app = Application::Get();
 	const glm::uvec4& viewport = app.GetPrimaryViewport();
 	glViewport(viewport.x, viewport.y, viewport.z, viewport.w);
-
+ 
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(true);
 
@@ -335,7 +335,7 @@ void ImGuiDebugLayer::_RenderGameWindow()
 	// Determine the relative position of the window
 	ImVec2 subPos = ImGui::GetWindowPos();
 	ImVec2 cursorPos = ImGui::GetCursorPos();
-	ImVec2 relPos = { subPos.x - rootPos.x + cursorPos.x, subPos.y - rootPos.y + cursorPos.y };
+	ImVec2 relPos ={ subPos.x - rootPos.x + cursorPos.x, subPos.y - rootPos.y + cursorPos.y };
 
 	// We use a local static to track changes in window size
 	static ImVec2 prevSize = ImVec2(0.0f, 0.0f);
@@ -349,7 +349,7 @@ void ImGuiDebugLayer::_RenderGameWindow()
 
 	// Tell the viewport where to render the game contents to
 	app.SetPrimaryViewport(glm::vec4(relPos.x, rootSize.y - relPos.y - size.y, size.x, size.y));
-
+	
 	// Finish window
 	ImGui::End();
 
@@ -357,7 +357,7 @@ void ImGuiDebugLayer::_RenderGameWindow()
 	ImGui::PopStyleColor();
 }
 
-ImGuiID& ImGuiDebugLayer::_FindOpenParentWindow(const IEditorWindow::Sptr & window, ImGuiID & mainID, ImGuiDir * direction, float* dist)
+ImGuiID& ImGuiDebugLayer::_FindOpenParentWindow(const IEditorWindow::Sptr& window, ImGuiID& mainID, ImGuiDir* direction, float* dist)
 {
 	// Find the parent window 
 	auto it = std::find_if(_windows.begin(), _windows.end(), [&](const auto& win) { return win->Name == window->ParentName; });
@@ -377,7 +377,7 @@ ImGuiID& ImGuiDebugLayer::_FindOpenParentWindow(const IEditorWindow::Sptr & wind
 			// Recursively search for an open parent in the tree
 			return _FindOpenParentWindow(*it, mainID, direction, dist);
 		}
-	}
+	} 
 	// Parent does not exist, return the main docking node
 	else {
 		return mainID;

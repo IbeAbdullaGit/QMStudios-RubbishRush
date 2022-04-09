@@ -35,5 +35,5 @@ void main() {
 
   //vec4 emissive = vec4(0.5, 0.5, 0.5, 1.0);
 
-	outColor = vec4(albedo * (diffuse /*+ specular*/ + (emissive.rgb * emissive.a)), 1.0);
+	outColor = vec4(albedo * (diffuse + specular + (emissive.rgb * emissive.a)), 1.0);
 }

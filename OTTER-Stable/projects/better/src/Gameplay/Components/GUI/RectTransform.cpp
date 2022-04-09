@@ -100,12 +100,12 @@ nlohmann::json RectTransform::ToJson() const {
 
 void RectTransform::StartGUI() {
 	//GuiBatcher::PushScissorRect(_position - _halfSize, _position + _halfSize);
-	GuiBatcher::PushModelTransform(GetLocalTransform());
+	//GuiBatcher::PushModelTransform(GetLocalTransform());
 }
 
 void RectTransform::FinishGUI()
 {
-	GuiBatcher::PopModelTransform();
+	//GuiBatcher::PopModelTransform();
 	//GuiBatcher::PopScissorRect();
 }
 
@@ -115,6 +115,7 @@ RectTransform::Sptr RectTransform::FromJson(const nlohmann::json& blob)
 	result->_position = JsonGet(blob, "position", result->_position);
 	result->_halfSize = JsonGet(blob, "half_scale", result->_halfSize);
 	result->_rotation = JsonGet(blob, "rotation", 0.0f);
+	result->__RecalcTransforms();
 	return result;
 }
 
