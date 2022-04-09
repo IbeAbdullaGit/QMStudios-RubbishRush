@@ -93,7 +93,7 @@ namespace ToneFire {
 		friend DLL CoreSound;
 	public:
 		FMODCore(int maxChannels = 512,
-			const std::string& defaultPath = "./",
+			const std::string& defaultPath = "./audio/",
 			const Listener& listener = Listener());
 		~FMODCore();
 
@@ -140,6 +140,9 @@ namespace ToneFire {
 		//If the event given is not loaded into memory, it will load that event.
 		void StopEvent(const std::string& eventName);
 
+		//Sets the Volume for the Event
+		void SetEventVolume(const std::string& eventName, float volume);
+
 		//Sets the parameter of a particular event.
 		//If the event given is not loaded into memory, it will load that event.
 		//Will throw an error if the parameter does not exist.
@@ -150,7 +153,7 @@ namespace ToneFire {
 
 		//Will set the position of a particular event. NOTE THE FORWARD VECTOR BEING 0,0,1 BY DEFAULT!
 		//If the event given is not loaded into memory, it will load that event.
-		void SetEventPosition(const std::string& eventName,const FMOD_VECTOR& pos);
+		void SetEventPosition(const std::string& eventName, const FMOD_VECTOR& pos);
 
 		//Loads a particular event into memory.
 		void LoadEvent(const std::string& eventName);
