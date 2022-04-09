@@ -53,12 +53,18 @@ protected:
 	Gameplay::GameObject::Sptr dialogue3;
 	Gameplay::GameObject::Sptr dialogue4;
 	Gameplay::GameObject::Sptr dialogue5;
+	Gameplay::GameObject::Sptr dialogue6;
+	Gameplay::GameObject::Sptr dialogue7;
+
 	bool play3 = false;
 	bool play4 = false;
 	bool play5 = false;
 
 	bool diag1 = false;
 	bool diag2 = false;
+
+	bool invDiag = false;
+	bool recInvDiag = false;
 
 	
 	bool hasMoved = false;
@@ -81,7 +87,7 @@ protected:
 	
 
 	int inventory = 4; //DEFAULT INVENTORY COUNT
-	int max_trash = 3; //DEFAULT FOR NOW
+	int max_trash = 5; //DEFAULT FOR NOW
 
 	float currentTime = 0.0f;
 	

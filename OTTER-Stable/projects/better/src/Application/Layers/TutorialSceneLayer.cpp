@@ -193,6 +193,9 @@ void TutorialSceneLayer::OnUpdate()
 			dialogue3 = _tutcurrentScene->FindObjectByName("Dialogue 3");
 			dialogue4 = _tutcurrentScene->FindObjectByName("Dialogue 4");
 			dialogue5 = _tutcurrentScene->FindObjectByName("Dialogue 5");
+
+			dialogue6 = _tutcurrentScene->FindObjectByName("Inventory Dialogue");
+			dialogue7 = _tutcurrentScene->FindObjectByName("RecInv Dialogue");
 			
 
 			trashyM = _tutcurrentScene->FindObjectByName("Trashy");
@@ -233,19 +236,21 @@ void TutorialSceneLayer::OnUpdate()
 
 			if (_tutcurrentScene->IsPlaying && !done)
 			{
-				if (_tutcurrentScene->score == 2 && hallwayLoaded == false && play3 == false) {
+
+
+				if (_tutcurrentScene->score == 4 && hallwayLoaded == false && play3 == false) { //You're a natural!
 					hallwayLoaded = true;
+					play3 = true;
 					_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Top Right Barrier"));
 					dumpUI->Get<GuiPanel>()->IsEnabled = false;
 					dialogue3->Get<GuiPanel>()->IsEnabled = true;
-					AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3 (Remember blue)");
 					currentTime = Timing::Current().TimeSinceAppLoad();
 					_CreateHallway(); //Create the second part of the level
 				}
 				if (hallwayLoaded)
 				{
 					//dialogue
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 6.5f && play4 == false)
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 6.5f && play4 == false && play3 == true)
 					{
 						std::cout << "ok";
 						play4 = true;
@@ -350,49 +355,64 @@ void TutorialSceneLayer::OnUpdate()
 			}
 
 
+
+			//---------------------------
+
+			if (hasCollected == false && (_tutcurrentScene->held >= 1 || _tutcurrentScene->score >= 1)) {
+				hasCollected = true;
+			}
+
 			//dialogue 1
-			if (trashyM->GetPosition().y >= -2.5f && _tutcurrentScene->score == 0 && diag1 == false)
+			if (_tutcurrentScene->held < 2 && _tutcurrentScene->score == 0 && diag1 == false) //Let's get started Trashy!
 			{
 				dialogue1->Get<GuiPanel>()->IsEnabled = true;
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1 (Intro)");
 				diag1 = true;
 			}
-			else if (trashyM->GetPosition().y <= -4.0f )
+			
+			if (!invDiag && diag1 == true && (_tutcurrentScene->held >= 2 || _tutcurrentScene->score >= 1)) //Woah! You got alot on your hands....
 			{
+				invDiag = true;
 				dialogue1->Get<GuiPanel>()->IsEnabled = false;
+				pickupUI->Get<GuiPanel>()->IsEnabled = false;
 				AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1 (Intro)");
+				dialogue6->Get<GuiPanel>()->IsEnabled = true;
+				currentTime = Timing::Current().TimeSinceAppLoad();
 			}
-
-			if (trashyM->GetPosition().y < -5.0f &&  (_tutcurrentScene->held == 0) && hasCollected == false && diag2 == false) { //Pick up Trash tutorial stuff
+			
+			if (trashyM->GetPosition().y < -5.0f && hasCollected == false) { //Tutorial Graphic Panel for picking up trash
 				
 				if(!hallwayLoaded){
 					pickupUI->Get<GuiPanel>()->IsEnabled = true;
-					dialogue2->Get<GuiPanel>()->IsEnabled = true;
-					diag2 = true;
-					AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice2 (Youre a natural)");
 				}
 				
 			}
-			else if (_tutcurrentScene->score >= 2)
-			{
-				dialogue2->Get<GuiPanel>()->IsEnabled = false;
-			}
-			else {
-				pickupUI->Get<GuiPanel>()->IsEnabled = false;
-				
-				if (_tutcurrentScene->held >= 1) {
-					hasCollected = true;
-				}
-			}
-			
 
-			if (hasCollected == true) {//If the player has picked up the trash, then display the UI to teach them how to dump the trash
-				if (!hallwayLoaded) {
+			//Since you are a Trash can...
+			if (!recInvDiag && invDiag && (Timing::Current().TimeSinceAppLoad() - currentTime >= 5.8f)) {  
+				dialogue6->Get<GuiPanel>()->IsEnabled = false;
+				dialogue7->Get<GuiPanel>()->IsEnabled = true;
+				recInvDiag = true;
+				currentTime = Timing::Current().TimeSinceAppLoad();
+				//AudioEngine::stopEventS("You got alot on your hands diag");
+			}
+
+			if (!diag2 && recInvDiag && Timing::Current().TimeSinceAppLoad() - currentTime >= 6.5f) {
+				dialogue7->Get<GuiPanel>()->IsEnabled = false;
+				dialogue2->Get<GuiPanel>()->IsEnabled = true;
+				if (_tutcurrentScene->score < 2) {
 					dumpUI->Get<GuiPanel>()->IsEnabled = true;
 				}
+				diag2 = true;
+			}
+			if (_tutcurrentScene->score >= 2 && _tutcurrentScene->held_recycle == 0 && _tutcurrentScene->held_normal == 0) {
+				dumpUI->Get<GuiPanel>()->IsEnabled = false;
+				dialogue3->Get<GuiPanel>()->IsEnabled = false;
+				std::cout << "dump disappear"<<std::endl;
 			}
 
 		}
+
 
 		// Grab shorthands to the camera and shader from the _currentScene
 		Gameplay::Camera::Sptr camera = _tutcurrentScene->MainCamera;
@@ -822,7 +842,7 @@ void TutorialSceneLayer::_CreateScene()
 		{
 			Gameplay::GameObject::Sptr trashM = scene->CreateGameObject("Recycling"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
 			{
-				trashM->SetPostion(glm::vec3(8.80f, -8.53f, 0.06f));
+				trashM->SetPostion(glm::vec3(9.190f, -8.53f, 0.06f));
 				trashM->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
 				trashM->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
 				// Add a render component
@@ -880,7 +900,7 @@ void TutorialSceneLayer::_CreateScene()
 
 			Gameplay::GameObject::Sptr trash2 = scene->CreateGameObject("Trash");
 			{
-				trash2->SetPostion(glm::vec3(4.140f, -8.530f, 0.0f));
+				trash2->SetPostion(glm::vec3(3.33f, -8.530f, 0.0f));
 				trash2->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
 				trash2->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
 				
@@ -902,6 +922,64 @@ void TutorialSceneLayer::_CreateScene()
 				volume->AddCollider(box2);
 
 				/*CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
+				behaviour2->tutorial = true;*/
+			}
+
+			Gameplay::GameObject::Sptr trash4 = scene->CreateGameObject("Trash");
+			{
+				trash4->SetPostion(glm::vec3(9.190f, -11.650, 0.0f));
+				trash4->SetRotation(glm::vec3(90.0f, 0.0f, -92.0f));
+				trash4->SetScale(glm::vec3(0.9f, 0.59f, 0.73f));
+
+				RenderComponent::Sptr renderer = trash4->Add<RenderComponent>();
+				renderer->SetMesh(bagtrashMesh);
+				renderer->SetMaterial(bagtrashMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = trash4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.16f, -0.08f));
+				box->SetScale(glm::vec3(0.44f, 0.3f, 0.38f));
+				physics->AddCollider(box);*/
+
+				Gameplay::Physics::TriggerVolume::Sptr volume = trash4->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.25f, -0.05f));
+				box2->SetRotation(glm::vec3(0.0f, -3.0f, 0.0f));
+				box2->SetScale(glm::vec3(0.66f, 0.21f, 0.58f));
+				volume->AddCollider(box2);
+
+				/*CollectTrashBehaviour::Sptr behaviour2 = trash2->Add<CollectTrashBehaviour>();
+				behaviour2->tutorial = true;*/
+			}
+
+			Gameplay::GameObject::Sptr recycling2 = scene->CreateGameObject("Recycling"); //PLACEHOLDER change to any object u deem necessary change the set mesh and set material
+			{
+				recycling2->SetPostion(glm::vec3(3.33f, -11.650, 0.06f));
+				recycling2->SetRotation(glm::vec3(90.0f, 0.0f, -62.0f));
+				recycling2->SetScale(glm::vec3(0.82f, 0.73f, 0.78f));
+				// Add a render component
+				RenderComponent::Sptr renderer = recycling2->Add<RenderComponent>();
+				renderer->SetMesh(trashMesh);
+				renderer->SetMaterial(trashMaterial);
+
+				// Add a dynamic rigid body to this monkey
+				Gameplay::Physics::RigidBody::Sptr physics = recycling2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+				/*Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box->SetScale(glm::vec3(0.14f, 0.09f, 0.21f));
+				//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+				//box->SetScale(glm::vec3(0.3f, 0.210f, 0.130f));
+				//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+				physics->AddCollider(box);
+				//physics->SetMass(0.0f);*/
+
+				Gameplay::Physics::TriggerVolume::Sptr volume = recycling2->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
+				box2->SetScale(glm::vec3(0.4f, 0.15f, 0.4f));
+				volume->AddCollider(box2);
+				/*CollectTrashBehaviour::Sptr behaviour2 = trashM->Add<CollectTrashBehaviour>();
+				behaviour2->type = "Recycle";
 				behaviour2->tutorial = true;*/
 			}
 
@@ -1109,7 +1187,7 @@ void TutorialSceneLayer::_CreateScene()
 		}
 		Gameplay::GameObject::Sptr binM = scene->CreateGameObject("Bin");
 		{
-			binM->SetPostion(glm::vec3(6.410f, -11.510f, 0.106f));
+			binM->SetPostion(glm::vec3(6.410f, -10.f, 0.106f));
 			binM->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
 			binM->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
@@ -1164,7 +1242,7 @@ void TutorialSceneLayer::_CreateScene()
 		}
 		Gameplay::GameObject::Sptr binM2 = scene->CreateGameObject("Bin Recycle");
 		{
-			binM2->SetPostion(glm::vec3(8.57f, -11.510f, 0.106f));
+			binM2->SetPostion(glm::vec3(8.57f, -10.f, 0.106f));
 			binM2->SetRotation(glm::vec3(90.0f, 0.0f, 180.0f));
 			binM2->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
 			// Add a render component
@@ -1339,6 +1417,33 @@ void TutorialSceneLayer::_CreateScene()
 
 			}
 
+			Gameplay::GameObject::Sptr inventorydialogue = scene->CreateGameObject("Inventory Dialogue");
+			{
+				RectTransform::Sptr transform = inventorydialogue->Add<RectTransform>();
+				transform->SetMax({ 1280, 720 });
+				transform->SetSize(glm::vec2(90.f, 50.625f));
+				transform->SetPosition(glm::vec2(1115.f, 100.f));
+
+				GuiPanel::Sptr Panel = inventorydialogue->Add<GuiPanel>();
+				Panel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/dialoguetut 6.png"));
+				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				Panel->IsEnabled = false;
+
+			}
+
+			Gameplay::GameObject::Sptr recinvdialogue = scene->CreateGameObject("RecInv Dialogue");
+			{
+				RectTransform::Sptr transform = recinvdialogue->Add<RectTransform>();
+				transform->SetMax({ 1280, 720 });
+				transform->SetSize(glm::vec2(90.f, 50.625f));
+				transform->SetPosition(glm::vec2(1115.f, 100.f));
+
+				GuiPanel::Sptr Panel = recinvdialogue->Add<GuiPanel>();
+				Panel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/dialoguetut 7.png"));
+				//winPanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				Panel->IsEnabled = false;
+
+			}
 			
 			Gameplay::GameObject::Sptr walkTutorial = scene->CreateGameObject("Walk Tutorial UI");
 			{
