@@ -9,6 +9,7 @@ uniform layout(binding = 2) sampler2D s_DiffuseAccumulation;
 uniform layout(binding = 3) sampler2D s_SpecularAccumulation;
 uniform layout(binding = 4) sampler2D s_Emissive;
 
+#include "../fragments/frame_uniforms.glsl"
 #include "../fragments/multiple_point_lights.glsl"
 #include "../fragments/light_correction.glsl"
 

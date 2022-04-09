@@ -66,8 +66,6 @@ void CalcPointLightContribution(vec3 viewPos, vec3 normal, Light light, float sh
 
 void main() {
     
-    //AmbientColAndNumLights.rgb = AmbientCorrect(AmbientColAndNumLights.rgb);
-
     vec3 normal = GetNormal(inUV);
     
     if (length(normal) < 0.1) {
@@ -83,7 +81,7 @@ void main() {
 
     vec3 diffuse = vec3(0);
     vec3 specular = vec3(0);
-     for (int ix = 0; ix < AmbientColAndNumLights.w && ix < MAX_LIGHTS; ix++) {
+    for (int ix = 0; ix < AmbientColAndNumLights.w && ix < MAX_LIGHTS; ix++) {
         CalcPointLightContribution(viewPos, normal, Lights[ix], specularPow, diffuse, specular);
     }
 

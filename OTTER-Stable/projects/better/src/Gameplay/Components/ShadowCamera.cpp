@@ -15,13 +15,13 @@ ShadowCamera::ShadowCamera() :
 	_depthBuffer(nullptr),
 	_projectionMask(nullptr),
 	_color(glm::vec4(1.0f)),
-	_bufferResolution(glm::ivec2(512)), 
+	_bufferResolution(glm::ivec2(512)),
 	_projectionMatrix(glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 100.0f))
 { }
 
 ShadowCamera::~ShadowCamera() = default;
 
-void ShadowCamera::SetColor(const glm::vec4& value) {
+void ShadowCamera::SetColor(const glm::vec4 & value) {
 	_color = value;
 }
 
@@ -29,7 +29,7 @@ const glm::vec4& ShadowCamera::GetColor() const {
 	return _color;
 }
 
-void ShadowCamera::SetBufferResolution(const glm::ivec2& value) {
+void ShadowCamera::SetBufferResolution(const glm::ivec2 & value) {
 	LOG_ASSERT(value.x * value.y > 0, "Buffer size must be > 0");
 	_bufferResolution = value;
 	if (_depthBuffer != nullptr) {
@@ -41,7 +41,7 @@ const glm::ivec2& ShadowCamera::GetBufferResolution() const {
 	return _bufferResolution;
 }
 
-void ShadowCamera::SetProjection(const glm::mat4& value) {
+void ShadowCamera::SetProjection(const glm::mat4 & value) {
 	_projectionMatrix = value;
 }
 
@@ -54,7 +54,7 @@ glm::mat4 ShadowCamera::GetViewProjection() const
 	return _projectionMatrix * GetGameObject()->GetInverseTransform();
 }
 
-void ShadowCamera::SetProjectionMask(const Texture2D::Sptr& image) {
+void ShadowCamera::SetProjectionMask(const Texture2D::Sptr & image) {
 	_projectionMask = image;
 
 	// Update our render flags
@@ -70,7 +70,7 @@ void ShadowCamera::OnLoad()
 	LOG_ASSERT(_bufferResolution.x * _bufferResolution.y > 0, "Buffer size must be > 0");
 
 	FramebufferDescriptor desc;
-	desc.Width  = _bufferResolution.x;
+	desc.Width = _bufferResolution.x;
 	desc.Height = _bufferResolution.y;
 	desc.RenderTargets[RenderTargetAttachment::Depth] = RenderTargetDescriptor(RenderTargetType::Depth32, true, true);
 
@@ -92,7 +92,7 @@ nlohmann::json ShadowCamera::ToJson() const
 	};
 }
 
-ShadowCamera::Sptr ShadowCamera::FromJson(const nlohmann::json& data)
+ShadowCamera::Sptr ShadowCamera::FromJson(const nlohmann::json & data)
 {
 	ShadowCamera::Sptr result = std::make_shared<ShadowCamera>();
 

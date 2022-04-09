@@ -6,10 +6,10 @@
 
 ENUM_FLAGS(ShadowFlags, uint32_t,
 	None = 0,
-	ProjectionEnabled  = 1 << 0,
-	PcfEnabled         = 1 << 1,
+	ProjectionEnabled = 1 << 0,
+	PcfEnabled = 1 << 1,
 	AttenuationEnabled = 1 << 2,
-	WidePcfEnabled     = 1 << 3
+	WidePcfEnabled = 1 << 3
 );
 
 /**

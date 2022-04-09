@@ -1165,18 +1165,28 @@ void DefaultSceneLayer::_CreateScene()
 
 		}
 
+		//Gameplay::GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
+		//{
+		//	// Set position in the scene
+		//	shadowCaster->SetPostion(glm::vec3(0.0f, 9.78f, 22.89f));
+		//	shadowCaster->SetRotation(glm::vec3(117.0f, -180.0f, -180.0f));
+		//	shadowCaster->SetScale(glm::vec3(2.61f, -5.0f, 5.04f));
+		//	//shadowCaster->LookAt(glm::vec3(0.0f));
+
+		//	// Create and attach a renderer for the monkey
+		//	ShadowCamera::Sptr shadowCam = shadowCaster->Add<ShadowCamera>();
+		//	//shadowCam->SetProjection(glm::perspective(glm::radians(120.0f), -1.42f, 4.69f, 5.73f));
+		//	shadowCam->SetProjection(glm::ortho(-10.0f, 30.0f, -10.0f, 30.0f, 1.0f, 7.5f));
+		//}
 		Gameplay::GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
 		{
 			// Set position in the scene
-			shadowCaster->SetPostion(glm::vec3(0.0f, 9.78f, 22.89f));
-			shadowCaster->SetRotation(glm::vec3(117.0f, -180.0f, -180.0f));
-			shadowCaster->SetScale(glm::vec3(2.61f, -5.0f, 5.04f));
-			//shadowCaster->LookAt(glm::vec3(0.0f));
+			shadowCaster->SetPostion(glm::vec3(3.0f, 3.0f, 5.0f));
+			shadowCaster->LookAt(glm::vec3(0.0f));
 
 			// Create and attach a renderer for the monkey
 			ShadowCamera::Sptr shadowCam = shadowCaster->Add<ShadowCamera>();
-			//shadowCam->SetProjection(glm::perspective(glm::radians(120.0f), -1.42f, 4.69f, 5.73f));
-			shadowCam->SetProjection(glm::ortho(-10.0f, 30.0f, -10.0f, 30.0f, 1.0f, 7.5f));
+			shadowCam->SetProjection(glm::perspective(glm::radians(120.0f), 1.0f, 0.1f, 100.0f));
 		}
 		
 
@@ -3627,7 +3637,7 @@ void DefaultSceneLayer::_CreateScene()
 			renderer->SetMesh(binMesh);
 			renderer->SetMaterial(binMaterial);
 			// Add a dynamic rigid body to this monkey
-			Gameplay::Physics::RigidBody::Sptr physics = binM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::RigidBody::Sptr physics = binM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create(glm::vec3(2.0f, 2.23f, 4.25f));
 			box->SetPosition(glm::vec3(0.0f, 0.4f, 0.0f));
 			box->SetScale(glm::vec3(0.25f, 0.22f, 0.2f));
@@ -3670,7 +3680,7 @@ void DefaultSceneLayer::_CreateScene()
 			renderer->SetMesh(bin2Mesh);
 			renderer->SetMaterial(bin2Material);
 			// Add a dynamic rigid body to this monkey
-			Gameplay::Physics::RigidBody::Sptr physics = binM2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::RigidBody::Sptr physics = binM2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create(glm::vec3(2.0f, 2.23f, 4.25f));
 			box->SetPosition(glm::vec3(0.0f, 0.37f, 0.1f));
 			box->SetScale(glm::vec3(0.2f, 0.19f, -0.08f));

@@ -226,8 +226,8 @@ void Application::_Run()
 	if (_isEditor) {
 		_layers.push_back(std::make_shared<ImGuiDebugLayer>());
 	}
-	//_layers.push_back(std::make_shared<DefaultSceneLayer>());
-	_layers.push_back(std::make_shared<TutorialSceneLayer>());
+	_layers.push_back(std::make_shared<DefaultSceneLayer>());
+	//_layers.push_back(std::make_shared<TutorialSceneLayer>());
 
 	// Either load the settings, or use the defaults
 	_ConfigureSettings();

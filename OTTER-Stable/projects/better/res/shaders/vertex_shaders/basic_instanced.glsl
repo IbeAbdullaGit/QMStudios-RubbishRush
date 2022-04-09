@@ -15,7 +15,7 @@ void main() {
 
 	// Lecture 5
 	// Pass vertex pos in world space to frag shader
-	outViewPos = (inModelTransform * vec4(inPosition, 1.0)).xyz;
+	outWorldPos = (inModelTransform * vec4(inPosition, 1.0)).xyz;
 
 	// Normals
 	outNormal = mat3(inNormalMatrix) * inNormal;
