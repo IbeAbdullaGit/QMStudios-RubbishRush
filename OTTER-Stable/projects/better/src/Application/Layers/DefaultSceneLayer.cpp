@@ -748,7 +748,7 @@ void DefaultSceneLayer::_CreateScene()
 		trashMaterial = trashMaterial2;
 		// TRASH BAG
 		Gameplay::MeshResource::Sptr bagtrashMesh2 = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/Trashbag.obj");
-		Texture2D::Sptr bagtrashTex = ResourceManager::CreateAsset<Texture2D>("textures/TrashBagTex.jpg");
+		Texture2D::Sptr bagtrashTex = ResourceManager::CreateAsset<Texture2D>("textures/TrashBagTex.png");
 
 		Gameplay::Material::Sptr bagtrashMaterial2 = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
 		{
