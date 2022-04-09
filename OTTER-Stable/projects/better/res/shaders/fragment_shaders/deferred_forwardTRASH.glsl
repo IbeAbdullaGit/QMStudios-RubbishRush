@@ -26,7 +26,7 @@ void main() {
 	
 	
 
-    vec4 albedoColor = vec4(0.04, 0.28, 0.26, 1.0);
+    vec4 albedoColor = vec4(0.04, 0.28, 0.6, 1.0);
 
 
 	// We can use another texture to store things like our lighting settings

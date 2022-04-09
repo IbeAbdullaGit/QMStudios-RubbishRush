@@ -16,6 +16,7 @@
 #include "Graphics/VertexArrayObject.h"
 #include "Graphics/ShaderProgram.h"
 #include "Graphics/Textures/Texture2D.h"
+#include "Graphics/Textures/Texture2DArray.h"
 #include "Graphics/Textures/TextureCube.h"
 #include "Graphics/VertexTypes.h"
 #include "Graphics/Font.h"
@@ -605,7 +606,7 @@ void TutorialSceneLayer::_CreateScene()
 			//shadowCam->SetProjection(glm::perspective(glm::radians(120.0f), 1.0f, 0.1f, 100.0f));
 			shadowCam->SetProjection(glm::ortho(15.0f, 30.0f, 30.0f, 15.0f, 0.225f, 22555.f));
 		}
-
+		Texture2DArray::Sptr particleTex = ResourceManager::CreateAsset<Texture2DArray>("textures/particles.png", 2, 2);
 		// Set up all our sample objects
 		//setup trashy
 		Gameplay::MeshResource::Sptr trashyMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/trashy.obj");
@@ -733,6 +734,30 @@ void TutorialSceneLayer::_CreateScene()
 			jumping.push_back(trashyJump11);
 
 			morph2->SetJumping(jumping);
+			//add particles to trashy
+			Gameplay::GameObject::Sptr particles = scene->CreateGameObject("Particles");
+			trashyM->AddChild(particles);
+			particles->SetPostion({ 0.0f, 0.0f, 0.24f });
+
+			ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
+			particleManager->Atlas = particleTex;
+
+			particleManager->_gravity = glm::vec3(0.0f);
+
+			ParticleSystem::ParticleData emitter;
+			emitter.Type = ParticleType::SphereEmitter;
+			emitter.TexID = 2;
+			emitter.Position = glm::vec3(0.0f);
+			emitter.Color = glm::vec4(0.975f, 0.883f, 0.751f, 1.0f);
+			emitter.Lifetime = 1.0f / 10.0f;
+			emitter.SphereEmitterData.Timer = 1.0f / 50.0f;
+			emitter.SphereEmitterData.Velocity = 0.5f;
+			emitter.SphereEmitterData.LifeRange = { 1.0f, 1.5f };
+			emitter.SphereEmitterData.Radius = 0.5f;
+			emitter.SphereEmitterData.SizeRange = { 0.5f, 1.0f };
+
+
+			particleManager->AddEmitter(emitter);
 		}
 
 		Texture2D::Sptr planeTex = ResourceManager::CreateAsset<Texture2D>("textures/therealthing.jpg");

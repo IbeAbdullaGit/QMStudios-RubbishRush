@@ -1333,7 +1333,7 @@ void DefaultSceneLayer::_CreateScene()
 			//add particles to trashy
 			Gameplay::GameObject::Sptr particles = scene->CreateGameObject("Particles");
 			trashyM->AddChild(particles);
-			particles->SetPostion({ 0.0f, -7.0f, 0.0f });
+			particles->SetPostion({ 0.0f, 0.0f, 0.24f });
 
 			ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
 			particleManager->Atlas = particleTex;
@@ -1344,28 +1344,17 @@ void DefaultSceneLayer::_CreateScene()
 			emitter.Type = ParticleType::SphereEmitter;
 			emitter.TexID = 2;
 			emitter.Position = glm::vec3(0.0f);
-			emitter.Color = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+			emitter.Color = glm::vec4(0.975f, 0.883f, 0.751f, 1.0f);
 			emitter.Lifetime = 1.0f / 50.0f;
-			emitter.SphereEmitterData.Timer = 1.0f / 50.0f;
+			emitter.SphereEmitterData.Timer = 1.0f / 10.0f;
 			emitter.SphereEmitterData.Velocity = 0.5f;
-			emitter.SphereEmitterData.LifeRange = { 1.0f, 3.0f };
+			emitter.SphereEmitterData.LifeRange = { 1.0f, 1.5f };
 			emitter.SphereEmitterData.Radius = 0.5f;
 			emitter.SphereEmitterData.SizeRange = { 0.5f, 1.0f };
 
-			ParticleSystem::ParticleData emitter2;
-			emitter2.Type = ParticleType::SphereEmitter;
-			emitter2.TexID = 2;
-			emitter2.Position = glm::vec3(0.0f);
-			emitter2.Color = glm::vec4(1.0f, 0.5f, 0.0f, 1.0f);
-			emitter2.Lifetime = 1.0f / 40.0f;
-			emitter2.SphereEmitterData.Timer = 1.0f / 40.0f;
-			emitter2.SphereEmitterData.Velocity = 0.1f;
-			emitter2.SphereEmitterData.LifeRange = { 0.5f, 1.0f };
-			emitter2.SphereEmitterData.Radius = 0.25f;
-			emitter2.SphereEmitterData.SizeRange = { 0.25f, 0.5f };
-
+			
 			particleManager->AddEmitter(emitter);
-			particleManager->AddEmitter(emitter2);
+			
 		}
 
 

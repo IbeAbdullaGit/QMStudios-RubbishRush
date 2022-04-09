@@ -210,5 +210,15 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 		GetGameObject()->SetRotation(currentRotation);
 	}
 
+	//particle stuff
+	if (is_moving)
+	{
+		GetGameObject()->GetChildren()[0]->Get<ParticleSystem>()->IsEnabled = true;
+	}
+	else
+	{
+		//GetGameObject()->GetChildren()[0]->Get<ParticleSystem>()->
+		GetGameObject()->GetChildren()[0]->Get<ParticleSystem>()->IsEnabled = false;
+	}
 }
 
