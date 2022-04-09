@@ -241,16 +241,22 @@ void TutorialSceneLayer::OnUpdate()
 				if (_tutcurrentScene->score == 4 && hallwayLoaded == false && play3 == false) { //You're a natural!
 					hallwayLoaded = true;
 					play3 = true;
+					invDiag = true;
+					recInvDiag = true;
+					diag2 = true;
 					_tutcurrentScene->RemoveGameObject(_tutcurrentScene->FindObjectByName("Layout Wall Top Right Barrier"));
 					dumpUI->Get<GuiPanel>()->IsEnabled = false;
+					dialogue6->Get<GuiPanel>()->IsEnabled = false;
+					dialogue7->Get<GuiPanel>()->IsEnabled = false;
 					dialogue3->Get<GuiPanel>()->IsEnabled = true;
+					
 					currentTime = Timing::Current().TimeSinceAppLoad();
 					_CreateHallway(); //Create the second part of the level
 				}
 				if (hallwayLoaded)
 				{
 					//dialogue
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 6.5f && play4 == false && play3 == true)
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 4.2f && play4 == false && play3 == true)
 					{
 						std::cout << "ok";
 						play4 = true;
@@ -260,14 +266,14 @@ void TutorialSceneLayer::OnUpdate()
 						currentTime = Timing::Current().TimeSinceAppLoad();
 					}
 					
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 6.f && play4 == true && play5 == false)
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 7.2f && play4 == true && play5 == false)
 					{
 						dialogue4->Get<GuiPanel>()->IsEnabled = false;
 						dialogue5->Get<GuiPanel>()->IsEnabled = true;
 						play5 = true;
 						AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5 (Stuck)");
 					}
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 9.0f && play5) {
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 4.0f && play5) {
 						dialogue5->Get<GuiPanel>()->IsEnabled = false;
 					}
 					
@@ -335,9 +341,9 @@ void TutorialSceneLayer::OnUpdate()
 			}
 			
 			
-			if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.3f && _tutcurrentScene->walk) {
+			if (Timing::Current().TimeSinceAppLoad() - footstepTimer >= 0.3f && _tutcurrentScene->walk) {
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/Footstep");
-				currentTime = Timing::Current().TimeSinceAppLoad();
+				footstepTimer = Timing::Current().TimeSinceAppLoad();
 			}
 
 			if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.5f && _tutcurrentScene->walk == false || trashyM->Get<JumpBehaviour>()->in_air) {
@@ -389,7 +395,7 @@ void TutorialSceneLayer::OnUpdate()
 			}
 
 			//Since you are a Trash can...
-			if (!recInvDiag && invDiag && (Timing::Current().TimeSinceAppLoad() - currentTime >= 5.8f)) {  
+			if (!recInvDiag && invDiag && (Timing::Current().TimeSinceAppLoad() - currentTime >= 7.4f)) {  
 				dialogue6->Get<GuiPanel>()->IsEnabled = false;
 				dialogue7->Get<GuiPanel>()->IsEnabled = true;
 				recInvDiag = true;
@@ -397,7 +403,7 @@ void TutorialSceneLayer::OnUpdate()
 				//AudioEngine::stopEventS("You got alot on your hands diag");
 			}
 
-			if (!diag2 && recInvDiag && Timing::Current().TimeSinceAppLoad() - currentTime >= 6.5f) {
+			if (!diag2 && recInvDiag && Timing::Current().TimeSinceAppLoad() - currentTime >= 9.6f) {
 				dialogue7->Get<GuiPanel>()->IsEnabled = false;
 				dialogue2->Get<GuiPanel>()->IsEnabled = true;
 				if (_tutcurrentScene->score < 2) {
@@ -407,8 +413,7 @@ void TutorialSceneLayer::OnUpdate()
 			}
 			if (_tutcurrentScene->score >= 2 && _tutcurrentScene->held_recycle == 0 && _tutcurrentScene->held_normal == 0) {
 				dumpUI->Get<GuiPanel>()->IsEnabled = false;
-				dialogue3->Get<GuiPanel>()->IsEnabled = false;
-				std::cout << "dump disappear"<<std::endl;
+				dialogue2->Get<GuiPanel>()->IsEnabled = false;
 			}
 
 		}

@@ -90,6 +90,7 @@ protected:
 	int max_trash = 5; //DEFAULT FOR NOW
 
 	float currentTime = 0.0f;
+	float footstepTimer = 0.0f;
 	
 	bool isPressed = false;
 
