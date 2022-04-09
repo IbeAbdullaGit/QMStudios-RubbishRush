@@ -256,7 +256,7 @@ void TutorialSceneLayer::OnUpdate()
 				if (hallwayLoaded)
 				{
 					//dialogue
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 4.2f && play4 == false && play3 == true)
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 4.2f && play4 == false && play3 == true) //There's something that's been bothering me, there's a trash in the hallway
 					{
 						std::cout << "ok";
 						play4 = true;
@@ -266,7 +266,7 @@ void TutorialSceneLayer::OnUpdate()
 						currentTime = Timing::Current().TimeSinceAppLoad();
 					}
 					
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 7.2f && play4 == true && play5 == false)
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 7.2f && play4 == true && play5 == false) //Maybe you can get it!
 					{
 						dialogue4->Get<GuiPanel>()->IsEnabled = false;
 						dialogue5->Get<GuiPanel>()->IsEnabled = true;

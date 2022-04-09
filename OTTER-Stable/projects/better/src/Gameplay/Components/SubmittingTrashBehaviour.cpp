@@ -84,6 +84,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 				}
 				else //no match
 				{
+					AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
 					return;
 				}
 				_scene->held -= 1;
@@ -92,7 +93,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 				std::cout << "Submitted trash!\n";
 				//increase score
 				_scene->score += 1;
-			
+				AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/DepositTrash");
 				//disable the return ui if we have more inventory space
 				if (_scene->held < inventory)
 				{
@@ -104,9 +105,9 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 			else
 			{
 				std::cout << "No trash to submit!\n";
+				
 			}
 			ui->Get<GuiText>()->IsEnabled = false;
-			AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/DepositTrash");
 		}
 
 	}
