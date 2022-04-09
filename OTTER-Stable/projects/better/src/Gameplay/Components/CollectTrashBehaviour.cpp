@@ -81,6 +81,9 @@ void CollectTrashBehaviour::Update(float deltaTime)
 					_scene->held_recycle += 1;
 					AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/PickUpCup");
 				}
+				else if (_scene->held_recycle > 1) {
+					AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
+				}
 				else //we are recycle but recycle inv is full
 				{
 					std::cout << "We're already holding a recycle item\n";
