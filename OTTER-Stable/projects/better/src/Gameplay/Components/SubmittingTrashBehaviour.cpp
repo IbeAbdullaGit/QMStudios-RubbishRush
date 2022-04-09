@@ -105,7 +105,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 			else
 			{
 				std::cout << "No trash to submit!\n";
-				
+				AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
 			}
 			ui->Get<GuiText>()->IsEnabled = false;
 		}
