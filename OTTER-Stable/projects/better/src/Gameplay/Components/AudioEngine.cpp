@@ -139,6 +139,11 @@ void AudioEngine::EventParamChangeS(const std::string& eventname, std::string& p
 	audio.SetEventParameter(eventname, paramname, x);
 }
 
+void AudioEngine::EventVolumeChange(const std::string& eventname, float volume)
+{
+	audio.SetEventVolume(eventname, volume);
+}
+
 
 
 
