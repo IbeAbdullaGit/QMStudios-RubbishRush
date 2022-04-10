@@ -214,7 +214,7 @@ void TutorialSceneLayer::OnUpdate()
 			if (_tutcurrentScene->IsPlaying && !done &&!musicstart) {
 				
 				AudioEngine::playEventS("event:/Sounds/Music/Tutorial/TutorialMusicEvent");
-				
+				AudioEngine::EventVolumeChange("event:/Sounds/Music/Tutorial/TutorialMusicEvent", -20.f);
 				musicstart = true;
 			}
 
@@ -264,6 +264,7 @@ void TutorialSceneLayer::OnUpdate()
 						dialogue3->Get<GuiPanel>()->IsEnabled = false;
 						dialogue4->Get<GuiPanel>()->IsEnabled = true;
 						AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4 (Bothering)");
+						AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4 (Bothering)",-50.f);
 						currentTime = Timing::Current().TimeSinceAppLoad();
 					}
 					
@@ -273,6 +274,7 @@ void TutorialSceneLayer::OnUpdate()
 						dialogue5->Get<GuiPanel>()->IsEnabled = true;
 						play5 = true;
 						AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5 (Stuck)");
+						AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5 (Stuck)",-50.f);
 					}
 					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 4.0f && play5) {
 						dialogue5->Get<GuiPanel>()->IsEnabled = false;
@@ -374,6 +376,7 @@ void TutorialSceneLayer::OnUpdate()
 			{
 				dialogue1->Get<GuiPanel>()->IsEnabled = true;
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1 (Intro)");
+				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1 (Intro)", -50.f);
 				diag1 = true;
 			}
 			
