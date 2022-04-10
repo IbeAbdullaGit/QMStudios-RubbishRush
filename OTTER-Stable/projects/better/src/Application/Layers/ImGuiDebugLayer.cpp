@@ -54,7 +54,7 @@ void ImGuiDebugLayer::OnPreRender()
 
 void ImGuiDebugLayer::OnRender(const Framebuffer::Sptr& prevLayer)
 {
-	using namespace Gameplay;
+	//using namespace Gameplay;
 	Application& app = Application::Get();
 
 	// We need to get the primary viewport, as well as track the ID of the primary window dock node
@@ -264,7 +264,7 @@ void ImGuiDebugLayer::OnPostRender()
 
 void ImGuiDebugLayer::_RenderGameWindow()
 {
-	using namespace Gameplay;
+	//using namespace Gameplay;
 	Application& app = Application::Get();
 
 	// Setting up the style and window flags for the game viewport
@@ -289,7 +289,7 @@ void ImGuiDebugLayer::_RenderGameWindow()
 	app.IsFocused = ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
 
 	// Grab the current scene the application is displaying
-	Scene::Sptr scene = app.CurrentScene();
+	Gameplay::Scene::Sptr scene = app.CurrentScene();
 
 	// Janky ass button text for the play/stop button
 	static char buffer[64];
@@ -312,7 +312,7 @@ void ImGuiDebugLayer::_RenderGameWindow()
 		if (!scene->IsPlaying) {
 			scene = nullptr;
 			// We reload to scene from our cached state
-			scene = Scene::FromJson(_backupState);
+			scene = Gameplay::Scene::FromJson(_backupState);
 			app.LoadScene(scene);
 		}
 	}

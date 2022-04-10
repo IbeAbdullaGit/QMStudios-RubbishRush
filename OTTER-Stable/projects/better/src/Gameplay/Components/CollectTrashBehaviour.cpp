@@ -21,7 +21,7 @@ CollectTrashBehaviour::~CollectTrashBehaviour() = default;
 
 void CollectTrashBehaviour::OnEnteredTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>& trigger) {
 	//press e to collect, and only collide with trash
-	if (trigger->GetGameObject()->Name == "Trash" || trigger->GetGameObject()->Name == "Recycling" && _scene->held != inventory  /* && glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E)*/) {
+	if (trigger->GetGameObject()->Name == "Trash" || trigger->GetGameObject()->Name == "Recycling" /* && glfwGetKey(GetGameObject()->GetScene()->Window, GLFW_KEY_E)*/) {
 		
 		////get our scene, delete this line later
 		//_scene = GetGameObject()->GetScene();
@@ -81,7 +81,7 @@ void CollectTrashBehaviour::Update(float deltaTime)
 					_scene->held_recycle += 1;
 					AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/PickUpCup");
 				}
-				else if (_scene->held_recycle > 1) {
+				else if (_scene->held_recycle >= 1) {
 					AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
 				}
 				else //we are recycle but recycle inv is full

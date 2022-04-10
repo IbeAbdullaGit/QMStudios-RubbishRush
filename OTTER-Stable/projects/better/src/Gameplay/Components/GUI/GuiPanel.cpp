@@ -13,7 +13,7 @@ GuiPanel::GuiPanel() :
 
 GuiPanel::~GuiPanel() = default;
 
-void GuiPanel::SetColor(const glm::vec4& color) {
+void GuiPanel::SetColor(const glm::vec4 & color) {
 	_color = color;
 }
 
@@ -33,7 +33,7 @@ Texture2D::Sptr GuiPanel::GetTexture() const {
 	return _texture;
 }
 
-void GuiPanel::SetTexture(const Texture2D::Sptr& value) {
+void GuiPanel::SetTexture(const Texture2D::Sptr & value) {
 	_texture = value;
 }
 
@@ -48,7 +48,7 @@ void GuiPanel::Awake() {
 void GuiPanel::StartGUI() {
 	Texture2D::Sptr tex = _texture != nullptr ? _texture : GuiBatcher::GetDefaultTexture();
 
-	GuiBatcher::PushRect(glm::vec2(0,0), _transform->GetSize(), _color, tex, _borderRadius < 0 ? GuiBatcher::GetDefaultBorderRadius() : _borderRadius);
+	GuiBatcher::PushRect(glm::vec2(0, 0), _transform->GetSize(), _color, tex, _borderRadius < 0 ? GuiBatcher::GetDefaultBorderRadius() : _borderRadius);
 
 	GuiBatcher::Flush();
 }
@@ -60,23 +60,23 @@ void GuiPanel::FinishGUI() {
 void GuiPanel::RenderImGui()
 {
 	LABEL_LEFT(ImGui::ColorEdit4, "Color ", &_color.x);
-	LABEL_LEFT(ImGui::DragInt,    "Radius", &_borderRadius, 1, 0, 128);
+	LABEL_LEFT(ImGui::DragInt, "Radius", &_borderRadius, 1, 0, 128);
 }
 
 nlohmann::json GuiPanel::ToJson() const {
 	return {
 		{ "color",   _color },
 		{ "border",  _borderRadius },
-		{ "texture", _texture  ? _texture->GetGUID().str() : "null" }
+		{ "texture", _texture ? _texture->GetGUID().str() : "null" }
 	};
 }
 
-GuiPanel::Sptr GuiPanel::FromJson(const nlohmann::json& blob) {
+GuiPanel::Sptr GuiPanel::FromJson(const nlohmann::json & blob) {
 	GuiPanel::Sptr result = std::make_shared<GuiPanel>();
 
-	result->_color        = JsonGet(blob, "color", result->_color);
+	result->_color = JsonGet(blob, "color", result->_color);
 	result->_borderRadius = JsonGet(blob, "border", 0);
-	result->_texture      = ResourceManager::Get<Texture2D>(Guid(JsonGet<std::string>(blob, "texture", "null")));
+	result->_texture = ResourceManager::Get<Texture2D>(Guid(JsonGet<std::string>(blob, "texture", "null")));
 
 	return result;
 }
