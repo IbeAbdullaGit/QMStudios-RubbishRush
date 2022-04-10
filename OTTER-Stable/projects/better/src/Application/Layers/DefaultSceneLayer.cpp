@@ -1950,8 +1950,8 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(box);
 				Gameplay::Physics::TriggerVolume::Sptr volume = cashcounter->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.520f, 0.740f, 1.210f));
+				box2->SetPosition(glm::vec3(0.00f, 0.63f, 0.0f));
+				box2->SetScale(glm::vec3(0.520f, 0.13f, 1.210f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = cashcounter->Add<GroundBehaviour>();
@@ -2005,8 +2005,8 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(boxCollider);
 				Gameplay::Physics::TriggerVolume::Sptr volume = bench1->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
+				box2->SetPosition(glm::vec3(0.00f, 0.27f, 0.0f));
+				box2->SetScale(glm::vec3(1.25f, 0.09f, 0.35f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = bench1->Add<GroundBehaviour>();
@@ -2207,8 +2207,8 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(box);
 				Gameplay::Physics::TriggerVolume::Sptr volume = cashcounter2->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.520f, 0.740f, 1.210f));
+				box2->SetPosition(glm::vec3(0.00f, 0.63f, 0.0f));
+				box2->SetScale(glm::vec3(0.520f, 0.13f, 1.210f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = cashcounter2->Add<GroundBehaviour>();
@@ -2230,8 +2230,8 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(box);
 				Gameplay::Physics::TriggerVolume::Sptr volume = cashcounter3->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.520f, 0.740f, 1.210f));
+				box2->SetPosition(glm::vec3(0.00f, 0.63f, 0.0f));
+				box2->SetScale(glm::vec3(0.520f, 0.13f, 1.210f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = cashcounter3->Add<GroundBehaviour>();
@@ -2433,6 +2433,13 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 				box->SetScale(glm::vec3(0.38f, 0.65f, 0.89f));
 				physics->AddCollider(box);
+				Gameplay::Physics::TriggerVolume::Sptr volume = libshelf2->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.13f, 0.86f, -0.06f));
+				box2->SetScale(glm::vec3(0.36f, 0.1f, 0.92f));
+				volume->AddCollider(box2);
+				//give to our floor tiles to tag them
+				GroundBehaviour::Sptr behaviour = libshelf2->Add<GroundBehaviour>();
 			}
 
 			Gameplay::GameObject::Sptr libshelf3 = scene->CreateGameObject("library shelf 3");
@@ -2497,6 +2504,13 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 				box->SetScale(glm::vec3(0.38f, 0.65f, 0.89f));
 				physics->AddCollider(box);
+				Gameplay::Physics::TriggerVolume::Sptr volume = libshelf6->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.13f, 0.86f, -0.06f));
+				box2->SetScale(glm::vec3(0.36f, 0.1f, 0.92f));
+				volume->AddCollider(box2);
+				//give to our floor tiles to tag them
+				GroundBehaviour::Sptr behaviour = libshelf6->Add<GroundBehaviour>();
 			}
 
 			Gameplay::GameObject::Sptr libshelf7 = scene->CreateGameObject("library shelf 7");
@@ -2513,6 +2527,13 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 				box->SetScale(glm::vec3(0.38f, 0.65f, 0.89f));
 				physics->AddCollider(box);
+				Gameplay::Physics::TriggerVolume::Sptr volume = libshelf7->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.13f, 0.86f, -0.06f));
+				box2->SetScale(glm::vec3(0.36f, 0.1f, 0.92f));
+				volume->AddCollider(box2);
+				//give to our floor tiles to tag them
+				GroundBehaviour::Sptr behaviour = libshelf7->Add<GroundBehaviour>();
 			}
 
 			Gameplay::GameObject::Sptr cashcounter4 = scene->CreateGameObject("CashCounter 4");
@@ -2531,8 +2552,8 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(box);
 				Gameplay::Physics::TriggerVolume::Sptr volume = cashcounter4->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.520f, 0.740f, 1.210f));
+				box2->SetPosition(glm::vec3(0.00f, 0.63f, 0.0f));
+				box2->SetScale(glm::vec3(0.520f, 0.13f, 1.210f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = cashcounter4->Add<GroundBehaviour>();
@@ -2554,8 +2575,8 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(box);
 				Gameplay::Physics::TriggerVolume::Sptr volume = loungechair1->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.48f, 1.08f, 0.46f));
+				box2->SetPosition(glm::vec3(0.00f, 0.89f, 0.0f));
+				box2->SetScale(glm::vec3(0.46f, 0.1f, 0.52f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = loungechair1->Add<GroundBehaviour>();
@@ -2578,8 +2599,8 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(box);
 				Gameplay::Physics::TriggerVolume::Sptr volume = loungechair2->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.48f, 1.08f, 0.46f));
+				box2->SetPosition(glm::vec3(0.00f, 0.89f, 0.0f));
+				box2->SetScale(glm::vec3(0.46f, 0.1f, 0.52f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = loungechair2->Add<GroundBehaviour>();
@@ -2717,8 +2738,8 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(box);
 				Gameplay::Physics::TriggerVolume::Sptr volume = tub1->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.5f, 0.56f, 1.07f));
+				box2->SetPosition(glm::vec3(0.00f, 0.6f, 0.0f));
+				box->SetScale(glm::vec3(0.48, 0.09f, 1.08f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = tub1->Add<GroundBehaviour>();
@@ -2740,8 +2761,8 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(box);
 				Gameplay::Physics::TriggerVolume::Sptr volume = tub2->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box->SetScale(glm::vec3(0.5f, 0.56f, 1.07f));
+				box2->SetPosition(glm::vec3(0.00f, 0.6f, 0.0f));
+				box->SetScale(glm::vec3(0.48, 0.09f, 1.08f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = tub2->Add<GroundBehaviour>();
@@ -2779,8 +2800,8 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(box);
 				Gameplay::Physics::TriggerVolume::Sptr volume = cashcounter5->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(0.520f, 0.740f, 1.210f));
+				box2->SetPosition(glm::vec3(0.00f, 0.63f, 0.0f));
+				box2->SetScale(glm::vec3(0.520f, 0.13f, 1.210f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = cashcounter5->Add<GroundBehaviour>();
@@ -2829,8 +2850,8 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(boxCollider);
 				Gameplay::Physics::TriggerVolume::Sptr volume = benchhall1->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
+				box2->SetPosition(glm::vec3(0.00f, 0.27f, 0.0f));
+				box2->SetScale(glm::vec3(1.25f, 0.09f, 0.35f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = benchhall1->Add<GroundBehaviour>();
@@ -2848,12 +2869,13 @@ void DefaultSceneLayer::_CreateScene()
 
 				Gameplay::Physics::RigidBody::Sptr physics = benchhall2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
-				boxCollider->SetScale(glm::vec3(1.9f, 0.39f, 0.26f));
+				boxCollider->SetScale(glm::vec3(1.42f, 0.16f, 0.26f));
+				boxCollider->SetPosition(glm::vec3(-0.02f, 0.23f, 0.0f));
 				physics->AddCollider(boxCollider);
 				Gameplay::Physics::TriggerVolume::Sptr volume = benchhall2->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
+				box2->SetPosition(glm::vec3(0.00f, 0.3f, 0.0f));
+				box2->SetScale(glm::vec3(1.4f, 0.13f, 0.35f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = benchhall2->Add<GroundBehaviour>();
@@ -2875,8 +2897,8 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(boxCollider);
 				Gameplay::Physics::TriggerVolume::Sptr volume = benchhall3->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
+				box2->SetPosition(glm::vec3(0.00f, 0.27f, 0.0f));
+				box2->SetScale(glm::vec3(1.25f, 0.09f, 0.35f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = benchhall3->Add<GroundBehaviour>();
@@ -2898,8 +2920,8 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(boxCollider);
 				Gameplay::Physics::TriggerVolume::Sptr volume = benchhall4->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-				//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-				box2->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
+				box2->SetPosition(glm::vec3(0.00f, 0.27f, 0.0f));
+				box2->SetScale(glm::vec3(1.25f, 0.09f, 0.35f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = benchhall4->Add<GroundBehaviour>();

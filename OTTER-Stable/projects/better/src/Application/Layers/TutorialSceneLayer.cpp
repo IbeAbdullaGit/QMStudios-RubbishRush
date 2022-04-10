@@ -1443,6 +1443,13 @@ void TutorialSceneLayer::_CreateScene()
 			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 			box->SetScale(glm::vec3(0.38f, 0.65f, 0.89f));
 			physics->AddCollider(box);
+			Gameplay::Physics::TriggerVolume::Sptr volume = libshelf2->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			box2->SetPosition(glm::vec3(0.13f, 0.86f, -0.06f));
+			box2->SetScale(glm::vec3(0.36f, 0.1f, 0.92f));
+			volume->AddCollider(box2);
+			//give to our floor tiles to tag them
+			GroundBehaviour::Sptr behaviour = libshelf2->Add<GroundBehaviour>();
 		}
 
 		Gameplay::GameObject::Sptr loungechair1 = scene->CreateGameObject("Lounge Chair 1");
@@ -1461,8 +1468,8 @@ void TutorialSceneLayer::_CreateScene()
 			physics->AddCollider(box);
 			Gameplay::Physics::TriggerVolume::Sptr volume = loungechair1->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-			//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-			box->SetScale(glm::vec3(0.48f, 1.08f, 0.46f));
+			box2->SetPosition(glm::vec3(0.00f, 0.89f, 0.0f));
+			box2->SetScale(glm::vec3(0.46f, 0.1f, 0.52f));
 			volume->AddCollider(box2);
 			//give to our floor tiles to tag them
 			GroundBehaviour::Sptr behaviour = loungechair1->Add<GroundBehaviour>();
@@ -1485,8 +1492,8 @@ void TutorialSceneLayer::_CreateScene()
 			physics->AddCollider(box);
 			Gameplay::Physics::TriggerVolume::Sptr volume = loungechair2->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-			//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-			box->SetScale(glm::vec3(0.48f, 1.08f, 0.46f));
+			box2->SetPosition(glm::vec3(0.00f, 0.89f, 0.0f));
+			box2->SetScale(glm::vec3(0.46f, 0.1f, 0.52f));
 			volume->AddCollider(box2);
 			//give to our floor tiles to tag them
 			GroundBehaviour::Sptr behaviour = loungechair2->Add<GroundBehaviour>();
@@ -1558,8 +1565,8 @@ void TutorialSceneLayer::_CreateScene()
 			physics->AddCollider(boxCollider);
 			Gameplay::Physics::TriggerVolume::Sptr volume = benchhall1->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-			//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-			box2->SetScale(glm::vec3(0.75f, 0.35f, 0.35f));
+			box2->SetPosition(glm::vec3(0.00f, 0.32f, 0.0f));
+			box2->SetScale(glm::vec3(0.77f, 0.09f, 0.35f));
 			volume->AddCollider(box2);
 			//give to our floor tiles to tag them
 			GroundBehaviour::Sptr behaviour = benchhall1->Add<GroundBehaviour>();
@@ -1581,8 +1588,8 @@ void TutorialSceneLayer::_CreateScene()
 			physics->AddCollider(boxCollider);
 			Gameplay::Physics::TriggerVolume::Sptr volume = benchhall2->Add<Gameplay::Physics::TriggerVolume>();
 			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
-			//box2->SetPosition(glm::vec3(0.00f, 0.05f, 0.0f));
-			box2->SetScale(glm::vec3(1.05f, 0.39f, 0.26f));
+			box2->SetPosition(glm::vec3(0.00f, 0.27f, 0.0f));
+			box2->SetScale(glm::vec3(1.25f, 0.09f, 0.35f));
 			volume->AddCollider(box2);
 			//give to our floor tiles to tag them
 			GroundBehaviour::Sptr behaviour = benchhall2->Add<GroundBehaviour>();
@@ -1932,6 +1939,13 @@ void TutorialSceneLayer::_CreateHallway() {
 		Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
 		boxCollider->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
 		physics->AddCollider(boxCollider);
+		Gameplay::Physics::TriggerVolume::Sptr volume = bench->Add<Gameplay::Physics::TriggerVolume>();
+		Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+		box2->SetPosition(glm::vec3(0.00f, 0.27f, 0.0f));
+		box2->SetScale(glm::vec3(1.25f, 0.09f, 0.35f));
+		volume->AddCollider(box2);
+		//give to our floor tiles to tag them
+		GroundBehaviour::Sptr behaviour = bench->Add<GroundBehaviour>();
 	}
 
 	Gameplay::GameObject::Sptr bench2 = _tutcurrentScene->CreateGameObject("Bench2");
@@ -1946,8 +1960,16 @@ void TutorialSceneLayer::_CreateHallway() {
 
 		Gameplay::Physics::RigidBody::Sptr physics = bench2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 		Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
-		boxCollider->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
+		boxCollider->SetScale(glm::vec3(1.42f, 0.16f, 0.26f));
+		boxCollider->SetPosition(glm::vec3(-0.02f, 0.23f, 0.0f));
 		physics->AddCollider(boxCollider);
+		Gameplay::Physics::TriggerVolume::Sptr volume = bench2->Add<Gameplay::Physics::TriggerVolume>();
+		Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+		box2->SetPosition(glm::vec3(0.00f, 0.3f, 0.0f));
+		box2->SetScale(glm::vec3(1.4f, 0.13f, 0.35f));
+		volume->AddCollider(box2);
+		//give to our floor tiles to tag them
+		GroundBehaviour::Sptr behaviour = bench2->Add<GroundBehaviour>();
 	}
 
 	Gameplay::GameObject::Sptr bench3 = _tutcurrentScene->CreateGameObject("Bench3");
@@ -1962,8 +1984,16 @@ void TutorialSceneLayer::_CreateHallway() {
 
 		Gameplay::Physics::RigidBody::Sptr physics = bench3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 		Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
-		boxCollider->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
+		boxCollider->SetScale(glm::vec3(1.42f, 0.16f, 0.26f));
+		boxCollider->SetPosition(glm::vec3(-0.02f, 0.23f, 0.0f));
 		physics->AddCollider(boxCollider);
+		Gameplay::Physics::TriggerVolume::Sptr volume = bench3->Add<Gameplay::Physics::TriggerVolume>();
+		Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+		box2->SetPosition(glm::vec3(0.00f, 0.3f, 0.0f));
+		box2->SetScale(glm::vec3(1.4f, 0.13f, 0.35f));
+		volume->AddCollider(box2);
+		//give to our floor tiles to tag them
+		GroundBehaviour::Sptr behaviour = bench3->Add<GroundBehaviour>();
 	}
 
 	Gameplay::GameObject::Sptr spillM = _tutcurrentScene->CreateGameObject("Spill");
@@ -2025,6 +2055,13 @@ void TutorialSceneLayer::_CreateHallway() {
 		Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
 		boxCollider->SetScale(glm::vec3(1.75f, 0.35f, 0.35f));
 		physics->AddCollider(boxCollider);
+		Gameplay::Physics::TriggerVolume::Sptr volume = bench5->Add<Gameplay::Physics::TriggerVolume>();
+		Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+		box2->SetPosition(glm::vec3(0.00f, 0.31f, 0.0f));
+		box2->SetScale(glm::vec3(1.76f, 0.07f, 0.35f));
+		volume->AddCollider(box2);
+		//give to our floor tiles to tag them
+		GroundBehaviour::Sptr behaviour = bench5->Add<GroundBehaviour>();
 	}
 
 	Gameplay::GameObject::Sptr trash3 = _tutcurrentScene->CreateGameObject("Trash");
