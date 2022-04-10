@@ -114,6 +114,7 @@ void AudioEngine::loadEventS()
 	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3 (Remember blue)");
 	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4 (Bothering)");
 	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5 (Stuck)"); 
+	audio.LoadEvent("event:/Sounds/SoundEffects/Faucet");
 	
 }
 
@@ -131,6 +132,7 @@ void AudioEngine::stopEventS(const std::string& eventname)
 
 void AudioEngine::EventPosChangeS(const std::string& eventname, float x, float y, float z)
 {
+	
 	audio.SetEventPosition(eventname, FMOD_VECTOR{ x, y, z });
 }
 

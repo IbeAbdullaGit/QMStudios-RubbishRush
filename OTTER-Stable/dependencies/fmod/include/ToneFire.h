@@ -160,12 +160,13 @@ namespace ToneFire {
 
 		FMOD_VECTOR forward = { 0.0f,0.0f,1.0f };
 		FMOD_VECTOR up = { 0.0f,1.0f,0.0f };
-	private:
+		FMOD_3D_ATTRIBUTES attributes = { {0} };
+	protected:
 
 		FMOD_VECTOR _velocity;// not yet implemented
-
+		
 		static FMODStudio* _instance;
-
+		
 		std::unordered_map<std::string, FMOD::Studio::EventDescription*> _bankEventDescriptions;
 		std::unordered_map<std::string, FMOD::Studio::EventInstance*> _bankEventInstances;
 

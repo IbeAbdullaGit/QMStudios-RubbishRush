@@ -89,7 +89,12 @@ void MenuSceneLayer::OnAppLoad(const nlohmann::json& config)
 
 void MenuSceneLayer::OnUpdate()
 {
+	if (!activated) 
+	{
+		MainMenu = _currentScene->FindObjectByName("Menu");
+		activated = true;
 
+	}
 }
 
 void MenuSceneLayer::_CreateScene()
@@ -180,8 +185,28 @@ void MenuSceneLayer::_CreateScene()
 		solidWhiteTex->LoadData(1, 1, PixelFormat::RGB, PixelType::Float, solidWhite);
 
 #pragma endregion 
-
+		Gameplay::Scene::Sptr scene = std::make_shared<Gameplay::Scene>();	
 		//LOAD OBJECTS
+		//Font: Junk Dog
+		Font::Sptr junkDogFont = ResourceManager::CreateAsset<Font>("fonts/JunkDog.otf", 35.f); //Font path, font size
+		junkDogFont->Bake();
 
+		Gameplay::GameObject::Sptr MenuUI = scene->CreateGameObject("Menu UI Canvas");
+		{
+			RectTransform::Sptr transform = MenuUI->Add<RectTransform>();
+
+			Gameplay::GameObject::Sptr menu = scene->CreateGameObject("Menu");
+			{
+				RectTransform::Sptr transform = menu->Add<RectTransform>();
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 1280, 720 });
+
+				GuiPanel::Sptr startPanel = menu->Add<GuiPanel>();
+				startPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/Temp_Menu.png"));
+				
+			}
+
+			MenuUI->AddChild(menu);
+		}
 	}
 }

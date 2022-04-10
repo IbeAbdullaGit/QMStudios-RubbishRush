@@ -204,8 +204,11 @@ void DefaultSceneLayer::OnUpdate()
 			playMenu = true;
 			spressed = false;
 			
-			AudioEngine::playEventS("event:/Sounds/Music/Main/MainMusicEvent");
-
+			/*AudioEngine::playEventS("event:/Sounds/Music/Main/MainMusicEvent");
+			AudioEngine::EventVolumeChange("event:/Sounds/Music/Main/MainMusicEvent",-80.f);*/
+			AudioEngine::playEventS("event:/Sounds/SoundEffects/Faucet");
+			AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/Faucet", 100.f);
+			
 			_currentScene->FindObjectByName("Inventory UI")->Get<GuiPanel>()->IsEnabled = true;
 			//CREATE THE TRASH AHHHH
 			_CreateTrash();
@@ -248,6 +251,7 @@ void DefaultSceneLayer::OnUpdate()
 			AudioEngine::stopEventS("event:/Sounds/SoundEffects/Footstep");
 		}
 
+	
 
 		//MENU ANIMATED UPDATED
 		if (_currentScene->IsPlaying && !timerDone && playMenu && start)
@@ -300,10 +304,11 @@ void DefaultSceneLayer::OnUpdate()
 			//If the player does not pause the game, the timer will keep reducing till 0
 			if (!isPaused)
 			{
+				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Faucet", -12.5, 4.5, 2);
 				//Will reduce as long as it is greater than 0 and is not completed, also shows off how much trash is remaining
 				if (timelevelt > 0 && !timeleveltDone) {
 					timelevelt -= dt;
-
+					
 					UIText->Get<GuiText>()->SetText(TimeCountdown(timelevelt));
 
 					trashRemainder->Get<GuiText>()->SetText(std::to_string(max_trash - _currentScene->score - _currentScene->held) + " Trash Remaining!");
@@ -564,7 +569,7 @@ void DefaultSceneLayer::OnUpdate()
 				}
 
 
-
+					
 			}
 		}
 		//PAUSE MENU
@@ -631,6 +636,7 @@ void DefaultSceneLayer::_CreateScene()
 	audio.LoadEvent("event:/Trash multi");
 	audio.SetEventPosition("event:/Can Crush", FMOD_VECTOR{ 0.0f,0.0f,7.f });*/
 
+	
 
 	//using namespace Gameplay;
 	//using namespace Gameplay::Physics;
