@@ -143,6 +143,7 @@ void DefaultSceneLayer::OnUpdate()
 	float dt = static_cast<float>(thisFrame - lastFrame);
 	
 	//mallStudio.Update();
+	AudioEngine::studioupdate();
 
 	//fetch resources
 	if (!activated)
@@ -304,7 +305,7 @@ void DefaultSceneLayer::OnUpdate()
 			//If the player does not pause the game, the timer will keep reducing till 0
 			if (!isPaused)
 			{
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Faucet", -12.5, 4.5, 2);
+				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Faucet", 0, 0, 0);
 				//Will reduce as long as it is greater than 0 and is not completed, also shows off how much trash is remaining
 				if (timelevelt > 0 && !timeleveltDone) {
 					timelevelt -= dt;
@@ -613,6 +614,7 @@ void DefaultSceneLayer::OnUpdate()
 			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 2.50f, 6.f));
 			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -3.9f, -2.0f));
 		}
+		AudioEngine::setListenerPos(trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 	}
 	// Store timing for next loop
 	lastFrame = thisFrame;

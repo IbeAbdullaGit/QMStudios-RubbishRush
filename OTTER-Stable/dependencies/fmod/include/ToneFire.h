@@ -93,7 +93,7 @@ namespace ToneFire {
 		friend DLL CoreSound;
 	public:
 		FMODCore(int maxChannels = 512,
-			const std::string& defaultPath = "./audio/",
+			const std::string& defaultPath = "./",
 			const Listener& listener = Listener());
 		~FMODCore();
 
@@ -160,13 +160,12 @@ namespace ToneFire {
 
 		FMOD_VECTOR forward = { 0.0f,0.0f,1.0f };
 		FMOD_VECTOR up = { 0.0f,1.0f,0.0f };
-		FMOD_3D_ATTRIBUTES attributes = { {0} };
-	protected:
+	private:
 
 		FMOD_VECTOR _velocity;// not yet implemented
-		
+
 		static FMODStudio* _instance;
-		
+
 		std::unordered_map<std::string, FMOD::Studio::EventDescription*> _bankEventDescriptions;
 		std::unordered_map<std::string, FMOD::Studio::EventInstance*> _bankEventInstances;
 
@@ -185,6 +184,7 @@ namespace ToneFire {
 			const Listener& listener = Listener());
 		~FMODStudio();
 
+		void SetListenerPos(float x, float y, float z);
 		void Update();
 		void LoadBank(const std::string& bankName,
 			FMOD_STUDIO_LOAD_BANK_FLAGS flags = FMOD_STUDIO_LOAD_BANK_NORMAL);

@@ -83,7 +83,9 @@ void AudioEngine::loadBankS()
 //	return pStudioSystem->loadBankFile(filename, FMOD_STUDIO_LOAD_BANK_NORMAL, bank);
 //}
 
-
+void AudioEngine::setListenerPos(float x, float y, float z) {
+	studio.SetListenerPos(-x, -z, y);
+}
 
 void AudioEngine::unloadSound(const std::string& soundName)
 {
@@ -133,7 +135,7 @@ void AudioEngine::stopEventS(const std::string& eventname)
 void AudioEngine::EventPosChangeS(const std::string& eventname, float x, float y, float z)
 {
 	
-	audio.SetEventPosition(eventname, FMOD_VECTOR{ x, y, z });
+	audio.SetEventPosition(eventname, FMOD_VECTOR{ -x, -z, y });
 }
 
 void AudioEngine::EventParamChangeS(const std::string& eventname, std::string& paramname, float x, float y)
@@ -145,9 +147,6 @@ void AudioEngine::EventVolumeChange(const std::string& eventname, float volume)
 {
 	audio.SetEventVolume(eventname, volume);
 }
-
-
-
 
 
 void AudioEngine::playSoundByName(const std::string& soundName)
