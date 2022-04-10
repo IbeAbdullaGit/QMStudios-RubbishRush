@@ -535,7 +535,7 @@ void TutorialSceneLayer::_CreateScene()
 			Light::Sptr lightComponent = light->Add<Light>();
 			lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 			lightComponent->SetRadius(5.0f);
-			lightComponent->SetIntensity(55.0f);
+			lightComponent->SetIntensity(5.0f);
 		}
 		{
 			Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
@@ -545,7 +545,7 @@ void TutorialSceneLayer::_CreateScene()
 			Light::Sptr lightComponent = light->Add<Light>();
 			lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.1f));
 			lightComponent->SetRadius(6.5f);
-			lightComponent->SetIntensity(20.0f);
+			lightComponent->SetIntensity(5.0f);
 		}
 		{
 			Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
@@ -555,7 +555,7 @@ void TutorialSceneLayer::_CreateScene()
 			Light::Sptr lightComponent = light->Add<Light>();
 			lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.1f));
 			lightComponent->SetRadius(5.5f);
-			lightComponent->SetIntensity(15.0f);
+			lightComponent->SetIntensity(5.0f);
 		}
 	/*	for (int ix = 0; ix < 50; ix++) {
 			Gameplay::GameObject::Sptr light = scene->CreateGameObject("Light");
@@ -598,8 +598,9 @@ void TutorialSceneLayer::_CreateScene()
 		Gameplay::GameObject::Sptr shadowCaster = scene->CreateGameObject("Shadow Light");
 		{
 			// Set position in the scene
-			shadowCaster->SetPostion(glm::vec3(3.0f, 3.0f, 5.0f));
-			shadowCaster->LookAt(glm::vec3(0.0f));
+			shadowCaster->SetPostion(glm::vec3(5.63f, 8.05f, 5.0f));
+			//shadowCaster->LookAt(glm::vec3(0.0f));
+			shadowCaster->SetRotation(glm::vec3(-102.0f, 0.0f, 0.0f));
 
 			// Create and attach a renderer for the monkey
 			ShadowCamera::Sptr shadowCam = shadowCaster->Add<ShadowCamera>();
