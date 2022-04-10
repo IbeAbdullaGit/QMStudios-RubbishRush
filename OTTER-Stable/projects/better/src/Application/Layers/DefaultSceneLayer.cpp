@@ -737,7 +737,7 @@ void DefaultSceneLayer::_CreateScene()
 
 #pragma endregion 
 
-		Texture2DArray::Sptr particleTex = ResourceManager::CreateAsset<Texture2DArray>("textures/particles.png", 2, 2);
+		Texture2DArray::Sptr particleTex = ResourceManager::CreateAsset<Texture2DArray>("textures/particlesRR.png", 2, 2);
 
 		//LOAD OBJECTS
 
@@ -1352,13 +1352,13 @@ void DefaultSceneLayer::_CreateScene()
 			emitter.Type = ParticleType::SphereEmitter;
 			emitter.TexID = 2;
 			emitter.Position = glm::vec3(0.0f);
-			emitter.Color = glm::vec4(0.975f, 0.883f, 0.751f, 1.0f);
+			emitter.Color = glm::vec4(0.966f, 0.878f, 0.767f, 1.0f);
 			emitter.Lifetime = 1.0f / 50.0f;
 			emitter.SphereEmitterData.Timer = 1.0f / 10.0f;
 			emitter.SphereEmitterData.Velocity = 0.5f;
 			emitter.SphereEmitterData.LifeRange = { 1.0f, 1.5f };
 			emitter.SphereEmitterData.Radius = 0.5f;
-			emitter.SphereEmitterData.SizeRange = { 0.5f, 1.0f };
+			emitter.SphereEmitterData.SizeRange = { 0.25f, 0.5f };
 
 			
 			particleManager->AddEmitter(emitter);
@@ -3975,27 +3975,73 @@ void DefaultSceneLayer::_CreateScene()
 
 		}
 
-		//Gameplay::GameObject::Sptr particles = scene->CreateGameObject("Particles");
-		//{
-		//	particles->SetPostion({ -2.0f, 0.0f, 2.0f });
+		Gameplay::GameObject::Sptr particleslf1 = scene->CreateGameObject("Particles Long Fountain 1");
+		{
+			particleslf1->SetPostion({ 14.39f, -0.11f, 0.39f });
+			particleslf1->SetRotation({ 0.0f,36.0f,0.0f });
 
-		//	ParticleSystem::Sptr particleManager = particles->Add<ParticleSystem>();
-		//	particleManager->Atlas = particleTex;
+			ParticleSystem::Sptr particleManager = particleslf1->Add<ParticleSystem>();
+			particleManager->Atlas = particleTex;
 
-		//	ParticleSystem::ParticleData emitter;
-		//	emitter.Type = ParticleType::SphereEmitter;
-		//	emitter.TexID = 2;
-		//	emitter.Position = glm::vec3(0.0f);
-		//	emitter.Color = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-		//	emitter.Lifetime = 0.0f;
-		//	emitter.SphereEmitterData.Timer = 1.0f / 50.0f;
-		//	emitter.SphereEmitterData.Velocity = 0.5f;
-		//	emitter.SphereEmitterData.LifeRange = { 1.0f, 4.0f };
-		//	emitter.SphereEmitterData.Radius = 1.0f;
-		//	emitter.SphereEmitterData.SizeRange = { 0.5f, 1.5f };
+			ParticleSystem::ParticleData emitter;
+			emitter.Type = ParticleType::StreamEmitter;
+			emitter.TexID = 1;
+			emitter.Position = glm::vec3(0.0f);
+			emitter.Color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			emitter.Lifetime = 1.0f/10.0f;
+			emitter.StreamEmitterData.Timer = 1.0f / 10.0f;
+			emitter.StreamEmitterData.LifeRange = { 5.0f,10.0f };
+			emitter.StreamEmitterData.SizeRange = { 0.25f, 0.4f };
+			emitter.StreamEmitterData.Velocity = glm::vec3(-7.43f, 0.0f, 1.85f);
 
-		//	particleManager->AddEmitter(emitter);
-		//}
+			particleManager->AddEmitter(emitter);
+		}
+
+		Gameplay::GameObject::Sptr particleslf2 = scene->CreateGameObject("Particles Long Fountain 2");
+		{
+			particleslf2->SetPostion({ 7.08f, -0.11f, 0.39f });
+			particleslf2->SetRotation({ 0.0f,-36.0f,0.0f });
+
+			ParticleSystem::Sptr particleManager = particleslf2->Add<ParticleSystem>();
+			particleManager->Atlas = particleTex;
+
+			ParticleSystem::ParticleData emitter;
+			emitter.Type = ParticleType::StreamEmitter;
+			emitter.TexID = 0;
+			emitter.Position = glm::vec3(0.0f);
+			emitter.Color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			emitter.Lifetime = 1.0f / 10.0f;
+			emitter.StreamEmitterData.Timer = 1.0f / 10.0f;
+			emitter.StreamEmitterData.LifeRange = { 5.0f,10.0f };
+			emitter.StreamEmitterData.SizeRange = { 0.25f, 0.4f };
+			emitter.StreamEmitterData.Velocity = glm::vec3(7.43f, 0.0f, 1.85f);
+
+			particleManager->AddEmitter(emitter);
+		}
+
+		Gameplay::GameObject::Sptr particlestf1 = scene->CreateGameObject("Particles Tall Foutain 1");
+		{
+			particlestf1->SetPostion({ 0.0f, -7.43f, 1.95f });
+
+			ParticleSystem::Sptr particleManager = particlestf1->Add<ParticleSystem>();
+			particleManager->Atlas = particleTex;
+
+			particleManager->_gravity = glm::vec3(0.0f, 2.37f, 0.0f);
+
+			ParticleSystem::ParticleData emitter;
+			emitter.Type = ParticleType::SphereEmitter;
+			emitter.TexID = 3;
+			emitter.Position = glm::vec3(0.0f);
+			emitter.Color = glm::vec4(0.966f, 0.878f, 0.767f, 1.0f);
+			emitter.Lifetime = 1.0f / 50.0f;
+			emitter.SphereEmitterData.Timer = 1.0f / 30.0f;
+			emitter.SphereEmitterData.Velocity = 0.81f;
+			emitter.SphereEmitterData.LifeRange = { 1.0f, 2.0f };
+			emitter.SphereEmitterData.Radius = 0.38f;
+			emitter.SphereEmitterData.SizeRange = { 0.25f, 0.5f };
+
+			particleManager->AddEmitter(emitter);
+		}
 
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);
