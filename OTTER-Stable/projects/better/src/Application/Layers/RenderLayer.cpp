@@ -90,7 +90,7 @@ void RenderLayer::OnPreRender()
 	_InitFrameUniforms();
 }
 
-void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
+void RenderLayer::OnRender(const Framebuffer::Sptr& prevLayer)
 {
 	using namespace Gameplay;
 
@@ -98,7 +98,6 @@ void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 
 	// Make sure depth testing and culling are re-enabled
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_STENCIL_TEST);
 	//glEnable(GL_CULL_FACE);
 	glDepthMask(true);
 
@@ -118,7 +117,7 @@ void RenderLayer::OnRender(const Framebuffer::Sptr & prevLayer)
 }
 
 void RenderLayer::OnPostRender() {
-	//using namespace Gameplay;
+	using namespace Gameplay;
 
 	// Unbind our G-Buffer
 	_primaryFBO->Unbind();
@@ -342,7 +341,7 @@ void RenderLayer::_Composite()
 	_outputBuffer->Bind();
 	glViewport(0, 0, _outputBuffer->GetWidth(), _outputBuffer->GetHeight());
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Disable blending, we want to override any existing colors
 	glDisable(GL_BLEND);
@@ -373,7 +372,7 @@ void RenderLayer::_Composite()
 	_outputBuffer->Unbind();
 }
 
-void RenderLayer::_ClearFramebuffer(Framebuffer::Sptr & buffer, const glm::vec4 * colors, int layers) {
+void RenderLayer::_ClearFramebuffer(Framebuffer::Sptr& buffer, const glm::vec4* colors, int layers) {
 	// Make the entire buffer visible
 	glViewport(0, 0, buffer->GetWidth(), buffer->GetHeight());
 	// Disable depth testing
@@ -395,13 +394,9 @@ void RenderLayer::_ClearFramebuffer(Framebuffer::Sptr & buffer, const glm::vec4 
 
 	// Reset depth test function to default
 	glDepthFunc(GL_LESS);
-
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_NOTEQUAL, 1, 0XFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 }
 
-void RenderLayer::OnWindowResize(const glm::ivec2 & oldSize, const glm::ivec2 & newSize)
+void RenderLayer::OnWindowResize(const glm::ivec2& oldSize, const glm::ivec2& newSize)
 {
 	if (newSize.x * newSize.y == 0) return;
 
@@ -527,7 +522,7 @@ void RenderLayer::OnUpdate()
 	
 }
 
-void RenderLayer::OnAppLoad(const nlohmann::json & config)
+void RenderLayer::OnAppLoad(const nlohmann::json& config)
 {
 	Application& app = Application::Get();
 
@@ -535,9 +530,6 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
 	// Create a new descriptor for our FBO
 	FramebufferDescriptor fboDescriptor;
@@ -546,8 +538,6 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 
 	// We want to use a 32 bit depth buffer, we'll ignore the stencil buffer for now
 	fboDescriptor.RenderTargets[RenderTargetAttachment::Depth] = RenderTargetDescriptor(RenderTargetType::Depth32);
-	//stencil buffer?
-	//fboDescriptor.RenderTargets[RenderTargetAttachment::Stencil] = RenderTargetDescriptor(RenderTargetType::Stencil8);
 	// Color layer 0 (albedo, specular)
 	fboDescriptor.RenderTargets[RenderTargetAttachment::Color0] = RenderTargetDescriptor(RenderTargetType::ColorRgba8);
 	// Color layer 1 (normals, metallic)
@@ -569,8 +559,6 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	// Create an FBO to store final output
 	fboDescriptor.RenderTargets.clear();
 	fboDescriptor.RenderTargets[RenderTargetAttachment::Depth] = RenderTargetDescriptor(RenderTargetType::Depth32);
-	//stencil buffer?
-	//fboDescriptor.RenderTargets[RenderTargetAttachment::Stencil] = RenderTargetDescriptor(RenderTargetType::Stencil8);
 	fboDescriptor.RenderTargets[RenderTargetAttachment::Color0] = RenderTargetDescriptor(RenderTargetType::ColorRgba8);
 
 	_outputBuffer = std::make_shared<Framebuffer>(fboDescriptor);
@@ -580,20 +568,6 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	_lightAccumulationShader->LoadShaderPartFromFile("shaders/vertex_shaders/fullscreen_quad.glsl", ShaderPartType::Vertex);
 	_lightAccumulationShader->LoadShaderPartFromFile("shaders/fragment_shaders/light_accumulation.glsl", ShaderPartType::Fragment);
 	_lightAccumulationShader->Link();
-
-	//_SlimeShader = ShaderProgram::Create();
-	//_SlimeShader->LoadShaderPartFromFile("shaders/vertex_shaders/fullscreen_quad.glsl", ShaderPartType::Vertex);
-	//_SlimeShader->LoadShaderPartFromFile("shaders/fragment_shaders/Test.glsl", ShaderPartType::Fragment);
-	//_SlimeShader->Link();
-		
-	//set warps here!!!
-	diffusewarp = ResourceManager::CreateAsset<Texture1D>("luts/difftoon.png");
-	specularwarp = ResourceManager::CreateAsset<Texture1D>("luts/spectoon.png");
-	diffusewarp->SetWrap(WrapMode::ClampToEdge);
-	diffusewarp->SetWrap(WrapMode::MirrorClampToEdge);
-	specularwarp->SetWrap(WrapMode::ClampToEdge);
-	specularwarp->SetWrap(WrapMode::MirrorClampToEdge);
-
 
 	_compositingShader = ShaderProgram::Create();
 	_compositingShader->LoadShaderPartFromFile("shaders/vertex_shaders/fullscreen_quad.glsl", ShaderPartType::Vertex);
@@ -610,11 +584,14 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	_shadowShader->LoadShaderPartFromFile("shaders/fragment_shaders/shadow_composite.glsl", ShaderPartType::Fragment);
 	_shadowShader->Link();
 
-	/*_outlineShader = ShaderProgram::Create();
-	_outlineShader->LoadShaderPartFromFile("shaders/vertex_shaders/basic.glsl", ShaderPartType::Vertex);
-	_outlineShader->LoadShaderPartFromFile("shaders/fragment_shaders/deferred_forwardTRASH.glsl", ShaderPartType::Fragment);
-	_outlineShader->Link();*/
-	
+	//set warps here!!!
+	diffusewarp = ResourceManager::CreateAsset<Texture1D>("luts/difftoon.png");
+	specularwarp = ResourceManager::CreateAsset<Texture1D>("luts/spectoon.png");
+	diffusewarp->SetWrap(WrapMode::ClampToEdge);
+	diffusewarp->SetWrap(WrapMode::MirrorClampToEdge);
+	specularwarp->SetWrap(WrapMode::ClampToEdge);
+	specularwarp->SetWrap(WrapMode::MirrorClampToEdge);
+
 	// We need a mesh for drawing fullscreen quads
 
 	glm::vec2 positions[6] = {
@@ -634,10 +611,6 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	_frameUniforms = std::make_shared<UniformBuffer<FrameLevelUniforms>>(BufferUsage::DynamicDraw);
 	_instanceUniforms = std::make_shared<UniformBuffer<InstanceLevelUniforms>>(BufferUsage::DynamicDraw);
 	_lightingUbo = std::make_shared<UniformBuffer<LightingUboStruct>>(BufferUsage::DynamicDraw);
-
-	//setup textured
-	//outlineTrash = ResourceManager::CreateAsset<Texture2D>("textures/TrashBagOutline.png");
-	//outlineRecycle = ResourceManager::CreateAsset<Texture2D>("textures/cupOutline.jpg");
 }
 
 const Framebuffer::Sptr& RenderLayer::GetPrimaryFBO() const {
@@ -713,15 +686,8 @@ void RenderLayer::_InitFrameUniforms()
 	frameData.u_FocalDepth = camera->FocalDepth;
 	_frameUniforms->Update();
 }
-
 void RenderLayer::_RenderScene(const glm::mat4& view, const glm::mat4& projection, const glm::ivec2& screenSize)
 {
-	//glEnable(GL_STENCIL_TEST);
-	//glEnable(GL_DEPTH_TEST);
-	//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-
-	//glClear(GL_STENCIL_BUFFER_BIT);
-
 	using namespace Gameplay;
 
 	Application& app = Application::Get();
@@ -773,19 +739,6 @@ void RenderLayer::_RenderScene(const glm::mat4& view, const glm::mat4& projectio
 		// Grab the game object so we can do some stuff with it
 		GameObject* object = renderable->GetGameObject();
 
-		////stencil test stuff
-		//if (object->Name == "Trash" || object->Name == "Recycling")
-		//{
-		//	glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		//	glStencilMask(0xFF);
-		//	//glDisable(GL_DEPTH_TEST);
-		//	
-		//}
-		//else //not trash, dont write to stencil buffer
-		//{
-		//	glStencilMask(0x00);
-		//}
-
 		// Use our uniform buffer for our instance level uniforms
 		auto& instanceData = _instanceUniforms->GetData();
 		instanceData.u_Model = object->GetTransform();
@@ -796,60 +749,11 @@ void RenderLayer::_RenderScene(const glm::mat4& view, const glm::mat4& projectio
 
 		// Draw the object
 		renderable->GetMesh()->Draw();
-		//glEnable(GL_DEPTH_TEST);
-		//glDepthFunc(GL_LESS);
-		////2nd draw pass if the trash
-		//if (object->Name == "Trash" || object->Name == "Recycling")
-		//{
-		//	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-		//	glStencilMask(0x00);
-		//	//glDisable(GL_DEPTH_TEST);
-
-		//	//glEnable(GL_CULL_FACE);
-		//	//glCullFace(GL_FRONT);
-		//	//glDepthFunc(GL_NEVER); //tweak this
-
-
-		//	if (object->Name == "Trash")
-		//	{
-		//		//_outlineShader->SetUniform("u_Material.AlbedoMap", outlineTrash);
-		//		currentMat->Set("u_Material.AlbedoMap", outlineTrash);
-		//	}
-		//	else
-		//	{
-		//		//_outlineShader->SetUniform("u_Material.AlbedoMap", outlineRecycle);
-		//		currentMat->Set("u_Material.AlbedoMap", outlineRecycle);
-		//	}
-		//	_outlineShader->Bind(); //use it
-		//	currentMat->Apply(); //apply uniforms and such
-		//	float scale = 1.1f;
-
-		//	// Use our uniform buffer for our instance level uniforms
-		//	auto& instanceData = _instanceUniforms->GetData();
-		//	instanceData.u_Model = object->GetTransform();
-		//	//scale model
-		//	instanceData.u_ModelViewProjection = viewProj * object->GetTransform();
-		//	instanceData.u_ModelView = view * object->GetTransform();
-		//	instanceData.u_NormalMatrix = glm::mat3(glm::transpose(glm::inverse(object->GetTransform())));
-		//	_instanceUniforms->Update();
-
-		//	// Draw the object
-		//	renderable->GetMesh()->Draw();
-
-		//	//glDisable(GL_CULL_FACE);
-		//	glStencilMask(0xFF);
-		//	glStencilFunc(GL_ALWAYS, 0, 0xFF); //1 or 0?
-		//	//glEnable(GL_DEPTH_TEST)
-
-		//	// Reset depth test function to default
-		//	//glDepthFunc(GL_LESS);
-		//	//glClear(GL_DEPTH_BUFFER_BIT);
-		//	//glEnable(GL_DEPTH_TEST);  
-		//}
 
 		});
 
 }
+
 const UniformBuffer<RenderLayer::FrameLevelUniforms>::Sptr& RenderLayer::GetFrameUniforms() const
 {
 	return _frameUniforms;
