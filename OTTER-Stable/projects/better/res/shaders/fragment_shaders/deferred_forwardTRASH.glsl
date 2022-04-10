@@ -20,15 +20,18 @@ uniform Material u_Material;
 
 #include "../fragments/frame_uniforms.glsl"
 //#include "../fragments/color_correction.glsl"
+uniform float t;
 
 // https://learnopengl.com/Advanced-Lighting/Advanced-Lighting
 void main() {
 	
 	
 
-    vec4 albedoColor = vec4(0.04, 0.28, 0.6, 1.0);
+   // vec4 albedoColor = vec4(0.04, 0.28, 0.6, 1.0);
 	// Get albedo from the material
-	albedoColor = texture(u_Material.AlbedoMap, inUV);
+	vec4 albedoColor = texture(u_Material.AlbedoMap, inUV);
+
+	//albedoColor.a = (sin(t))/4.0 + 0.75;
 
 	// We can use another texture to store things like our lighting settings
 	vec4 lightingParams = texture(u_Material.MetallicShininessMap, inUV);
@@ -38,10 +41,7 @@ void main() {
 	if (albedoColor.a < u_Material.DiscardThreshold) {
 		discard;
 	}
-	if (albedoColor.r <0.1) //discard the black?
-	{
-		discard;
-	}
+	
 
 	// Extract albedo from material, and store shininess
 	albedo_specPower = vec4(albedoColor.rgb, 1.0f);//lightingParams.x);

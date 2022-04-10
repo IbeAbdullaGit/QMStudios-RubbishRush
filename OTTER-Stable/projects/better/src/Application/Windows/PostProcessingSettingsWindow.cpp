@@ -17,7 +17,7 @@ PostProcessingSettingsWindow::~PostProcessingSettingsWindow() = default;
 
 void PostProcessingSettingsWindow::Render()
 {
-	using namespace Gameplay;
+	//using namespace Gameplay;
 	Application& app = Application::Get();
 
 	PostProcessingLayer::Sptr layer = app.GetLayer<PostProcessingLayer>();

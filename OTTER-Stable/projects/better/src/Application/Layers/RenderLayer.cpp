@@ -610,10 +610,10 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	_shadowShader->LoadShaderPartFromFile("shaders/fragment_shaders/shadow_composite.glsl", ShaderPartType::Fragment);
 	_shadowShader->Link();
 
-	_outlineShader = ShaderProgram::Create();
+	/*_outlineShader = ShaderProgram::Create();
 	_outlineShader->LoadShaderPartFromFile("shaders/vertex_shaders/basic.glsl", ShaderPartType::Vertex);
 	_outlineShader->LoadShaderPartFromFile("shaders/fragment_shaders/deferred_forwardTRASH.glsl", ShaderPartType::Fragment);
-	_outlineShader->Link();
+	_outlineShader->Link();*/
 	
 	// We need a mesh for drawing fullscreen quads
 
@@ -636,8 +636,8 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	_lightingUbo = std::make_shared<UniformBuffer<LightingUboStruct>>(BufferUsage::DynamicDraw);
 
 	//setup textured
-	//outlineTrash = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
-	//outlineRecycle = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
+	//outlineTrash = ResourceManager::CreateAsset<Texture2D>("textures/TrashBagOutline.png");
+	//outlineRecycle = ResourceManager::CreateAsset<Texture2D>("textures/cupOutline.jpg");
 }
 
 const Framebuffer::Sptr& RenderLayer::GetPrimaryFBO() const {
@@ -773,64 +773,18 @@ void RenderLayer::_RenderScene(const glm::mat4& view, const glm::mat4& projectio
 		// Grab the game object so we can do some stuff with it
 		GameObject* object = renderable->GetGameObject();
 
-		//stencil test stuff
-		if (object->Name == "Trash" || object->Name == "Recycling")
-		{
-			glStencilFunc(GL_ALWAYS, 1, 0xFF);
-			glStencilMask(0xFF);
-			//2nd draw pass if the trash
-			//if (object->Name == "Trash" || object->Name == "Recycling")
-			{
-				glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-				glStencilMask(0x00);
-				glDisable(GL_DEPTH_TEST);
-
-				//glEnable(GL_CULL_FACE);
-				//glCullFace(GL_FRONT);
-				//glDepthFunc(GL_NEVER); //tweak this
-				
-				_outlineShader->Bind(); //use it
-				currentMat->Apply(); //apply uniforms and such
-				if (object->Name == "Trash")
-				{
-					//_outlineShader->SetUniform("u_Material.AlbedoMap", outlineTrash);
-				}
-				else
-				{
-					//_outlineShader->SetUniform("u_Material.AlbedoMap", outlineRecycle);
-				}
-
-				float scale = 1.2f;
-
-				// Use our uniform buffer for our instance level uniforms
-				auto& instanceData = _instanceUniforms->GetData();
-				instanceData.u_Model = object->GetTransform();
-				//scale model
-				instanceData.u_Model = glm::scale(instanceData.u_Model, glm::vec3(scale));
-				instanceData.u_ModelViewProjection = viewProj * instanceData.u_Model;
-				instanceData.u_ModelView = view * instanceData.u_Model;
-				instanceData.u_NormalMatrix = glm::mat3(glm::transpose(glm::inverse(instanceData.u_Model)));
-				_instanceUniforms->Update();
-
-				// Draw the object
-				renderable->GetMesh()->Draw();
-
-				//glDisable(GL_CULL_FACE);
-				glStencilMask(0xFF);
-				glStencilFunc(GL_ALWAYS, 0, 0xFF); //1 or 0?
-				//glEnable(GL_DEPTH_TEST)
-
-				// Reset depth test function to default
-				//glDepthFunc(GL_LESS);
-				//glClear(GL_DEPTH_BUFFER_BIT);
-				shader->Bind();
-				currentMat->Apply();
-			}
-		}
-		else //not trash, dont write to stencil buffer
-		{
-			glStencilMask(0x00);
-		}
+		////stencil test stuff
+		//if (object->Name == "Trash" || object->Name == "Recycling")
+		//{
+		//	glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		//	glStencilMask(0xFF);
+		//	//glDisable(GL_DEPTH_TEST);
+		//	
+		//}
+		//else //not trash, dont write to stencil buffer
+		//{
+		//	glStencilMask(0x00);
+		//}
 
 		// Use our uniform buffer for our instance level uniforms
 		auto& instanceData = _instanceUniforms->GetData();
@@ -842,9 +796,56 @@ void RenderLayer::_RenderScene(const glm::mat4& view, const glm::mat4& projectio
 
 		// Draw the object
 		renderable->GetMesh()->Draw();
-		glEnable(GL_DEPTH_TEST);
+		//glEnable(GL_DEPTH_TEST);
 		//glDepthFunc(GL_LESS);
-		
+		////2nd draw pass if the trash
+		//if (object->Name == "Trash" || object->Name == "Recycling")
+		//{
+		//	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+		//	glStencilMask(0x00);
+		//	//glDisable(GL_DEPTH_TEST);
+
+		//	//glEnable(GL_CULL_FACE);
+		//	//glCullFace(GL_FRONT);
+		//	//glDepthFunc(GL_NEVER); //tweak this
+
+
+		//	if (object->Name == "Trash")
+		//	{
+		//		//_outlineShader->SetUniform("u_Material.AlbedoMap", outlineTrash);
+		//		currentMat->Set("u_Material.AlbedoMap", outlineTrash);
+		//	}
+		//	else
+		//	{
+		//		//_outlineShader->SetUniform("u_Material.AlbedoMap", outlineRecycle);
+		//		currentMat->Set("u_Material.AlbedoMap", outlineRecycle);
+		//	}
+		//	_outlineShader->Bind(); //use it
+		//	currentMat->Apply(); //apply uniforms and such
+		//	float scale = 1.1f;
+
+		//	// Use our uniform buffer for our instance level uniforms
+		//	auto& instanceData = _instanceUniforms->GetData();
+		//	instanceData.u_Model = object->GetTransform();
+		//	//scale model
+		//	instanceData.u_ModelViewProjection = viewProj * object->GetTransform();
+		//	instanceData.u_ModelView = view * object->GetTransform();
+		//	instanceData.u_NormalMatrix = glm::mat3(glm::transpose(glm::inverse(object->GetTransform())));
+		//	_instanceUniforms->Update();
+
+		//	// Draw the object
+		//	renderable->GetMesh()->Draw();
+
+		//	//glDisable(GL_CULL_FACE);
+		//	glStencilMask(0xFF);
+		//	glStencilFunc(GL_ALWAYS, 0, 0xFF); //1 or 0?
+		//	//glEnable(GL_DEPTH_TEST)
+
+		//	// Reset depth test function to default
+		//	//glDepthFunc(GL_LESS);
+		//	//glClear(GL_DEPTH_BUFFER_BIT);
+		//	//glEnable(GL_DEPTH_TEST);  
+		//}
 
 		});
 

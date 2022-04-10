@@ -33,10 +33,10 @@ void HierarchyWindow::Render()
 }
 
 void HierarchyWindow::_RenderObjectNode(Gameplay::GameObject::Sptr object, int depth) {
-	using namespace Gameplay;
-	if (object == nullptr) {
+	//using namespace Gameplay;
+	/*if (object == nullptr) {
 		return;
-	}
+	}*/
 
 	object->_PurgeDeletedChildren();
 
@@ -50,13 +50,13 @@ void HierarchyWindow::_RenderObjectNode(Gameplay::GameObject::Sptr object, int d
 	}
 
 	Application& app = Application::Get();
-	Scene::Sptr& scene = app.CurrentScene();
+	Gameplay::Scene::Sptr& scene = app.CurrentScene();
 
 	ImGui::PushID(object->GetGUID().str().c_str());
 
 	// Figure out how the object node should be displayed
 	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
-	GameObject::Sptr selectedObject = app.EditorState.SelectedObject.lock();
+	Gameplay::GameObject::Sptr selectedObject = app.EditorState.SelectedObject.lock();
 
 	if (selectedObject != nullptr && selectedObject == object) {
 		flags |= ImGuiTreeNodeFlags_Selected;
