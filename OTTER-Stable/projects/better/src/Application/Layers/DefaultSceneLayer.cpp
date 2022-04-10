@@ -204,11 +204,11 @@ void DefaultSceneLayer::OnUpdate()
 			playMenu = true;
 			spressed = false;
 			
-			/*AudioEngine::playEventS("event:/Sounds/Music/Main/MainMusicEvent");
-			AudioEngine::EventVolumeChange("event:/Sounds/Music/Main/MainMusicEvent",-80.f);*/
+			AudioEngine::playEventS("event:/Sounds/Music/Main/MainMusicEvent");
+			AudioEngine::EventVolumeChange("event:/Sounds/Music/Main/MainMusicEvent",-80.f);
 			AudioEngine::playEventS("event:/Sounds/SoundEffects/Faucet");
-			AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/Faucet", 100.f);
-			
+			AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/Faucet", 15.f);
+			AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Faucet", -12.522, 4.653, 0.5f);
 			_currentScene->FindObjectByName("Inventory UI")->Get<GuiPanel>()->IsEnabled = true;
 			//CREATE THE TRASH AHHHH
 			_CreateTrash();
@@ -304,7 +304,8 @@ void DefaultSceneLayer::OnUpdate()
 			//If the player does not pause the game, the timer will keep reducing till 0
 			if (!isPaused)
 			{
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Faucet", 0, 0, 0);
+				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Faucet", -12.522, 4.653, 1);
+				AudioEngine::EventPosChangeS("event:/Sounds/Music/Main/MainMusicEvent", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 				//Will reduce as long as it is greater than 0 and is not completed, also shows off how much trash is remaining
 				if (timelevelt > 0 && !timeleveltDone) {
 					timelevelt -= dt;
