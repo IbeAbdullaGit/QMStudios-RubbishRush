@@ -18,6 +18,8 @@ public:
 	void shutdown();
 	void studioshutdown();
 
+	static void AudioEngine::setListenerPos(float x, float y, float z);
+
 	void loadSound(const std::string& soundName, const std::string& filename, bool b3d, bool bLooping = false, bool bStream = false);
 	static void loadBankS();
 	void unloadSound(const std::string& soundName);

@@ -24,7 +24,8 @@ public:
 
 protected:
 	void _CreateScene();
-
+	Gameplay::GameObject::Sptr MainMenu;
+	bool activated = false;
 	// The current scene that the application is working on
 	Gameplay::Scene::Sptr _currentScene;
 };
