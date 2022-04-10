@@ -85,6 +85,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 				else //no match
 				{
 					AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
+					AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped", GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, GetGameObject()->GetPosition().z);
 					return;
 				}
 				_scene->held -= 1;
@@ -106,6 +107,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 			{
 				std::cout << "No trash to submit!\n";
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
+				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped", GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, GetGameObject()->GetPosition().z);
 			}
 			ui->Get<GuiText>()->IsEnabled = false;
 		}
