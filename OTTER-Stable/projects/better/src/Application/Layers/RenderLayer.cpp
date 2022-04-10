@@ -634,6 +634,10 @@ void RenderLayer::OnAppLoad(const nlohmann::json & config)
 	_frameUniforms = std::make_shared<UniformBuffer<FrameLevelUniforms>>(BufferUsage::DynamicDraw);
 	_instanceUniforms = std::make_shared<UniformBuffer<InstanceLevelUniforms>>(BufferUsage::DynamicDraw);
 	_lightingUbo = std::make_shared<UniformBuffer<LightingUboStruct>>(BufferUsage::DynamicDraw);
+
+	//setup textured
+	//outlineTrash = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
+	//outlineRecycle = ResourceManager::CreateAsset<Texture2D>("textures/floor.jpg");
 }
 
 const Framebuffer::Sptr& RenderLayer::GetPrimaryFBO() const {
@@ -775,7 +779,7 @@ void RenderLayer::_RenderScene(const glm::mat4& view, const glm::mat4& projectio
 			glStencilFunc(GL_ALWAYS, 1, 0xFF);
 			glStencilMask(0xFF);
 			//2nd draw pass if the trash
-			if (object->Name == "Trash" || object->Name == "Recycling")
+			//if (object->Name == "Trash" || object->Name == "Recycling")
 			{
 				glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 				glStencilMask(0x00);
@@ -787,6 +791,14 @@ void RenderLayer::_RenderScene(const glm::mat4& view, const glm::mat4& projectio
 				
 				_outlineShader->Bind(); //use it
 				currentMat->Apply(); //apply uniforms and such
+				if (object->Name == "Trash")
+				{
+					//_outlineShader->SetUniform("u_Material.AlbedoMap", outlineTrash);
+				}
+				else
+				{
+					//_outlineShader->SetUniform("u_Material.AlbedoMap", outlineRecycle);
+				}
 
 				float scale = 1.2f;
 

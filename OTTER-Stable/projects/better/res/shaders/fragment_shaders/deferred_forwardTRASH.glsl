@@ -27,7 +27,8 @@ void main() {
 	
 
     vec4 albedoColor = vec4(0.04, 0.28, 0.6, 1.0);
-
+	// Get albedo from the material
+	albedoColor = texture(u_Material.AlbedoMap, inUV);
 
 	// We can use another texture to store things like our lighting settings
 	vec4 lightingParams = texture(u_Material.MetallicShininessMap, inUV);
@@ -35,6 +36,10 @@ void main() {
 
 	// Discarding fragments who's alpha is below the material's threshold
 	if (albedoColor.a < u_Material.DiscardThreshold) {
+		discard;
+	}
+	if (albedoColor.r <0.1) //discard the black?
+	{
 		discard;
 	}
 

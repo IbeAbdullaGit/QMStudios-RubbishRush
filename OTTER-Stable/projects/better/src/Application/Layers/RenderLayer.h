@@ -6,6 +6,7 @@
 #include "Graphics/VertexArrayObject.h"
 #include "Gameplay/InputEngine.h"
 #include "Graphics/Textures/Texture1D.h"
+#include "Graphics/Textures/Texture2D.h"
 
 #define MAX_LIGHTS 8
 
@@ -139,6 +140,8 @@ protected:
 	bool enable_ambient = true;
 	bool enable_ramp_d = false;
 	bool enable_ramp_s = false;
+	Texture2D::Sptr outlineTrash;
+	Texture2D::Sptr outlineRecycle;
 
 	Texture1D::Sptr diffusewarp;
 	Texture1D::Sptr specularwarp;
