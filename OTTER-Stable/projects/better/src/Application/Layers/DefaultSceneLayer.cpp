@@ -143,7 +143,6 @@ void DefaultSceneLayer::OnUpdate()
 	float dt = static_cast<float>(thisFrame - lastFrame);
 	
 	//mallStudio.Update();
-	AudioEngine::studioupdate();
 
 	//fetch resources
 	if (!activated)
