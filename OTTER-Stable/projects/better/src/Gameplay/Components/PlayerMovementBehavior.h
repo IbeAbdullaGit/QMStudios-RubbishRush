@@ -46,7 +46,9 @@ protected:
 	glm::vec3 direction;
 	int count = 0;
 
-	float max_speed = 0.15f;
+	glm::vec3 movementVelocity;
+
+	float max_speed = 5.f;
 	float acceleration = 0.02f;
 
 	/*const float directions[4] = { 0.0f, 90.0f, 180.0f, 270.0f };
