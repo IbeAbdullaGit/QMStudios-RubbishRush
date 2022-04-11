@@ -7,6 +7,7 @@
 #include "Gameplay/InputEngine.h"
 #include "Application/Application.h"
 #include "Gameplay/Components/GroundBehaviour.h"
+#include "AudioEngine.h"
 
 void JumpBehaviour::Awake()
 {
@@ -73,7 +74,8 @@ void JumpBehaviour::Update(float deltaTime) {
 			if (ptr != nullptr) {
 				ptr->IsEnabled = !ptr->IsEnabled;
 			}*/
-
+			AudioEngine::playEventS("event:/Sounds/SoundEffects/Jump");
+			AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Jump", _body->GetGameObject()->GetPosition().x, _body->GetGameObject()->GetPosition().y, _body->GetGameObject()->GetPosition().z);
 			activated = false; //single jump
 			jumpResetTimer = Timing::Current().TimeSinceAppLoad();
 		}

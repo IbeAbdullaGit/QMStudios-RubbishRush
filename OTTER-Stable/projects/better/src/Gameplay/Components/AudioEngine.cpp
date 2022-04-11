@@ -111,12 +111,15 @@ void AudioEngine::loadEventS()
 	audio.LoadEvent("event:/Sounds/SoundEffects/Pickups interactions/PickUpTrash");
 	audio.LoadEvent("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
 	audio.LoadEvent("event:/Sounds/SoundEffects/Pickups interactions/TrashyFull");
-	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1 (Intro)");
-	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice2 (Youre a natural)");
-	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3 (Remember blue)");
-	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4 (Bothering)");
-	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5 (Stuck)"); 
+	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1");
+	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice2");
+	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3");
+	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4");
+	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5"); 
+	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice6");
+	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice7");
 	audio.LoadEvent("event:/Sounds/SoundEffects/Faucet");
+	audio.LoadEvent("event:/Sounds/SoundEffects/Jump");
 	
 }
 
