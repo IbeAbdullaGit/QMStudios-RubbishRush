@@ -217,7 +217,7 @@ void Application::_Run()
 	_layers.push_back(std::make_shared<ParticleLayer>());
 	_layers.push_back(std::make_shared<PostProcessingLayer>());
 	_layers.push_back(std::make_shared<InterfaceLayer>());
-	//_layers.push_back(std::make_shared<MenuSceneLayer>());
+	_layers.push_back(std::make_shared<MenuSceneLayer>());
 
 	//for playtesting
 	//_isEditor = false;
@@ -227,7 +227,7 @@ void Application::_Run()
 		_layers.push_back(std::make_shared<ImGuiDebugLayer>());
 	}
 	//_layers.push_back(std::make_shared<DefaultSceneLayer>());
-	_layers.push_back(std::make_shared<TutorialSceneLayer>());
+	//_layers.push_back(std::make_shared<TutorialSceneLayer>());
 
 	// Either load the settings, or use the defaults
 	_ConfigureSettings();
@@ -321,7 +321,7 @@ void Application::_Run()
 			//testing switch scene
 			if (!change_scene)
 			{
-				if (glfwGetKey(GetWindow(), GLFW_KEY_N) && GLFW_PRESS || _currentScene->should_switch)
+				if (_currentScene->should_switch)
 				{
 					//remove current layer
 					_layers.pop_back(); //MUST BE THE LAST ONE ADDED
