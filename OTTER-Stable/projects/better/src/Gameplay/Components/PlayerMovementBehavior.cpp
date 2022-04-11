@@ -80,7 +80,7 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 	//input = false;
 	if (in_spill)
 	{
-		_impulse = 2.0f; // _impulse / 1.65f;
+		_impulse = 0.225f; // _impulse / 1.65f;
 		app.GetLayer<PostProcessingLayer>()->SetSlime(true);
 		
 	}
@@ -107,12 +107,8 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 	is_moving = false;
 	if (glfwGetKey(app.GetWindow(), GLFW_KEY_W) || glfwGetKey(app.GetWindow(), GLFW_KEY_UP)) {
 		if (_body->GetLinearVelocity().y >= -5.0f) {
-			movementVelocity = _body->GetLinearVelocity();
-
-			movementVelocity.y = -_impulse;
-			_body->SetLinearVelocity(movementVelocity);
 			
-			//_body->ApplyImpulse(glm::vec3(0.0f, -_impulse, 0.0f));
+			_body->ApplyImpulse(glm::vec3(0.0f, -_impulse, 0.0f));
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
 			//body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(0.0f, -_impulse, 0.0f));
 			is_moving = true;
@@ -126,12 +122,9 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 
 	if (glfwGetKey(app.GetWindow(), GLFW_KEY_S) || glfwGetKey(app.GetWindow(), GLFW_KEY_DOWN)) {
 		if (_body->GetLinearVelocity().y <= 5.0f) {
-			//_body->ApplyImpulse(glm::vec3(0.0f, _impulse, 0.0f));
+			_body->ApplyImpulse(glm::vec3(0.0f, _impulse, 0.0f));
 			
-			movementVelocity = _body->GetLinearVelocity();
-
-			movementVelocity.y = _impulse;
-			_body->SetLinearVelocity(movementVelocity);
+		
 			
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 180.0f));
 			//_body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(0.0f, _impulse, 0.0f));
@@ -146,12 +139,9 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 
 	if (glfwGetKey(app.GetWindow(), GLFW_KEY_A) || glfwGetKey(app.GetWindow(), GLFW_KEY_LEFT)) {
 		if (_body->GetLinearVelocity().x <= 5.0f) {
-			//_body->ApplyImpulse(glm::vec3(_impulse, 0.0f, 0.0f));
+			_body->ApplyImpulse(glm::vec3(_impulse, 0.0f, 0.0f));
 
-			movementVelocity = _body->GetLinearVelocity();
-
-			movementVelocity.x = _impulse;
-			_body->SetLinearVelocity(movementVelocity);
+			
 
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
 			//_body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(_impulse, 0.0f, 0.0f));
@@ -166,12 +156,9 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 
 	if (glfwGetKey(app.GetWindow(), GLFW_KEY_D) || glfwGetKey(app.GetWindow(), GLFW_KEY_RIGHT)) {
 		if (_body->GetLinearVelocity().x >= -5.0f) {
-			//_body->ApplyImpulse(glm::vec3(-_impulse, 0.0f, 0.0f));
+			_body->ApplyImpulse(glm::vec3(-_impulse, 0.0f, 0.0f));
 			
-			movementVelocity = _body->GetLinearVelocity();
 
-			movementVelocity.x = -_impulse;
-			_body->SetLinearVelocity(movementVelocity);
 			
 			//GetGameObject()->SetRotation(glm::vec3(90.0f, 0.0f, -90.0f));
 			//_body->GetGameObject()->SetPostion(_body->GetGameObject()->GetPosition() + glm::vec3(-_impulse, 0.0f, 0.0f));

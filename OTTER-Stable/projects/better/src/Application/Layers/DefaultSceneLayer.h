@@ -56,6 +56,7 @@ protected:
 	Gameplay::GameObject::Sptr objective;
 	Gameplay::GameObject::Sptr returnUI;
 	Gameplay::GameObject::Sptr submitUI;
+	Gameplay::GameObject::Sptr invUI;
 
 
 
@@ -88,6 +89,7 @@ protected:
 	bool highscoreloop = false;
 
 	bool press_once = false;
+	bool press_twice = false;
 
 	//save trash resources
 	Gameplay::MeshResource::Sptr bagtrashMesh;

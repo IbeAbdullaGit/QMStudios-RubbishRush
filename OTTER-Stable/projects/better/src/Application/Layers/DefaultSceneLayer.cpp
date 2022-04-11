@@ -164,7 +164,7 @@ void DefaultSceneLayer::OnUpdate()
 		objective = _currentScene->FindObjectByName("Objective UI Canvas");
 		returnUI = _currentScene->FindObjectByName("Return Feedback");
 		submitUI = _currentScene->FindObjectByName("Submit Feedback");
-
+		invUI = _currentScene->FindObjectByName("Inventory UI");
 		conveyor_belt = _currentScene->FindObjectByName("Conveyor")->Get<RenderComponent>()->GetMaterial();
 		//randomize
 		//RandomizePositions();
@@ -526,6 +526,7 @@ void DefaultSceneLayer::OnUpdate()
 				//winMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
 				trashyM->Get<Gameplay::Physics::RigidBody>()->IsEnabled = false;
 				winMenu->Get<GuiPanel>()->IsEnabled = true;
+				//invUI->Get<GuiPanel>()->IsEnabled = false;
 				UIText->Get<GuiText>()->IsEnabled = false;
 				trashRemainder->Get<GuiText>()->IsEnabled = false;
 				objective->Get<GuiPanel>()->IsEnabled = false;
@@ -541,6 +542,7 @@ void DefaultSceneLayer::OnUpdate()
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
 					winMenu->Get<GuiPanel>()->IsEnabled = false; //dont show win menu
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
+					trashyM->Get<InventoryUI>()->IsEnabled = true;
 					//reset variables
 					Victory = false;
 					victoryMusicPlayed = false;
