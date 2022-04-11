@@ -75,7 +75,7 @@ protected:
 	bool full = false;
 	//Variables for changing stuff in the game
 	float timeLoop = 3.0f; //The seconds between start time and the menu that plays in the beginning
-	float roundTime = 5.f; //210.f; //The time needed to collect all trash
+	float roundTime = 170.f; //210.f; //The time needed to collect all trash
 	float timelevelt = roundTime;
 	bool playMenu = true;
 
@@ -90,8 +90,8 @@ protected:
 	bool highscoreloop = false;
 
 	bool press_once = false;
-	bool press_twice = true;
-	bool press_thrice = false;
+	bool press_high = true;
+	bool press_play = false;
 	bool press_fourth = true;
 
 	//save trash resources

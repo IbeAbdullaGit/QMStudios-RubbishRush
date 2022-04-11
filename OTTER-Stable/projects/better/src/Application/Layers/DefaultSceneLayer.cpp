@@ -67,7 +67,7 @@
 #include "Gameplay/Components/InventoryUI.h"
 #include "Gameplay/Components/AudioEngine.h"
 #include "Gameplay/Components/ShadowCamera.h"
-
+#include  <fstream>
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
 #include "Gameplay/Physics/Colliders/BoxCollider.h"
@@ -397,8 +397,44 @@ void DefaultSceneLayer::OnUpdate()
 
 					output.close();
 
+					
+					input.open("highscores.txt");
+
+					
+					if (input.is_open())
+					{
+						while (read < 10)
+						{
+							input >> array[read];
+							read++;
+						}
+					}
+
+					input.close();
+
+					
+					
+					Font::Sptr junkDogFont = ResourceManager::CreateAsset<Font>("fonts/JunkDog.otf", 35.f); //Font path, font size
+					junkDogFont->Bake();
+					Gameplay::GameObject::Sptr HighScoreFeedback0 = _currentScene->CreateGameObject("HighScore Feedback1");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback0->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 655, 100 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback0->Add<GuiText>();
+						text->SetText(std::to_string(array[0]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+
 					highscoreloop = true;
 				}
+				
 
 				//end menu
 				trashyM->Get<Gameplay::Physics::RigidBody>()->IsEnabled = false;
@@ -411,39 +447,41 @@ void DefaultSceneLayer::OnUpdate()
 				_currentScene->FindObjectByName("Pickup Feedback")->Get<GuiText>()->IsEnabled = false;
 				//need this so program doesnt detect multiple presses
 				press_once = false;
-				press_twice = true;
-				press_thrice = true;
+				press_high = true;
+				press_play = false;
 				
 				//pause the timer*****
 
-				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_once) //return to game
+				if (InputEngine::GetKeyState(GLFW_KEY_H) == ButtonState::Pressed && !press_once) //return to game
 				{
 					//need this so program doesnt detect multiple presses
 					press_once = true;
-					press_twice = false;
+					press_high = false;
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
 					failMenu->Get<GuiPanel>()->IsEnabled = false; //dont show lose menu
+					HighscoreLeaderBoard->Get<GuiPanel>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback1")->Get<GuiText>()->IsEnabled = true;
 				
 
 					AudioEngine::stopEventS("event:/Sounds/Music/Lose/LoseMusicEvent");
 				}
 
-				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_twice) {
+				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_play) {
 					
-					HighscoreLeaderBoard->Get<GuiPanel>()->IsEnabled = true;
-				//	startMenu->Get<GuiPanel>()->IsEnabled = true;
-					press_twice = true;
-					press_thrice = false;
-				
+					press_play = true;
+					press_high = false;
+					failMenu->Get<GuiPanel>()->IsEnabled = false;
+					
 					
 					
 				}
 
-				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_thrice) {
+				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_high) {
 
 					HighscoreLeaderBoard->Get<GuiPanel>()->IsEnabled = false;
+					_currentScene->FindObjectByName("HighScore Feedback1")->Get<GuiText>()->IsEnabled = false;
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
-					press_thrice = true;
+					press_high = true;
 
 					//reset variables
 					lose = false;
@@ -560,22 +598,29 @@ void DefaultSceneLayer::OnUpdate()
 				press_once = false;
 				//pause the timer*****
 
-				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_once) //return to game
+				if (InputEngine::GetKeyState(GLFW_KEY_H) == ButtonState::Pressed && !press_once) //return to game
 				{
 					//need this so program doesnt detect multiple presses
 					press_once = true;
-					press_twice = true;
+					press_high = false;
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
 					winMenu->Get<GuiPanel>()->IsEnabled = false; //dont show lose menu
 					HighscoreLeaderBoard->Get<GuiPanel>()->IsEnabled = true;
 
 				
 				}
-				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && press_twice) {
+				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_play) 
+				{
+					press_play = true;
+					press_high = false;
+					winMenu->Get<GuiPanel>()->IsEnabled = false;
+				}
+
+				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_high) {
 
 					HighscoreLeaderBoard->Get<GuiPanel>()->IsEnabled = false;
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
-					press_twice = false;
+					press_high = true;
 
 					//reset variables
 					Victory = false;
@@ -4037,6 +4082,8 @@ void DefaultSceneLayer::_CreateScene()
 				text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
 				text->IsEnabled = false;
 			}
+
+		
 			//returnFeedback->Get<GuiText>()->IsEnabled = false;
 			feedbackUI->AddChild(pickupFeedback);
 			feedbackUI->AddChild(submitFeedback);
