@@ -217,7 +217,7 @@ void Application::_Run()
 	_layers.push_back(std::make_shared<ParticleLayer>());
 	_layers.push_back(std::make_shared<PostProcessingLayer>());
 	_layers.push_back(std::make_shared<InterfaceLayer>());
-	_layers.push_back(std::make_shared<MenuSceneLayer>());
+	
 
 	//for playtesting
 	//_isEditor = false;
@@ -228,6 +228,7 @@ void Application::_Run()
 	}
 	//_layers.push_back(std::make_shared<DefaultSceneLayer>());
 	//_layers.push_back(std::make_shared<TutorialSceneLayer>());
+	_layers.push_back(std::make_shared<MenuSceneLayer>());
 
 	// Either load the settings, or use the defaults
 	_ConfigureSettings();
@@ -321,7 +322,27 @@ void Application::_Run()
 			//testing switch scene
 			if (!change_scene)
 			{
-				if (_currentScene->should_switch)
+				//go to tutorial
+				if (change_tutorial)
+				{
+					// remove current layer
+					_layers.pop_back(); //MUST BE THE LAST ONE ADDED
+						//add new layer
+					_layers.push_back(std::make_shared<TutorialSceneLayer>());
+					_ConfigureSettings();
+
+
+					//load in the new scene, at the back of the stack
+					_layers.back()->OnAppLoad(_appSettings);
+
+
+					std::cout << "Switched\n";
+					//must do so that we don't get multiple activations
+					//change_scene = true;
+					change_tutorial = false;
+
+				}
+				if (_currentScene->should_switch)//tutorial switch
 				{
 					//remove current layer
 					_layers.pop_back(); //MUST BE THE LAST ONE ADDED

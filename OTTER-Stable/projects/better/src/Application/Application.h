@@ -110,6 +110,7 @@ public:
 	void SaveSettings();
 
 	bool change_scene = false;
+	bool change_tutorial = false;
 
 protected:
 	// The GL driver layer is a special friend that can access our protected members (mainly window info)
