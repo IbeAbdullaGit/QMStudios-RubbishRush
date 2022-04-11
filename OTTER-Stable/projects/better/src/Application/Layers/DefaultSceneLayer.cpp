@@ -342,6 +342,7 @@ void DefaultSceneLayer::OnUpdate()
 		{
 			if (lose)
 			{
+				trashyM->SetPostion(glm::vec3(0.5f, 0.0f, 0.1f)); //reset position to start
 				if (highscoreloop == false)
 				{
 					int numberoftrashcollected = _currentScene->score;
@@ -407,6 +408,7 @@ void DefaultSceneLayer::OnUpdate()
 				trashRemainder->Get<GuiText>()->IsEnabled = false;
 				objective->Get<GuiPanel>()->IsEnabled = false;
 				returnUI->Get<GuiText>()->IsEnabled = false;
+				_currentScene->FindObjectByName("Pickup Feedback")->Get<GuiText>()->IsEnabled = false;
 				//need this so program doesnt detect multiple presses
 				press_once = false;
 				press_twice = true;
@@ -451,7 +453,7 @@ void DefaultSceneLayer::OnUpdate()
 					timelevelt = roundTime;
 					timerDone = false;
 					timeleveltDone = false;
-					trashyM->SetPostion(glm::vec3(0.5f, 0.0f, 0.1f)); //reset position to start
+					//trashyM->SetPostion(glm::vec3(0.5f, 0.0f, 0.1f)); //reset position to start
 					_currentScene->score = 0;
 					_currentScene->trash = 0;
 					_currentScene->held = 0;
@@ -480,6 +482,7 @@ void DefaultSceneLayer::OnUpdate()
 			}
 			if (Victory)
 			{
+				trashyM->SetPostion(glm::vec3(0.5f, 0.0f, 0.1f)); //reset position to start
 				if (!victoryMusicPlayed) {
 					AudioEngine::stopEventS("event:/Sounds/Music/Main/MainMusicEvent");
 					AudioEngine::EventPosChangeS("event:/Sounds/Music/Main/VictoryMusicEvent", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
@@ -552,6 +555,7 @@ void DefaultSceneLayer::OnUpdate()
 				trashRemainder->Get<GuiText>()->IsEnabled = false;
 				objective->Get<GuiPanel>()->IsEnabled = false;
 				returnUI->Get<GuiText>()->IsEnabled = false;
+				_currentScene->FindObjectByName("Pickup Feedback")->Get<GuiText>()->IsEnabled = false;
 				//need this so program doesnt detect multiple presses
 				press_once = false;
 				//pause the timer*****

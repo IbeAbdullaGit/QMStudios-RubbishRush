@@ -49,7 +49,7 @@ void CollectTrashBehaviour::OnEnteredTrigger(const std::shared_ptr<Gameplay::Phy
 
 void CollectTrashBehaviour::OnLeavingTrigger(const std::shared_ptr<Gameplay::Physics::TriggerVolume>& trigger) {
 	
-	if (trigger->GetGameObject()->Name == "Trash" || trigger->GetGameObject()->Name == "Recycling")
+	//if (trigger->GetGameObject()->Name == "Trash" || trigger->GetGameObject()->Name == "Recycling")
 	{
 		activated = false;
 		ui->Get<GuiText>()->IsEnabled = false;
