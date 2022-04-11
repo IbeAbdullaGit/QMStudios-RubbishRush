@@ -69,7 +69,10 @@ void JumpBehaviour::Update(float deltaTime) {
 		Application& app = Application::Get();
 
 		if (InputEngine::GetKeyState(GLFW_KEY_SPACE) == ButtonState::Pressed) {
-			_body->ApplyImpulse(glm::vec3(0.0f, 0.0f, _impulse));
+			movementVelocity = _body->GetLinearVelocity();
+
+			movementVelocity.z = _impulse;
+			_body->SetLinearVelocity(movementVelocity);
 			/*Gameplay::IComponent::Sptr ptr = Panel.lock();
 			if (ptr != nullptr) {
 				ptr->IsEnabled = !ptr->IsEnabled;

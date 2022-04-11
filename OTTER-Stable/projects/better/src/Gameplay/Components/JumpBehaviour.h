@@ -32,7 +32,7 @@ protected:
 	bool activated = false;
 	bool _isPressed = false;
 	Gameplay::Physics::RigidBody::Sptr _body;
-
+	glm::vec3 movementVelocity;
 	float jumpResetTimer = Timing::Current().TimeSinceAppLoad();
 	
 };
