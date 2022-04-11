@@ -75,12 +75,14 @@ void CollectTrashBehaviour::Update(float deltaTime)
 				{
 					_scene->held_normal += 1;
 					AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/PickUpTrash");
+					AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/Pickups interactions/PickUpTrash", 2.f);
 					AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Pickups interactions/PickUpTrash", GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, GetGameObject()->GetPosition().z);
 				}
 				else if (_scene->held_recycle < 1) //we are type recycle, now we need to check how many recycle we're holding
 				{
 					_scene->held_recycle += 1;
 					AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/PickUpCup");
+					AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/Pickups interactions/PickUpCup",2.f);
 					AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Pickups interactions/PickUpCup", GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, GetGameObject()->GetPosition().z);
 				}
 				/*else if (_scene->held_recycle >= 1) {
@@ -91,6 +93,7 @@ void CollectTrashBehaviour::Update(float deltaTime)
 				{
 					std::cout << "We're already holding a recycle item\n";
 					AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
+					AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped", -1.f);
 					AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped", GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, GetGameObject()->GetPosition().z);
 					return;
 				}
@@ -118,6 +121,7 @@ void CollectTrashBehaviour::Update(float deltaTime)
 			}
 			if (_scene->held == inventory && full){
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped");
+				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped", -1.f);
 				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Pickups interactions/TrashPickupStopped", GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, GetGameObject()->GetPosition().z);
 			}
 		}
