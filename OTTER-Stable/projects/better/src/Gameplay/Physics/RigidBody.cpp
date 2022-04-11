@@ -76,7 +76,6 @@ namespace Gameplay::Physics {
 		_linearVelocity = ToBt(value);
 		//_linearVelocityDirty = true;
 		_body->setLinearVelocity(_linearVelocity);
-		_body->applyCentralForce(ToBt(glm::vec3(0.0f)));
 		
 	}
 
