@@ -6,6 +6,7 @@
 #include "Application/Application.h"
 #include "Application/Layers/PostProcessingLayer.h"
 #include "Gameplay/InputEngine.h"
+#include "AudioEngine.h"
 
 //create movetowards function
 //glm::quat MoveTowards(glm::quat current, glm::quat target, float maxDistanceDelta)
@@ -79,13 +80,16 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 	//input = false;
 	if (in_spill)
 	{
-		_impulse = 0.06f; // _impulse / 1.65f;
+		_impulse = 2.0f; // _impulse / 1.65f;
 		app.GetLayer<PostProcessingLayer>()->SetSlime(true);
+		
 	}
 	else
 	{
 		//_impulse = 0.0f;
 		app.GetLayer<PostProcessingLayer>()->SetSlime(false);
+		AudioEngine::playEventS("event:/Sounds/SoundEffects/Slime");
+		AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Slime", _body->GetGameObject()->GetPosition().x, _body->GetGameObject()->GetPosition().y, _body->GetGameObject()->GetPosition().z);
 	}
 
 	////running

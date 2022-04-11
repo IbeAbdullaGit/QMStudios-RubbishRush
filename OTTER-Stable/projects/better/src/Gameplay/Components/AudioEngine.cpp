@@ -120,6 +120,7 @@ void AudioEngine::loadEventS()
 	audio.LoadEvent("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice7");
 	audio.LoadEvent("event:/Sounds/SoundEffects/Faucet");
 	audio.LoadEvent("event:/Sounds/SoundEffects/Jump");
+	audio.LoadEvent("event:/Sounds/SoundEffects/Slime");
 	
 }
 
