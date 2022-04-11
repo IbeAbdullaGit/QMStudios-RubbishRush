@@ -99,10 +99,12 @@ void MenuSceneLayer::OnUpdate()
 	}
 	if (toggle_switch)
 	{
+		AudioEngine::stopEventS("event:/Sounds/Music/Menu/MenuMusicEvent");
 		app.CurrentScene()->should_switch = true;
 	}
 	else if (toggle_switch2)
 	{
+		AudioEngine::stopEventS("event:/Sounds/Music/Menu/MenuMusicEvent");
 		app.change_tutorial = true;
 	}
 	if (InputEngine::GetMouseState(GLFW_MOUSE_BUTTON_LEFT) == ButtonState::Pressed)
@@ -165,6 +167,7 @@ void MenuSceneLayer::_CreateScene()
 	//all conditions to change between in-game conditions and menus
 	bool loadScene = false;
 
+	AudioEngine::playEventS("event:/Sounds/Music/Menu/MenuMusicEvent");
 	// For now we can use a toggle to generate our scene vs load from file
 	if (loadScene && std::filesystem::exists("scene.json")) {
 		app.LoadScene("scene.json");
