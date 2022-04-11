@@ -46,11 +46,12 @@ void PostProcessingLayer::OnAppLoad(const nlohmann::json& config)
 	//_effects.push_back(std::make_shared<MotionblurEffect>());
 	//_effects.push_back(std::make_shared<BloomEffect>());
 	//_effects.push_back(std::make_shared<FilmGrain>());
-	//_effects.push_back(std::make_shared<Pixelate>());
+	
 	_effects.push_back(std::make_shared<SlimeVignette>());
 	//_effects.push_back(std::make_shared<NightVision>());
 	//pl
 	//_effects.push_back(std::make_shared<DepthOfField>());
+	_effects.push_back(std::make_shared<Pixelate>());
 	_effects[2]->Enabled = false;
 
 	Application& app = Application::Get();
@@ -202,12 +203,18 @@ void PostProcessingLayer::OnUpdate()
 	{
 		lut3 = !lut3;
 	}
+	if (InputEngine::GetKeyState(GLFW_KEY_P) == ButtonState::Pressed)//custom
+	{
+		pixel = !pixel;
+	}
 	//if (InputEngine::GetKeyState(GLFW_KEY_5) == ButtonState::Pressed) //custom effect
 	//{
 	//	enable_slime = !enable_slime;
 	//}
 	//
 	//_effects[4]->Enabled = enable_slime;
+
+	_effects[3]->Enabled = pixel;
 	
 	if (lut1)
 	{

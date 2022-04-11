@@ -123,6 +123,8 @@ protected:
 	bool lut2 = false;
 	bool lut3 = false;
 
+	bool pixel = false;
+
 	bool enable_slime = false;
 
 	Texture3D::Sptr cool_lut;

@@ -285,6 +285,7 @@ void Application::_Run()
 		glfwPollEvents();
 
 		
+		glfwSetWindowSizeLimits(_window, 1280, 720, 1280, 720);
 
 		// Handle closing the app via the close button
 		if (glfwWindowShouldClose(_window)) {
@@ -445,6 +446,7 @@ void Application::_Load() {
 	// Initialize our ImGui helper
 	ImGuiHelper::Init(_window);
 
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	GuiBatcher::SetWindowSize(_windowSize);
 }
 
