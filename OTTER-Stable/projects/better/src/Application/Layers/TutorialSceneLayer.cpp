@@ -262,7 +262,7 @@ void TutorialSceneLayer::OnUpdate()
 				if (hallwayLoaded)
 				{
 					//dialogue
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 4.2f && play4 == false && play3 == true) //There's something that's been bothering me, there's a trash in the hallway
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 4.8f && play4 == false && play3 == true) //There's something that's been bothering me, there's a trash in the hallway
 					{
 						std::cout << "ok";
 						play4 = true;
@@ -274,19 +274,18 @@ void TutorialSceneLayer::OnUpdate()
 						currentTime = Timing::Current().TimeSinceAppLoad();
 					}
 					
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 7.2f && play4 == true && play5 == false) //Maybe you can get it!
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 7.8f && play4 == true && play5 == false) //Maybe you can get it!
 					{
 						dialogue4->Get<GuiPanel>()->IsEnabled = false;
 						dialogue5->Get<GuiPanel>()->IsEnabled = true;
 						play5 = true;
-						;
 						AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice7");
 						AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice7",-250.f);
 						
 					}
 					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 4.0f && play5) {
 						dialogue5->Get<GuiPanel>()->IsEnabled = false;
-						AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice7", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
+						
 					}
 					
 
@@ -356,15 +355,7 @@ void TutorialSceneLayer::OnUpdate()
 			if (Timing::Current().TimeSinceAppLoad() - footstepTimer >= 0.3f && _tutcurrentScene->walk) {
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/Footstep");
 				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/Footstep", 2.f);
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Footstep", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
-				AudioEngine::EventPosChangeS("event:/Sounds/Music/Tutorial/TutorialMusicEvent", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice2", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice6", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice7", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
+				
 
 				footstepTimer = Timing::Current().TimeSinceAppLoad();
 			}
@@ -398,7 +389,6 @@ void TutorialSceneLayer::OnUpdate()
 				dialogue1->Get<GuiPanel>()->IsEnabled = true;
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1");
 				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1", -250.f);
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 				diag1 = true;
 			}
 			
@@ -410,7 +400,6 @@ void TutorialSceneLayer::OnUpdate()
 				AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1");
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3");
 				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3", -250.f);
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 				dialogue6->Get<GuiPanel>()->IsEnabled = true;
 				currentTime = Timing::Current().TimeSinceAppLoad();
 			}
@@ -430,7 +419,6 @@ void TutorialSceneLayer::OnUpdate()
 				AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3");
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4");
 				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4", -250.f);
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 				recInvDiag = true;
 				currentTime = Timing::Current().TimeSinceAppLoad();
 				//AudioEngine::stopEventS("You got alot on your hands diag");
@@ -442,7 +430,6 @@ void TutorialSceneLayer::OnUpdate()
 				AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4");
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice2");
 				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice2", -250.f);
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice2", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 				if (_tutcurrentScene->score < 2) {
 					dumpUI->Get<GuiPanel>()->IsEnabled = true;
 				}
@@ -465,7 +452,13 @@ void TutorialSceneLayer::OnUpdate()
 			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 4.0f, 6.f));
 			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -3.9f, -2.0f));
 		//}
+			AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice7", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 			AudioEngine::setListenerPos(trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
+			AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Footstep", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
+			AudioEngine::EventPosChangeS("event:/Sounds/Music/Tutorial/TutorialMusicEvent", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
+
+			AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
+			
 		// Store timing for next loop
 		tutlastFrame = thisFrame;
 	}
@@ -1919,6 +1912,13 @@ void TutorialSceneLayer::_CreateScene()
 		GuiBatcher::SetDefaultTexture(ResourceManager::CreateAsset<Texture2D>("textures/ui/ui-sprite.png"));
 		GuiBatcher::SetDefaultBorderRadius(8);
 
+
+		AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice2", 6.410f, -10.f, 0.106f);
+		AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3", 6.410f, -10.f, 0.106f);
+		AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4", 6.410f, -10.f, 0.106f);
+		AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice6", 6.410f, -10.f, 0.106f);
+		AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5", 6.410f, -10.f, 0.106f);
+		AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice7", 6.410f, -10.f, 0.106f);
 		
 
 		// Save the asset manifest for all the resources we just loaded

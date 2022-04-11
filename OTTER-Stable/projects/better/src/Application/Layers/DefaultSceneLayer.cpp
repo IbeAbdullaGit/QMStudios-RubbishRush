@@ -243,6 +243,7 @@ void DefaultSceneLayer::OnUpdate()
 		//}
 
 		if (Timing::Current().TimeSinceAppLoad() - currentTime >= 0.3f && _currentScene->walk) {
+			AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Footstep", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 			AudioEngine::playEventS("event:/Sounds/SoundEffects/Footstep");
 			currentTime = Timing::Current().TimeSinceAppLoad();
 		}
@@ -305,7 +306,6 @@ void DefaultSceneLayer::OnUpdate()
 			if (!isPaused)
 			{
 				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Faucet", -12.522, 4.653, 1);
-				AudioEngine::EventPosChangeS("event:/Sounds/Music/Main/MainMusicEvent", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 				//Will reduce as long as it is greater than 0 and is not completed, also shows off how much trash is remaining
 				if (timelevelt > 0 && !timeleveltDone) {
 					timelevelt -= dt;
@@ -325,6 +325,7 @@ void DefaultSceneLayer::OnUpdate()
 				{
 					timeleveltDone = true;
 					AudioEngine::stopEventS("event:/Sounds/Music/Main/MainMusicEvent");
+					AudioEngine::EventPosChangeS("event:/Sounds/Music/Main/LoseMusicEvent", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 					AudioEngine::playEventS("event:/Sounds/Music/Lose/LoseMusicEvent");
 					lose = true;
 
@@ -460,6 +461,7 @@ void DefaultSceneLayer::OnUpdate()
 			{
 				if (!victoryMusicPlayed) {
 					AudioEngine::stopEventS("event:/Sounds/Music/Main/MainMusicEvent");
+					AudioEngine::EventPosChangeS("event:/Sounds/Music/Main/VictoryMusicEvent", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 					AudioEngine::playEventS("event:/Sounds/Music/Victory/VictoryMusicEvent");
 					victoryMusicPlayed = true;
 				}
@@ -614,6 +616,7 @@ void DefaultSceneLayer::OnUpdate()
 			camera->GetGameObject()->SetPostion(trashyM->GetPosition() + glm::vec3(0.0f, 2.50f, 6.f));
 			camera->GetGameObject()->LookAt(trashyM->GetPosition() + glm::vec3(0.0f, -3.9f, -2.0f));
 		}
+		AudioEngine::EventPosChangeS("event:/Sounds/Music/Main/MainMusicEvent", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 		AudioEngine::setListenerPos(trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 	}
 	// Store timing for next loop
