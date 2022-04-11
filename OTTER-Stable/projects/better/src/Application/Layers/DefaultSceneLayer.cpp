@@ -164,7 +164,8 @@ void DefaultSceneLayer::OnUpdate()
 		objective = _currentScene->FindObjectByName("Objective UI Canvas");
 		returnUI = _currentScene->FindObjectByName("Return Feedback");
 		submitUI = _currentScene->FindObjectByName("Submit Feedback");
-
+		invUI = _currentScene->FindObjectByName("Inventory UI");
+		HighscoreLeaderBoard = _currentScene->FindObjectByName("HighScoreUI");
 		conveyor_belt = _currentScene->FindObjectByName("Conveyor")->Get<RenderComponent>()->GetMaterial();
 		//randomize
 		//RandomizePositions();
@@ -401,33 +402,56 @@ void DefaultSceneLayer::OnUpdate()
 				//end menu
 				trashyM->Get<Gameplay::Physics::RigidBody>()->IsEnabled = false;
 				failMenu->Get<GuiPanel>()->IsEnabled = true;
+				invUI->Get<GuiPanel>()->IsEnabled = false;
 				UIText->Get<GuiText>()->IsEnabled = false;
 				trashRemainder->Get<GuiText>()->IsEnabled = false;
 				objective->Get<GuiPanel>()->IsEnabled = false;
 				returnUI->Get<GuiText>()->IsEnabled = false;
 				//need this so program doesnt detect multiple presses
 				press_once = false;
+				press_twice = true;
+				press_thrice = true;
+				
 				//pause the timer*****
 
 				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_once) //return to game
 				{
 					//need this so program doesnt detect multiple presses
 					press_once = true;
+					press_twice = false;
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
 					failMenu->Get<GuiPanel>()->IsEnabled = false; //dont show lose menu
-					startMenu->Get<GuiPanel>()->IsEnabled = true;
+				
 
 					AudioEngine::stopEventS("event:/Sounds/Music/Lose/LoseMusicEvent");
+				}
+
+				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_twice) {
+					
+					HighscoreLeaderBoard->Get<GuiPanel>()->IsEnabled = true;
+				//	startMenu->Get<GuiPanel>()->IsEnabled = true;
+					press_twice = true;
+					press_thrice = false;
+				
+					
+					
+				}
+
+				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_thrice) {
+
+					HighscoreLeaderBoard->Get<GuiPanel>()->IsEnabled = false;
+					startMenu->Get<GuiPanel>()->IsEnabled = true;
+					press_thrice = true;
 
 					//reset variables
 					lose = false;
 					start = false;
 					playMenu = false;
-					timeLoop = 7.0f;
+					timeLoop = 3.0f;
 					timelevelt = roundTime;
 					timerDone = false;
 					timeleveltDone = false;
-					trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f)); //reset position to start
+					trashyM->SetPostion(glm::vec3(0.5f, 0.0f, 0.1f)); //reset position to start
 					_currentScene->score = 0;
 					_currentScene->trash = 0;
 					_currentScene->held = 0;
@@ -447,9 +471,6 @@ void DefaultSceneLayer::OnUpdate()
 					//_CreateTrash();
 					//randomize again
 					//RandomizePositions();
-					
-					AudioEngine::stopEventS("event:/Music Fast");
-
 				}
 				if (glfwGetKey(app.GetWindow(), GLFW_KEY_ESCAPE)) //exit
 				{
@@ -526,6 +547,7 @@ void DefaultSceneLayer::OnUpdate()
 				//winMenu->SetPostion(trashyM->GetPosition() + glm::vec3(0.07f, 0.14f, 1.81f)); //offset from player
 				trashyM->Get<Gameplay::Physics::RigidBody>()->IsEnabled = false;
 				winMenu->Get<GuiPanel>()->IsEnabled = true;
+				invUI->Get<GuiPanel>()->IsEnabled = false;
 				UIText->Get<GuiText>()->IsEnabled = false;
 				trashRemainder->Get<GuiText>()->IsEnabled = false;
 				objective->Get<GuiPanel>()->IsEnabled = false;
@@ -538,19 +560,29 @@ void DefaultSceneLayer::OnUpdate()
 				{
 					//need this so program doesnt detect multiple presses
 					press_once = true;
+					press_twice = true;
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
-					winMenu->Get<GuiPanel>()->IsEnabled = false; //dont show win menu
+					winMenu->Get<GuiPanel>()->IsEnabled = false; //dont show lose menu
+					HighscoreLeaderBoard->Get<GuiPanel>()->IsEnabled = true;
+
+				
+				}
+				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && press_twice) {
+
+					HighscoreLeaderBoard->Get<GuiPanel>()->IsEnabled = false;
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
+					press_twice = false;
+
 					//reset variables
 					Victory = false;
 					victoryMusicPlayed = false;
 					start = false;
 					playMenu = false;
-					timeLoop = 7.0f;
+					timeLoop = 3.0f;
 					timelevelt = roundTime;
 					timerDone = false;
 					timeleveltDone = false;
-					trashyM->SetPostion(glm::vec3(-1.5f, 0.0f, 1.0f)); //reset position to start
+					trashyM->SetPostion(glm::vec3(0.5f, 0.0f, 0.1f)); //reset position to start
 					_currentScene->score = 0;
 					_currentScene->trash = 0;
 					_currentScene->held = 0;
@@ -558,12 +590,18 @@ void DefaultSceneLayer::OnUpdate()
 					_currentScene->held_recycle = 0;
 					highscoreloop = false;
 					//create trash objects again
+					//delete any remaining trash objects
+					for (int i = 0; i < all_trash.size(); i++)
+					{
+						if (all_trash[i] != nullptr)
+						{
+							_currentScene->RemoveGameObject(all_trash[i]);
+						}
+					}
 					all_trash.clear();
 					//_CreateTrash();
 					//randomize again
 					//RandomizePositions();
-					AudioEngine::stopEventS("event:/Music Fast");
-
 				}
 				if (glfwGetKey(app.GetWindow(), GLFW_KEY_ESCAPE)) //exit
 				{
@@ -3888,6 +3926,18 @@ void DefaultSceneLayer::_CreateScene()
 				losePanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/fail.png"));
 				//losePanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
 				losePanel->IsEnabled = false;
+			}
+
+			Gameplay::GameObject::Sptr highscore = scene->CreateGameObject("HighScoreUI");
+			{
+				RectTransform::Sptr transform = highscore->Add<RectTransform>();
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 1280, 720 });
+
+				GuiPanel::Sptr highscorePanel = highscore->Add<GuiPanel>();
+				highscorePanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/High_Score.png"));
+				//losePanel->SetColor(glm::vec4(1.f, 1.f, 1.f, 0.f));
+				highscorePanel->IsEnabled = false;
 			}
 
 			MenuUI->AddChild(start);
