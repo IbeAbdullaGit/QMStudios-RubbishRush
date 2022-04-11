@@ -74,9 +74,7 @@ namespace Gameplay::Physics {
 	void RigidBody::SetLinearVelocity(const glm::vec3& value)
 	{
 		_linearVelocity = ToBt(value);
-		//_linearVelocityDirty = true;
-		_body->setLinearVelocity(_linearVelocity);
-		
+		_linearVelocityDirty = true;
 	}
 
 	glm::vec3 RigidBody::GetLinearVelocity() const {
