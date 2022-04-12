@@ -107,6 +107,36 @@ void MenuSceneLayer::OnUpdate()
 		AudioEngine::stopEventS("event:/Sounds/Music/Menu/MenuMusicEvent");
 		app.change_tutorial = true;
 	}
+	{
+		play->Get<GuiPanel>()->SetTexture(playgame);
+		tut->Get<GuiPanel>()->SetTexture(playtutorial);
+		q->Get<GuiPanel>()->SetTexture(quitgame);
+	}
+	//track mouse
+	_prevMousePos = InputEngine::GetMousePos();
+	//if they are hovering over
+	if (_prevMousePos.x >= 467 && _prevMousePos.x <= 812) //x boundary, should be same for all
+	{
+		//play game check
+		if (_prevMousePos.y >= 370 && _prevMousePos.y <= 424)
+		{
+			play->Get<GuiPanel>()->SetTexture(playgame2);
+
+		}
+		//play tutorial
+		else if (_prevMousePos.y >= 507 && _prevMousePos.y <= 556)
+		{
+			tut->Get<GuiPanel>()->SetTexture(playtutorial2);
+		}
+		//quit game
+		else if (_prevMousePos.y >= 643 && _prevMousePos.y <= 683)
+		{
+			q->Get<GuiPanel>()->SetTexture(quitgame2);
+		}
+	}
+	
+	
+	//actual click check
 	if (InputEngine::GetMouseState(GLFW_MOUSE_BUTTON_LEFT) == ButtonState::Pressed)
 	{
 		_prevMousePos = InputEngine::GetMousePos();
@@ -134,7 +164,7 @@ void MenuSceneLayer::OnUpdate()
 				
 			}
 			//play tutorial
-			if (_prevMousePos.y >= 507 && _prevMousePos.y <= 556)
+			else if (_prevMousePos.y >= 507 && _prevMousePos.y <= 556)
 			{
 				toggle_switch2 = true;
 				//make loading screen
@@ -152,7 +182,7 @@ void MenuSceneLayer::OnUpdate()
 				
 			}
 			//quit game
-			if (_prevMousePos.y >= 643 && _prevMousePos.y <= 683)
+			else if (_prevMousePos.y >= 643 && _prevMousePos.y <= 683)
 			{
 				std::exit(0);
 			}
@@ -185,6 +215,15 @@ void MenuSceneLayer::_CreateScene()
 			camera->SetScale(glm::vec3(1.0f, 1.0f, 3.1f));
 			scene->MainCamera->SetFovDegrees(105.f);
 		}
+
+
+		playgame = ResourceManager::CreateAsset<Texture2D>("textures/playgame.png");
+		playtutorial = ResourceManager::CreateAsset<Texture2D>("textures/playtutorial.png");
+		quitgame = ResourceManager::CreateAsset<Texture2D>("textures/quitgame.png");
+		playgame2 = ResourceManager::CreateAsset<Texture2D>("textures/playgame2.png");
+		playtutorial2 = ResourceManager::CreateAsset<Texture2D>("textures/playtutorial2.png");
+		quitgame2 = ResourceManager::CreateAsset<Texture2D>("textures/quitgame2.png");
+
 		//LOAD OBJECTS
 		//Font: Junk Dog
 		Font::Sptr junkDogFont = ResourceManager::CreateAsset<Font>("fonts/JunkDog.otf", 35.f); //Font path, font size
@@ -203,6 +242,42 @@ void MenuSceneLayer::_CreateScene()
 				GuiPanel::Sptr startPanel = menu->Add<GuiPanel>();
 				startPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/Rubbish_Rush_Menu.png"));
 				
+			}
+			Gameplay::GameObject::Sptr menu2 = scene->CreateGameObject("Play Game");
+			{
+				RectTransform::Sptr transform = menu2->Add<RectTransform>();
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 1280, 720 });
+
+				GuiPanel::Sptr startPanel = menu2->Add<GuiPanel>();
+				startPanel->SetTexture(playgame);
+
+				play = menu2;
+
+			}
+			Gameplay::GameObject::Sptr menu3 = scene->CreateGameObject("Play Tutorial");
+			{
+				RectTransform::Sptr transform = menu3->Add<RectTransform>();
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 1280, 720 });
+
+				GuiPanel::Sptr startPanel = menu3->Add<GuiPanel>();
+				startPanel->SetTexture(playtutorial);
+
+				tut = menu3;
+
+			}
+			Gameplay::GameObject::Sptr menu4 = scene->CreateGameObject("Quit");
+			{
+				RectTransform::Sptr transform = menu4->Add<RectTransform>();
+				transform->SetMin({ 0, 0 });
+				transform->SetMax({ 1280, 720 });
+
+				GuiPanel::Sptr startPanel = menu4->Add<GuiPanel>();
+				startPanel->SetTexture(quitgame);
+
+				q = menu4;
+
 			}
 
 		/*	MenuUI->AddChild(menu);

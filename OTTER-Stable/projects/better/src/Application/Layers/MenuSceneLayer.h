@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <random>
 #include "ToneFire.h"
+#include "Graphics/Textures/Texture2D.h"
 
 class MenuSceneLayer final : public ApplicationLayer
 {
@@ -34,6 +35,18 @@ protected:
 
 	bool toggle_switch = false;
 	bool toggle_switch2 = false;
+
+	Texture2D::Sptr playgame;
+	Texture2D::Sptr playgame2;
+	Texture2D::Sptr playtutorial;
+	Texture2D::Sptr playtutorial2;
+	Texture2D::Sptr quitgame;
+	Texture2D::Sptr quitgame2;
+
+	Gameplay::GameObject::Sptr play;
+	Gameplay::GameObject::Sptr tut;
+	Gameplay::GameObject::Sptr q;
+
 
 };
 
