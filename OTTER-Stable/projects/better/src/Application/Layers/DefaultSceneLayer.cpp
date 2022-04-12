@@ -1272,6 +1272,16 @@ void DefaultSceneLayer::_CreateScene()
 			tvboxMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
+		Gameplay::MeshResource::Sptr tvMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/TV.obj");
+		Texture2D::Sptr tvTex = ResourceManager::CreateAsset<Texture2D>("textures/tvtex.jpg");
+		Gameplay::Material::Sptr tvMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			tvMaterial->Name = "Tv";
+			tvMaterial->Set("u_Material.AlbedoMap", tvTex);
+			tvMaterial->Set("u_Material.Shininess", 0.0f);
+			tvMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
 		Gameplay::MeshResource::Sptr cashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/cashcounter.obj");
 		Texture2D::Sptr cashTex = ResourceManager::CreateAsset<Texture2D>("textures/cash.png");
 		//create Material
@@ -2293,23 +2303,6 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(box);
 			}
 
-			Gameplay::GameObject::Sptr shelf4 = scene->CreateGameObject("Shelf 4");
-			{
-				shelf4->SetPostion(glm::vec3(-6.09f, -7.86f, 0.0f));
-				shelf4->SetRotation(glm::vec3(90.0, 0.0f, -90.0f));
-				shelf4->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-
-				RenderComponent::Sptr renderer = shelf4->Add<RenderComponent>();
-				renderer->SetMesh(shelfMesh);
-				renderer->SetMaterial(shelfMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = shelf4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.42f, 1.34f, 1.21f));
-				box->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-			}
-
 			Gameplay::GameObject::Sptr tvbox1 = scene->CreateGameObject("tv 1");
 			{
 				tvbox1->SetPostion(glm::vec3(-15.02f, -4.29f, 0.0f));
@@ -2355,23 +2348,6 @@ void DefaultSceneLayer::_CreateScene()
 				renderer->SetMaterial(tvboxMaterial);
 
 				Gameplay::Physics::RigidBody::Sptr physics = tvbox3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
-				box->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-			}
-
-			Gameplay::GameObject::Sptr tvbox4 = scene->CreateGameObject("tv4");
-			{
-				tvbox4->SetPostion(glm::vec3(-5.78f, -9.31f, 0.0f));
-				tvbox4->SetRotation(glm::vec3(90.0f, 0.0f, -20.0f));
-				tvbox4->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox4->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = tvbox4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
 				box->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
@@ -2456,18 +2432,34 @@ void DefaultSceneLayer::_CreateScene()
 				GroundBehaviour::Sptr behaviour = bench1->Add<GroundBehaviour>();
 			}
 
+			Gameplay::GameObject::Sptr tv1 = scene->CreateGameObject("Tv 1");
+			{
+				tv1->SetPostion(glm::vec3(-6.16f, -7.87, 0.0f));
+				tv1->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				tv1->SetScale(glm::vec3(0.6f, 0.6f, 0.6f));
+
+				RenderComponent::Sptr renderer = tv1->Add<RenderComponent>();
+				renderer->SetMesh(tvMesh);
+				renderer->SetMaterial(tvMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = tv1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+				boxCollider->SetPosition(glm::vec3(-0.1f, 0.0f, 0.0f));
+				boxCollider->SetScale(glm::vec3(0.36f, 1.41f, 1.23f));
+				physics->AddCollider(boxCollider);
+			}
+
 			TopRight->AddChild(shelf);
 			TopRight->AddChild(shelf2);
 			TopRight->AddChild(shelf3);
-			TopRight->AddChild(shelf4);
 			TopRight->AddChild(tvbox1);
 			TopRight->AddChild(tvbox2);
 			TopRight->AddChild(tvbox3);
-			TopRight->AddChild(tvbox4);
 			TopRight->AddChild(cashcounter);
 			TopRight->AddChild(computer1);
 			TopRight->AddChild(computer2);
 			TopRight->AddChild(bench1);
+			TopRight->AddChild(tv1);
 
 			//Bot Left Store
 
@@ -2548,6 +2540,22 @@ void DefaultSceneLayer::_CreateScene()
 				renderer->SetMaterial(boothMat);
 
 				Gameplay::Physics::RigidBody::Sptr physics = booth2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.68f, 1.0f, 0.28f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr booth3 = scene->CreateGameObject("booth 3");
+			{
+				booth3->SetPostion(glm::vec3(5.48f, 3.72f, 0.0f));
+				booth3->SetRotation(glm::vec3(90.0f, 0.0f, -127.0f));
+				booth3->SetScale(glm::vec3(0.3f, 0.4f, 0.3f));
+
+				RenderComponent::Sptr renderer = booth3->Add<RenderComponent>();
+				renderer->SetMesh(boothMesh);
+				renderer->SetMaterial(boothMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = booth3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 				box->SetScale(glm::vec3(0.68f, 1.0f, 0.28f));
 				physics->AddCollider(box);
@@ -2842,6 +2850,7 @@ void DefaultSceneLayer::_CreateScene()
 			BotLeft->AddChild(chair6);
 			BotLeft->AddChild(poster1);
 			BotLeft->AddChild(poster2);
+			BotLeft->AddChild(booth3);
 
 			//Top Left
 
@@ -3050,6 +3059,29 @@ void DefaultSceneLayer::_CreateScene()
 				GroundBehaviour::Sptr behaviour = loungechair2->Add<GroundBehaviour>();
 			}
 
+			Gameplay::GameObject::Sptr bench4 = scene->CreateGameObject("Bench");
+			{
+				bench4->SetPostion(glm::vec3(-11.1f, -5.02f, 0.0f));
+				bench4->SetRotation(glm::vec3(90.0f, 0.0f, 34.0f));
+				bench4->SetScale(glm::vec3(2.0f, 1.0f, 1.5f));
+
+				RenderComponent::Sptr renderer = bench4->Add<RenderComponent>();
+				renderer->SetMesh(benchMesh);
+				renderer->SetMaterial(benchMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = bench4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+				boxCollider->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
+				physics->AddCollider(boxCollider);
+				Gameplay::Physics::TriggerVolume::Sptr volume = bench4->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.27f, 0.0f));
+				box2->SetScale(glm::vec3(1.25f, 0.09f, 0.35f));
+				volume->AddCollider(box2);
+				//give to our floor tiles to tag them
+				GroundBehaviour::Sptr behaviour = bench4->Add<GroundBehaviour>();
+			}
+
 			TopLeft->AddChild(libshelf1);
 			TopLeft->AddChild(libshelf2);
 			TopLeft->AddChild(libshelf3);
@@ -3060,6 +3092,7 @@ void DefaultSceneLayer::_CreateScene()
 			TopLeft->AddChild(cashcounter4);
 			TopLeft->AddChild(loungechair1);
 			TopLeft->AddChild(loungechair2);
+			TopLeft->AddChild(bench4);
 
 			// Bottom Right
 
@@ -3295,7 +3328,7 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::TriggerVolume::Sptr volume = benchhall1->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.27f, 0.0f));
-				box2->SetScale(glm::vec3(1.25f, 0.09f, 0.35f));
+				box2->SetScale(glm::vec3(0.75f, 0.35f, 0.35f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = benchhall1->Add<GroundBehaviour>();
@@ -3319,7 +3352,7 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::TriggerVolume::Sptr volume = benchhall2->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.3f, 0.0f));
-				box2->SetScale(glm::vec3(1.4f, 0.13f, 0.35f));
+				box2->SetScale(glm::vec3(1.42f, 0.16f, 0.26f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = benchhall2->Add<GroundBehaviour>();
@@ -3342,7 +3375,7 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::TriggerVolume::Sptr volume = benchhall3->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.27f, 0.0f));
-				box2->SetScale(glm::vec3(1.25f, 0.09f, 0.35f));
+				box2->SetScale(glm::vec3(0.77f, 0.39f, 0.26f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = benchhall3->Add<GroundBehaviour>();
@@ -3350,8 +3383,8 @@ void DefaultSceneLayer::_CreateScene()
 
 			Gameplay::GameObject::Sptr benchhall4 = scene->CreateGameObject("Bench 4");
 			{
-				benchhall4->SetPostion(glm::vec3(-14.45f, 6.01f, 0.0f));
-				benchhall4->SetRotation(glm::vec3(90.0f, 0.0f, -23.0f));
+				benchhall4->SetPostion(glm::vec3(16.09f, -5.7f, 0.0f));
+				benchhall4->SetRotation(glm::vec3(90.0f, 0.0f, 15.0f));
 				benchhall4->SetScale(glm::vec3(1.31f, 1.0f, 1.5f));
 
 				RenderComponent::Sptr renderer = benchhall4->Add<RenderComponent>();
@@ -3365,7 +3398,7 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::TriggerVolume::Sptr volume = benchhall4->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.27f, 0.0f));
-				box2->SetScale(glm::vec3(1.25f, 0.09f, 0.35f));
+				box2->SetScale(glm::vec3(0.77f, 0.39f, 0.26f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = benchhall4->Add<GroundBehaviour>();
@@ -3426,6 +3459,8 @@ void DefaultSceneLayer::_CreateScene()
 			MainHall->AddChild(longfountain1);
 			MainHall->AddChild(tallfountain1);
 			MainHall->AddChild(statue1);
+			MainHall->AddChild(benchhall3);
+			MainHall->AddChild(benchhall4);
 
 		//Obstacles
 		{
@@ -3815,6 +3850,150 @@ void DefaultSceneLayer::_CreateScene()
 			SpillBehaviour::Sptr behaviour = spill11->Add<SpillBehaviour>();
 
 
+		}
+
+		Gameplay::GameObject::Sptr spill12 = scene->CreateGameObject("Spill 12");
+		{
+			spill12->SetPostion(glm::vec3(0.17f, -7.34f, 0.03f));
+			spill12->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			spill12->SetScale(glm::vec3(2.47f, 0.7f, 2.26f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill12->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			//Gameplay::Physics::RigidBody::Sptr physics = spillM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			//physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill12->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.91f, 0.001f, 2.02f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill12->Add<SpillBehaviour>();
+		}
+
+		Gameplay::GameObject::Sptr spill13 = scene->CreateGameObject("Spill 13");
+		{
+			spill13->SetPostion(glm::vec3(7.13f, 4.36f, 0.03f));
+			spill13->SetRotation(glm::vec3(90.0f, 0.0f, 47.0f));
+			spill13->SetScale(glm::vec3(0.91f, 0.7f, 1.04f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill13->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			//Gameplay::Physics::RigidBody::Sptr physics = spillM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			//physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill13->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill13->Add<SpillBehaviour>();
+		}
+
+		Gameplay::GameObject::Sptr spill14 = scene->CreateGameObject("Spill 14");
+		{
+			spill14->SetPostion(glm::vec3(14.78f, -0.31f, 0.03f));
+			spill14->SetRotation(glm::vec3(90.0f, 0.0f, 47.0f));
+			spill14->SetScale(glm::vec3(1.23f, 0.7f, 1.3f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill14->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			//Gameplay::Physics::RigidBody::Sptr physics = spillM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			//physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill14->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill14->Add<SpillBehaviour>();
+		}
+
+		Gameplay::GameObject::Sptr spill15 = scene->CreateGameObject("Spill 15");
+		{
+			spill15->SetPostion(glm::vec3(-13.62f, -6.84f, 0.03f));
+			spill15->SetRotation(glm::vec3(90.0f, 0.0f, 49.0f));
+			spill15->SetScale(glm::vec3(0.94f, 0.7f, 1.3f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill15->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			//Gameplay::Physics::RigidBody::Sptr physics = spillM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			//physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill15->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill15->Add<SpillBehaviour>();
+		}
+
+		Gameplay::GameObject::Sptr conveyor5 = scene->CreateGameObject("Conveyor 5");
+		{
+			conveyor5->SetPostion(glm::vec3(-13.92f, -4.87f, 0.0f));
+			conveyor5->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			conveyor5->SetScale(glm::vec3(0.31f, 0.69f, 0.31f));
+
+			RenderComponent::Sptr renderer = conveyor5->Add<RenderComponent>();
+			renderer->SetMesh(conveyorMesh);
+			renderer->SetMaterial(conveyorMaterial);
+
+			Gameplay::Physics::TriggerVolume::Sptr volume = conveyor5->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			box2->SetScale(glm::vec3(0.28f, 0.201f, 1.430f));
+			box2->SetPosition(glm::vec3(0.0f, 0.19f, 0.0f));
+			volume->AddCollider(box2);
+			ConveyorBeltBehaviour::Sptr behaviour2 = conveyor5->Add<ConveyorBeltBehaviour>();
+		}
+
+		Gameplay::GameObject::Sptr conveyor6 = scene->CreateGameObject("Conveyor 6");
+		{
+			conveyor6->SetPostion(glm::vec3(-16.15f, -4.89f, 0.0f));
+			conveyor6->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+			conveyor6->SetScale(glm::vec3(0.31f, 0.69f, 0.31f));
+
+			RenderComponent::Sptr renderer = conveyor6->Add<RenderComponent>();
+			renderer->SetMesh(conveyorMesh);
+			renderer->SetMaterial(conveyorMaterial);
+
+			Gameplay::Physics::TriggerVolume::Sptr volume = conveyor6->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			box2->SetScale(glm::vec3(0.28f, 0.201f, 1.430f));
+			box2->SetPosition(glm::vec3(0.0f, 0.19f, 0.0f));
+			volume->AddCollider(box2);
+			ConveyorBeltBehaviour::Sptr behaviour2 = conveyor6->Add<ConveyorBeltBehaviour>();
 		}
 
 	}
