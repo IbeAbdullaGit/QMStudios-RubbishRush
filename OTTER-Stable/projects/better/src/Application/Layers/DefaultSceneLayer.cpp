@@ -4564,7 +4564,7 @@ void DefaultSceneLayer::_CreateScene()
 				GuiText::Sptr text = trashRemain->Add<GuiText>();
 				text->SetText("0 Trash Remaining!");
 				text->SetFont(junkDogFont);
-				text->SetColor(glm::vec4(255.f, 0.86f, 0.f, 1.f));
+				text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
 				text->SetTextScale(1.0f);
 				text->IsEnabled = false;
 			}

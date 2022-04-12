@@ -220,7 +220,7 @@ void Application::_Run()
 	
 
 	//for playtesting
-	//_isEditor = false;
+	_isEditor = false;
 
 	// If we're in editor mode, we add all the editor layers
 	if (_isEditor) {
