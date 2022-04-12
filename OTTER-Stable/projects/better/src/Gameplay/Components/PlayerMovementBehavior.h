@@ -41,7 +41,7 @@ protected:
 
 	glm::quat currentRotation;
 	glm::quat targetRotation;
-	float turnspeed = 6.0f;
+	float turnspeed = 7.0f;
 	Gameplay::Scene* _scene;
 	glm::vec3 direction;
 	int count = 0;

@@ -408,13 +408,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback0->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 120 });
+						transform->SetPosition({ 800, 145 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback0->Add<GuiText>();
 						text->SetText("1. " + std::to_string(array[0]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -425,13 +425,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback1->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 180 });
+						transform->SetPosition({ 800, 200 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback1->Add<GuiText>();
 						text->SetText("2. " + std::to_string(array[1]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -442,13 +442,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback2->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 240 });
+						transform->SetPosition({ 800, 255 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback2->Add<GuiText>();
 						text->SetText("3. " + std::to_string(array[2]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -459,13 +459,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback3->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 300 });
+						transform->SetPosition({ 800, 310 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback3->Add<GuiText>();
 						text->SetText("4. " + std::to_string(array[3]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -476,13 +476,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback4->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 360 });
+						transform->SetPosition({ 800, 365 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback4->Add<GuiText>();
 						text->SetText("5. " + std::to_string(array[4]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -493,13 +493,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback5->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 420 });
+						transform->SetPosition({ 800, 420 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback5->Add<GuiText>();
 						text->SetText("6. " + std::to_string(array[5]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -510,13 +510,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback6->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 480 });
+						transform->SetPosition({ 800, 475 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback6->Add<GuiText>();
 						text->SetText("7. " + std::to_string(array[6]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -527,13 +527,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback7->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 540 });
+						transform->SetPosition({ 800, 530 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback7->Add<GuiText>();
 						text->SetText("8. " + std::to_string(array[7]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -545,13 +545,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback8->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 600 });
+						transform->SetPosition({ 800, 585 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback8->Add<GuiText>();
 						text->SetText("9. " + std::to_string(array[8]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -562,13 +562,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback9->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 660 });
+						transform->SetPosition({ 800, 640 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback9->Add<GuiText>();
 						text->SetText("10." + std::to_string(array[9]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -639,6 +639,7 @@ void DefaultSceneLayer::OnUpdate()
 					_currentScene->RemoveGameObject(HighScorePos8L);
 					_currentScene->RemoveGameObject(HighScorePos9L);
 					_currentScene->RemoveGameObject(HighScorePos10L);
+					AudioEngine::stopEventS("event:/Sounds/Music/Lose/LoseMusicEvent");
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
 					press_high = true;
 
@@ -646,7 +647,7 @@ void DefaultSceneLayer::OnUpdate()
 					lose = false;
 					start = false;
 					playMenu = false;
-					timeLoop = 3.0f;
+					timeLoop = 1.0f;
 					timelevelt = roundTime;
 					timerDone = false;
 					timeleveltDone = false;
@@ -748,13 +749,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback0V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 120 });
+						transform->SetPosition({ 900, 145 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback0V->Add<GuiText>();
 						text->SetText("1. " + std::to_string(array[0]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -765,13 +766,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback1V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 180 });
+						transform->SetPosition({ 900, 200 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback1V->Add<GuiText>();
 						text->SetText("2. " + std::to_string(array[1]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -782,13 +783,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback2V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 240 });
+						transform->SetPosition({ 900, 255 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback2V->Add<GuiText>();
 						text->SetText("3. " + std::to_string(array[2]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -799,13 +800,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback3V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 300 });
+						transform->SetPosition({ 900, 310 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback3V->Add<GuiText>();
 						text->SetText("4. " + std::to_string(array[3]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -816,13 +817,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback4V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 360 });
+						transform->SetPosition({ 900, 365 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback4V->Add<GuiText>();
 						text->SetText("5. " + std::to_string(array[4]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -839,7 +840,7 @@ void DefaultSceneLayer::OnUpdate()
 						text->SetText("6. " + std::to_string(array[5]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -850,13 +851,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback6V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 480 });
+						transform->SetPosition({ 900, 475 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback6V->Add<GuiText>();
 						text->SetText("7. " + std::to_string(array[6]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -867,13 +868,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback7V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 540 });
+						transform->SetPosition({ 900, 530 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback7V->Add<GuiText>();
 						text->SetText("8. " + std::to_string(array[7]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -885,13 +886,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback8V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 600 });
+						transform->SetPosition({ 900, 585 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback8V->Add<GuiText>();
 						text->SetText("9. " + std::to_string(array[8]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -902,13 +903,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback9V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 660 });
+						transform->SetPosition({ 900, 640 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback9V->Add<GuiText>();
 						text->SetText("10." + std::to_string(array[9]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -948,6 +949,7 @@ void DefaultSceneLayer::OnUpdate()
 					_currentScene->FindObjectByName("HighScore Feedback8V")->Get<GuiText>()->IsEnabled = true;
 					_currentScene->FindObjectByName("HighScore Feedback9V")->Get<GuiText>()->IsEnabled = true;
 					_currentScene->FindObjectByName("HighScore Feedback10V")->Get<GuiText>()->IsEnabled = true;
+					AudioEngine::stopEventS("event:/Sounds/Music/Victory/VictoryMusicEvent");
 
 				
 				}
@@ -973,13 +975,13 @@ void DefaultSceneLayer::OnUpdate()
 					_currentScene->RemoveGameObject(HighScorePos10V);
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
 					press_high = true;
-
+					AudioEngine::stopEventS("event:/Sounds/Music/Victory/VictoryMusicEvent");
 					//reset variables
 					Victory = false;
 					victoryMusicPlayed = false;
 					start = false;
 					playMenu = false;
-					timeLoop = 3.0f;
+					timeLoop = 1.0f;
 					timelevelt = roundTime;
 					timerDone = false;
 					timeleveltDone = false;
@@ -1268,6 +1270,16 @@ void DefaultSceneLayer::_CreateScene()
 			tvboxMaterial->Set("u_Material.AlbedoMap", tvboxTex);
 			tvboxMaterial->Set("u_Material.Shininess", 0.0f);
 			tvboxMaterial->Set("u_Material.NormalMap", normalMapDefault);
+		}
+
+		Gameplay::MeshResource::Sptr tvMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/TV.obj");
+		Texture2D::Sptr tvTex = ResourceManager::CreateAsset<Texture2D>("textures/tvtex.jpg");
+		Gameplay::Material::Sptr tvMaterial = ResourceManager::CreateAsset<Gameplay::Material>(deferredForward);
+		{
+			tvMaterial->Name = "Tv";
+			tvMaterial->Set("u_Material.AlbedoMap", tvTex);
+			tvMaterial->Set("u_Material.Shininess", 0.0f);
+			tvMaterial->Set("u_Material.NormalMap", normalMapDefault);
 		}
 
 		Gameplay::MeshResource::Sptr cashMesh = ResourceManager::CreateAsset<Gameplay::MeshResource>("models/cashcounter.obj");
@@ -1883,12 +1895,12 @@ void DefaultSceneLayer::_CreateScene()
 			Gameplay::GameObject::Sptr layoutwall1 = scene->CreateGameObject("Layout Wall Bottom");
 			{
 				layoutwall1->SetPostion(glm::vec3(-0.58f, 11.46f, 0.0f));
-				layoutwall1->SetScale(glm::vec3(20.5f, 0.34f, 1.5f));
+				layoutwall1->SetScale(glm::vec3(20.5f, 0.34f, 3.0f));
 				Gameplay::Physics::RigidBody::Sptr wall1Phys = layoutwall1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall1 = Gameplay::Physics::BoxCollider::Create();
 				//wall1->SetPosition(glm::vec3(11.85f, 3.23f, 1.05f));
 				wall1->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall1->SetScale(glm::vec3(20.5f, 0.34f, 1.5f));
+				wall1->SetScale(glm::vec3(20.5f, 0.34f, 3.0f));
 				wall1->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall1Phys->AddCollider(wall1);
 			}
@@ -1896,12 +1908,12 @@ void DefaultSceneLayer::_CreateScene()
 			Gameplay::GameObject::Sptr layoutwall2 = scene->CreateGameObject("Layout Wall Top");
 			{
 				layoutwall2->SetPostion(glm::vec3(0.0f, -10.61f, 0.0f));
-				layoutwall2->SetScale(glm::vec3(21.78f, 0.27f, 1.5f));
+				layoutwall2->SetScale(glm::vec3(21.78f, 0.27f, 3.0f));
 				Gameplay::Physics::RigidBody::Sptr wall2Phys = layoutwall2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall2 = Gameplay::Physics::BoxCollider::Create();
 				//wall1->SetPosition(glm::vec3(11.85f, 3.23f, 1.05f));
 				wall2->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall2->SetScale(glm::vec3(21.78f, 0.27f, 1.5f));
+				wall2->SetScale(glm::vec3(21.78f, 0.27f, 3.0f));
 				wall2->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall2Phys->AddCollider(wall2);
 			}
@@ -1910,11 +1922,11 @@ void DefaultSceneLayer::_CreateScene()
 			Gameplay::GameObject::Sptr layoutwall3 = scene->CreateGameObject("Layout Wall Right");
 			{
 				layoutwall3->SetPostion(glm::vec3(-17.08f, 0.0f, 0.0f));
-				layoutwall3->SetScale(glm::vec3(0.3f, 15.1f, 1.5f));
+				layoutwall3->SetScale(glm::vec3(0.3f, 15.1f, 3.0f));
 				Gameplay::Physics::RigidBody::Sptr wall3Phys = layoutwall3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall3 = Gameplay::Physics::BoxCollider::Create();
 				wall3->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall3->SetScale(glm::vec3(0.3f, 15.1f, 1.5f));
+				wall3->SetScale(glm::vec3(0.3f, 15.1f, 3.0f));
 				wall3->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall3Phys->AddCollider(wall3);
 			}
@@ -1923,22 +1935,22 @@ void DefaultSceneLayer::_CreateScene()
 			Gameplay::GameObject::Sptr layoutwall5 = scene->CreateGameObject("Layout Wall Left Corner Right");
 			{
 				layoutwall5->SetPostion(glm::vec3(14.1f, 9.85f, 0.0f));
-				layoutwall5->SetScale(glm::vec3(0.19f, 2.26f, 1.5f));
+				layoutwall5->SetScale(glm::vec3(0.19f, 2.26f, 3.0f));
 				Gameplay::Physics::RigidBody::Sptr wall5Phys = layoutwall5->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall5 = Gameplay::Physics::BoxCollider::Create();
 				wall5->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall5->SetScale(glm::vec3(0.19f, 2.26f, 1.5f));
+				wall5->SetScale(glm::vec3(0.19f, 2.26f, 3.0f));
 				wall5->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall5Phys->AddCollider(wall5);
 			}
 			Gameplay::GameObject::Sptr layoutwall5b = scene->CreateGameObject("Layout Wall Left Corner Top");
 			{
 				layoutwall5b->SetPostion(glm::vec3(16.02f, 7.73f, 0.0f));
-				layoutwall5b->SetScale(glm::vec3(2.08f, 0.18f, 1.5f));
+				layoutwall5b->SetScale(glm::vec3(2.08f, 0.18f, 3.0f));
 				Gameplay::Physics::RigidBody::Sptr wall5Physb = layoutwall5b->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall5b = Gameplay::Physics::BoxCollider::Create();
 				wall5b->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall5b->SetScale(glm::vec3(2.08f, 0.18f, 1.5f));
+				wall5b->SetScale(glm::vec3(2.08f, 0.18f, 3.0f));
 				wall5b->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall5Physb->AddCollider(wall5b);
 			}
@@ -1947,11 +1959,11 @@ void DefaultSceneLayer::_CreateScene()
 			Gameplay::GameObject::Sptr layoutwall6 = scene->CreateGameObject("Layout Wall Left");
 			{
 				layoutwall6->SetPostion(glm::vec3(17.23f, -0.89f, 0.0f));
-				layoutwall6->SetScale(glm::vec3(0.32f, 13.69f, 1.5f));
+				layoutwall6->SetScale(glm::vec3(0.32f, 13.69f, 3.0f));
 				Gameplay::Physics::RigidBody::Sptr wall6Phys = layoutwall6->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr wall6 = Gameplay::Physics::BoxCollider::Create();
 				wall6->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-				wall6->SetScale(glm::vec3(0.32f, 13.69f, 1.5f));
+				wall6->SetScale(glm::vec3(0.32f, 13.69f, 3.0f));
 				wall6->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 				wall6Phys->AddCollider(wall6);
 			}
@@ -1983,11 +1995,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall7 = scene->CreateGameObject("Left");
 				{
 					layoutwall7->SetPostion(glm::vec3(-4.46f, -6.92f, 0.0f));
-					layoutwall7->SetScale(glm::vec3(0.34f, 3.46f, 1.5f));
+					layoutwall7->SetScale(glm::vec3(0.34f, 3.46f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall7->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(0.34f, 3.46f, 1.5f));
+					wall->SetScale(glm::vec3(0.34f, 3.46f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -1995,11 +2007,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall8 = scene->CreateGameObject("Bottom");
 				{
 					layoutwall8->SetPostion(glm::vec3(-8.71f, -3.77f, 0.0f));
-					layoutwall8->SetScale(glm::vec3(3.86f, 0.31f, 1.5f));
+					layoutwall8->SetScale(glm::vec3(3.86f, 0.31f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall8->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(4.38f, 0.31f, 1.5f));
+					wall->SetScale(glm::vec3(4.38f, 0.31f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 
@@ -2014,11 +2026,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall9 = scene->CreateGameObject("Top");
 				{
 					layoutwall9->SetPostion(glm::vec3(12.65f, 2.81f, 0.0f));
-					layoutwall9->SetScale(glm::vec3(4.64f, 0.38f, 1.5f));
+					layoutwall9->SetScale(glm::vec3(4.64f, 0.38f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall9->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(4.64f, 0.38f, 1.5f));
+					wall->SetScale(glm::vec3(4.64f, 0.38f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -2026,11 +2038,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall10 = scene->CreateGameObject("Right Top");
 				{
 					layoutwall10->SetPostion(glm::vec3(4.4f, 4.79f, 0.0f));
-					layoutwall10->SetScale(glm::vec3(0.4f, 2.32f, 1.5f));
+					layoutwall10->SetScale(glm::vec3(0.4f, 2.32f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall10->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(0.4f, 2.32f, 1.5f));
+					wall->SetScale(glm::vec3(0.4f, 2.32f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -2038,11 +2050,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall11 = scene->CreateGameObject("Right Mid");
 				{
 					layoutwall11->SetPostion(glm::vec3(1.25f, 6.67f, 0.0f));
-					layoutwall11->SetScale(glm::vec3(3.52f, 0.34f, 1.5f));
+					layoutwall11->SetScale(glm::vec3(3.52f, 0.34f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall11->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(3.52f, 0.34f, 1.5f));
+					wall->SetScale(glm::vec3(3.52f, 0.34f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -2050,11 +2062,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall25 = scene->CreateGameObject("Right");
 				{
 					layoutwall25->SetPostion(glm::vec3(-1.88f, 8.87f, 0.0f));
-					layoutwall25->SetScale(glm::vec3(0.4f, 2.56f, 1.5f));
+					layoutwall25->SetScale(glm::vec3(0.4f, 2.56f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall25->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(0.4f, 2.56f, 1.5f));
+					wall->SetScale(glm::vec3(0.4f, 2.56f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -2071,11 +2083,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall13 = scene->CreateGameObject("Top");
 				{
 					layoutwall13->SetPostion(glm::vec3(-12.67f, -0.68f, 0.0f));
-					layoutwall13->SetScale(glm::vec3(4.31f, 0.3f, 1.5f));
+					layoutwall13->SetScale(glm::vec3(4.31f, 0.3f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall13->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(4.31f, 0.3f, 1.5f));
+					wall->SetScale(glm::vec3(4.31f, 0.3f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -2083,11 +2095,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall14 = scene->CreateGameObject("Left Top");
 				{
 					layoutwall14->SetPostion(glm::vec3(-8.76f, 1.12f, 0.0f));
-					layoutwall14->SetScale(glm::vec3(0.37f, 2.05f, 1.5f));
+					layoutwall14->SetScale(glm::vec3(0.37f, 2.05f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall14->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(0.37f, 2.05f, 1.5f));
+					wall->SetScale(glm::vec3(0.37f, 2.05f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -2095,11 +2107,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall15 = scene->CreateGameObject("Left Mid");
 				{
 					layoutwall15->SetPostion(glm::vec3(-7.45f, 2.79f, 0.0f));
-					layoutwall15->SetScale(glm::vec3(1.67f, 0.39f, 1.5f));
+					layoutwall15->SetScale(glm::vec3(1.67f, 0.39f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall15->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(1.67f, 0.39f, 1.5f));
+					wall->SetScale(glm::vec3(1.67f, 0.39f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -2107,11 +2119,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall16 = scene->CreateGameObject("Left Bot");
 				{
 					layoutwall16->SetPostion(glm::vec3(-5.98f, 4.81f, 0.0f));
-					layoutwall16->SetScale(glm::vec3(0.22f, 2.38f, 1.5f));
+					layoutwall16->SetScale(glm::vec3(0.22f, 2.38f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall16->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(0.22f, 2.38f, 1.5f));
+					wall->SetScale(glm::vec3(0.22f, 2.38f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -2119,11 +2131,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall17 = scene->CreateGameObject("Bottom");
 				{
 					layoutwall17->SetPostion(glm::vec3(-9.7f, 6.77f, 0.0f));
-					layoutwall17->SetScale(glm::vec3(3.89f, 0.41f, 1.5f));
+					layoutwall17->SetScale(glm::vec3(3.89f, 0.41f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall17->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(3.89f, 0.41f, 1.5f));
+					wall->SetScale(glm::vec3(3.89f, 0.41f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 
@@ -2133,11 +2145,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall18 = scene->CreateGameObject("Right");
 				{
 					layoutwall18->SetPostion(glm::vec3(-13.33f, 5.21f, 0.0f));
-					layoutwall18->SetScale(glm::vec3(0.26f, 1.98f, 1.5f));
+					layoutwall18->SetScale(glm::vec3(0.26f, 1.98f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall18->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(0.26f, 1.98f, 1.5f));
+					wall->SetScale(glm::vec3(0.26f, 1.98f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -2154,11 +2166,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall19 = scene->CreateGameObject("Left");
 				{
 					layoutwall19->SetPostion(glm::vec3(13.65f, -3.08f, 0.0f));
-					layoutwall19->SetScale(glm::vec3(0.36f, 0.87f, 1.5f));
+					layoutwall19->SetScale(glm::vec3(0.36f, 0.87f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall19->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(0.36f, 0.87f, 1.5f));
+					wall->SetScale(glm::vec3(0.36f, 0.87f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -2166,11 +2178,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall20 = scene->CreateGameObject("Bottom");
 				{
 					layoutwall20->SetPostion(glm::vec3(10.29f, -2.47f, 0.0f));
-					layoutwall20->SetScale(glm::vec3(3.73f, 0.28f, 1.5f));
+					layoutwall20->SetScale(glm::vec3(3.73f, 0.28f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall20->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(3.73f, 0.28f, 1.5f));
+					wall->SetScale(glm::vec3(3.73f, 0.28f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 
@@ -2180,11 +2192,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall21 = scene->CreateGameObject("Right Bot");
 				{
 					layoutwall21->SetPostion(glm::vec3(6.77f, -4.22f, 0.0f));
-					layoutwall21->SetScale(glm::vec3(0.24f, 2.05f, 1.5f));
+					layoutwall21->SetScale(glm::vec3(0.24f, 2.05f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall21->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(0.24f, 2.05f, 1.5f));
+					wall->SetScale(glm::vec3(0.24f, 2.05f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -2193,12 +2205,12 @@ void DefaultSceneLayer::_CreateScene()
 				{
 					layoutwall22->SetPostion(glm::vec3(6.21f, -6.65f, 0.0f));
 					layoutwall22->SetRotation(glm::vec3(0.0f, 0.0f, -45.0f));
-					layoutwall22->SetScale(glm::vec3(0.3f, 0.81f, 1.5f));
+					layoutwall22->SetScale(glm::vec3(0.3f, 0.81f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall22->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 					wall->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(0.3f, 0.81f, 1.5f));
+					wall->SetScale(glm::vec3(0.3f, 0.81f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -2206,11 +2218,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall23 = scene->CreateGameObject("Right Top");
 				{
 					layoutwall23->SetPostion(glm::vec3(4.81f, -7.23f, 0.0f));
-					layoutwall23->SetScale(glm::vec3(1.06f, 0.27f, 1.5f));
+					layoutwall23->SetScale(glm::vec3(1.06f, 0.27f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall23->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(1.06f, 0.27f, 1.5f));
+					wall->SetScale(glm::vec3(1.06f, 0.27f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -2218,11 +2230,11 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::GameObject::Sptr layoutwall24 = scene->CreateGameObject("Right");
 				{
 					layoutwall24->SetPostion(glm::vec3(3.98f, -8.86f, 0.0f));
-					layoutwall24->SetScale(glm::vec3(0.25f, 1.88f, 1.5f));
+					layoutwall24->SetScale(glm::vec3(0.25f, 1.88f, 3.0f));
 					Gameplay::Physics::RigidBody::Sptr wallPhys = layoutwall24->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 					Gameplay::Physics::BoxCollider::Sptr wall = Gameplay::Physics::BoxCollider::Create();
 					wall->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-					wall->SetScale(glm::vec3(0.25f, 1.88f, 1.5f));
+					wall->SetScale(glm::vec3(0.25f, 1.88f, 3.0f));
 					wall->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
 					wallPhys->AddCollider(wall);
 				}
@@ -2291,23 +2303,6 @@ void DefaultSceneLayer::_CreateScene()
 				physics->AddCollider(box);
 			}
 
-			Gameplay::GameObject::Sptr shelf4 = scene->CreateGameObject("Shelf 4");
-			{
-				shelf4->SetPostion(glm::vec3(-6.09f, -7.86f, 0.0f));
-				shelf4->SetRotation(glm::vec3(90.0, 0.0f, -90.0f));
-				shelf4->SetScale(glm::vec3(0.4f, 0.4f, 0.4f));
-
-				RenderComponent::Sptr renderer = shelf4->Add<RenderComponent>();
-				renderer->SetMesh(shelfMesh);
-				renderer->SetMaterial(shelfMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = shelf4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.42f, 1.34f, 1.21f));
-				box->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-			}
-
 			Gameplay::GameObject::Sptr tvbox1 = scene->CreateGameObject("tv 1");
 			{
 				tvbox1->SetPostion(glm::vec3(-15.02f, -4.29f, 0.0f));
@@ -2353,23 +2348,6 @@ void DefaultSceneLayer::_CreateScene()
 				renderer->SetMaterial(tvboxMaterial);
 
 				Gameplay::Physics::RigidBody::Sptr physics = tvbox3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
-				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
-				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
-				box->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
-				physics->AddCollider(box);
-			}
-
-			Gameplay::GameObject::Sptr tvbox4 = scene->CreateGameObject("tv4");
-			{
-				tvbox4->SetPostion(glm::vec3(-5.78f, -9.31f, 0.0f));
-				tvbox4->SetRotation(glm::vec3(90.0f, 0.0f, -20.0f));
-				tvbox4->SetScale(glm::vec3(0.8f, 0.8f, 0.8f));
-
-				RenderComponent::Sptr renderer = tvbox4->Add<RenderComponent>();
-				renderer->SetMesh(tvboxMesh);
-				renderer->SetMaterial(tvboxMaterial);
-
-				Gameplay::Physics::RigidBody::Sptr physics = tvbox4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 				box->SetScale(glm::vec3(0.1f, 0.98f, 0.82f));
 				box->SetExtents(glm::vec3(1.0f, 1.0f, 1.0f));
@@ -2454,18 +2432,34 @@ void DefaultSceneLayer::_CreateScene()
 				GroundBehaviour::Sptr behaviour = bench1->Add<GroundBehaviour>();
 			}
 
+			Gameplay::GameObject::Sptr tv1 = scene->CreateGameObject("Tv 1");
+			{
+				tv1->SetPostion(glm::vec3(-6.16f, -7.87, 0.0f));
+				tv1->SetRotation(glm::vec3(90.0f, 0.0f, 90.0f));
+				tv1->SetScale(glm::vec3(0.6f, 0.6f, 0.6f));
+
+				RenderComponent::Sptr renderer = tv1->Add<RenderComponent>();
+				renderer->SetMesh(tvMesh);
+				renderer->SetMaterial(tvMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = tv1->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+				boxCollider->SetPosition(glm::vec3(-0.1f, 0.0f, 0.0f));
+				boxCollider->SetScale(glm::vec3(0.36f, 1.41f, 1.23f));
+				physics->AddCollider(boxCollider);
+			}
+
 			TopRight->AddChild(shelf);
 			TopRight->AddChild(shelf2);
 			TopRight->AddChild(shelf3);
-			TopRight->AddChild(shelf4);
 			TopRight->AddChild(tvbox1);
 			TopRight->AddChild(tvbox2);
 			TopRight->AddChild(tvbox3);
-			TopRight->AddChild(tvbox4);
 			TopRight->AddChild(cashcounter);
 			TopRight->AddChild(computer1);
 			TopRight->AddChild(computer2);
 			TopRight->AddChild(bench1);
+			TopRight->AddChild(tv1);
 
 			//Bot Left Store
 
@@ -2546,6 +2540,22 @@ void DefaultSceneLayer::_CreateScene()
 				renderer->SetMaterial(boothMat);
 
 				Gameplay::Physics::RigidBody::Sptr physics = booth2->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+				box->SetScale(glm::vec3(0.68f, 1.0f, 0.28f));
+				physics->AddCollider(box);
+			}
+
+			Gameplay::GameObject::Sptr booth3 = scene->CreateGameObject("booth 3");
+			{
+				booth3->SetPostion(glm::vec3(5.48f, 3.72f, 0.0f));
+				booth3->SetRotation(glm::vec3(90.0f, 0.0f, -127.0f));
+				booth3->SetScale(glm::vec3(0.3f, 0.4f, 0.3f));
+
+				RenderComponent::Sptr renderer = booth3->Add<RenderComponent>();
+				renderer->SetMesh(boothMesh);
+				renderer->SetMaterial(boothMat);
+
+				Gameplay::Physics::RigidBody::Sptr physics = booth3->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
 				Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
 				box->SetScale(glm::vec3(0.68f, 1.0f, 0.28f));
 				physics->AddCollider(box);
@@ -2840,6 +2850,7 @@ void DefaultSceneLayer::_CreateScene()
 			BotLeft->AddChild(chair6);
 			BotLeft->AddChild(poster1);
 			BotLeft->AddChild(poster2);
+			BotLeft->AddChild(booth3);
 
 			//Top Left
 
@@ -3048,6 +3059,29 @@ void DefaultSceneLayer::_CreateScene()
 				GroundBehaviour::Sptr behaviour = loungechair2->Add<GroundBehaviour>();
 			}
 
+			Gameplay::GameObject::Sptr bench4 = scene->CreateGameObject("Bench");
+			{
+				bench4->SetPostion(glm::vec3(-11.1f, -5.02f, 0.0f));
+				bench4->SetRotation(glm::vec3(90.0f, 0.0f, 34.0f));
+				bench4->SetScale(glm::vec3(2.0f, 1.0f, 1.5f));
+
+				RenderComponent::Sptr renderer = bench4->Add<RenderComponent>();
+				renderer->SetMesh(benchMesh);
+				renderer->SetMaterial(benchMaterial);
+
+				Gameplay::Physics::RigidBody::Sptr physics = bench4->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Static);
+				Gameplay::Physics::BoxCollider::Sptr boxCollider = Gameplay::Physics::BoxCollider::Create();
+				boxCollider->SetScale(glm::vec3(1.25f, 0.35f, 0.35f));
+				physics->AddCollider(boxCollider);
+				Gameplay::Physics::TriggerVolume::Sptr volume = bench4->Add<Gameplay::Physics::TriggerVolume>();
+				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+				box2->SetPosition(glm::vec3(0.00f, 0.27f, 0.0f));
+				box2->SetScale(glm::vec3(1.25f, 0.09f, 0.35f));
+				volume->AddCollider(box2);
+				//give to our floor tiles to tag them
+				GroundBehaviour::Sptr behaviour = bench4->Add<GroundBehaviour>();
+			}
+
 			TopLeft->AddChild(libshelf1);
 			TopLeft->AddChild(libshelf2);
 			TopLeft->AddChild(libshelf3);
@@ -3058,6 +3092,7 @@ void DefaultSceneLayer::_CreateScene()
 			TopLeft->AddChild(cashcounter4);
 			TopLeft->AddChild(loungechair1);
 			TopLeft->AddChild(loungechair2);
+			TopLeft->AddChild(bench4);
 
 			// Bottom Right
 
@@ -3293,7 +3328,7 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::TriggerVolume::Sptr volume = benchhall1->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.27f, 0.0f));
-				box2->SetScale(glm::vec3(1.25f, 0.09f, 0.35f));
+				box2->SetScale(glm::vec3(0.75f, 0.35f, 0.35f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = benchhall1->Add<GroundBehaviour>();
@@ -3317,7 +3352,7 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::TriggerVolume::Sptr volume = benchhall2->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.3f, 0.0f));
-				box2->SetScale(glm::vec3(1.4f, 0.13f, 0.35f));
+				box2->SetScale(glm::vec3(1.42f, 0.16f, 0.26f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = benchhall2->Add<GroundBehaviour>();
@@ -3340,7 +3375,7 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::TriggerVolume::Sptr volume = benchhall3->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.27f, 0.0f));
-				box2->SetScale(glm::vec3(1.25f, 0.09f, 0.35f));
+				box2->SetScale(glm::vec3(0.77f, 0.39f, 0.26f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = benchhall3->Add<GroundBehaviour>();
@@ -3348,8 +3383,8 @@ void DefaultSceneLayer::_CreateScene()
 
 			Gameplay::GameObject::Sptr benchhall4 = scene->CreateGameObject("Bench 4");
 			{
-				benchhall4->SetPostion(glm::vec3(-14.45f, 6.01f, 0.0f));
-				benchhall4->SetRotation(glm::vec3(90.0f, 0.0f, -23.0f));
+				benchhall4->SetPostion(glm::vec3(16.09f, -5.7f, 0.0f));
+				benchhall4->SetRotation(glm::vec3(90.0f, 0.0f, 15.0f));
 				benchhall4->SetScale(glm::vec3(1.31f, 1.0f, 1.5f));
 
 				RenderComponent::Sptr renderer = benchhall4->Add<RenderComponent>();
@@ -3363,7 +3398,7 @@ void DefaultSceneLayer::_CreateScene()
 				Gameplay::Physics::TriggerVolume::Sptr volume = benchhall4->Add<Gameplay::Physics::TriggerVolume>();
 				Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
 				box2->SetPosition(glm::vec3(0.00f, 0.27f, 0.0f));
-				box2->SetScale(glm::vec3(1.25f, 0.09f, 0.35f));
+				box2->SetScale(glm::vec3(0.77f, 0.39f, 0.26f));
 				volume->AddCollider(box2);
 				//give to our floor tiles to tag them
 				GroundBehaviour::Sptr behaviour = benchhall4->Add<GroundBehaviour>();
@@ -3424,6 +3459,8 @@ void DefaultSceneLayer::_CreateScene()
 			MainHall->AddChild(longfountain1);
 			MainHall->AddChild(tallfountain1);
 			MainHall->AddChild(statue1);
+			MainHall->AddChild(benchhall3);
+			MainHall->AddChild(benchhall4);
 
 		//Obstacles
 		{
@@ -3813,6 +3850,150 @@ void DefaultSceneLayer::_CreateScene()
 			SpillBehaviour::Sptr behaviour = spill11->Add<SpillBehaviour>();
 
 
+		}
+
+		Gameplay::GameObject::Sptr spill12 = scene->CreateGameObject("Spill 12");
+		{
+			spill12->SetPostion(glm::vec3(0.17f, -7.34f, 0.03f));
+			spill12->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			spill12->SetScale(glm::vec3(2.47f, 0.7f, 2.26f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill12->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			//Gameplay::Physics::RigidBody::Sptr physics = spillM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			//physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill12->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.91f, 0.001f, 2.02f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill12->Add<SpillBehaviour>();
+		}
+
+		Gameplay::GameObject::Sptr spill13 = scene->CreateGameObject("Spill 13");
+		{
+			spill13->SetPostion(glm::vec3(7.13f, 4.36f, 0.03f));
+			spill13->SetRotation(glm::vec3(90.0f, 0.0f, 47.0f));
+			spill13->SetScale(glm::vec3(0.91f, 0.7f, 1.04f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill13->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			//Gameplay::Physics::RigidBody::Sptr physics = spillM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			//physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill13->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill13->Add<SpillBehaviour>();
+		}
+
+		Gameplay::GameObject::Sptr spill14 = scene->CreateGameObject("Spill 14");
+		{
+			spill14->SetPostion(glm::vec3(14.78f, -0.31f, 0.03f));
+			spill14->SetRotation(glm::vec3(90.0f, 0.0f, 47.0f));
+			spill14->SetScale(glm::vec3(1.23f, 0.7f, 1.3f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill14->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			//Gameplay::Physics::RigidBody::Sptr physics = spillM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			//physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill14->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill14->Add<SpillBehaviour>();
+		}
+
+		Gameplay::GameObject::Sptr spill15 = scene->CreateGameObject("Spill 15");
+		{
+			spill15->SetPostion(glm::vec3(-13.62f, -6.84f, 0.03f));
+			spill15->SetRotation(glm::vec3(90.0f, 0.0f, 49.0f));
+			spill15->SetScale(glm::vec3(0.94f, 0.7f, 1.3f));
+			// Add a render component
+			RenderComponent::Sptr renderer = spill15->Add<RenderComponent>();
+			renderer->SetMesh(spillMesh);
+			renderer->SetMaterial(spillMaterial);
+			// Add a dynamic rigid body to this monkey
+			//Gameplay::Physics::RigidBody::Sptr physics = spillM->Add<Gameplay::Physics::RigidBody>(RigidBodyType::Kinematic);
+			Gameplay::Physics::BoxCollider::Sptr box = Gameplay::Physics::BoxCollider::Create();
+			//box->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			//box->SetScale(glm::vec3(0.22f, 0.37f, 0.24f));
+			//box->SetPosition(glm::vec3(0.02f, 0.5f, 0.0f));
+			box->SetScale(glm::vec3(0.75f, 0.001f, 0.53f));
+			//box->SetExtents(glm::vec3(0.8, 2.68, 0.83));
+			//physics->AddCollider(box);
+			//physics->SetMass(0.0f);
+			Gameplay::Physics::TriggerVolume::Sptr volume = spill15->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			//box2->SetPosition(glm::vec3(0.04f, 0.6f, 0.18f));
+			box2->SetScale(glm::vec3(1.f, 0.001f, 1.f));
+			volume->AddCollider(box2);
+			SpillBehaviour::Sptr behaviour = spill15->Add<SpillBehaviour>();
+		}
+
+		Gameplay::GameObject::Sptr conveyor5 = scene->CreateGameObject("Conveyor 5");
+		{
+			conveyor5->SetPostion(glm::vec3(-13.92f, -4.87f, 0.0f));
+			conveyor5->SetRotation(glm::vec3(90.0f, 0.0f, 0.0f));
+			conveyor5->SetScale(glm::vec3(0.31f, 0.69f, 0.31f));
+
+			RenderComponent::Sptr renderer = conveyor5->Add<RenderComponent>();
+			renderer->SetMesh(conveyorMesh);
+			renderer->SetMaterial(conveyorMaterial);
+
+			Gameplay::Physics::TriggerVolume::Sptr volume = conveyor5->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			box2->SetScale(glm::vec3(0.28f, 0.201f, 1.430f));
+			box2->SetPosition(glm::vec3(0.0f, 0.19f, 0.0f));
+			volume->AddCollider(box2);
+			ConveyorBeltBehaviour::Sptr behaviour2 = conveyor5->Add<ConveyorBeltBehaviour>();
+		}
+
+		Gameplay::GameObject::Sptr conveyor6 = scene->CreateGameObject("Conveyor 6");
+		{
+			conveyor6->SetPostion(glm::vec3(-16.15f, -4.89f, 0.0f));
+			conveyor6->SetRotation(glm::vec3(90.0f, 0.0f, -180.0f));
+			conveyor6->SetScale(glm::vec3(0.31f, 0.69f, 0.31f));
+
+			RenderComponent::Sptr renderer = conveyor6->Add<RenderComponent>();
+			renderer->SetMesh(conveyorMesh);
+			renderer->SetMaterial(conveyorMaterial);
+
+			Gameplay::Physics::TriggerVolume::Sptr volume = conveyor6->Add<Gameplay::Physics::TriggerVolume>();
+			Gameplay::Physics::BoxCollider::Sptr box2 = Gameplay::Physics::BoxCollider::Create();
+			box2->SetScale(glm::vec3(0.28f, 0.201f, 1.430f));
+			box2->SetPosition(glm::vec3(0.0f, 0.19f, 0.0f));
+			volume->AddCollider(box2);
+			ConveyorBeltBehaviour::Sptr behaviour2 = conveyor6->Add<ConveyorBeltBehaviour>();
 		}
 
 	}
