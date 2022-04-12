@@ -95,7 +95,7 @@ protected:
 	bool full = false;
 	//Variables for changing stuff in the game
 	float timeLoop = 1.0f; //The seconds between start time and the menu that plays in the beginning
-	float roundTime = 170.f; //210.f; //The time needed to collect all trash
+	float roundTime = 190.f; //The time needed to collect all trash
 	float timelevelt = roundTime;
 	bool playMenu = true;
 

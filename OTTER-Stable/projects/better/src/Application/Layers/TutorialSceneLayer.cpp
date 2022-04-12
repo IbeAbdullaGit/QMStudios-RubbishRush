@@ -281,9 +281,9 @@ void TutorialSceneLayer::OnUpdate()
 						play5 = true;
 						AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice7");
 						AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice7",-250.f);
-						
+						currentTime = Timing::Current().TimeSinceAppLoad();
 					}
-					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 4.0f && play5) {
+					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 10.0f && play5) {
 						dialogue5->Get<GuiPanel>()->IsEnabled = false;
 						
 					}
