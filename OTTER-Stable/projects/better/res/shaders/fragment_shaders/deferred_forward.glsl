@@ -28,6 +28,11 @@ void main() {
 	// Get albedo from the material
 	vec4 albedoColor = texture(u_Material.AlbedoMap, inUV);
 
+	if (!IsFlagSet(FLAG_ENABLE_TEXTURE))
+	{
+		albedoColor = vec4(0.5, 0.5, 0.5, 1.0); //just make it some color
+	}
+
 	// We can use another texture to store things like our lighting settings
 	vec4 lightingParams = texture(u_Material.MetallicShininessMap, inUV);
 

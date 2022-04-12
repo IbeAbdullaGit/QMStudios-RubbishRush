@@ -34,6 +34,11 @@ void main() {
 	//SCROLLING TEXTURE
 	vec4 albedoColor = texture(u_Material.AlbedoMap, vec2(inUV.x, inUV.y - Time));
 
+	if (!IsFlagSet(FLAG_ENABLE_TEXTURE))
+	{
+		albedoColor = vec4(0.5, 0.5, 0.5, 1.0); //just make it some color
+	}
+
 	//apply color correction?
 	//albedoColor =vec4(ColorCorrect(albedoColor.rgb), albedoColor.a);
 

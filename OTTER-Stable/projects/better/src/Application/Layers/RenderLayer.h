@@ -17,7 +17,8 @@ ENUM_FLAGS(RenderFlags, uint32_t,
 	EnableSpecular = 1<<2,
 	EnableAmbient = 1<<3,
 	EnableRDiffuse = 1<<4,
-	EnableRSpec = 1<<5
+	EnableRSpec = 1<<5,
+	EnableTexture = 1<<6
 	
 );
 
@@ -135,11 +136,12 @@ public:
 
 protected:
 
-	bool enable_specular = true;
+	bool enable_specular = false;
 	bool lights = true;
 	bool enable_ambient = true;
 	bool enable_ramp_d = false;
 	bool enable_ramp_s = false;
+	bool enable_texture = true;
 	Texture2D::Sptr outlineTrash;
 	Texture2D::Sptr outlineRecycle;
 

@@ -24,7 +24,7 @@ RenderLayer::RenderLayer() :
 	_blitFbo(true),
 	_frameUniforms(nullptr),
 	_instanceUniforms(nullptr),
-	_renderFlags(RenderFlags::EnableLights  | RenderFlags::EnableAmbient),
+	_renderFlags(RenderFlags::EnableLights  | RenderFlags::EnableAmbient | RenderFlags::EnableTexture),
 	_clearColor({ 0.1f, 0.1f, 0.1f, 1.0f })
 {
 	Name = "Rendering";
@@ -437,6 +437,10 @@ void RenderLayer::OnUpdate()
 	{
 		lights = !lights;
 	}
+	if (InputEngine::GetKeyState(GLFW_KEY_5) == ButtonState::Pressed)//texturing
+	{
+		enable_texture = !enable_texture;
+	}
 	if (enable_ambient)
 	{
 		scene->SetAmbientLight(glm::vec3(0.2f));   
@@ -447,34 +451,38 @@ void RenderLayer::OnUpdate()
 	}
 	if (enable_specular)
 	{
-		if (enable_ramp_d && enable_ramp_s && lights)
+		if (enable_ramp_d && enable_ramp_s && lights && enable_texture)
 		{
-			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights | RenderFlags::EnableRDiffuse | RenderFlags::EnableRSpec;
+			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights | RenderFlags::EnableRDiffuse | RenderFlags::EnableRSpec | RenderFlags::EnableTexture;
 		}
-		else if (enable_ramp_d && lights)//no spec ramp
+		else if (enable_ramp_d && lights && enable_texture)//no spec ramp
 		{
-			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights | RenderFlags::EnableRDiffuse;
+			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights | RenderFlags::EnableRDiffuse | RenderFlags::EnableTexture;
 		}
-		else if (enable_ramp_d && enable_ramp_s)//no lights
+		else if (enable_ramp_d && enable_ramp_s && enable_texture)//no lights
 		{
-			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableRDiffuse | RenderFlags::EnableRSpec;
+			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableRDiffuse | RenderFlags::EnableRSpec | RenderFlags::EnableTexture;
 		}
-		else if (enable_ramp_d) //specular and ramp diffuse
+		else if (enable_ramp_d && enable_texture) //specular and ramp diffuse
 		{
-			_renderFlags = RenderFlags::EnableRDiffuse | RenderFlags::EnableSpecular;
+			_renderFlags = RenderFlags::EnableRDiffuse | RenderFlags::EnableSpecular | RenderFlags::EnableTexture;
 		}
-		else if (enable_ramp_s && lights)//no diff ramp
+		else if (enable_ramp_s && lights && enable_texture)//no diff ramp
 		{
-			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights | RenderFlags::EnableRSpec;
+			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights | RenderFlags::EnableRSpec | RenderFlags::EnableTexture;
 		}
-		else if (enable_ramp_s) //specular and ramp spec
+		else if (enable_ramp_s && enable_texture) //specular and ramp spec
 		{
-			_renderFlags = RenderFlags::EnableRSpec | RenderFlags::EnableSpecular;
+			_renderFlags = RenderFlags::EnableRSpec | RenderFlags::EnableSpecular | RenderFlags::EnableTexture;
 		}
 
-		else if (lights)//no ramps, but has lights
+		else if (lights && enable_texture)//no ramps, but has lights
 		{
-			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights;
+			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableLights | RenderFlags::EnableTexture;
+		}
+		else if (enable_texture)//only specular
+		{
+			_renderFlags = RenderFlags::EnableSpecular | RenderFlags::EnableTexture;
 		}
 		else //only specular
 		{
@@ -483,17 +491,21 @@ void RenderLayer::OnUpdate()
 	}
 	else if (lights)
 	{
-		if (enable_ramp_s && enable_ramp_d) //no specular, but has lights
+		if (enable_ramp_s && enable_ramp_d && enable_texture) //no specular, but has lights
 		{
-			_renderFlags = RenderFlags::EnableLights | RenderFlags::EnableRDiffuse | RenderFlags::EnableRSpec;
+			_renderFlags = RenderFlags::EnableLights | RenderFlags::EnableRDiffuse | RenderFlags::EnableRSpec | RenderFlags::EnableTexture;
 		}
-		else if (enable_ramp_s) //lights and ramp specular
+		else if (enable_ramp_s && enable_texture) //lights and ramp specular
 		{
-			_renderFlags = RenderFlags::EnableRSpec | RenderFlags::EnableLights;
+			_renderFlags = RenderFlags::EnableRSpec | RenderFlags::EnableLights | RenderFlags::EnableTexture;
 		}
-		else if (enable_ramp_d) //lights and ramp diffuse
+		else if (enable_ramp_d && enable_texture) //lights and ramp diffuse
 		{
-			_renderFlags = RenderFlags::EnableRDiffuse | RenderFlags::EnableLights;
+			_renderFlags = RenderFlags::EnableRDiffuse | RenderFlags::EnableLights | RenderFlags::EnableTexture;
+		}
+		else if (enable_texture)
+		{
+			_renderFlags = RenderFlags::EnableLights|RenderFlags::EnableTexture;
 		}
 		else//only lights
 		{
@@ -502,18 +514,35 @@ void RenderLayer::OnUpdate()
 	}
 	else if (enable_ramp_s)
 	{
-		if (enable_ramp_d) //only the ramps on
+		if (enable_ramp_d && enable_texture) //only the ramps on
 		{
-			_renderFlags = RenderFlags::EnableRDiffuse | RenderFlags::EnableRSpec;
+			_renderFlags = RenderFlags::EnableRDiffuse | RenderFlags::EnableRSpec | RenderFlags::EnableTexture;
 		}
-		else//only ramp specular
+		else if (enable_texture)//only ramp specular
+		{
+			_renderFlags = RenderFlags::EnableRSpec | RenderFlags::EnableTexture;
+		}
+		else
 		{
 			_renderFlags = RenderFlags::EnableRSpec;
 		}
+
 	}
 	else if (enable_ramp_d)//only ramp diffuse
 	{
-		_renderFlags = RenderFlags::EnableRDiffuse;
+		
+		if (enable_texture)
+		{
+			_renderFlags = RenderFlags::EnableRDiffuse | RenderFlags::EnableTexture;
+		}
+		else
+		{
+			_renderFlags = RenderFlags::EnableRDiffuse;
+		}
+	}
+	else if (enable_texture)
+	{
+		_renderFlags = RenderFlags::EnableTexture;
 	}
 	else//none
 	{
