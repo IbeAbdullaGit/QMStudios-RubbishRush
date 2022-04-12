@@ -124,12 +124,12 @@ void MenuSceneLayer::OnUpdate()
 
 		}
 		//play tutorial
-		else if (_prevMousePos.y >= 507 && _prevMousePos.y <= 556)
+		else if (_prevMousePos.y >= 446 && _prevMousePos.y <= 546)
 		{
 			tut->Get<GuiPanel>()->SetTexture(playtutorial2);
 		}
 		//quit game
-		else if (_prevMousePos.y >= 643 && _prevMousePos.y <= 683)
+		else if (_prevMousePos.y >= 556 && _prevMousePos.y <= 683)
 		{
 			q->Get<GuiPanel>()->SetTexture(quitgame2);
 		}
@@ -167,7 +167,7 @@ void MenuSceneLayer::OnUpdate()
 				
 			}
 			//play tutorial
-			else if (_prevMousePos.y >= 507 && _prevMousePos.y <= 556)
+			else if (_prevMousePos.y >= 446 && _prevMousePos.y <= 546)
 			{
 				toggle_switch2 = true;
 				//make loading screen
@@ -188,7 +188,7 @@ void MenuSceneLayer::OnUpdate()
 				
 			}
 			//quit game
-			else if (_prevMousePos.y >= 643 && _prevMousePos.y <= 683)
+			else if (_prevMousePos.y >= 556 && _prevMousePos.y <= 683)
 			{
 				std::exit(0);
 			}
