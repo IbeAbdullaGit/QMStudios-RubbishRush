@@ -408,13 +408,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback0->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 120 });
+						transform->SetPosition({ 800, 145 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback0->Add<GuiText>();
 						text->SetText("1. " + std::to_string(array[0]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -425,13 +425,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback1->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 180 });
+						transform->SetPosition({ 800, 200 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback1->Add<GuiText>();
 						text->SetText("2. " + std::to_string(array[1]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -442,13 +442,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback2->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 240 });
+						transform->SetPosition({ 800, 255 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback2->Add<GuiText>();
 						text->SetText("3. " + std::to_string(array[2]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -459,13 +459,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback3->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 300 });
+						transform->SetPosition({ 800, 310 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback3->Add<GuiText>();
 						text->SetText("4. " + std::to_string(array[3]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -476,13 +476,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback4->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 360 });
+						transform->SetPosition({ 800, 365 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback4->Add<GuiText>();
 						text->SetText("5. " + std::to_string(array[4]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -493,13 +493,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback5->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 420 });
+						transform->SetPosition({ 800, 420 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback5->Add<GuiText>();
 						text->SetText("6. " + std::to_string(array[5]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -510,13 +510,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback6->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 480 });
+						transform->SetPosition({ 800, 475 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback6->Add<GuiText>();
 						text->SetText("7. " + std::to_string(array[6]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -527,13 +527,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback7->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 540 });
+						transform->SetPosition({ 800, 530 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback7->Add<GuiText>();
 						text->SetText("8. " + std::to_string(array[7]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -545,13 +545,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback8->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 600 });
+						transform->SetPosition({ 800, 585 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback8->Add<GuiText>();
 						text->SetText("9. " + std::to_string(array[8]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -562,13 +562,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback9->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 660 });
+						transform->SetPosition({ 800, 640 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback9->Add<GuiText>();
 						text->SetText("10." + std::to_string(array[9]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -639,6 +639,7 @@ void DefaultSceneLayer::OnUpdate()
 					_currentScene->RemoveGameObject(HighScorePos8L);
 					_currentScene->RemoveGameObject(HighScorePos9L);
 					_currentScene->RemoveGameObject(HighScorePos10L);
+					AudioEngine::stopEventS("event:/Sounds/Music/Lose/LoseMusicEvent");
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
 					press_high = true;
 
@@ -646,7 +647,7 @@ void DefaultSceneLayer::OnUpdate()
 					lose = false;
 					start = false;
 					playMenu = false;
-					timeLoop = 3.0f;
+					timeLoop = 1.0f;
 					timelevelt = roundTime;
 					timerDone = false;
 					timeleveltDone = false;
@@ -748,13 +749,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback0V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 120 });
+						transform->SetPosition({ 900, 145 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback0V->Add<GuiText>();
 						text->SetText("1. " + std::to_string(array[0]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -765,13 +766,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback1V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 180 });
+						transform->SetPosition({ 900, 200 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback1V->Add<GuiText>();
 						text->SetText("2. " + std::to_string(array[1]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -782,13 +783,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback2V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 240 });
+						transform->SetPosition({ 900, 255 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback2V->Add<GuiText>();
 						text->SetText("3. " + std::to_string(array[2]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -799,13 +800,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback3V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 300 });
+						transform->SetPosition({ 900, 310 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback3V->Add<GuiText>();
 						text->SetText("4. " + std::to_string(array[3]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -816,13 +817,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback4V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 360 });
+						transform->SetPosition({ 900, 365 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback4V->Add<GuiText>();
 						text->SetText("5. " + std::to_string(array[4]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -839,7 +840,7 @@ void DefaultSceneLayer::OnUpdate()
 						text->SetText("6. " + std::to_string(array[5]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -850,13 +851,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback6V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 480 });
+						transform->SetPosition({ 900, 475 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback6V->Add<GuiText>();
 						text->SetText("7. " + std::to_string(array[6]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -867,13 +868,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback7V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 540 });
+						transform->SetPosition({ 900, 530 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback7V->Add<GuiText>();
 						text->SetText("8. " + std::to_string(array[7]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -885,13 +886,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback8V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 600 });
+						transform->SetPosition({ 900, 585 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback8V->Add<GuiText>();
 						text->SetText("9. " + std::to_string(array[8]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -902,13 +903,13 @@ void DefaultSceneLayer::OnUpdate()
 						RectTransform::Sptr transform = HighScoreFeedback9V->Add<RectTransform>();
 						transform->SetMin({ 10, 10 });
 						transform->SetMax({ 200, 200 });
-						transform->SetPosition({ 900, 660 });
+						transform->SetPosition({ 900, 640 });
 						transform->SetSize({ 35,35 });
 						GuiText::Sptr text = HighScoreFeedback9V->Add<GuiText>();
 						text->SetText("10." + std::to_string(array[9]));
 						text->SetFont(junkDogFont);
 						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-						text->SetTextScale(2.f);
+						text->SetTextScale(1.5f);
 						text->IsEnabled = false;
 
 					}
@@ -948,6 +949,7 @@ void DefaultSceneLayer::OnUpdate()
 					_currentScene->FindObjectByName("HighScore Feedback8V")->Get<GuiText>()->IsEnabled = true;
 					_currentScene->FindObjectByName("HighScore Feedback9V")->Get<GuiText>()->IsEnabled = true;
 					_currentScene->FindObjectByName("HighScore Feedback10V")->Get<GuiText>()->IsEnabled = true;
+					AudioEngine::stopEventS("event:/Sounds/Music/Victory/VictoryMusicEvent");
 
 				
 				}
@@ -973,13 +975,13 @@ void DefaultSceneLayer::OnUpdate()
 					_currentScene->RemoveGameObject(HighScorePos10V);
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
 					press_high = true;
-
+					AudioEngine::stopEventS("event:/Sounds/Music/Victory/VictoryMusicEvent");
 					//reset variables
 					Victory = false;
 					victoryMusicPlayed = false;
 					start = false;
 					playMenu = false;
-					timeLoop = 3.0f;
+					timeLoop = 1.0f;
 					timelevelt = roundTime;
 					timerDone = false;
 					timeleveltDone = false;
