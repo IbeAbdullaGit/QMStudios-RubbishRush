@@ -360,8 +360,7 @@ void TutorialSceneLayer::OnUpdate()
 			if (Timing::Current().TimeSinceAppLoad() - footstepTimer >= 0.3f && _tutcurrentScene->walk) {
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/Footstep");
 				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/Footstep", 2.f);
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice6", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
-				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
+				
 
 				footstepTimer = Timing::Current().TimeSinceAppLoad();
 			}
@@ -460,6 +459,7 @@ void TutorialSceneLayer::OnUpdate()
 			AudioEngine::EventPosChangeS("event:/Sounds/Music/Tutorial/TutorialMusicEvent", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 			AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice6", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 			AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
+			AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 			
 		// Store timing for next loop
 		tutlastFrame = thisFrame;

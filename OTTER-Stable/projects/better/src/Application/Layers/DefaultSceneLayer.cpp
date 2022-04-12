@@ -4531,7 +4531,7 @@ void DefaultSceneLayer::_CreateScene()
 			RectTransform::Sptr transform = objectiveUI->Add<RectTransform>();
 			transform->SetMin({ 10, 10 });
 			transform->SetMax({ 200, 200 });
-			transform->SetPosition({ 640, 50 });
+			transform->SetPosition({ 640, 75 });
 			transform->SetSize({ 35,35 });
 
 			GuiPanel::Sptr canPanel = objectiveUI->Add<GuiPanel>();
@@ -4564,7 +4564,7 @@ void DefaultSceneLayer::_CreateScene()
 				GuiText::Sptr text = trashRemain->Add<GuiText>();
 				text->SetText("0 Trash Remaining!");
 				text->SetFont(junkDogFont);
-				text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+				text->SetColor(glm::vec4(255.f, 0.86f, 0.f, 1.f));
 				text->SetTextScale(1.0f);
 				text->IsEnabled = false;
 			}
