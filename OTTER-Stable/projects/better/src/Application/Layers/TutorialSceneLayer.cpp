@@ -326,7 +326,13 @@ void TutorialSceneLayer::OnUpdate()
 					//pickupUI->Get<GuiPanel>()->IsEnabled = false;
 					AudioEngine::stopEventS("event:/Sounds/Music/Tutorial/TutorialMusicEvent");
 					AudioEngine::playEventS("event:/Sounds/Music/Loading/LoadingMusicEvent");
-				    AudioEngine::EventPosChangeS("event:/Sounds/Music/Loading/LoadingMusicEvent", 0.0f, 0.f, 1.f);
+					AudioEngine::EventPosChangeS("event:/Sounds/Music/Loading/LoadingMusicEvent", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
+					AudioEngine::stopEventS("event:/Sounds/SoundEffects/Slime");
+					AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4");
+					AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5");
+					AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice6");
+					AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice7");
+				    
 					//make loading screen
 					Gameplay::GameObject::Sptr loading = _tutcurrentScene->CreateGameObject("Load");
 					{
