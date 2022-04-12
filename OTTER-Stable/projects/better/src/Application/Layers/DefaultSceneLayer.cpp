@@ -67,7 +67,7 @@
 #include "Gameplay/Components/InventoryUI.h"
 #include "Gameplay/Components/AudioEngine.h"
 #include "Gameplay/Components/ShadowCamera.h"
-
+#include  <fstream>
 // Physics
 #include "Gameplay/Physics/RigidBody.h"
 #include "Gameplay/Physics/Colliders/BoxCollider.h"
@@ -375,9 +375,9 @@ void DefaultSceneLayer::OnUpdate()
 
 					int temp;
 
-					for (int i = 0; i < 11-1; i++)
+					for (int i = 0; i < 11 ; i++)
 					{
-						for (int j = 0; j < 11-i-1 - i; j++)
+						for (int j = 0; j < 10-i; j++)
 						{
 							if (array[j] < array[j + 1])
 							{
@@ -397,8 +397,185 @@ void DefaultSceneLayer::OnUpdate()
 
 					output.close();
 
+
+					
+					
+					Font::Sptr junkDogFont = ResourceManager::CreateAsset<Font>("fonts/JunkDog.otf", 35.f); //Font path, font size
+					junkDogFont->Bake();
+
+					Gameplay::GameObject::Sptr HighScoreFeedback0 = _currentScene->CreateGameObject("HighScore Feedback1");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback0->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 120 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback0->Add<GuiText>();
+						text->SetText("1. " + std::to_string(array[0]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos1L = _currentScene->FindObjectByName("HighScore Feedback1");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback1 = _currentScene->CreateGameObject("HighScore Feedback2");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback1->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 180 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback1->Add<GuiText>();
+						text->SetText("2. " + std::to_string(array[1]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos2L = _currentScene->FindObjectByName("HighScore Feedback2");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback2 = _currentScene->CreateGameObject("HighScore Feedback3");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback2->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 240 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback2->Add<GuiText>();
+						text->SetText("3. " + std::to_string(array[2]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos3L = _currentScene->FindObjectByName("HighScore Feedback3");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback3 = _currentScene->CreateGameObject("HighScore Feedback4");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback3->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 300 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback3->Add<GuiText>();
+						text->SetText("4. " + std::to_string(array[3]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos4L = _currentScene->FindObjectByName("HighScore Feedback4");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback4 = _currentScene->CreateGameObject("HighScore Feedback5");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback4->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 360 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback4->Add<GuiText>();
+						text->SetText("5. " + std::to_string(array[4]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos5L = _currentScene->FindObjectByName("HighScore Feedback5");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback5 = _currentScene->CreateGameObject("HighScore Feedback6");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback5->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 420 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback5->Add<GuiText>();
+						text->SetText("6. " + std::to_string(array[5]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos6L = _currentScene->FindObjectByName("HighScore Feedback6");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback6 = _currentScene->CreateGameObject("HighScore Feedback7");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback6->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 480 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback6->Add<GuiText>();
+						text->SetText("7. " + std::to_string(array[6]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos7L = _currentScene->FindObjectByName("HighScore Feedback7");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback7 = _currentScene->CreateGameObject("HighScore Feedback8");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback7->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 540 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback7->Add<GuiText>();
+						text->SetText("8. " + std::to_string(array[7]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos8L = _currentScene->FindObjectByName("HighScore Feedback8");
+
+
+					Gameplay::GameObject::Sptr HighScoreFeedback8 = _currentScene->CreateGameObject("HighScore Feedback9");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback8->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 600 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback8->Add<GuiText>();
+						text->SetText("9. " + std::to_string(array[8]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos9L = _currentScene->FindObjectByName("HighScore Feedback9");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback9 = _currentScene->CreateGameObject("HighScore Feedback10");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback9->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 660 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback9->Add<GuiText>();
+						text->SetText("10." + std::to_string(array[9]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos10L = _currentScene->FindObjectByName("HighScore Feedback10");
 					highscoreloop = true;
 				}
+				
 
 				//end menu
 				trashyM->Get<Gameplay::Physics::RigidBody>()->IsEnabled = false;
@@ -411,39 +588,59 @@ void DefaultSceneLayer::OnUpdate()
 				_currentScene->FindObjectByName("Pickup Feedback")->Get<GuiText>()->IsEnabled = false;
 				//need this so program doesnt detect multiple presses
 				press_once = false;
-				press_twice = true;
-				press_thrice = true;
+				press_high = true;
+				press_play = false;
 				
 				//pause the timer*****
 
-				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_once) //return to game
+				if (InputEngine::GetKeyState(GLFW_KEY_H) == ButtonState::Pressed && !press_once) //return to game
 				{
 					//need this so program doesnt detect multiple presses
 					press_once = true;
-					press_twice = false;
+					press_high = false;
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
 					failMenu->Get<GuiPanel>()->IsEnabled = false; //dont show lose menu
+					HighscoreLeaderBoard->Get<GuiPanel>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback1")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback2")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback3")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback4")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback5")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback6")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback7")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback8")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback9")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback10")->Get<GuiText>()->IsEnabled = true;
 				
 
 					AudioEngine::stopEventS("event:/Sounds/Music/Lose/LoseMusicEvent");
 				}
 
-				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_twice) {
+				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_play) {
 					
-					HighscoreLeaderBoard->Get<GuiPanel>()->IsEnabled = true;
-				//	startMenu->Get<GuiPanel>()->IsEnabled = true;
-					press_twice = true;
-					press_thrice = false;
-				
+					press_play = true;
+					press_high = false;
+					failMenu->Get<GuiPanel>()->IsEnabled = false;
+					
 					
 					
 				}
 
-				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_thrice) {
+				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_high) {
 
 					HighscoreLeaderBoard->Get<GuiPanel>()->IsEnabled = false;
+					_currentScene->RemoveGameObject(HighScorePos1L);
+					_currentScene->RemoveGameObject(HighScorePos2L);
+					_currentScene->RemoveGameObject(HighScorePos3L);
+					_currentScene->RemoveGameObject(HighScorePos4L);
+					_currentScene->RemoveGameObject(HighScorePos5L);
+					_currentScene->RemoveGameObject(HighScorePos6L);
+					_currentScene->RemoveGameObject(HighScorePos7L);
+					_currentScene->RemoveGameObject(HighScorePos8L);
+					_currentScene->RemoveGameObject(HighScorePos9L);
+					_currentScene->RemoveGameObject(HighScorePos10L);
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
-					press_thrice = true;
+					press_high = true;
 
 					//reset variables
 					lose = false;
@@ -544,6 +741,179 @@ void DefaultSceneLayer::OnUpdate()
 
 					output.close();
 
+					Font::Sptr junkDogFont = ResourceManager::CreateAsset<Font>("fonts/JunkDog.otf", 35.f); //Font path, font size
+					junkDogFont->Bake();
+					Gameplay::GameObject::Sptr HighScoreFeedback0V = _currentScene->CreateGameObject("HighScore Feedback1V");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback0V->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 120 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback0V->Add<GuiText>();
+						text->SetText("1. " + std::to_string(array[0]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos1V = _currentScene->FindObjectByName("HighScore Feedback1V");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback1V = _currentScene->CreateGameObject("HighScore Feedback2V");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback1V->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 180 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback1V->Add<GuiText>();
+						text->SetText("2. " + std::to_string(array[1]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos2V = _currentScene->FindObjectByName("HighScore Feedback2V");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback2V = _currentScene->CreateGameObject("HighScore Feedback3V");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback2V->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 240 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback2V->Add<GuiText>();
+						text->SetText("3. " + std::to_string(array[2]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos3V = _currentScene->FindObjectByName("HighScore Feedback3V");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback3V = _currentScene->CreateGameObject("HighScore Feedback4V");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback3V->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 300 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback3V->Add<GuiText>();
+						text->SetText("4. " + std::to_string(array[3]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos4V = _currentScene->FindObjectByName("HighScore Feedback4V");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback4V = _currentScene->CreateGameObject("HighScore Feedback5V");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback4V->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 360 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback4V->Add<GuiText>();
+						text->SetText("5. " + std::to_string(array[4]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos5V = _currentScene->FindObjectByName("HighScore Feedback5V");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback5V = _currentScene->CreateGameObject("HighScore Feedback6V");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback5V->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 420 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback5V->Add<GuiText>();
+						text->SetText("6. " + std::to_string(array[5]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos6V = _currentScene->FindObjectByName("HighScore Feedback6V");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback6V = _currentScene->CreateGameObject("HighScore Feedback7V");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback6V->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 480 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback6V->Add<GuiText>();
+						text->SetText("7. " + std::to_string(array[6]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos7V = _currentScene->FindObjectByName("HighScore Feedback7V");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback7V = _currentScene->CreateGameObject("HighScore Feedback8V");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback7V->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 540 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback7V->Add<GuiText>();
+						text->SetText("8. " + std::to_string(array[7]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos8V = _currentScene->FindObjectByName("HighScore Feedback8V");
+
+
+					Gameplay::GameObject::Sptr HighScoreFeedback8V = _currentScene->CreateGameObject("HighScore Feedback9V");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback8V->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 600 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback8V->Add<GuiText>();
+						text->SetText("9. " + std::to_string(array[8]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos9V = _currentScene->FindObjectByName("HighScore Feedback9V");
+
+					Gameplay::GameObject::Sptr HighScoreFeedback9V = _currentScene->CreateGameObject("HighScore Feedback10V");
+					{
+						RectTransform::Sptr transform = HighScoreFeedback9V->Add<RectTransform>();
+						transform->SetMin({ 10, 10 });
+						transform->SetMax({ 200, 200 });
+						transform->SetPosition({ 900, 660 });
+						transform->SetSize({ 35,35 });
+						GuiText::Sptr text = HighScoreFeedback9V->Add<GuiText>();
+						text->SetText("10." + std::to_string(array[9]));
+						text->SetFont(junkDogFont);
+						text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+						text->SetTextScale(2.f);
+						text->IsEnabled = false;
+
+					}
+					HighScorePos10V = _currentScene->FindObjectByName("HighScore Feedback10V");
+
 					highscoreloop = true;
 				}
 
@@ -560,22 +930,49 @@ void DefaultSceneLayer::OnUpdate()
 				press_once = false;
 				//pause the timer*****
 
-				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_once) //return to game
+				if (InputEngine::GetKeyState(GLFW_KEY_H) == ButtonState::Pressed && !press_once) //return to game
 				{
 					//need this so program doesnt detect multiple presses
 					press_once = true;
-					press_twice = true;
+					press_high = false;
 					//trashyM->Get<RigidBody>()->IsEnabled = true; 
 					winMenu->Get<GuiPanel>()->IsEnabled = false; //dont show lose menu
 					HighscoreLeaderBoard->Get<GuiPanel>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback1V")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback2V")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback3V")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback4V")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback5V")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback6V")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback7V")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback8V")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback9V")->Get<GuiText>()->IsEnabled = true;
+					_currentScene->FindObjectByName("HighScore Feedback10V")->Get<GuiText>()->IsEnabled = true;
 
 				
 				}
-				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && press_twice) {
+				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_play) 
+				{
+					press_play = true;
+					press_high = false;
+					winMenu->Get<GuiPanel>()->IsEnabled = false;
+				}
+
+				if (InputEngine::GetKeyState(GLFW_KEY_ENTER) == ButtonState::Pressed && !press_high) {
 
 					HighscoreLeaderBoard->Get<GuiPanel>()->IsEnabled = false;
+					_currentScene->RemoveGameObject(HighScorePos1V);
+					_currentScene->RemoveGameObject(HighScorePos2V);
+					_currentScene->RemoveGameObject(HighScorePos3V);
+					_currentScene->RemoveGameObject(HighScorePos4V);
+					_currentScene->RemoveGameObject(HighScorePos5V);
+					_currentScene->RemoveGameObject(HighScorePos6V);
+					_currentScene->RemoveGameObject(HighScorePos7V);
+					_currentScene->RemoveGameObject(HighScorePos8V);
+					_currentScene->RemoveGameObject(HighScorePos9V);
+					_currentScene->RemoveGameObject(HighScorePos10V);
 					startMenu->Get<GuiPanel>()->IsEnabled = true;
-					press_twice = false;
+					press_high = true;
 
 					//reset variables
 					Victory = false;
@@ -4037,6 +4434,8 @@ void DefaultSceneLayer::_CreateScene()
 				text->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
 				text->IsEnabled = false;
 			}
+
+		
 			//returnFeedback->Get<GuiText>()->IsEnabled = false;
 			feedbackUI->AddChild(pickupFeedback);
 			feedbackUI->AddChild(submitFeedback);

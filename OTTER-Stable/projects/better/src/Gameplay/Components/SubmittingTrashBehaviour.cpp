@@ -97,7 +97,7 @@ void SubmittingTrashBehaviour::Update(float deltatime)
 				_scene->score += 1;
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/Pickups interactions/DepositTrash");
 				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Pickups interactions/DepositTrash", GetGameObject()->GetPosition().x, GetGameObject()->GetPosition().y, GetGameObject()->GetPosition().z);
-				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/Pickups interactions/DepositTrash", -2.f);
+				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/Pickups interactions/DepositTrash", -3.f);
 				//disable the return ui if we have more inventory space
 				if (_scene->held < inventory)
 				{

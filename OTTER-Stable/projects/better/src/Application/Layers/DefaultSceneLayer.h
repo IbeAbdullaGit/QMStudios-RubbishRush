@@ -48,6 +48,26 @@ protected:
 	float tracker = 0;
 
 	Gameplay::GameObject::Sptr startMenu;
+	Gameplay::GameObject::Sptr HighScorePos1L;
+	Gameplay::GameObject::Sptr HighScorePos2L;
+	Gameplay::GameObject::Sptr HighScorePos3L;
+	Gameplay::GameObject::Sptr HighScorePos4L;
+	Gameplay::GameObject::Sptr HighScorePos5L;
+	Gameplay::GameObject::Sptr HighScorePos6L;
+	Gameplay::GameObject::Sptr HighScorePos7L;
+	Gameplay::GameObject::Sptr HighScorePos8L;
+	Gameplay::GameObject::Sptr HighScorePos9L;
+	Gameplay::GameObject::Sptr HighScorePos10L;
+	Gameplay::GameObject::Sptr HighScorePos1V;
+	Gameplay::GameObject::Sptr HighScorePos2V;
+	Gameplay::GameObject::Sptr HighScorePos3V;
+	Gameplay::GameObject::Sptr HighScorePos4V;
+	Gameplay::GameObject::Sptr HighScorePos5V;
+	Gameplay::GameObject::Sptr HighScorePos6V;
+	Gameplay::GameObject::Sptr HighScorePos7V;
+	Gameplay::GameObject::Sptr HighScorePos8V;
+	Gameplay::GameObject::Sptr HighScorePos9V;
+	Gameplay::GameObject::Sptr HighScorePos10V;
 	Gameplay::GameObject::Sptr HighscoreLeaderBoard;
 	Gameplay::GameObject::Sptr pauseMenu;
 	Gameplay::GameObject::Sptr failMenu;
@@ -75,7 +95,7 @@ protected:
 	bool full = false;
 	//Variables for changing stuff in the game
 	float timeLoop = 3.0f; //The seconds between start time and the menu that plays in the beginning
-	float roundTime = 5.f; //210.f; //The time needed to collect all trash
+	float roundTime = 10.f; //210.f; //The time needed to collect all trash
 	float timelevelt = roundTime;
 	bool playMenu = true;
 
@@ -90,8 +110,8 @@ protected:
 	bool highscoreloop = false;
 
 	bool press_once = false;
-	bool press_twice = true;
-	bool press_thrice = false;
+	bool press_high = true;
+	bool press_play = false;
 	bool press_fourth = true;
 
 	//save trash resources
