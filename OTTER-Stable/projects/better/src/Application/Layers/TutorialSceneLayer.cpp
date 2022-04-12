@@ -169,7 +169,7 @@ void TutorialSceneLayer::OnUpdate()
 
 
 			_tutcurrentScene->should_switch = true; //maybe add some delay here
-			//studio.~FMODStudio();
+			
 		}
 
 		Application& app = Application::Get();
@@ -212,7 +212,7 @@ void TutorialSceneLayer::OnUpdate()
 		if (_tutcurrentScene != nullptr) {
 			//MENU ANIMATED UPDATED
 			if (_tutcurrentScene->IsPlaying && !done &&!musicstart) {
-				
+				AudioEngine::stopEventS("event:/Sounds/Music/Loading/LoadingMusicEvent");
 				AudioEngine::playEventS("event:/Sounds/Music/Tutorial/TutorialMusicEvent");
 				AudioEngine::EventVolumeChange("event:/Sounds/Music/Tutorial/TutorialMusicEvent", -20.f);
 				
@@ -250,7 +250,6 @@ void TutorialSceneLayer::OnUpdate()
 					AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4");
 					AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3");
 					AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5"); 
-					AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice6", -250.f);
 					dumpUI->Get<GuiPanel>()->IsEnabled = false;
 					dialogue6->Get<GuiPanel>()->IsEnabled = false;
 					dialogue7->Get<GuiPanel>()->IsEnabled = false;
@@ -268,8 +267,9 @@ void TutorialSceneLayer::OnUpdate()
 						play4 = true;
 						dialogue3->Get<GuiPanel>()->IsEnabled = false;
 						dialogue4->Get<GuiPanel>()->IsEnabled = true;
+						AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4");
+						AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3");
 						AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice6");
-						AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice6",-250.f);
 						
 						currentTime = Timing::Current().TimeSinceAppLoad();
 					}
@@ -280,7 +280,6 @@ void TutorialSceneLayer::OnUpdate()
 						dialogue5->Get<GuiPanel>()->IsEnabled = true;
 						play5 = true;
 						AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice7");
-						AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice7",-250.f);
 						currentTime = Timing::Current().TimeSinceAppLoad();
 					}
 					if (Timing::Current().TimeSinceAppLoad() - currentTime >= 10.0f && play5) {
@@ -355,7 +354,8 @@ void TutorialSceneLayer::OnUpdate()
 			if (Timing::Current().TimeSinceAppLoad() - footstepTimer >= 0.3f && _tutcurrentScene->walk) {
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/Footstep");
 				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/Footstep", 2.f);
-				
+				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice6", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
+				AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice5", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 
 				footstepTimer = Timing::Current().TimeSinceAppLoad();
 			}
@@ -388,7 +388,6 @@ void TutorialSceneLayer::OnUpdate()
 			{
 				dialogue1->Get<GuiPanel>()->IsEnabled = true;
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1");
-				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1", -250.f);
 				diag1 = true;
 			}
 			
@@ -399,7 +398,6 @@ void TutorialSceneLayer::OnUpdate()
 				pickupUI->Get<GuiPanel>()->IsEnabled = false;
 				AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1");
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3");
-				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3", -250.f);
 				dialogue6->Get<GuiPanel>()->IsEnabled = true;
 				currentTime = Timing::Current().TimeSinceAppLoad();
 			}
@@ -418,7 +416,6 @@ void TutorialSceneLayer::OnUpdate()
 				dialogue7->Get<GuiPanel>()->IsEnabled = true;
 				AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice3");
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4");
-				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4", -250.f);
 				recInvDiag = true;
 				currentTime = Timing::Current().TimeSinceAppLoad();
 				//AudioEngine::stopEventS("You got alot on your hands diag");
@@ -429,7 +426,6 @@ void TutorialSceneLayer::OnUpdate()
 				dialogue2->Get<GuiPanel>()->IsEnabled = true;
 				AudioEngine::stopEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice4");
 				AudioEngine::playEventS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice2");
-				AudioEngine::EventVolumeChange("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice2", -250.f);
 				if (_tutcurrentScene->score < 2) {
 					dumpUI->Get<GuiPanel>()->IsEnabled = true;
 				}
@@ -456,7 +452,7 @@ void TutorialSceneLayer::OnUpdate()
 			AudioEngine::setListenerPos(trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 			AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Footstep", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 			AudioEngine::EventPosChangeS("event:/Sounds/Music/Tutorial/TutorialMusicEvent", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
-
+			AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice6", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 			AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/VoiceLines Big Ben/Voice1", trashyM->GetPosition().x, trashyM->GetPosition().y, trashyM->GetPosition().z);
 			
 		// Store timing for next loop

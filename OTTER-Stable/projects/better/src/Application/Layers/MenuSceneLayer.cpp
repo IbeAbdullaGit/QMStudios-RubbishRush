@@ -104,7 +104,7 @@ void MenuSceneLayer::OnUpdate()
 	}
 	else if (toggle_switch2)
 	{
-		AudioEngine::stopEventS("event:/Sounds/Music/Menu/MenuMusicEvent");
+		
 		app.change_tutorial = true;
 	}
 	{
@@ -158,6 +158,8 @@ void MenuSceneLayer::OnUpdate()
 
 					GuiPanel::Sptr loadPanel = loading->Add<GuiPanel>();
 					loadPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/load.png"));
+					AudioEngine::stopEventS("event:/Sounds/Music/Menu/MenuMusicEvent");
+					AudioEngine::playEventS("event:/Sounds/Music/Loading/LoadingMusicEvent");
 				}
 				
 				app.CurrentScene()->RemoveGameObject(MainMenu);
@@ -176,6 +178,8 @@ void MenuSceneLayer::OnUpdate()
 
 					GuiPanel::Sptr loadPanel = loading->Add<GuiPanel>();
 					loadPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/load.png"));
+					AudioEngine::stopEventS("event:/Sounds/Music/Menu/MenuMusicEvent");
+					AudioEngine::playEventS("event:/Sounds/Music/Loading/LoadingMusicEvent");
 				}
 				
 				app.CurrentScene()->RemoveGameObject(MainMenu);
