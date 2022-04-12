@@ -90,6 +90,9 @@ void PlayerMovementBehavior::Update(float deltaTime) {
 		app.GetLayer<PostProcessingLayer>()->SetSlime(false);
 		AudioEngine::playEventS("event:/Sounds/SoundEffects/Slime");
 		AudioEngine::EventPosChangeS("event:/Sounds/SoundEffects/Slime", _body->GetGameObject()->GetPosition().x, _body->GetGameObject()->GetPosition().y, _body->GetGameObject()->GetPosition().z);
+		if (_body->GetLinearVelocity().y <= 0.0f && _body->GetLinearVelocity().x <=0.0f) {
+			AudioEngine::stopEventS("event:/Sounds/SoundEffects/Slime");
+		}
 	}
 
 	////running

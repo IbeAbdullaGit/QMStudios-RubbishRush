@@ -160,6 +160,7 @@ void MenuSceneLayer::OnUpdate()
 					loadPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/load.png"));
 					AudioEngine::stopEventS("event:/Sounds/Music/Menu/MenuMusicEvent");
 					AudioEngine::playEventS("event:/Sounds/Music/Loading/LoadingMusicEvent");
+					AudioEngine::EventVolumeChange("event:/Sounds/Music/Loading/LoadingMusicEvent", -5.f);
 				}
 				
 				app.CurrentScene()->RemoveGameObject(MainMenu);
@@ -180,6 +181,7 @@ void MenuSceneLayer::OnUpdate()
 					loadPanel->SetTexture(ResourceManager::CreateAsset<Texture2D>("textures/load.png"));
 					AudioEngine::stopEventS("event:/Sounds/Music/Menu/MenuMusicEvent");
 					AudioEngine::playEventS("event:/Sounds/Music/Loading/LoadingMusicEvent");
+					AudioEngine::EventVolumeChange("event:/Sounds/Music/Loading/LoadingMusicEvent", -5.f);
 				}
 				
 				app.CurrentScene()->RemoveGameObject(MainMenu);
