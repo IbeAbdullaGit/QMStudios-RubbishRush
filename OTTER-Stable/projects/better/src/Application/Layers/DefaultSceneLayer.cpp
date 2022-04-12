@@ -4628,7 +4628,7 @@ void DefaultSceneLayer::_CreateScene()
 			RectTransform::Sptr transform = inventoryUI->Add<RectTransform>();
 			transform->SetMax(app.GetWindowSize());
 			transform->SetPosition(glm::vec2(app.GetWindowSize().x - 100.f, app.GetWindowSize().y - 80));
-			transform->SetSize(glm::vec2(25.f, 40.f));
+			transform->SetSize(glm::vec2(28.125f, 45.f));
 
 			GuiPanel::Sptr invPanel = inventoryUI->Add<GuiPanel>();
 			invPanel->IsEnabled = false;
